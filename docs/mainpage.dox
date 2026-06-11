@@ -131,6 +131,7 @@
  * | `{MetaCreationTime.Month}` | `07` |
  * | `{MetaCreationTime.Day}` | `04` |
  * | `{MediaRootPath}` | configured root path |
+ * | `{Counter:D2}` | sequential number per target directory (e.g. 01, 02, 03) |
  *
  * @section sidecar_sec Sidecar Files
  *

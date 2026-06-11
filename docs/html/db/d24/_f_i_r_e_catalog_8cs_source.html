@@ -380,368 +380,395 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="line"><a id="l00643" name="l00643"></a><span class="lineno"><a class="line" href="../../db/d24/_f_i_r_e_catalog_8cs.html#ade7e2647d98d1b16c3ab66b2f3beff0b">  643</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#ade7e2647d98d1b16c3ab66b2f3beff0b">GenerateTargetPaths</a>(<a class="code hl_variable" href="../../d1/d3c/_f_i_r_e_configration_8cs.html#a6cbcc18d725aac9ed8a4f9040221606c">Action&lt;string&gt;</a>? progressCallback = null)</div>
 <div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    {</div>
 <div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>        ThrowIfDisposed();</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span> </div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>        <span class="keywordflow">foreach</span> (var record <span class="keywordflow">in</span> _database)</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>        {</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrWhiteSpace(record.SourceFilePath)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>            progressCallback?.Invoke(record.SourceFilePath);</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>            var extension = Path.GetExtension(record.SourceFilePath);</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>            <span class="keywordflow">if</span> (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span> </div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>            var metadataLookup = record.FileMetaDatas.ToDictionary(</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>                m =&gt; m.Key ?? <span class="keywordtype">string</span>.Empty,</div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>                m =&gt; m.Value ?? <span class="keywordtype">string</span>.Empty,</div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>                StringComparer.OrdinalIgnoreCase);</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span> </div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>            var sortingPattern = extConfig.SortingPatern ?? _configuration.SortingPatern ?? <span class="keywordtype">string</span>.Empty;</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>            var fileNamePattern = extConfig.FileNamePatern ?? _configuration.FileNamePatern ?? <span class="keywordtype">string</span>.Empty;</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span> </div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>            var targetDirectory = ParseTemplate(sortingPattern, metadataLookup, record.SourceFilePath);</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>            var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath);</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span> </div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrWhiteSpace(targetDirectory) &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrWhiteSpace(targetFileName))</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>                record.TargetFilePath = Path.Combine(targetDirectory, targetFileName);</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>        }</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>        _database.Save();</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>    }</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>        var directoryCounters = <span class="keyword">new</span> Dictionary&lt;string, int&gt;(StringComparer.OrdinalIgnoreCase);</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span> </div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>        <span class="keywordflow">foreach</span> (var record <span class="keywordflow">in</span> _database)</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>        {</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrWhiteSpace(record.SourceFilePath)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span> </div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>            progressCallback?.Invoke(record.SourceFilePath);</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span> </div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>            var extension = Path.GetExtension(record.SourceFilePath);</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>            <span class="keywordflow">if</span> (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span> </div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>            var metadataLookup = record.FileMetaDatas.ToDictionary(</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>                m =&gt; m.Key ?? <span class="keywordtype">string</span>.Empty,</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>                m =&gt; m.Value ?? <span class="keywordtype">string</span>.Empty,</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>                StringComparer.OrdinalIgnoreCase);</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span> </div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>            var sortingPattern = extConfig.SortingPatern ?? _configuration.SortingPatern ?? <span class="keywordtype">string</span>.Empty;</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>            var fileNamePattern = extConfig.FileNamePatern ?? _configuration.FileNamePatern ?? <span class="keywordtype">string</span>.Empty;</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span> </div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>            var targetDirectory = ParseTemplate(sortingPattern, metadataLookup, record.SourceFilePath);</div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrWhiteSpace(targetDirectory)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span> </div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>            var counter = directoryCounters.TryGetValue(targetDirectory, out var currentCounter)</div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>                ? currentCounter + 1</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>                : 1;</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>            directoryCounters[targetDirectory] = counter;</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span> </div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>            var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath, counter);</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span> </div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrWhiteSpace(targetFileName))</div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>                record.TargetFilePath = Path.Combine(targetDirectory, targetFileName);</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>        }</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        _database.Save();</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>    }</div>
 </div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span></div>
-<div class="foldopen" id="foldopen00698" data-start="{" data-end="}">
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno"><a class="line" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a40541e840635f9fec2d30e5b2e85ca30">  698</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a40541e840635f9fec2d30e5b2e85ca30">ExecuteFileOperations</a>(<a class="code hl_variable" href="../../d1/d3c/_f_i_r_e_configration_8cs.html#a6cbcc18d725aac9ed8a4f9040221606c">Action&lt;string&gt;</a>? progressCallback = null)</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>    {</div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>        ThrowIfDisposed();</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span> </div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>        <span class="keywordflow">foreach</span> (var record <span class="keywordflow">in</span> _database)</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>        {</div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrWhiteSpace(record.SourceFilePath) || <span class="keywordtype">string</span>.IsNullOrWhiteSpace(record.TargetFilePath)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>            <span class="keywordflow">if</span> (!File.Exists(record.SourceFilePath)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span> </div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>            progressCallback?.Invoke(record.SourceFilePath);</div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span> </div>
-<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>            var extension = Path.GetExtension(record.SourceFilePath);</div>
-<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>            <span class="keywordflow">if</span> (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span> </div>
-<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>            var action = extConfig.Action ?? _configuration.Action ?? <span class="stringliteral">&quot;Copy&quot;</span>;</div>
-<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>            ExecuteAction(action, record.SourceFilePath, record.TargetFilePath);</div>
-<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>        }</div>
-<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>        _database.Save();</div>
-<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>    }</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span></div>
+<div class="foldopen" id="foldopen00706" data-start="{" data-end="}">
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno"><a class="line" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a40541e840635f9fec2d30e5b2e85ca30">  706</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a40541e840635f9fec2d30e5b2e85ca30">ExecuteFileOperations</a>(<a class="code hl_variable" href="../../d1/d3c/_f_i_r_e_configration_8cs.html#a6cbcc18d725aac9ed8a4f9040221606c">Action&lt;string&gt;</a>? progressCallback = null)</div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>    {</div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>        ThrowIfDisposed();</div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span> </div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>        <span class="keywordflow">foreach</span> (var record <span class="keywordflow">in</span> _database)</div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>        {</div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>            <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrWhiteSpace(record.SourceFilePath) || <span class="keywordtype">string</span>.IsNullOrWhiteSpace(record.TargetFilePath)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>            <span class="keywordflow">if</span> (!File.Exists(record.SourceFilePath)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span> </div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>            progressCallback?.Invoke(record.SourceFilePath);</div>
+<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span> </div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>            var extension = Path.GetExtension(record.SourceFilePath);</div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>            <span class="keywordflow">if</span> (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span> </div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>            var action = extConfig.Action ?? _configuration.Action ?? <span class="stringliteral">&quot;Copy&quot;</span>;</div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>            ExecuteAction(action, record.SourceFilePath, record.TargetFilePath);</div>
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>        }</div>
+<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>        _database.Save();</div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>    }</div>
 </div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span></div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7">Dispose</a>()</div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>    {</div>
-<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>        <span class="keywordflow">if</span> (_disposed) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>        _database.Dispose();</div>
-<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>        _disposed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>    }</div>
-<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span> </div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> CollectFromDirectory(<span class="keywordtype">string</span> directoryPath, <a class="code hl_variable" href="../../d1/d3c/_f_i_r_e_configration_8cs.html#a6cbcc18d725aac9ed8a4f9040221606c">Action&lt;string&gt;</a>? progressCallback = null)</div>
-<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>    {</div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>        <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>        {</div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>            <span class="keywordflow">foreach</span> (var filePath <span class="keywordflow">in</span> Directory.EnumerateFiles(directoryPath, <span class="stringliteral">&quot;*&quot;</span>, SearchOption.AllDirectories))</div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>            {</div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>                progressCallback?.Invoke(filePath);</div>
-<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>                ProcessFile(filePath);</div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>            }</div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>        }</div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>        <span class="keywordflow">catch</span> { }</div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>    }</div>
-<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span> </div>
-<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ProcessFile(<span class="keywordtype">string</span> filePath)</div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span></div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7">Dispose</a>()</div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>    {</div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>        <span class="keywordflow">if</span> (_disposed) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>        _database.Dispose();</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>        _disposed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>    }</div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span></div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> CollectFromDirectory(<span class="keywordtype">string</span> directoryPath, <a class="code hl_variable" href="../../d1/d3c/_f_i_r_e_configration_8cs.html#a6cbcc18d725aac9ed8a4f9040221606c">Action&lt;string&gt;</a>? progressCallback = null)</div>
 <div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>    {</div>
-<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>        var extension = Path.GetExtension(filePath);</div>
-<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>        <span class="keywordflow">if</span> (!_configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#a076a2da18160edf92386073c50428b3e">FileExtensions</a>.TryGetValue(extension, out var extConfig)) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span> </div>
-<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>        var fileIdInfo = GetFileIdInfo(filePath);</div>
-<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>        var record = <span class="keyword">new</span> <a class="code hl_variable" href="../../d7/d1a/_f_i_r_e_database_8cs.html#a2575a6b0ec78cc6e7792e72e9b43bc16">FIREDbRecord</a></div>
-<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>        {</div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>            <a class="code hl_variable" href="../../d7/d1a/_f_i_r_e_database_8cs.html#a411d4d2f4e1601ede6c530814eddac90">SourceFilePath</a> = filePath,</div>
-<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>            <a class="code hl_variable" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a8ab4d933b535f75cc90072052e631ab6">VolumeSerialNumber</a> = fileIdInfo.VolumeSerialNumber,</div>
-<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>            <a class="code hl_variable" href="../../d7/d1a/_f_i_r_e_database_8cs.html#aa1d2e27212394c8c5ec775073aeb5979">FileId</a> = fileIdInfo.FileId</div>
-<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>        };</div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span> </div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>        <span class="keywordflow">foreach</span> (var keywordEntry <span class="keywordflow">in</span> extConfig.AvailableKeyWords)</div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>        {</div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>            var keywordName = keywordEntry.Key;</div>
-<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>            var keywordConfig = keywordEntry.Value;</div>
-<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>            var sourceName = keywordConfig.Source ?? <span class="stringliteral">&quot;FILEINFO&quot;</span>;</div>
-<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>            var valAttribute = keywordConfig.ValAttribute ?? <span class="stringliteral">&quot;LOWEST&quot;</span>;</div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span> </div>
-<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>            var source = _metadataRegistry.<a class="code hl_function" href="../../de/df7/class_metadata_source_registry.html#a7ddddd954540d49036c4a794e1923cd6">GetSource</a>(sourceName);</div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>            <span class="keywordflow">if</span> (source == null)</div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>            {</div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>                LogMetadataWarning(filePath, keywordName, $<span class="stringliteral">&quot;metadata source &#39;{sourceName}&#39; was not found&quot;</span>);</div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, <span class="stringliteral">&quot;NA&quot;</span>, keywordConfig, sourceName));</div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>            }</div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span> </div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>            <span class="keywordflow">if</span> (keywordConfig.KeyWords.Count == 0)</div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>            {</div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>                LogMetadataWarning(filePath, keywordName, <span class="stringliteral">&quot;no keywords configured&quot;</span>);</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, <span class="stringliteral">&quot;NA&quot;</span>, keywordConfig, sourceName));</div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>            }</div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span> </div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>            var extractedMetadata = source.ExtractMetadata(filePath);</div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>            var matchingValues = <span class="keyword">new</span> List&lt;string&gt;();</div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span> </div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>            <span class="keywordflow">foreach</span> (var keyword <span class="keywordflow">in</span> keywordConfig.KeyWords)</div>
+<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>        <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>        {</div>
+<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>            <span class="keywordflow">foreach</span> (var filePath <span class="keywordflow">in</span> Directory.EnumerateFiles(directoryPath, <span class="stringliteral">&quot;*&quot;</span>, SearchOption.AllDirectories))</div>
+<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>            {</div>
+<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>                progressCallback?.Invoke(filePath);</div>
+<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>                ProcessFile(filePath);</div>
+<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>            }</div>
+<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>        }</div>
+<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>        <span class="keywordflow">catch</span> { }</div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>    }</div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span></div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ProcessFile(<span class="keywordtype">string</span> filePath)</div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>    {</div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>        var extension = Path.GetExtension(filePath);</div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>        <span class="keywordflow">if</span> (!_configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#a076a2da18160edf92386073c50428b3e">FileExtensions</a>.TryGetValue(extension, out var extConfig)) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span> </div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>        var fileIdInfo = GetFileIdInfo(filePath);</div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>        var record = <span class="keyword">new</span> <a class="code hl_variable" href="../../d7/d1a/_f_i_r_e_database_8cs.html#a2575a6b0ec78cc6e7792e72e9b43bc16">FIREDbRecord</a></div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>        {</div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>            <a class="code hl_variable" href="../../d7/d1a/_f_i_r_e_database_8cs.html#a411d4d2f4e1601ede6c530814eddac90">SourceFilePath</a> = filePath,</div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>            <a class="code hl_variable" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a8ab4d933b535f75cc90072052e631ab6">VolumeSerialNumber</a> = fileIdInfo.VolumeSerialNumber,</div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>            <a class="code hl_variable" href="../../d7/d1a/_f_i_r_e_database_8cs.html#aa1d2e27212394c8c5ec775073aeb5979">FileId</a> = fileIdInfo.FileId</div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>        };</div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span> </div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>        <span class="keywordflow">foreach</span> (var keywordEntry <span class="keywordflow">in</span> extConfig.AvailableKeyWords)</div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>        {</div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>            var keywordName = keywordEntry.Key;</div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>            var keywordConfig = keywordEntry.Value;</div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>            var sourceName = keywordConfig.Source ?? <span class="stringliteral">&quot;FILEINFO&quot;</span>;</div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>            var valAttribute = keywordConfig.ValAttribute ?? <span class="stringliteral">&quot;LOWEST&quot;</span>;</div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span> </div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>            var source = _metadataRegistry.<a class="code hl_function" href="../../de/df7/class_metadata_source_registry.html#a7ddddd954540d49036c4a794e1923cd6">GetSource</a>(sourceName);</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>            <span class="keywordflow">if</span> (source == null)</div>
 <div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>            {</div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>                <span class="keywordflow">if</span> (extractedMetadata.TryGetValue(keyword, out var value) &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrWhiteSpace(value))</div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>                    matchingValues.Add(value);</div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>            }</div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span> </div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>            <span class="keywordflow">if</span> (matchingValues.Count == 0)</div>
-<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>            {</div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>                LogMetadataWarning(filePath, keywordName, $<span class="stringliteral">&quot;none of the configured keywords were found in source &#39;{sourceName}&#39;&quot;</span>);</div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, <span class="stringliteral">&quot;NA&quot;</span>, keywordConfig, sourceName));</div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>                <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>            }</div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span> </div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>            var selectedValue = SelectValue(matchingValues, valAttribute, keywordConfig.DataType, filePath, keywordName);</div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>            record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, selectedValue, keywordConfig, sourceName));</div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>        }</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>                LogMetadataWarning(filePath, keywordName, $<span class="stringliteral">&quot;metadata source &#39;{sourceName}&#39; was not found&quot;</span>);</div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, <span class="stringliteral">&quot;NA&quot;</span>, keywordConfig, sourceName));</div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>            }</div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span> </div>
+<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>            <span class="keywordflow">if</span> (keywordConfig.KeyWords.Count == 0)</div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>            {</div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>                LogMetadataWarning(filePath, keywordName, <span class="stringliteral">&quot;no keywords configured&quot;</span>);</div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, <span class="stringliteral">&quot;NA&quot;</span>, keywordConfig, sourceName));</div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>            }</div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span> </div>
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>            var extractedMetadata = source.ExtractMetadata(filePath);</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>            var matchingValues = <span class="keyword">new</span> List&lt;string&gt;();</div>
 <div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span> </div>
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>        _database.Add(record);</div>
-<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>    }</div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span> </div>
-<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>    <span class="keyword">private</span> <span class="keyword">static</span> FIREFileMetaData CreateMetadataEntry(<span class="keywordtype">string</span> key, <span class="keywordtype">string</span> value, AvailableKeywordConfiguration keywordConfig, <span class="keywordtype">string</span> sourceName)</div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>    {</div>
-<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> FIREFileMetaData</div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>        {</div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>            Key = key,</div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>            Value = value,</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>            TypeName = keywordConfig.<a class="code hl_variable" href="../../d3/daf/class_available_keyword_configuration.html#a644c6e36c655560123458574410f7bc2">DataType</a> ?? <span class="stringliteral">&quot;STRING&quot;</span>,</div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>            DataSource = sourceName</div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>        };</div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>    }</div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span> </div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> SelectValue(List&lt;string&gt; values, <span class="keywordtype">string</span> valAttribute, <span class="keywordtype">string</span> dataType, <span class="keywordtype">string</span> filePath, <span class="keywordtype">string</span> keywordName)</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    {</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>        var selectionMode = valAttribute.Trim().ToUpperInvariant();</div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>        var normalizedDataType = dataType.Trim().ToUpperInvariant();</div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span> </div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>        <span class="comment">// Early exit for single value</span></div>
-<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>        <span class="keywordflow">if</span> (values.Count == 1)</div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>        {</div>
-<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>            <span class="comment">// Normalize DateTime values if applicable</span></div>
-<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>            <span class="keywordflow">if</span> (normalizedDataType is <span class="stringliteral">&quot;DATETIME&quot;</span> or <span class="stringliteral">&quot;DATE&quot;</span> or <span class="stringliteral">&quot;TIME&quot;</span> &amp;&amp;</div>
-<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>                TryNormalizeDateTime(values[0], out var normalizedDate) &amp;&amp;</div>
-<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span>                DateTime.TryParseExact(normalizedDate, <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>,</div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>                    CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTimeValue))</div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>            {</div>
-<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>                <span class="keywordflow">return</span> dateTimeValue.ToString();</div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>            }</div>
-<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>            <span class="keywordflow">return</span> values[0];</div>
-<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>        }</div>
-<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span> </div>
-<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>        <span class="comment">// Strongly-typed data types: use SelectExtremeValue</span></div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>        <span class="keywordflow">if</span> (normalizedDataType is <span class="stringliteral">&quot;INT&quot;</span> or <span class="stringliteral">&quot;INTEGER&quot;</span> or <span class="stringliteral">&quot;DATETIME&quot;</span> or <span class="stringliteral">&quot;DATE&quot;</span> or <span class="stringliteral">&quot;TIME&quot;</span>)</div>
-<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>        {</div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>            <span class="keywordflow">return</span> selectionMode <span class="keywordflow">switch</span></div>
-<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>            {</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>                <span class="stringliteral">&quot;HIGHEST&quot;</span> =&gt; SelectExtremeValue(values, normalizedDataType, <span class="keyword">true</span>, filePath, keywordName),</div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>                _ =&gt; SelectExtremeValue(values, normalizedDataType, <span class="keyword">false</span>, filePath, keywordName)</div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>            };</div>
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>        }</div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span> </div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>        <span class="comment">// String comparison: use MaxBy/MinBy instead of OrderBy</span></div>
-<div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span>        <span class="keywordflow">return</span> selectionMode <span class="keywordflow">switch</span></div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>        {</div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>            <span class="stringliteral">&quot;HIGHEST&quot;</span> =&gt; values.MaxBy(value =&gt; value, StringComparer.OrdinalIgnoreCase) ?? <span class="stringliteral">&quot;NA&quot;</span>,</div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>            _ =&gt; values.MinBy(value =&gt; value, StringComparer.OrdinalIgnoreCase) ?? <span class="stringliteral">&quot;NA&quot;</span></div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>        };</div>
-<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    }</div>
-<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span> </div>
-<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> SelectExtremeValue(List&lt;string&gt; values, <span class="keywordtype">string</span> normalizedDataType, <span class="keywordtype">bool</span> highest, <span class="keywordtype">string</span> filePath, <span class="keywordtype">string</span> keywordName)</div>
-<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>    {</div>
-<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>        var candidates = <span class="keyword">new</span> List&lt;(string RawValue, IComparable ComparableValue)&gt;(values.Count);</div>
-<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span> </div>
-<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>        <span class="keywordflow">foreach</span> (var value <span class="keywordflow">in</span> values)</div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>        {</div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>            <span class="keywordflow">if</span> (TryConvertComparable(value, normalizedDataType, out var comparableValue))</div>
-<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>                candidates.Add((value, comparableValue));</div>
-<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>        }</div>
-<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span> </div>
-<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>        <span class="keywordflow">if</span> (candidates.Count == 0)</div>
-<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>        {</div>
-<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>            LogMetadataWarning(filePath, keywordName, $<span class="stringliteral">&quot;no comparable values found for data type &#39;{normalizedDataType}&#39;&quot;</span>);</div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>            <span class="keywordflow">foreach</span> (var keyword <span class="keywordflow">in</span> keywordConfig.KeyWords)</div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>            {</div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>                <span class="keywordflow">if</span> (extractedMetadata.TryGetValue(keyword, out var value) &amp;&amp; !<span class="keywordtype">string</span>.IsNullOrWhiteSpace(value))</div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>                    matchingValues.Add(value);</div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>            }</div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span> </div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>            <span class="keywordflow">if</span> (matchingValues.Count == 0)</div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>            {</div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>                LogMetadataWarning(filePath, keywordName, $<span class="stringliteral">&quot;none of the configured keywords were found in source &#39;{sourceName}&#39;&quot;</span>);</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, <span class="stringliteral">&quot;NA&quot;</span>, keywordConfig, sourceName));</div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>            }</div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span> </div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>            var selectedValue = SelectValue(matchingValues, valAttribute, keywordConfig.DataType, filePath, keywordName);</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>            record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, selectedValue, keywordConfig, sourceName));</div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>        }</div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span> </div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>        _database.Add(record);</div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>    }</div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span></div>
+<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>    <span class="keyword">private</span> <span class="keyword">static</span> FIREFileMetaData CreateMetadataEntry(<span class="keywordtype">string</span> key, <span class="keywordtype">string</span> value, AvailableKeywordConfiguration keywordConfig, <span class="keywordtype">string</span> sourceName)</div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>    {</div>
+<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> FIREFileMetaData</div>
+<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>        {</div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>            Key = key,</div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>            Value = value,</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>            TypeName = keywordConfig.<a class="code hl_variable" href="../../d3/daf/class_available_keyword_configuration.html#a644c6e36c655560123458574410f7bc2">DataType</a> ?? <span class="stringliteral">&quot;STRING&quot;</span>,</div>
+<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>            DataSource = sourceName</div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>        };</div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>    }</div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span></div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> SelectValue(List&lt;string&gt; values, <span class="keywordtype">string</span> valAttribute, <span class="keywordtype">string</span> dataType, <span class="keywordtype">string</span> filePath, <span class="keywordtype">string</span> keywordName)</div>
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    {</div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>        var selectionMode = valAttribute.Trim().ToUpperInvariant();</div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>        var normalizedDataType = dataType.Trim().ToUpperInvariant();</div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span> </div>
+<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>        <span class="comment">// Early exit for single value</span></div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>        <span class="keywordflow">if</span> (values.Count == 1)</div>
+<div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>        {</div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>            <span class="comment">// Normalize DateTime values if applicable</span></div>
+<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>            <span class="keywordflow">if</span> (normalizedDataType is <span class="stringliteral">&quot;DATETIME&quot;</span> or <span class="stringliteral">&quot;DATE&quot;</span> or <span class="stringliteral">&quot;TIME&quot;</span> &amp;&amp;</div>
+<div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span>                TryNormalizeDateTime(values[0], out var normalizedDate) &amp;&amp;</div>
+<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span>                DateTime.TryParseExact(normalizedDate, <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>,</div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span>                    CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTimeValue))</div>
+<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span>            {</div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>                <span class="keywordflow">return</span> dateTimeValue.ToString();</div>
+<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>            }</div>
 <div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>            <span class="keywordflow">return</span> values[0];</div>
 <div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>        }</div>
 <div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span> </div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>        var selected = highest</div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>            ? candidates.MaxBy(x =&gt; x.ComparableValue)</div>
-<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>            : candidates.MinBy(x =&gt; x.ComparableValue);</div>
-<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span> </div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>        <span class="keywordflow">return</span> selected.ComparableValue.ToString();</div>
-<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>    }</div>
-<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>    <span class="keyword">private</span> <span class="keyword">static</span> readonly <span class="keywordtype">string</span>[] KnownDateTimeFormats =</div>
-<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>    [</div>
-<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>        <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>,</div>
-<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>    <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:sszzz&quot;</span>,</div>
-<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>    <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ssz&quot;</span>,</div>
-<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>    <span class="stringliteral">&quot;yyyy:MM:dd&quot;</span>,</div>
-<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>    <span class="stringliteral">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>,</div>
-<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>    <span class="stringliteral">&quot;yyyy-MM-ddTHH:mm:ss&quot;</span>,</div>
-<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>    <span class="stringliteral">&quot;yyyy-MM-ddTHH:mm:sszzz&quot;</span>,</div>
-<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>    <span class="stringliteral">&quot;dd.MM.yyyy HH:mm:ss&quot;</span>,</div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>    <span class="stringliteral">&quot;dd.MM.yyyy&quot;</span>,</div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>];</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span> </div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> TryNormalizeDateTime(<span class="keywordtype">string</span> value, out <span class="keywordtype">string</span> normalized)</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    {</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>        <span class="keywordflow">if</span> (DateTime.TryParseExact(</div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>                value.Trim(),</div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>                KnownDateTimeFormats,</div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>                CultureInfo.InvariantCulture,</div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>                DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal,</div>
-<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>                out var dt))</div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>        <span class="comment">// Strongly-typed data types: use SelectExtremeValue</span></div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>        <span class="keywordflow">if</span> (normalizedDataType is <span class="stringliteral">&quot;INT&quot;</span> or <span class="stringliteral">&quot;INTEGER&quot;</span> or <span class="stringliteral">&quot;DATETIME&quot;</span> or <span class="stringliteral">&quot;DATE&quot;</span> or <span class="stringliteral">&quot;TIME&quot;</span>)</div>
+<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>        {</div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>            <span class="keywordflow">return</span> selectionMode <span class="keywordflow">switch</span></div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>            {</div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>                <span class="stringliteral">&quot;HIGHEST&quot;</span> =&gt; SelectExtremeValue(values, normalizedDataType, <span class="keyword">true</span>, filePath, keywordName),</div>
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>                _ =&gt; SelectExtremeValue(values, normalizedDataType, <span class="keyword">false</span>, filePath, keywordName)</div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>            };</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>        }</div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span> </div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>        <span class="comment">// String comparison: use MaxBy/MinBy instead of OrderBy</span></div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>        <span class="keywordflow">return</span> selectionMode <span class="keywordflow">switch</span></div>
+<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>        {</div>
+<div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span>            <span class="stringliteral">&quot;HIGHEST&quot;</span> =&gt; values.MaxBy(value =&gt; value, StringComparer.OrdinalIgnoreCase) ?? <span class="stringliteral">&quot;NA&quot;</span>,</div>
+<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>            _ =&gt; values.MinBy(value =&gt; value, StringComparer.OrdinalIgnoreCase) ?? <span class="stringliteral">&quot;NA&quot;</span></div>
+<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>        };</div>
+<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>    }</div>
+<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span></div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> SelectExtremeValue(List&lt;string&gt; values, <span class="keywordtype">string</span> normalizedDataType, <span class="keywordtype">bool</span> highest, <span class="keywordtype">string</span> filePath, <span class="keywordtype">string</span> keywordName)</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>    {</div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>        var candidates = <span class="keyword">new</span> List&lt;(string RawValue, IComparable ComparableValue)&gt;(values.Count);</div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span> </div>
+<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>        <span class="keywordflow">foreach</span> (var value <span class="keywordflow">in</span> values)</div>
 <div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>        {</div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>            normalized = dt.ToString(<span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>, CultureInfo.InvariantCulture);</div>
-<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>            <span class="keywordflow">if</span> (TryConvertComparable(value, normalizedDataType, out var comparableValue))</div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>                candidates.Add((value, comparableValue));</div>
 <div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>        }</div>
 <div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span> </div>
-<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>        normalized = <span class="keywordtype">string</span>.Empty;</div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>    }</div>
-<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span> </div>
-<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> TryConvertComparable(<span class="keywordtype">string</span> value, <span class="keywordtype">string</span> normalizedDataType, out IComparable comparableValue)</div>
-<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>    {</div>
-<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>        <span class="keywordflow">switch</span> (normalizedDataType)</div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>        {</div>
-<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;INT&quot;</span>:</div>
-<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;INTEGER&quot;</span>:</div>
-<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>                <span class="keywordflow">if</span> (<span class="keywordtype">long</span>.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var longValue))</div>
-<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>                {</div>
-<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>                    comparableValue = longValue;</div>
-<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span>                }</div>
-<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;DATETIME&quot;</span>:</div>
-<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;DATE&quot;</span>:</div>
-<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;TIME&quot;</span>:</div>
-<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>                <span class="keywordflow">if</span> (TryNormalizeDateTime(value, out var normalizedDate) &amp;&amp;</div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>                    DateTime.TryParseExact(normalizedDate, <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>,</div>
-<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>                        CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTimeValue))</div>
-<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>                {</div>
-<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>                    comparableValue = dateTimeValue;</div>
-<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>                }</div>
-<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>        }</div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span> </div>
-<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>        comparableValue = <span class="keywordtype">string</span>.Empty;</div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>    }</div>
-<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span> </div>
-<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> LogMetadataWarning(<span class="keywordtype">string</span> filePath, <span class="keywordtype">string</span> keywordName, <span class="keywordtype">string</span> reason)</div>
-<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span>    {</div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>        Console.WriteLine($<span class="stringliteral">&quot;[WARN] {Path.GetFileName(filePath)} / {keywordName}: {reason}&quot;</span>);</div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>    }</div>
-<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span> </div>
-<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>    <span class="keyword">private</span> <span class="keywordtype">string</span> ParseTemplate(<span class="keywordtype">string</span> <span class="keyword">template</span>, Dictionary&lt;string, string&gt; metadata, <span class="keywordtype">string</span> sourceFilePath)</div>
-<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>    {</div>
-<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>        <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrWhiteSpace(<span class="keyword">template</span>)) <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Empty;</div>
-<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span> </div>
-<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>        var result = <span class="keyword">template</span>;</div>
-<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>        var placeholderPattern = <span class="keyword">new</span> Regex(<span class="stringliteral">@&quot;\{(?&lt;key&gt;[^}]+)\}&quot;</span>, RegexOptions.Compiled);</div>
-<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span> </div>
-<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>        result = placeholderPattern.Replace(result, match =&gt;</div>
-<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>            ResolvePlaceholder(match.Groups[<span class="stringliteral">&quot;key&quot;</span>].Value, metadata, sourceFilePath));</div>
-<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span> </div>
-<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>        <span class="keywordflow">foreach</span> (var replacement <span class="keywordflow">in</span> _configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#a4c6ec16e124123c544bead8e64fb94dc">StringReplacements</a>)</div>
-<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>            result = result.Replace(replacement.Key, replacement.Value, StringComparison.OrdinalIgnoreCase);</div>
-<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span> </div>
-<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span>    }</div>
-<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span> </div>
-<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>    <span class="keyword">private</span> <span class="keywordtype">string</span> ResolvePlaceholder(<span class="keywordtype">string</span> key, Dictionary&lt;string, string&gt; metadata, <span class="keywordtype">string</span> sourceFilePath)</div>
-<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    {</div>
-<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>        var parts = key.Split(<span class="charliteral">&#39;.&#39;</span>);</div>
-<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>        var baseName = parts[0];</div>
-<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>        var property = parts.Length &gt; 1 ? parts[1] : null;</div>
-<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span> </div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>        <span class="keywordflow">if</span> (baseName.Equals(<span class="stringliteral">&quot;FileName&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
-<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>        {</div>
-<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>            <span class="keywordflow">if</span> (property != null &amp;&amp; property.Equals(<span class="stringliteral">&quot;Noext&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>                <span class="keywordflow">return</span> Path.GetFileNameWithoutExtension(sourceFilePath);</div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>            <span class="keywordflow">return</span> Path.GetFileName(sourceFilePath);</div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>        }</div>
-<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span> </div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>        <span class="keywordflow">if</span> (baseName.Equals(<span class="stringliteral">&quot;MediaRootPath&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
-<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>            <span class="keywordflow">return</span> _configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#aa773e66f6dd7f501b1d4c5017ef23a2b">MediaRootPath</a>;</div>
-<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span> </div>
-<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>        <span class="keywordflow">if</span> (baseName.Equals(<span class="stringliteral">&quot;RootPath&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
-<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>            <span class="keywordflow">return</span> ParseTemplate(_configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#ae8b786d3e935425d04a7c35f24b2aa32">RootPath</a>, metadata, sourceFilePath);</div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span> </div>
-<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>        <span class="keywordflow">if</span> (!metadata.TryGetValue(baseName, out var value) || <span class="keywordtype">string</span>.IsNullOrWhiteSpace(value))</div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
-<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span> </div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>        <span class="keywordflow">if</span> (property == null) <span class="keywordflow">return</span> value;</div>
-<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span> </div>
-<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>        <span class="comment">// Zeile 548 – vorher: DateTime.TryParse (schlägt bei EXIF-Dates fehl)</span></div>
-<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>        <span class="keywordflow">if</span> (TryNormalizeDateTime(value, out var normalizedValue) &amp;&amp;</div>
-<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>            DateTime.TryParseExact(normalizedValue, <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>,</div>
-<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>                CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))</div>
-<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>        {</div>
-<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>            <span class="keywordflow">return</span> <span class="keyword">property</span>.ToUpperInvariant() <span class="keywordflow">switch</span></div>
-<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>            {</div>
-<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>                <span class="stringliteral">&quot;YEAR&quot;</span> =&gt; dateTime.Year.ToString(CultureInfo.InvariantCulture),</div>
-<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>                <span class="stringliteral">&quot;MONTH&quot;</span> =&gt; dateTime.Month.ToString(<span class="stringliteral">&quot;D2&quot;</span>, CultureInfo.InvariantCulture),</div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>                <span class="stringliteral">&quot;DAY&quot;</span> =&gt; dateTime.Day.ToString(<span class="stringliteral">&quot;D2&quot;</span>, CultureInfo.InvariantCulture),</div>
-<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>                _ =&gt; normalizedValue   <span class="comment">// gibt immer yyyy:MM:dd HH:mm:ss zurück</span></div>
-<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span>            };</div>
-<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span>        }</div>
-<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span> </div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span>        <span class="comment">//if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))</span></div>
-<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span>        <span class="comment">//{</span></div>
-<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span>        <span class="comment">//    return property.ToUpperInvariant() switch</span></div>
-<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>        <span class="comment">//    {</span></div>
-<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>        <span class="comment">//        &quot;YEAR&quot; =&gt; dateTime.Year.ToString(CultureInfo.InvariantCulture),</span></div>
-<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>        <span class="comment">//        &quot;MONTH&quot; =&gt; dateTime.Month.ToString(&quot;D2&quot;, CultureInfo.InvariantCulture),</span></div>
-<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>        <span class="comment">//        &quot;DAY&quot; =&gt; dateTime.Day.ToString(&quot;D2&quot;, CultureInfo.InvariantCulture),</span></div>
-<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span>        <span class="comment">//        _ =&gt; value</span></div>
-<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>        <span class="comment">//    };</span></div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span>        <span class="comment">//}</span></div>
-<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span> </div>
-<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>        <span class="keywordflow">return</span> value;</div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>    }</div>
-<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span> </div>
-<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ExecuteAction(<span class="keywordtype">string</span> action, <span class="keywordtype">string</span> sourcePath, <span class="keywordtype">string</span> targetPath)</div>
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>    {</div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>        <span class="keywordflow">try</span></div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>        {</div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>            var targetDirectory = Path.GetDirectoryName(targetPath);</div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrWhiteSpace(targetDirectory))</div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>                Directory.CreateDirectory(targetDirectory);</div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span> </div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>            <span class="keywordflow">switch</span> (action.ToUpperInvariant())</div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>            {</div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>                <span class="keywordflow">case</span> <span class="stringliteral">&quot;MOVE&quot;</span>:</div>
-<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>                    File.Move(sourcePath, targetPath, overwrite: <span class="keyword">false</span>);</div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>                <span class="keywordflow">case</span> <span class="stringliteral">&quot;COPY&quot;</span>:</div>
-<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span>                    File.Copy(sourcePath, targetPath, overwrite: <span class="keyword">false</span>);</div>
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>                <span class="keywordflow">case</span> <span class="stringliteral">&quot;LINK&quot;</span>:</div>
-<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span>                    File.CreateSymbolicLink(targetPath, sourcePath);</div>
-<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>                <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span>                    File.Copy(sourcePath, targetPath, overwrite: <span class="keyword">false</span>);</div>
-<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>            }</div>
-<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span>        }</div>
-<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>        <span class="keywordflow">catch</span> { }</div>
-<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>    }</div>
-<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span> </div>
-<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ThrowIfDisposed()</div>
-<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>    {</div>
-<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>        <span class="keywordflow">if</span> (_disposed) <span class="keywordflow">throw</span> <span class="keyword">new</span> ObjectDisposedException(nameof(<a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a>));</div>
-<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>    }</div>
-<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span>}</div>
+<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>        <span class="keywordflow">if</span> (candidates.Count == 0)</div>
+<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>        {</div>
+<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>            LogMetadataWarning(filePath, keywordName, $<span class="stringliteral">&quot;no comparable values found for data type &#39;{normalizedDataType}&#39;&quot;</span>);</div>
+<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>            <span class="keywordflow">return</span> values[0];</div>
+<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>        }</div>
+<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span> </div>
+<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>        var selected = highest</div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>            ? candidates.MaxBy(x =&gt; x.ComparableValue)</div>
+<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>            : candidates.MinBy(x =&gt; x.ComparableValue);</div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span> </div>
+<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>        <span class="keywordflow">return</span> selected.ComparableValue.ToString();</div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    }</div>
+<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>    <span class="keyword">private</span> <span class="keyword">static</span> readonly <span class="keywordtype">string</span>[] KnownDateTimeFormats =</div>
+<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>    [</div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>        <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>,</div>
+<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>    <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:sszzz&quot;</span>,</div>
+<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>    <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ssz&quot;</span>,</div>
+<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>    <span class="stringliteral">&quot;yyyy:MM:dd&quot;</span>,</div>
+<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>    <span class="stringliteral">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>,</div>
+<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>    <span class="stringliteral">&quot;yyyy-MM-ddTHH:mm:ss&quot;</span>,</div>
+<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>    <span class="stringliteral">&quot;yyyy-MM-ddTHH:mm:sszzz&quot;</span>,</div>
+<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>    <span class="stringliteral">&quot;dd.MM.yyyy HH:mm:ss&quot;</span>,</div>
+<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>    <span class="stringliteral">&quot;dd.MM.yyyy&quot;</span>,</div>
+<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>];</div>
+<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span></div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> TryNormalizeDateTime(<span class="keywordtype">string</span> value, out <span class="keywordtype">string</span> normalized)</div>
+<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>    {</div>
+<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>        <span class="keywordflow">if</span> (DateTime.TryParseExact(</div>
+<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>                value.Trim(),</div>
+<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>                KnownDateTimeFormats,</div>
+<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span>                CultureInfo.InvariantCulture,</div>
+<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>                DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal,</div>
+<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span>                out var dt))</div>
+<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span>        {</div>
+<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span>            normalized = dt.ToString(<span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>, CultureInfo.InvariantCulture);</div>
+<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span>        }</div>
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span> </div>
+<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span>        normalized = <span class="keywordtype">string</span>.Empty;</div>
+<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span>    }</div>
+<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span></div>
+<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> TryConvertComparable(<span class="keywordtype">string</span> value, <span class="keywordtype">string</span> normalizedDataType, out IComparable comparableValue)</div>
+<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    {</div>
+<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>        <span class="keywordflow">switch</span> (normalizedDataType)</div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>        {</div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;INT&quot;</span>:</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;INTEGER&quot;</span>:</div>
+<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>                <span class="keywordflow">if</span> (<span class="keywordtype">long</span>.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var longValue))</div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>                {</div>
+<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>                    comparableValue = longValue;</div>
+<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>                }</div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;DATETIME&quot;</span>:</div>
+<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;DATE&quot;</span>:</div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>            <span class="keywordflow">case</span> <span class="stringliteral">&quot;TIME&quot;</span>:</div>
+<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>                <span class="keywordflow">if</span> (TryNormalizeDateTime(value, out var normalizedDate) &amp;&amp;</div>
+<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>                    DateTime.TryParseExact(normalizedDate, <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>,</div>
+<div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>                        CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTimeValue))</div>
+<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>                {</div>
+<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>                    comparableValue = dateTimeValue;</div>
+<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>                    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span>                }</div>
+<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>        }</div>
+<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span> </div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>        comparableValue = <span class="keywordtype">string</span>.Empty;</div>
+<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span>    }</div>
+<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span></div>
+<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> LogMetadataWarning(<span class="keywordtype">string</span> filePath, <span class="keywordtype">string</span> keywordName, <span class="keywordtype">string</span> reason)</div>
+<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span>    {</div>
+<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>        Console.WriteLine($<span class="stringliteral">&quot;[WARN] {Path.GetFileName(filePath)} / {keywordName}: {reason}&quot;</span>);</div>
+<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>    }</div>
+<div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span></div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>    <span class="keyword">private</span> <span class="keywordtype">string</span> ParseTemplate(<span class="keywordtype">string</span> <span class="keyword">template</span>, Dictionary&lt;string, string&gt; metadata, <span class="keywordtype">string</span> sourceFilePath, <span class="keywordtype">int</span>? counter = null)</div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>    {</div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>        <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrWhiteSpace(<span class="keyword">template</span>)) <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Empty;</div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span> </div>
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>        var result = <span class="keyword">template</span>;</div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>        var placeholderPattern = <span class="keyword">new</span> Regex(<span class="stringliteral">@&quot;\{(?&lt;key&gt;[^}]+)\}&quot;</span>, RegexOptions.Compiled);</div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span> </div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>        result = placeholderPattern.Replace(result, match =&gt;</div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>            ResolvePlaceholder(match.Groups[<span class="stringliteral">&quot;key&quot;</span>].Value, metadata, sourceFilePath, counter));</div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span> </div>
+<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>        <span class="keywordflow">foreach</span> (var replacement <span class="keywordflow">in</span> _configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#a4c6ec16e124123c544bead8e64fb94dc">StringReplacements</a>)</div>
+<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>            result = result.Replace(replacement.Key, replacement.Value, StringComparison.OrdinalIgnoreCase);</div>
+<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span> </div>
+<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>    }</div>
+<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span></div>
+<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span>    <span class="keyword">private</span> <span class="keywordtype">string</span> ResolvePlaceholder(<span class="keywordtype">string</span> key, Dictionary&lt;string, string&gt; metadata, <span class="keywordtype">string</span> sourceFilePath, <span class="keywordtype">int</span>? counter = null)</div>
+<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>    {</div>
+<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>        var parts = key.Split(<span class="charliteral">&#39;.&#39;</span>);</div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>        var baseName = parts[0];</div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>        var property = parts.Length &gt; 1 ? parts[1] : null;</div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span> </div>
+<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span>        <span class="keywordflow">if</span> (baseName.StartsWith(<span class="stringliteral">&quot;Counter:&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span>        {</div>
+<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>            <span class="keyword">property</span> = baseName[<span class="stringliteral">&quot;Counter:&quot;</span>.Length..];</div>
+<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>            baseName = <span class="stringliteral">&quot;Counter&quot;</span>;</div>
+<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>        }</div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span> </div>
+<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>        <span class="keywordflow">if</span> (baseName.Equals(<span class="stringliteral">&quot;FileName&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>        {</div>
+<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span>            <span class="keywordflow">if</span> (property != null &amp;&amp; property.Equals(<span class="stringliteral">&quot;Noext&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span>                <span class="keywordflow">return</span> Path.GetFileNameWithoutExtension(sourceFilePath);</div>
+<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span>            <span class="keywordflow">return</span> Path.GetFileName(sourceFilePath);</div>
+<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span>        }</div>
+<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span> </div>
+<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span>        <span class="keywordflow">if</span> (baseName.Equals(<span class="stringliteral">&quot;MediaRootPath&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span>            <span class="keywordflow">return</span> _configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#aa773e66f6dd7f501b1d4c5017ef23a2b">MediaRootPath</a>;</div>
+<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span> </div>
+<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>        <span class="keywordflow">if</span> (baseName.Equals(<span class="stringliteral">&quot;RootPath&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span>            <span class="keywordflow">return</span> ParseTemplate(_configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#ae8b786d3e935425d04a7c35f24b2aa32">RootPath</a>, metadata, sourceFilePath, counter);</div>
+<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span> </div>
+<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span>        <span class="keywordflow">if</span> (baseName.Equals(<span class="stringliteral">&quot;Counter&quot;</span>, StringComparison.OrdinalIgnoreCase))</div>
+<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>        {</div>
+<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>            var effectiveCounter = counter ?? 1;</div>
+<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span>            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrWhiteSpace(property) &amp;&amp; property.Length &gt; 1 &amp;&amp; property.StartsWith(<span class="stringliteral">&quot;D&quot;</span>, StringComparison.OrdinalIgnoreCase)</div>
+<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span>                &amp;&amp; <span class="keywordtype">int</span>.TryParse(property[1..], NumberStyles.None, CultureInfo.InvariantCulture, out var digits)</div>
+<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span>                &amp;&amp; digits &gt; 0)</div>
+<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span>            {</div>
+<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>                return effectiveCounter.ToString($<span class="stringliteral">&quot;D{digits}&quot;</span>, CultureInfo.InvariantCulture);</div>
+<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span>            }</div>
+<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span> </div>
+<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span>            <span class="keywordflow">return</span> effectiveCounter.ToString(CultureInfo.InvariantCulture);</div>
+<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span>        }</div>
+<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span> </div>
+<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>        <span class="keywordflow">if</span> (!metadata.TryGetValue(baseName, out var value) || <span class="keywordtype">string</span>.IsNullOrWhiteSpace(value))</div>
+<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
+<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span> </div>
+<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>        <a class="code hl_function" href="../../dd/d5c/_program_8cs.html#a84ef8ed5fe64f697374a7ac3e173ca77">if</a> (property == null) <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span> </div>
+<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>        <span class="comment">// Zeile 548 – vorher: DateTime.TryParse (schlägt bei EXIF-Dates fehl)</span></div>
+<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>        <span class="keywordflow">if</span> (TryNormalizeDateTime(value, out var normalizedValue) &amp;&amp;</div>
+<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>            DateTime.TryParseExact(normalizedValue, <span class="stringliteral">&quot;yyyy:MM:dd HH:mm:ss&quot;</span>,</div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>                CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))</div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>        {</div>
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>            return property.ToUpperInvariant() switch</div>
+<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>            {</div>
+<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span>                <span class="stringliteral">&quot;YEAR&quot;</span> =&gt; dateTime.Year.ToString(CultureInfo.InvariantCulture),</div>
+<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"> 1087</span>                <span class="stringliteral">&quot;MONTH&quot;</span> =&gt; dateTime.Month.ToString(<span class="stringliteral">&quot;D2&quot;</span>, CultureInfo.InvariantCulture),</div>
+<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>                <span class="stringliteral">&quot;DAY&quot;</span> =&gt; dateTime.Day.ToString(<span class="stringliteral">&quot;D2&quot;</span>, CultureInfo.InvariantCulture),</div>
+<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>                _ =&gt; normalizedValue   <span class="comment">// gibt immer yyyy:MM:dd HH:mm:ss zurück</span></div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>            };</div>
+<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>        }</div>
+<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span> </div>
+<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span>        <span class="comment">//if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))</span></div>
+<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"> 1094</span>        <span class="comment">//{</span></div>
+<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span>        <span class="comment">//    return property.ToUpperInvariant() switch</span></div>
+<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span>        <span class="comment">//    {</span></div>
+<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span>        <span class="comment">//        &quot;YEAR&quot; =&gt; dateTime.Year.ToString(CultureInfo.InvariantCulture),</span></div>
+<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span>        <span class="comment">//        &quot;MONTH&quot; =&gt; dateTime.Month.ToString(&quot;D2&quot;, CultureInfo.InvariantCulture),</span></div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span>        <span class="comment">//        &quot;DAY&quot; =&gt; dateTime.Day.ToString(&quot;D2&quot;, CultureInfo.InvariantCulture),</span></div>
+<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span>        <span class="comment">//        _ =&gt; value</span></div>
+<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span>        <span class="comment">//    };</span></div>
+<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span>        <span class="comment">//}</span></div>
+<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span> </div>
+<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span>        <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span>    }</div>
+<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span></div>
+<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ExecuteAction(<span class="keywordtype">string</span> action, <span class="keywordtype">string</span> sourcePath, <span class="keywordtype">string</span> targetPath)</div>
+<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span>    {</div>
+<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>        <span class="keywordflow">try</span></div>
+<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>        {</div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>            var targetDirectory = Path.GetDirectoryName(targetPath);</div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>            <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrWhiteSpace(targetDirectory))</div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>                Directory.CreateDirectory(targetDirectory);</div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span> </div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>            <span class="keywordflow">switch</span> (action.ToUpperInvariant())</div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>            {</div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>                <span class="keywordflow">case</span> <span class="stringliteral">&quot;MOVE&quot;</span>:</div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>                    File.Move(sourcePath, targetPath, overwrite: <span class="keyword">false</span>);</div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>                <span class="keywordflow">case</span> <span class="stringliteral">&quot;COPY&quot;</span>:</div>
+<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span>                    File.Copy(sourcePath, targetPath, overwrite: <span class="keyword">false</span>);</div>
+<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span>                <span class="keywordflow">case</span> <span class="stringliteral">&quot;LINK&quot;</span>:</div>
+<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span>                    File.CreateSymbolicLink(targetPath, sourcePath);</div>
+<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>                <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>                    File.Copy(sourcePath, targetPath, overwrite: <span class="keyword">false</span>);</div>
+<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>            }</div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>        }</div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>        <span class="keywordflow">catch</span> { }</div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>    }</div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span></div>
+<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ThrowIfDisposed()</div>
+<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>    {</div>
+<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span>        <span class="keywordflow">if</span> (_disposed) <span class="keywordflow">throw</span> <span class="keyword">new</span> ObjectDisposedException(nameof(<a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a>));</div>
+<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span>    }</div>
+<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>}</div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a00278eba084553a42cf32c32d033fe56"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a00278eba084553a42cf32c32d033fe56">FileStorageInfo</a></div><div class="ttdeci">FileStorageInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00016">FIRECatalog.cs:16</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a0d02d911a08582556e386934a3f480df"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a0d02d911a08582556e386934a3f480df">FileNameInfo</a></div><div class="ttdeci">FileNameInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00002">FIRECatalog.cs:2</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a1f15bce6bdcbc5520b861dd7ca51d6c7"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a1f15bce6bdcbc5520b861dd7ca51d6c7">IMetadataSource</a></div><div class="ttdeci">FileInfoMetadataSource IMetadataSource</div><div class="ttdoc">Metadata source for extracting embedded file metadata using ExifTool.</div></div>
@@ -752,7 +779,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a31be267f5d78b2974b606c3bf4d559f3"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a31be267f5d78b2974b606c3bf4d559f3">FileAlignmentInfo</a></div><div class="ttdeci">FileAlignmentInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00017">FIRECatalog.cs:17</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a38411d8f96c0de7b84546aeeb20bff8a"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a38411d8f96c0de7b84546aeeb20bff8a">FileEndOfFileInfo</a></div><div class="ttdeci">FileEndOfFileInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00006">FIRECatalog.cs:6</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a3b415b0ea154baa8bfa5b3b188ce1323"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a3b415b0ea154baa8bfa5b3b188ce1323">MaximumFileInfoByHandleClass</a></div><div class="ttdeci">MaximumFileInfoByHandleClass</div><div class="ttdef"><b>Definition</b> <a href="#l00021">FIRECatalog.cs:22</a></div></div>
-<div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a40541e840635f9fec2d30e5b2e85ca30"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a40541e840635f9fec2d30e5b2e85ca30">ExecuteFileOperations</a></div><div class="ttdeci">void ExecuteFileOperations(Action&lt; string &gt;? progressCallback=null)</div><div class="ttdoc">Step 3: Executes the configured file operation (Copy, Move, or Link) for all records.</div><div class="ttdef"><b>Definition</b> <a href="#l00698">FIRECatalog.cs:698</a></div></div>
+<div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a40541e840635f9fec2d30e5b2e85ca30"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a40541e840635f9fec2d30e5b2e85ca30">ExecuteFileOperations</a></div><div class="ttdeci">void ExecuteFileOperations(Action&lt; string &gt;? progressCallback=null)</div><div class="ttdoc">Step 3: Executes the configured file operation (Copy, Move, or Link) for all records.</div><div class="ttdef"><b>Definition</b> <a href="#l00706">FIRECatalog.cs:706</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a4a2cbe49aac2cf4a70e718c5d358b80b"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a4a2cbe49aac2cf4a70e718c5d358b80b">LastAccessTime</a></div><div class="ttdeci">System Runtime InteropServices ComTypes FILETIME LastAccessTime</div><div class="ttdef"><b>Definition</b> <a href="#l00512">FIRECatalog.cs:512</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a4ed5a3b450a4ddd42233f787181de3dc"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a4ed5a3b450a4ddd42233f787181de3dc">FileIndexHigh</a></div><div class="ttdeci">uint FileIndexHigh</div><div class="ttdef"><b>Definition</b> <a href="#l00518">FIRECatalog.cs:518</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a564cffd9bc32c2920de981959cba0e99"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a564cffd9bc32c2920de981959cba0e99">FILE_ID_INFO::VolumeSerialNumber</a></div><div class="ttdeci">ulong VolumeSerialNumber</div><div class="ttdoc">The volume serial number where the file resides.</div><div class="ttdef"><b>Definition</b> <a href="#l00499">FIRECatalog.cs:499</a></div></div>
@@ -797,6 +824,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="ttc" id="a_f_i_r_e_database_8cs_html_a411d4d2f4e1601ede6c530814eddac90"><div class="ttname"><a href="../../d7/d1a/_f_i_r_e_database_8cs.html#a411d4d2f4e1601ede6c530814eddac90">SourceFilePath</a></div><div class="ttdeci">string SourceFilePath</div><div class="ttdoc">Gets or sets the original source file path as discovered during the collect phase.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00199">FIREDatabase.cs:199</a></div></div>
 <div class="ttc" id="a_f_i_r_e_database_8cs_html_a634ff0b7db64e0e369c7d6c4e1546ee0"><div class="ttname"><a href="../../d7/d1a/_f_i_r_e_database_8cs.html#a634ff0b7db64e0e369c7d6c4e1546ee0">FIREDatabase</a></div><div class="ttdeci">FIREDatabase(string databaseFilePath, bool recreateIfExists=false)</div><div class="ttdoc">Creates a new instance of FIREDatabase backed by the specified SQLite file.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00402">FIREDatabase.cs:402</a></div></div>
 <div class="ttc" id="a_f_i_r_e_database_8cs_html_aa1d2e27212394c8c5ec775073aeb5979"><div class="ttname"><a href="../../d7/d1a/_f_i_r_e_database_8cs.html#aa1d2e27212394c8c5ec775073aeb5979">FileId</a></div><div class="ttdeci">byte[] FileId</div><div class="ttdoc">Gets or sets the binary file identifier from the NTFS file system, if available.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00188">FIREDatabase.cs:188</a></div></div>
+<div class="ttc" id="a_program_8cs_html_a84ef8ed5fe64f697374a7ac3e173ca77"><div class="ttname"><a href="../../dd/d5c/_program_8cs.html#a84ef8ed5fe64f697374a7ac3e173ca77">if</a></div><div class="ttdeci">if(args.Length==0)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d5c/_program_8cs_source.html#l00008">Program.cs:8</a></div></div>
 <div class="ttc" id="aclass_available_keyword_configuration_html_a644c6e36c655560123458574410f7bc2"><div class="ttname"><a href="../../d3/daf/class_available_keyword_configuration.html#a644c6e36c655560123458574410f7bc2">AvailableKeywordConfiguration::DataType</a></div><div class="ttdeci">string DataType</div><div class="ttdoc">Gets or sets the data type of the metadata value.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00584">FIREConfigration.cs:584</a></div></div>
 <div class="ttc" id="aclass_f_i_r_e_configration_html"><div class="ttname"><a href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a></div><div class="ttdoc">Represents the root configuration document loaded from the FIRE configuration YAML file.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00086">FIREConfigration.cs:87</a></div></div>
 <div class="ttc" id="aclass_f_i_r_e_configration_html_a076a2da18160edf92386073c50428b3e"><div class="ttname"><a href="../../df/dbb/class_f_i_r_e_configration.html#a076a2da18160edf92386073c50428b3e">FIREConfigration::FileExtensions</a></div><div class="ttdeci">Dictionary&lt; string, FileExtensionConfiguration &gt; FileExtensions</div><div class="ttdoc">Gets or sets a dictionary of file extension-specific configurations.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00224">FIREConfigration.cs:224</a></div></div>

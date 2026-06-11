@@ -9,5 +9,5 @@ var searchData=
   ['dispose_6',['Dispose',['../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7',1,'Dispose():&#160;FIRECatalog.cs'],['../d7/d1a/_f_i_r_e_database_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7',1,'Dispose():&#160;FIREDatabase.cs']]],
   ['dllimport_7',['DllImport',['../db/d24/_f_i_r_e_catalog_8cs.html#a2a7ad26a66f0fc022a8788adfb0c262e',1,'FIRECatalog.cs']]],
   ['dng_20raw_20files_20alongside_20their_20jpeg_20keep_20xmp_20sidecars_8',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md31',1,'']]],
-  ['documentation_9',['Documentation',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md36',1,'']]]
+  ['documentation_9',['Documentation',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md37',1,'']]]
 ];

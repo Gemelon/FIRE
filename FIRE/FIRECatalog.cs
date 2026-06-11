@@ -643,6 +643,7 @@ public sealed class FIRECatalog : IDisposable
     public void GenerateTargetPaths(Action<string>? progressCallback = null)
     {
         ThrowIfDisposed();
+        var directoryCounters = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var record in _database)
         {
@@ -662,9 +663,16 @@ public sealed class FIRECatalog : IDisposable
             var fileNamePattern = extConfig.FileNamePatern ?? _configuration.FileNamePatern ?? string.Empty;
 
             var targetDirectory = ParseTemplate(sortingPattern, metadataLookup, record.SourceFilePath);
-            var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath);
+            if (string.IsNullOrWhiteSpace(targetDirectory)) continue;
 
-            if (!string.IsNullOrWhiteSpace(targetDirectory) && !string.IsNullOrWhiteSpace(targetFileName))
+            var counter = directoryCounters.TryGetValue(targetDirectory, out var currentCounter)
+                ? currentCounter + 1
+                : 1;
+            directoryCounters[targetDirectory] = counter;
+
+            var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath, counter);
+
+            if (!string.IsNullOrWhiteSpace(targetFileName))
                 record.TargetFilePath = Path.Combine(targetDirectory, targetFileName);
         }
         _database.Save();
@@ -729,6 +737,11 @@ public sealed class FIRECatalog : IDisposable
         _disposed = true;
     }
 
+    /// <summary>
+    /// Scans a directory recursively and processes every discovered file.
+    /// </summary>
+    /// <param name="directoryPath">Root directory to scan recursively.</param>
+    /// <param name="progressCallback">Optional callback receiving each discovered file path.</param>
     private void CollectFromDirectory(string directoryPath, Action<string>? progressCallback = null)
     {
         try
@@ -742,6 +755,10 @@ public sealed class FIRECatalog : IDisposable
         catch { }
     }
 
+    /// <summary>
+    /// Processes a single source file and stores extracted metadata in the database.
+    /// </summary>
+    /// <param name="filePath">Absolute path of the file to process.</param>
     private void ProcessFile(string filePath)
     {
         var extension = Path.GetExtension(filePath);
@@ -800,6 +817,14 @@ public sealed class FIRECatalog : IDisposable
         _database.Add(record);
     }
 
+    /// <summary>
+    /// Creates a normalized metadata entry for persistence.
+    /// </summary>
+    /// <param name="key">Logical metadata key used in templates.</param>
+    /// <param name="value">Selected metadata value.</param>
+    /// <param name="keywordConfig">Keyword configuration used for extraction.</param>
+    /// <param name="sourceName">Name of the metadata source that provided the value.</param>
+    /// <returns>A populated <see cref="FIREFileMetaData"/> instance.</returns>
     private static FIREFileMetaData CreateMetadataEntry(string key, string value, AvailableKeywordConfiguration keywordConfig, string sourceName)
     {
         return new FIREFileMetaData
@@ -811,6 +836,15 @@ public sealed class FIRECatalog : IDisposable
         };
     }
 
+    /// <summary>
+    /// Selects a single metadata value from a candidate set based on configuration.
+    /// </summary>
+    /// <param name="values">Candidate values extracted for a keyword.</param>
+    /// <param name="valAttribute">Selection mode (e.g., LOWEST, HIGHEST).</param>
+    /// <param name="dataType">Configured data type used for typed comparison.</param>
+    /// <param name="filePath">Source file path for diagnostics.</param>
+    /// <param name="keywordName">Logical keyword name for diagnostics.</param>
+    /// <returns>The selected metadata value.</returns>
     private static string SelectValue(List<string> values, string valAttribute, string dataType, string filePath, string keywordName)
     {
         var selectionMode = valAttribute.Trim().ToUpperInvariant();
@@ -848,6 +882,15 @@ public sealed class FIRECatalog : IDisposable
         };
     }
 
+    /// <summary>
+    /// Selects the minimum or maximum comparable value from typed candidates.
+    /// </summary>
+    /// <param name="values">Candidate values to evaluate.</param>
+    /// <param name="normalizedDataType">Normalized target type (INT, DATETIME, ...).</param>
+    /// <param name="highest">True to select maximum; false to select minimum.</param>
+    /// <param name="filePath">Source file path for diagnostics.</param>
+    /// <param name="keywordName">Logical keyword name for diagnostics.</param>
+    /// <returns>The selected extreme value as string.</returns>
     private static string SelectExtremeValue(List<string> values, string normalizedDataType, bool highest, string filePath, string keywordName)
     {
         var candidates = new List<(string RawValue, IComparable ComparableValue)>(values.Count);
@@ -888,6 +931,12 @@ public sealed class FIRECatalog : IDisposable
     "dd.MM.yyyy",
 ];
 
+    /// <summary>
+    /// Attempts to normalize a date/time value into EXIF-like canonical format.
+    /// </summary>
+    /// <param name="value">Input value to parse.</param>
+    /// <param name="normalized">Normalized value in <c>yyyy:MM:dd HH:mm:ss</c> format.</param>
+    /// <returns><see langword="true"/> if parsing succeeded; otherwise <see langword="false"/>.</returns>
     private static bool TryNormalizeDateTime(string value, out string normalized)
     {
         if (DateTime.TryParseExact(
@@ -905,6 +954,13 @@ public sealed class FIRECatalog : IDisposable
         return false;
     }
 
+    /// <summary>
+    /// Converts a string value to a comparable typed representation.
+    /// </summary>
+    /// <param name="value">Raw value to convert.</param>
+    /// <param name="normalizedDataType">Normalized target type identifier.</param>
+    /// <param name="comparableValue">Converted comparable value when successful.</param>
+    /// <returns><see langword="true"/> if conversion succeeded; otherwise <see langword="false"/>.</returns>
     private static bool TryConvertComparable(string value, string normalizedDataType, out IComparable comparableValue)
     {
         switch (normalizedDataType)
@@ -934,12 +990,26 @@ public sealed class FIRECatalog : IDisposable
         return false;
     }
 
+    /// <summary>
+    /// Writes a standardized metadata warning to the console.
+    /// </summary>
+    /// <param name="filePath">Source file path associated with the warning.</param>
+    /// <param name="keywordName">Logical keyword name associated with the warning.</param>
+    /// <param name="reason">Human-readable warning reason.</param>
     private static void LogMetadataWarning(string filePath, string keywordName, string reason)
     {
         Console.WriteLine($"[WARN] {Path.GetFileName(filePath)} / {keywordName}: {reason}");
     }
 
-    private string ParseTemplate(string template, Dictionary<string, string> metadata, string sourceFilePath)
+    /// <summary>
+    /// Resolves placeholders within a template string.
+    /// </summary>
+    /// <param name="template">Template containing placeholders like <c>{Key}</c>.</param>
+    /// <param name="metadata">Resolved metadata values indexed by key.</param>
+    /// <param name="sourceFilePath">Original source file path.</param>
+    /// <param name="counter">Optional per-target-directory running index used by <c>{Counter:Dx}</c>.</param>
+    /// <returns>Template result with placeholders replaced.</returns>
+    private string ParseTemplate(string template, Dictionary<string, string> metadata, string sourceFilePath, int? counter = null)
     {
         if (string.IsNullOrWhiteSpace(template)) return string.Empty;
 
@@ -947,7 +1017,7 @@ public sealed class FIRECatalog : IDisposable
         var placeholderPattern = new Regex(@"\{(?<key>[^}]+)\}", RegexOptions.Compiled);
 
         result = placeholderPattern.Replace(result, match =>
-            ResolvePlaceholder(match.Groups["key"].Value, metadata, sourceFilePath));
+            ResolvePlaceholder(match.Groups["key"].Value, metadata, sourceFilePath, counter));
 
         foreach (var replacement in _configuration.StringReplacements)
             result = result.Replace(replacement.Key, replacement.Value, StringComparison.OrdinalIgnoreCase);
@@ -955,11 +1025,25 @@ public sealed class FIRECatalog : IDisposable
         return result;
     }
 
-    private string ResolvePlaceholder(string key, Dictionary<string, string> metadata, string sourceFilePath)
+    /// <summary>
+    /// Resolves a single placeholder expression to its resulting text value.
+    /// </summary>
+    /// <param name="key">Placeholder key without braces.</param>
+    /// <param name="metadata">Resolved metadata values indexed by key.</param>
+    /// <param name="sourceFilePath">Original source file path.</param>
+    /// <param name="counter">Optional per-target-directory running index.</param>
+    /// <returns>Resolved placeholder value.</returns>
+    private string ResolvePlaceholder(string key, Dictionary<string, string> metadata, string sourceFilePath, int? counter = null)
     {
         var parts = key.Split('.');
         var baseName = parts[0];
         var property = parts.Length > 1 ? parts[1] : null;
+
+        if (baseName.StartsWith("Counter:", StringComparison.OrdinalIgnoreCase))
+        {
+            property = baseName["Counter:".Length..];
+            baseName = "Counter";
+        }
 
         if (baseName.Equals("FileName", StringComparison.OrdinalIgnoreCase))
         {
@@ -972,7 +1056,20 @@ public sealed class FIRECatalog : IDisposable
             return _configuration.MediaRootPath;
 
         if (baseName.Equals("RootPath", StringComparison.OrdinalIgnoreCase))
-            return ParseTemplate(_configuration.RootPath, metadata, sourceFilePath);
+            return ParseTemplate(_configuration.RootPath, metadata, sourceFilePath, counter);
+
+        if (baseName.Equals("Counter", StringComparison.OrdinalIgnoreCase))
+        {
+            var effectiveCounter = counter ?? 1;
+            if (!string.IsNullOrWhiteSpace(property) && property.Length > 1 && property.StartsWith("D", StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(property[1..], NumberStyles.None, CultureInfo.InvariantCulture, out var digits)
+                && digits > 0)
+            {
+                return effectiveCounter.ToString($"D{digits}", CultureInfo.InvariantCulture);
+            }
+
+            return effectiveCounter.ToString(CultureInfo.InvariantCulture);
+        }
 
         if (!metadata.TryGetValue(baseName, out var value) || string.IsNullOrWhiteSpace(value))
             return "Unknown";
@@ -1007,6 +1104,12 @@ public sealed class FIRECatalog : IDisposable
         return value;
     }
 
+    /// <summary>
+    /// Executes the configured file operation for a single source-target pair.
+    /// </summary>
+    /// <param name="action">Operation name (COPY, MOVE, LINK).</param>
+    /// <param name="sourcePath">Existing source file path.</param>
+    /// <param name="targetPath">Destination file path.</param>
     private void ExecuteAction(string action, string sourcePath, string targetPath)
     {
         try
@@ -1034,6 +1137,9 @@ public sealed class FIRECatalog : IDisposable
         catch { }
     }
 
+    /// <summary>
+    /// Throws when the catalog instance has already been disposed.
+    /// </summary>
     private void ThrowIfDisposed()
     {
         if (_disposed) throw new ObjectDisposedException(nameof(FIRECatalog));

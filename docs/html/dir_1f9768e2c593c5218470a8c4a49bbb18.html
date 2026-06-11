@@ -385,6 +385,8 @@ Template Placeholders</h1>
 <td class="markdownTableBodyNone"><span class="tt">{MetaCreationTime.Day}</span>  </td><td class="markdownTableBodyNone"><span class="tt">04</span>  </td><td class="markdownTableBodyNone">Zero-padded day  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt">{<a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1" title="Gets or sets the media root path variable used in path templates.">MediaRootPath</a>}</span>  </td><td class="markdownTableBodyNone"><span class="tt">D:\Photos\Sorted</span>  </td><td class="markdownTableBodyNone">Value of <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1" title="Gets or sets the media root path variable used in path templates.">MediaRootPath</a></span>  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">{Counter:D2}</span>  </td><td class="markdownTableBodyNone"><span class="tt">01</span>, <span class="tt">02</span>, <span class="tt">03</span>  </td><td class="markdownTableBodyNone">Laufende Nummer pro Zielverzeichnis mit Format <span class="tt">Dx</span>  </td></tr>
 </table>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
@@ -435,8 +437,16 @@ Normalize camera model names</h2>
 <div class="fragment"><div class="line">StringReplacements:</div>
 <div class="line">  SM-S938B: Galaxy S25 Ultra</div>
 <div class="line">  SM-F766B: Galaxy Z Flip7</div>
-</div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md34"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md33"></a>
+Laufende Nummer pro Zielordner mit <span class="tt">{Counter:Dx}</span></h2>
+<div class="fragment"><div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}_{FileName.Noext}.jpg&quot;</div>
+</div><!-- fragment --><p>Beispielausgabe innerhalb desselben Zielordners:</p><ul>
+<li><span class="tt">2026-07-04_001_IMG_1001.jpg</span></li>
+<li><span class="tt">2026-07-04_002_IMG_1002.jpg</span></li>
+<li><span class="tt">2026-07-04_003_IMG_1003.jpg</span></li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md35"></a>
 Building from Source</h1>
 <div class="fragment"><div class="line"># Restore dependencies</div>
 <div class="line">dotnet restore FIRE.slnx</div>
@@ -447,7 +457,7 @@ Building from Source</h1>
 <div class="line"># Run the console</div>
 <div class="line">dotnet run --project FIRE.Console -- collect --config ConfigurationFiles\Configuration.yaml --culture de-DE</div>
 </div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md36"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
 Documentation</h1>
 <p>API documentation is generated with <b>Doxygen 1.17.0</b>.</p>
 <div class="fragment"><div class="line"># Run from the repository root</div>
@@ -457,7 +467,7 @@ Documentation</h1>
 <p><b>Tip:</b> Install <a href="https://graphviz.org/">Graphviz</a> and set <span class="tt">HAVE_DOT = YES</span> in <span class="tt">docs/Doxyfile</span> to generate class and call graphs. </p>
 </blockquote>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
 Third-Party Credits</h1>
 <p>This project uses third-party components:</p>
 <ul>
@@ -468,7 +478,7 @@ Third-Party Credits</h1>
 </ul>
 <p>For details, see <a class="el" href="d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html" title="Third-Party Notices">THIRD-PARTY-NOTICES.md</a>.</p>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
 License</h1>
 <p>Copyright © 2026 by Thomas Stoll. <br  />
  Released under the [MIT License](LICENSE). </p>

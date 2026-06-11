@@ -6,10 +6,10 @@ FilesRootPath:
 DataBasePath: D:\Projekte\Projekte_2026\TestDataTarget
 DataBaseFileName: FiReDatabase.db
 Action: Copy
-MediaRootPath: D:\Media
+MediaRootPath: D:\Projekte\Projekte_2026\TestDataTarget\Media Test
 RootPath: "{MediaRootPath}"
-SortingPatern: "E:\\Projekte\\Projekte_2026\\TestDataTarget\\Media Test\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
-FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}-{FileName}"
+SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
+FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}"
 StringReplacements:
   SM-G985F: SM-G985F Galaxy S20
   SM-S938B: SM-S938B Galaxy S25 Ultra
@@ -23,8 +23,8 @@ FileExtensions:
     FileClass: RegularFile
     Action: Copy # todo: Enum for Action Move, Copy, Link
     RootPath: "{MediaRootPath}"
-    SortingPatern: "D:\\Projekte\\Projekte_2026\\TestDataTarget\\Media Test\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
-    FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{FileName.Noext}.JPG"
+    SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
+    FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG"
     SidecarFileExtensions:
     - .xmp
     AvailableKeyWords:
@@ -139,8 +139,8 @@ FileExtensions:
     FileClass: RegularFile
     Action: Copy
     RootPath: "{MediaRootPath}"
-    SortingPatern: "{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}/{Make}/{Model}"
-    FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{FileName.Noext}.JPG"
+    SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
+    FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.PNG"
     SidecarFileExtensions:
     - .xmp
     AvailableKeyWords:
