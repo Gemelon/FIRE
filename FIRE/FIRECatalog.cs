@@ -651,7 +651,7 @@ public sealed class FIRECatalog : IDisposable
 
             progressCallback?.Invoke(record.SourceFilePath);
 
-            var extension = Path.GetExtension(record.SourceFilePath);
+            var extension = Path.GetExtension(record.SourceFilePath).ToLowerInvariant();
             if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) continue;
 
             var metadataLookup = record.FileMetaDatas.ToDictionary(
@@ -714,7 +714,7 @@ public sealed class FIRECatalog : IDisposable
 
             progressCallback?.Invoke(record.SourceFilePath);
 
-            var extension = Path.GetExtension(record.SourceFilePath);
+            var extension = Path.GetExtension(record.SourceFilePath).ToLowerInvariant();
             if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) continue;
 
             var action = extConfig.Action ?? _configuration.Action ?? "Copy";
@@ -761,7 +761,7 @@ public sealed class FIRECatalog : IDisposable
     /// <param name="filePath">Absolute path of the file to process.</param>
     private void ProcessFile(string filePath)
     {
-        var extension = Path.GetExtension(filePath);
+        var extension = Path.GetExtension(filePath).ToLowerInvariant();
         if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) return;
 
         var fileIdInfo = GetFileIdInfo(filePath);
@@ -1135,6 +1135,306 @@ public sealed class FIRECatalog : IDisposable
             }
         }
         catch { }
+    }
+
+    /// <summary>
+    /// Retrieves all available metadata for a single file from all registered metadata sources.
+    /// </summary>
+    /// <param name="filePath">Absolute path to the file for which metadata should be retrieved.</param>
+    /// <returns>
+    /// A list of tuples containing the source name, metadata key, and metadata value for each
+    /// available metadata entry. This list shows all metadata that can be extracted from the file
+    /// and used in the YAML configuration file.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// <strong>Purpose:</strong>
+    /// This method is useful for discovering which metadata keys are available for a specific file
+    /// type and can be used in the YAML configuration. It queries all registered metadata sources
+    /// (FILEINFO, EXIFTOOL, etc.) and returns every key-value pair found.
+    /// </para>
+    /// 
+    /// <para>
+    /// <strong>Return Format:</strong>
+    /// Each tuple in the returned list contains:
+    /// <list type="bullet">
+    /// <item><description><c>Source</c>: Name of the metadata source (e.g., "FILEINFO", "EXIFTOOL")</description></item>
+    /// <item><description><c>Key</c>: Metadata key/tag name (e.g., "Make", "Model", "DateTimeOriginal")</description></item>
+    /// <item><description><c>Value</c>: The extracted metadata value as a string</description></item>
+    /// </list>
+    /// </para>
+    /// 
+    /// <para>
+    /// <strong>Usage Example:</strong>
+    /// Use this method to explore what metadata is available in your files before configuring
+    /// keywords in the YAML configuration. The returned keys can be directly used in the
+    /// <c>AvailableKeyWords</c> section of your configuration.
+    /// </para>
+    /// 
+    /// <para>
+    /// <strong>Error Handling:</strong>
+    /// If the file does not exist or if metadata extraction fails for a particular source,
+    /// that source will not contribute entries to the result list. The method continues
+    /// processing other sources and does not throw exceptions.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if this instance has been disposed.
+    /// </exception>
+    /// <example>
+    /// Discovering available metadata for a file:
+    /// <code>
+    /// var config = FIREConfigration.Load("Configuration.yaml");
+    /// var dbPath = Path.Combine(config.DataBasePath, config.DataBaseFileName);
+    /// using var database = new FIREDatabase(dbPath);
+    /// using var catalog = new FIRECatalog(config, database);
+    /// 
+    /// var metadata = catalog.GetAllAvailableMetadata(@"D:\Photos\IMG_1234.jpg");
+    /// foreach (var (source, key, value) in metadata)
+    /// {
+    ///     Console.WriteLine($"[{source}] {key}: {value}");
+    /// }
+    /// </code>
+    /// </example>
+    public List<(string Source, string Key, string Value)> GetAllAvailableMetadata(string filePath)
+    {
+        ThrowIfDisposed();
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+
+        var result = new List<(string Source, string Key, string Value)>();
+
+        if (!File.Exists(filePath))
+        {
+            return result;
+        }
+
+        // Iterate through all registered metadata sources
+        // Note: _metadataRegistry does not expose a public enumeration method,
+        // so we'll try to get the known built-in sources: FILEINFO and EXIFTOOL
+        var knownSources = new[] { "FILEINFO", "EXIFTOOL" };
+
+        foreach (var sourceName in knownSources)
+        {
+            var source = _metadataRegistry.GetSource(sourceName);
+            if (source == null)
+            {
+                continue;
+            }
+
+            try
+            {
+                var metadata = source.ExtractMetadata(filePath);
+                foreach (var kvp in metadata)
+                {
+                    if (!string.IsNullOrWhiteSpace(kvp.Key) && kvp.Value != null)
+                    {
+                        result.Add((source.SourceName, kvp.Key, kvp.Value));
+                    }
+                }
+            }
+            catch
+            {
+                // If metadata extraction fails for this source, continue with other sources
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Retrieves all available metadata for a single file and writes it to a Markdown file.
+    /// </summary>
+    /// <param name="filePath">Absolute path to the file for which metadata should be retrieved.</param>
+    /// <param name="outputPath">
+    /// Optional output path for the Markdown file. If not specified, the output file will be created
+    /// in the same directory as the source file with the same name but a .md extension.
+    /// </param>
+    /// <remarks>
+    /// <para>
+    /// <strong>Purpose:</strong>
+    /// This method extracts all available metadata from the specified file and creates a well-formatted
+    /// Markdown report. This report can be used to document which metadata keys are available for
+    /// configuration in the YAML file.
+    /// </para>
+    /// 
+    /// <para>
+    /// <strong>Output Format:</strong>
+    /// The generated Markdown file contains:
+    /// <list type="bullet">
+    /// <item><description>File information (path, name, size, timestamps)</description></item>
+    /// <item><description>Metadata grouped by source (FILEINFO, EXIFTOOL)</description></item>
+    /// <item><description>Tables with Key and Value columns for each source</description></item>
+    /// <item><description>Summary statistics</description></item>
+    /// </list>
+    /// </para>
+    /// 
+    /// <para>
+    /// <strong>Error Handling:</strong>
+    /// If the file does not exist or metadata cannot be extracted, an appropriate message is
+    /// written to the Markdown file. The method does not throw exceptions for metadata extraction
+    /// failures.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if this instance has been disposed.
+    /// </exception>
+    /// <exception cref="IOException">
+    /// Thrown if the output file cannot be written.
+    /// </exception>
+    /// <example>
+    /// Creating a metadata report:
+    /// <code>
+    /// var config = FIREConfigration.Load("Configuration.yaml");
+    /// var dbPath = Path.Combine(config.DataBasePath, config.DataBaseFileName);
+    /// using var database = new FIREDatabase(dbPath);
+    /// using var catalog = new FIRECatalog(config, database);
+    /// 
+    /// // Creates "IMG_1234.md" in the same directory
+    /// catalog.WriteMetadataToMarkdown(@"D:\Photos\IMG_1234.jpg");
+    /// 
+    /// // Or specify a custom output path
+    /// catalog.WriteMetadataToMarkdown(@"D:\Photos\IMG_1234.jpg", @"D:\Reports\metadata.md");
+    /// </code>
+    /// </example>
+    public void WriteMetadataToMarkdown(string filePath, string? outputPath = null)
+    {
+        ThrowIfDisposed();
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+
+        // Determine output path
+        if (string.IsNullOrWhiteSpace(outputPath))
+        {
+            var directory = Path.GetDirectoryName(filePath) ?? ".";
+            var fileNameWithoutExt = Path.GetFileNameWithoutExtension(filePath);
+            outputPath = Path.Combine(directory, $"{fileNameWithoutExt}.md");
+        }
+
+        // Get all metadata
+        var metadata = GetAllAvailableMetadata(filePath);
+
+        // Prepare markdown content
+        using var writer = new StreamWriter(outputPath, false, System.Text.Encoding.UTF8);
+
+        // Header
+        writer.WriteLine("# FIRE Metadata Report");
+        writer.WriteLine();
+        writer.WriteLine($"**Generated:** {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        writer.WriteLine();
+
+        // File Information
+        writer.WriteLine("## File Information");
+        writer.WriteLine();
+
+        if (File.Exists(filePath))
+        {
+            var fileInfo = new FileInfo(filePath);
+            writer.WriteLine($"- **Path:** `{filePath}`");
+            writer.WriteLine($"- **Name:** `{fileInfo.Name}`");
+            writer.WriteLine($"- **Size:** {FormatFileSize(fileInfo.Length)}");
+            writer.WriteLine($"- **Created:** {fileInfo.CreationTime:yyyy-MM-dd HH:mm:ss}");
+            writer.WriteLine($"- **Modified:** {fileInfo.LastWriteTime:yyyy-MM-dd HH:mm:ss}");
+            writer.WriteLine($"- **Accessed:** {fileInfo.LastAccessTime:yyyy-MM-dd HH:mm:ss}");
+        }
+        else
+        {
+            writer.WriteLine($"- **Path:** `{filePath}`");
+            writer.WriteLine($"- **Status:** ⚠️ File not found");
+        }
+
+        writer.WriteLine();
+
+        // Metadata by Source
+        writer.WriteLine("## Extracted Metadata");
+        writer.WriteLine();
+
+        if (metadata.Count == 0)
+        {
+            writer.WriteLine("⚠️ No metadata could be extracted from this file.");
+            writer.WriteLine();
+        }
+        else
+        {
+            var groupedBySource = metadata.GroupBy(m => m.Source).OrderBy(g => g.Key);
+
+            foreach (var sourceGroup in groupedBySource)
+            {
+                writer.WriteLine($"### {sourceGroup.Key}");
+                writer.WriteLine();
+                writer.WriteLine($"**Count:** {sourceGroup.Count()} metadata entries");
+                writer.WriteLine();
+
+                // Table header
+                writer.WriteLine("| Key | Value |");
+                writer.WriteLine("|-----|-------|");
+
+                // Table rows
+                foreach (var (_, key, value) in sourceGroup.OrderBy(m => m.Key))
+                {
+                    var escapedValue = EscapeMarkdown(value);
+                    writer.WriteLine($"| `{key}` | {escapedValue} |");
+                }
+
+                writer.WriteLine();
+            }
+
+            // Summary
+            writer.WriteLine("## Summary");
+            writer.WriteLine();
+            writer.WriteLine($"- **Total Metadata Entries:** {metadata.Count}");
+            writer.WriteLine($"- **Sources Used:** {groupedBySource.Count()}");
+
+            foreach (var sourceGroup in groupedBySource)
+            {
+                writer.WriteLine($"  - {sourceGroup.Key}: {sourceGroup.Count()} entries");
+            }
+        }
+
+        writer.WriteLine();
+        writer.WriteLine("---");
+        writer.WriteLine();
+        writer.WriteLine("*This report was generated by FIRE (File Information Reorganizer and Extractor).*");
+        writer.WriteLine();
+        writer.WriteLine("**Usage:** The keys listed above can be used in your YAML configuration file under `AvailableKeyWords` to extract and use these metadata values for file organization.");
+    }
+
+    /// <summary>
+    /// Formats a file size in bytes to a human-readable string.
+    /// </summary>
+    /// <param name="bytes">File size in bytes.</param>
+    /// <returns>Formatted file size string (e.g., "1.23 MB").</returns>
+    private static string FormatFileSize(long bytes)
+    {
+        string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+        double len = bytes;
+        int order = 0;
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len = len / 1024;
+        }
+        return $"{len:0.##} {sizes[order]}";
+    }
+
+    /// <summary>
+    /// Escapes special Markdown characters in a string.
+    /// </summary>
+    /// <param name="text">Text to escape.</param>
+    /// <returns>Escaped text safe for Markdown rendering.</returns>
+    private static string EscapeMarkdown(string text)
+    {
+        if (string.IsNullOrEmpty(text))
+            return string.Empty;
+
+        // Escape pipe characters for table cells
+        text = text.Replace("|", "\\|");
+
+        // Truncate very long values
+        if (text.Length > 200)
+        {
+            text = text.Substring(0, 197) + "...";
+        }
+
+        return text;
     }
 
     /// <summary>

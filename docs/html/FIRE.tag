@@ -6,109 +6,6 @@
     <filename>d5/d4d/mainpage_8dox.html</filename>
   </compound>
   <compound kind="file">
-    <name>Program.cs</name>
-    <path>FIRE/FIRE.Console/</path>
-    <filename>dd/d5c/_program_8cs.html</filename>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a84ef8ed5fe64f697374a7ac3e173ca77</anchor>
-      <arglist>(args.Length==0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>for</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a3693342da52d760d0681c068d1bff044</anchor>
-      <arglist>(int i=1;i&lt; args.Length;i++)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a74cf3b529baa4b4f9ea52790b08afefc</anchor>
-      <arglist>(string.IsNullOrWhiteSpace(configPath))</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a366dc1663908062d6d0b2abaf5b80407</anchor>
-      <arglist>(string.IsNullOrWhiteSpace(culture))</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ShowHelp</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>aaaf450777f9e0f705510063bb48a64f4</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ExecuteCollect</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a33a1022b76d465aae062457c32f41e22</anchor>
-      <arglist>(string configPath, string culture)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ExecuteGenerate</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a212272b90b3d6056be7582d063026024</anchor>
-      <arglist>(string configPath, string culture)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ExecuteOperations</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a8c1c626b2d8cfd29330f1324532aed55</anchor>
-      <arglist>(string configPath, string culture)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static string</type>
-      <name>TruncatePath</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>aa8d9c0fbba0c4b1fbd8fba934e1a6014</anchor>
-      <arglist>(string path, int maxLength)</arglist>
-    </member>
-    <member kind="variable">
-      <type>var</type>
-      <name>command</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a108b51efc46c603df382f88d19f8451e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>configPath</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>ad62bfc699867fc1751fe0a6159827b01</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>culture</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>aaca62e4b78ac038ade08c841b7587678</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>return command</type>
-      <name>switch</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a24768e217b121708b9b8e266eb8a6aa5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>return command</type>
-      <name>generate</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a2322e5d351b925c75e98348014dd10a4</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
     <name>FIRECatalog.cs</name>
     <path>FIRE/FIRE/</path>
     <filename>db/d24/_f_i_r_e_catalog_8cs.html</filename>
@@ -198,6 +95,20 @@
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
       <anchor>a40541e840635f9fec2d30e5b2e85ca30</anchor>
       <arglist>(Action&lt; string &gt;? progressCallback=null)</arglist>
+    </member>
+    <member kind="function">
+      <type>List&lt;(string Source, string Key, string Value)&gt;</type>
+      <name>GetAllAvailableMetadata</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>aef7ba4394188e308379ddd8a487ac5f1</anchor>
+      <arglist>(string filePath)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>WriteMetadataToMarkdown</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>ab585df3741aa7104afc3c6b3d9b8e9e2</anchor>
+      <arglist>(string filePath, string? outputPath=null)</arglist>
     </member>
     <member kind="variable">
       <type>enum FileInfoByHandleClass</type>
@@ -861,6 +772,121 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>Program.cs</name>
+    <path>FIRE/FIRE.Console/</path>
+    <filename>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a84ef8ed5fe64f697374a7ac3e173ca77</anchor>
+      <arglist>(args.Length==0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>for</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a3693342da52d760d0681c068d1bff044</anchor>
+      <arglist>(int i=1;i&lt; args.Length;i++)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a74cf3b529baa4b4f9ea52790b08afefc</anchor>
+      <arglist>(string.IsNullOrWhiteSpace(configPath))</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a366dc1663908062d6d0b2abaf5b80407</anchor>
+      <arglist>(string.IsNullOrWhiteSpace(culture))</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ShowHelp</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>aaaf450777f9e0f705510063bb48a64f4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteCollect</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a33a1022b76d465aae062457c32f41e22</anchor>
+      <arglist>(string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteGenerate</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a212272b90b3d6056be7582d063026024</anchor>
+      <arglist>(string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteOperations</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a8c1c626b2d8cfd29330f1324532aed55</anchor>
+      <arglist>(string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteInspect</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>abb7329a2aabb4bd1ab7436a37f81df6d</anchor>
+      <arglist>(string[] args, string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static string</type>
+      <name>TruncatePath</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>aa8d9c0fbba0c4b1fbd8fba934e1a6014</anchor>
+      <arglist>(string path, int maxLength)</arglist>
+    </member>
+    <member kind="variable">
+      <type>var</type>
+      <name>command</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a108b51efc46c603df382f88d19f8451e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>configPath</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>ad62bfc699867fc1751fe0a6159827b01</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>culture</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>aaca62e4b78ac038ade08c841b7587678</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>return command</type>
+      <name>switch</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a24768e217b121708b9b8e266eb8a6aa5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>return command</type>
+      <name>generate</name>
+      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
+      <anchor>a2322e5d351b925c75e98348014dd10a4</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>Program.cs</name>
+    <path>FIRE/FIRE/</path>
+    <filename>db/d86/_f_i_r_e_2_program_8cs.html</filename>
+  </compound>
+  <compound kind="file">
     <name>README.md</name>
     <path>FIRE/</path>
     <filename>d9/dd6/_r_e_a_d_m_e_8md.html</filename>
@@ -1293,6 +1319,7 @@
     <file>FIRECatalog.cs</file>
     <file>FIREConfigration.cs</file>
     <file>FIREDatabase.cs</file>
+    <file>Program.cs</file>
   </compound>
   <compound kind="dir">
     <name>FIRE/FIRE.Console</name>

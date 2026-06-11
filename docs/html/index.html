@@ -135,7 +135,7 @@ Architecture</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">FIRE</span>  </td><td class="markdownTableBodyNone">Class library (.NET 10)  </td><td class="markdownTableBodyNone">Core engine: configuration, catalog, database  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI front-end (<span class="tt">collect</span>, <span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span>, <span class="tt">execute</span>)  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI front-end (<span class="tt">collect</span>, <span class="tt"><a class="el" href="d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span>, <span class="tt">execute</span>)  </td></tr>
 </table>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
 Core Classes</h3>
@@ -183,7 +183,7 @@ Configuration</h1>
 <div class="line">Action: Copy</div>
 <div class="line">MediaRootPath: D:\Photos\Sorted</div>
 <div class="line">SortingPatern: &quot;{MediaRootPath}\\{MetaCreationTime.Year}\\{Make}\\{Model}&quot;</div>
-<div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{FileName}&quot;</div>
+<div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG&quot;</div>
 <div class="line">FileExtensions:</div>
 <div class="line">  .jpg:</div>
 <div class="line">    FileType: Image</div>
@@ -247,7 +247,7 @@ Template Placeholders</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt">{<a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1" title="Gets or sets the media root path variable used in path templates.">MediaRootPath</a>}</span>  </td><td class="markdownTableBodyNone">configured root path  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">{Counter:D2}</span>  </td><td class="markdownTableBodyNone">sequential number per target directory (e.g. 01, 02, 03)  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">{Counter:D3}</span>  </td><td class="markdownTableBodyNone">sequential number per target directory (e.g. 001, 002, 003)  </td></tr>
 </table>
 <h1 class="doxsection"><a class="anchor" id="sidecar_sec"></a>
 Sidecar Files</h1>

@@ -4,7 +4,7 @@ var searchData=
   ['selection_1',['Selection',['../index.html#keywords_sec',1,'Keyword Selection'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md25',1,'Keyword Selection']]],
   ['set_2',['set',['../df/dbb/class_f_i_r_e_configration.html#a2611d5688d84cdfd922318ad9f3fa451',1,'FIREConfigration::set'],['../d3/daf/class_available_keyword_configuration.html#a0498422cf2d9f165fc718b6ed09a3196',1,'AvailableKeywordConfiguration::set'],['../d7/d1a/_f_i_r_e_database_8cs.html#a2b4f3c6856d4b3b8393f5afc352854d7',1,'FIREFileMetaData::set'],['../d7/d1a/_f_i_r_e_database_8cs.html#a5e2d1bb0b9d6ca8fb1ee14045f90fea2',1,'FIREStatusRecord::set'],['../d7/d1a/_f_i_r_e_database_8cs.html#a125a78b6fd8538b28aed0d46a937df54',1,'FIREFileMetaDataEntity::set'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a112a711f766db446c2f517b794a1c04a',1,'set:&#160;FIREConfigration.cs'],['../d7/d1a/_f_i_r_e_database_8cs.html#a112a711f766db446c2f517b794a1c04a',1,'set:&#160;FIREDatabase.cs']]],
   ['sharpexiftool_3',['SharpExifTool',['../d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md44',1,'']]],
-  ['showhelp_4',['ShowHelp',['../dd/d5c/_program_8cs.html#aaaf450777f9e0f705510063bb48a64f4',1,'Program.cs']]],
+  ['showhelp_4',['ShowHelp',['../d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#aaaf450777f9e0f705510063bb48a64f4',1,'Program.cs']]],
   ['sidecar_20files_5',['Sidecar Files',['../index.html#sidecar_sec',1,'']]],
   ['sidecarfileextensions_6',['SidecarFileExtensions',['../d1/d3c/_f_i_r_e_configration_8cs.html#a17fb8db34a5e91f9f3c5726747f32226',1,'FIREConfigration.cs']]],
   ['sidecars_7',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md31',1,'']]],
@@ -27,5 +27,5 @@ var searchData=
   ['stringreplacements_24',['StringReplacements',['../df/dbb/class_f_i_r_e_configration.html#a4c6ec16e124123c544bead8e64fb94dc',1,'FIREConfigration::StringReplacements'],['../d1/d3c/_f_i_r_e_configration_8cs.html#afdba3e756dc6f3cbf4d4d8303cdfb4ff',1,'StringReplacements:&#160;FIREConfigration.cs']]],
   ['structure_25',['Project Structure',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md7',1,'']]],
   ['supportedconfigurationversion_26',['SupportedConfigurationVersion',['../df/dbb/class_f_i_r_e_configration.html#a87dd9cfaa69127725d9cb1b69edb28e6',1,'FIREConfigration::SupportedConfigurationVersion'],['../d1/d3c/_f_i_r_e_configration_8cs.html#aa5389a725ea3efe7c6a97c603bbabb12',1,'SupportedConfigurationVersion:&#160;FIREConfigration.cs']]],
-  ['switch_27',['switch',['../dd/d5c/_program_8cs.html#a24768e217b121708b9b8e266eb8a6aa5',1,'Program.cs']]]
+  ['switch_27',['switch',['../d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#a24768e217b121708b9b8e266eb8a6aa5',1,'Program.cs']]]
 ];

@@ -3,7 +3,7 @@ var indexSectionsWithContent =
   0: "123_abcdefghijklmnopqrstuvwxyz—",
   1: "afm",
   2: "fmprt",
-  3: "acdefgilmnprsty",
+  3: "acdefgilmnprstwy",
   4: "_acdefgiklmnrstv",
   5: "f",
   6: "123abcdefghijklmnopqrstuwxz—"

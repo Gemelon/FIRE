@@ -75,7 +75,7 @@
  * Action: Copy
  * MediaRootPath: D:\Photos\Sorted
  * SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{Make}\\{Model}"
- * FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{FileName}"
+ * FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG"
  * FileExtensions:
  *   .jpg:
  *     FileType: Image
@@ -131,7 +131,7 @@
  * | `{MetaCreationTime.Month}` | `07` |
  * | `{MetaCreationTime.Day}` | `04` |
  * | `{MediaRootPath}` | configured root path |
- * | `{Counter:D2}` | sequential number per target directory (e.g. 01, 02, 03) |
+ * | `{Counter:D3}` | sequential number per target directory (e.g. 001, 002, 003) |
  *
  * @section sidecar_sec Sidecar Files
  *

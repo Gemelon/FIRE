@@ -233,7 +233,7 @@ Sub-properties are accessed with a dot.
 | `{MetaCreationTime.Month}` | `07` | Zero-padded month |
 | `{MetaCreationTime.Day}` | `04` | Zero-padded day |
 | `{MediaRootPath}` | `D:\Photos\Sorted` | Value of `MediaRootPath` |
-| `{Counter:D2}` | `01`, `02`, `03` | Laufende Nummer pro Zielverzeichnis mit Format `Dx` |
+| `{Counter:D3}` | `001`, `002`, `003` | Laufende Nummer pro Zielverzeichnis mit Format `Dx` |
 
 ---
 
@@ -298,16 +298,16 @@ StringReplacements:
   SM-F766B: Galaxy Z Flip7
 ```
 
-### Laufende Nummer pro Zielordner mit `{Counter:Dx}`
+### Laufende Nummer pro Zielordner mit `{Counter:D3}`
 
 ```yaml
-FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}_{FileName.Noext}.jpg"
+FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG"
 ```
 
 Beispielausgabe innerhalb desselben Zielordners:
-- `2026-07-04_001_IMG_1001.jpg`
-- `2026-07-04_002_IMG_1002.jpg`
-- `2026-07-04_003_IMG_1003.jpg`
+- `2026-07-04_001.JPG`
+- `2026-07-04_002.JPG`
+- `2026-07-04_003.JPG`
 
 ---
 

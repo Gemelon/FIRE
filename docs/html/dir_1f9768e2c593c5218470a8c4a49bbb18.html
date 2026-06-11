@@ -185,13 +185,13 @@ Table of Contents</h1>
 Features</h1>
 <ul>
 <li><b>Metadata-driven file sorting</b> — JPEG, RAW, video, and any other file type supported by ExifTool</li>
-<li><b>Three-step pipeline</b> — <span class="tt">collect</span> → <span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span> → <span class="tt">execute</span></li>
+<li><b>Three-step pipeline</b> — <span class="tt">collect</span> → <span class="tt"><a class="el" href="d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span> → <span class="tt">execute</span></li>
 <li><b>SQLite persistence</b> — inspect and audit every decision before committing</li>
 <li><b>Flexible templates</b> — arbitrary directory hierarchy and filename patterns using <span class="tt">{Keyword}</span> placeholders</li>
 <li><b>Multi-keyword fallback</b> — define ordered lists of EXIF tags; FIRE picks the lowest/highest value</li>
 <li><b>Sidecar file support</b> — <span class="tt">.xmp</span>, <span class="tt">.pp3</span>, or any companion extension follows its primary file automatically</li>
 <li><b>String replacements</b> — normalize camera model names or other metadata values globally</li>
-<li><b>Culture-aware</b> — date formatting respects the <span class="tt">--<a class="el" href="dd/d5c/_program_8cs.html#aaca62e4b78ac038ade08c841b7587678">culture</a></span> flag</li>
+<li><b>Culture-aware</b> — date formatting respects the <span class="tt">--<a class="el" href="d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#aaca62e4b78ac038ade08c841b7587678">culture</a></span> flag</li>
 </ul>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
@@ -265,7 +265,7 @@ Usage</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">--config</span>  </td><td class="markdownTableBodyNone"><span class="tt">-c</span>  </td><td class="markdownTableBodyNone">Path to the YAML configuration file (<b>required</b>)  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">--<a class="el" href="dd/d5c/_program_8cs.html#aaca62e4b78ac038ade08c841b7587678">culture</a></span>  </td><td class="markdownTableBodyNone"><span class="tt">-l</span>  </td><td class="markdownTableBodyNone">Culture code for date formatting, e.g. <span class="tt">de-DE</span>, <span class="tt">en-US</span> (<b>required</b>)  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">--<a class="el" href="d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#aaca62e4b78ac038ade08c841b7587678">culture</a></span>  </td><td class="markdownTableBodyNone"><span class="tt">-l</span>  </td><td class="markdownTableBodyNone">Culture code for date formatting, e.g. <span class="tt">de-DE</span>, <span class="tt">en-US</span> (<b>required</b>)  </td></tr>
 </table>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
 Commands</h2>
@@ -275,7 +275,7 @@ Commands</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">collect</span>  </td><td class="markdownTableBodyNone">Scans source directories and writes metadata to the database  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span>  </td><td class="markdownTableBodyNone">Computes target paths and file names from configured templates  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span>  </td><td class="markdownTableBodyNone">Computes target paths and file names from configured templates  </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">execute</span>  </td><td class="markdownTableBodyNone">Applies the file operations (Copy / Move / Link)  </td></tr>
 </table>
@@ -386,7 +386,7 @@ Template Placeholders</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt">{<a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1" title="Gets or sets the media root path variable used in path templates.">MediaRootPath</a>}</span>  </td><td class="markdownTableBodyNone"><span class="tt">D:\Photos\Sorted</span>  </td><td class="markdownTableBodyNone">Value of <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1" title="Gets or sets the media root path variable used in path templates.">MediaRootPath</a></span>  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">{Counter:D2}</span>  </td><td class="markdownTableBodyNone"><span class="tt">01</span>, <span class="tt">02</span>, <span class="tt">03</span>  </td><td class="markdownTableBodyNone">Laufende Nummer pro Zielverzeichnis mit Format <span class="tt">Dx</span>  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">{Counter:D3}</span>  </td><td class="markdownTableBodyNone"><span class="tt">001</span>, <span class="tt">002</span>, <span class="tt">003</span>  </td><td class="markdownTableBodyNone">Laufende Nummer pro Zielverzeichnis mit Format <span class="tt">Dx</span>  </td></tr>
 </table>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
@@ -438,12 +438,12 @@ Normalize camera model names</h2>
 <div class="line">  SM-S938B: Galaxy S25 Ultra</div>
 <div class="line">  SM-F766B: Galaxy Z Flip7</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md33"></a>
-Laufende Nummer pro Zielordner mit <span class="tt">{Counter:Dx}</span></h2>
-<div class="fragment"><div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}_{FileName.Noext}.jpg&quot;</div>
+Laufende Nummer pro Zielordner mit <span class="tt">{Counter:D3}</span></h2>
+<div class="fragment"><div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG&quot;</div>
 </div><!-- fragment --><p>Beispielausgabe innerhalb desselben Zielordners:</p><ul>
-<li><span class="tt">2026-07-04_001_IMG_1001.jpg</span></li>
-<li><span class="tt">2026-07-04_002_IMG_1002.jpg</span></li>
-<li><span class="tt">2026-07-04_003_IMG_1003.jpg</span></li>
+<li><span class="tt">2026-07-04_001.JPG</span></li>
+<li><span class="tt">2026-07-04_002.JPG</span></li>
+<li><span class="tt">2026-07-04_003.JPG</span></li>
 </ul>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md35"></a>

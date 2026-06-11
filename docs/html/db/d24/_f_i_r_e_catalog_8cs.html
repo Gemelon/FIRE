@@ -160,6 +160,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:ade7e2647d98d1b16c3ab66b2f3beff0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step 2: Generates target file paths for all collected file records.  <br /></td></tr>
 <tr class="memitem:a40541e840635f9fec2d30e5b2e85ca30" id="r_a40541e840635f9fec2d30e5b2e85ca30"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a40541e840635f9fec2d30e5b2e85ca30">ExecuteFileOperations</a> (<a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs.html#a6cbcc18d725aac9ed8a4f9040221606c">Action</a>&lt; <a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> &gt;? progressCallback=null)</td></tr>
 <tr class="memdesc:a40541e840635f9fec2d30e5b2e85ca30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step 3: Executes the configured file operation (Copy, Move, or Link) for all records.  <br /></td></tr>
+<tr class="memitem:aef7ba4394188e308379ddd8a487ac5f1" id="r_aef7ba4394188e308379ddd8a487ac5f1"><td class="memItemLeft">List&lt;(<a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> Source, <a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> Key, <a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> Value)&gt;&#160;</td><td class="memItemRight"><a class="el" href="#aef7ba4394188e308379ddd8a487ac5f1">GetAllAvailableMetadata</a> (<a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> filePath)</td></tr>
+<tr class="memdesc:aef7ba4394188e308379ddd8a487ac5f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves all available metadata for a single file from all registered metadata sources.  <br /></td></tr>
+<tr class="memitem:ab585df3741aa7104afc3c6b3d9b8e9e2" id="r_ab585df3741aa7104afc3c6b3d9b8e9e2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab585df3741aa7104afc3c6b3d9b8e9e2">WriteMetadataToMarkdown</a> (<a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> filePath, <a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a>? outputPath=null)</td></tr>
+<tr class="memdesc:ab585df3741aa7104afc3c6b3d9b8e9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves all available metadata for a single file and writes it to a Markdown file.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -535,7 +539,7 @@ Calls ExecuteAction to perform the operation. </li>
 
 <p class="reference">References <a class="el" href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00402">FIREDatabase()</a>, and <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00010">MetadataSourceRegistry()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../dd/d5c/_program_8cs_source.html#l00079">ExecuteCollect()</a>, <a class="el" href="../../dd/d5c/_program_8cs_source.html#l00138">ExecuteGenerate()</a>, and <a class="el" href="../../dd/d5c/_program_8cs_source.html#l00197">ExecuteOperations()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d8/dc6/_f_i_r_e_8_console_2_program_8cs_source.html#l00085">ExecuteCollect()</a>, <a class="el" href="../../d8/dc6/_f_i_r_e_8_console_2_program_8cs_source.html#l00144">ExecuteGenerate()</a>, <a class="el" href="../../d8/dc6/_f_i_r_e_8_console_2_program_8cs_source.html#l00262">ExecuteInspect()</a>, and <a class="el" href="../../d8/dc6/_f_i_r_e_8_console_2_program_8cs_source.html#l00203">ExecuteOperations()</a>.</p>
 
 </div>
 </div>
@@ -584,6 +588,63 @@ Constructing the final target path. </li>
 <p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00643">643</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 <p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00464">Action</a>.</p>
+
+</div>
+</div>
+<a id="aef7ba4394188e308379ddd8a487ac5f1" name="aef7ba4394188e308379ddd8a487ac5f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef7ba4394188e308379ddd8a487ac5f1">&#9670;&#160;</a></span>GetAllAvailableMetadata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;(<a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> Source, <a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> Key, <a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a> Value)&gt; GetAllAvailableMetadata </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a></td>          <td class="paramname"><span class="paramname"><em>filePath</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves all available metadata for a single file from all registered metadata sources. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>Absolute path to the file for which metadata should be retrieved.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A list of tuples containing the source name, metadata key, and metadata value for each available metadata entry. This list shows all metadata that can be extracted from the file and used in the YAML configuration file. </dd></dl>
+<p><b>Purpose:</b> This method is useful for discovering which metadata keys are available for a specific file type and can be used in the YAML configuration. It queries all registered metadata sources (FILEINFO, EXIFTOOL, etc.) and returns every key-value pair found. </p>
+<p><b>Return Format:</b> Each tuple in the returned list contains: </p><ul>
+<li>
+<code>Source</code>: Name of the metadata source (e.g., "FILEINFO", "EXIFTOOL") </li>
+<li>
+<code>Key</code>: Metadata key/tag name (e.g., "Make", "Model", "DateTimeOriginal") </li>
+<li>
+<code>Value</code>: The extracted metadata value as a string </li>
+</ul>
+<p><b>Usage Example:</b> Use this method to explore what metadata is available in your files before configuring keywords in the YAML configuration. The returned keys can be directly used in the <code>AvailableKeyWords</code> section of your configuration. </p>
+<p><b>Error Handling:</b> If the file does not exist or if metadata extraction fails for a particular source, that source will not contribute entries to the result list. The method continues processing other sources and does not throw exceptions. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ObjectDisposedException</td><td>Thrown if this instance has been disposed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Discovering available metadata for a file: </p><div class="fragment"><div class="line">var config = <a class="code hl_class" href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a>.<a class="code hl_function" href="../../df/dbb/class_f_i_r_e_configration.html#a89e6c0a8550de0522eda231500c9aa75">Load</a>(<span class="stringliteral">&quot;Configuration.yaml&quot;</span>);</div>
+<div class="line">var dbPath = Path.Combine(config.DataBasePath, config.DataBaseFileName);</div>
+<div class="line"><span class="keyword">using </span>var database = <span class="keyword">new</span> <a class="code hl_function" href="../../d7/d1a/_f_i_r_e_database_8cs.html#a634ff0b7db64e0e369c7d6c4e1546ee0">FIREDatabase</a>(dbPath);</div>
+<div class="line"><span class="keyword">using </span>var catalog = <span class="keyword">new</span> <a class="code hl_function" href="#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a>(config, database);</div>
+<div class="line"> </div>
+<div class="line">var metadata = catalog.GetAllAvailableMetadata(<span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>);</div>
+<div class="line"><span class="keywordflow">foreach</span> (var (source, key, value) in metadata)</div>
+<div class="line">{</div>
+<div class="line">    Console.WriteLine($<span class="stringliteral">&quot;[{source}] {key}: {value}&quot;</span>);</div>
+<div class="line">}</div>
+</div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01199">1199</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01299">WriteMetadataToMarkdown()</a>.</p>
 
 </div>
 </div>
@@ -662,6 +723,69 @@ Constructing the final target path. </li>
   </dd>
 </dl>
 <p>If a source with the same name (case-insensitive) is already registered, it is replaced. The source name is obtained from IMetadataSource.SourceName. </p>
+
+</div>
+</div>
+<a id="ab585df3741aa7104afc3c6b3d9b8e9e2" name="ab585df3741aa7104afc3c6b3d9b8e9e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab585df3741aa7104afc3c6b3d9b8e9e2">&#9670;&#160;</a></span>WriteMetadataToMarkdown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WriteMetadataToMarkdown </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a></td>          <td class="paramname"><span class="paramname"><em>filePath</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a5d8d7c996845adbb001c9fe685ba97ca">string</a>?</td>          <td class="paramname"><span class="paramname"><em>outputPath</em></span><span class="paramdefsep"> = </span><span class="paramdefval">null</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieves all available metadata for a single file and writes it to a Markdown file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>Absolute path to the file for which metadata should be retrieved.</td></tr>
+    <tr><td class="paramname">outputPath</td><td>Optional output path for the Markdown file. If not specified, the output file will be created in the same directory as the source file with the same name but a .md extension. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p><b>Purpose:</b> This method extracts all available metadata from the specified file and creates a well-formatted Markdown report. This report can be used to document which metadata keys are available for configuration in the YAML file. </p>
+<p><b>Output Format:</b> The generated Markdown file contains: </p><ul>
+<li>
+File information (path, name, size, timestamps) </li>
+<li>
+Metadata grouped by source (FILEINFO, EXIFTOOL) </li>
+<li>
+Tables with Key and Value columns for each source </li>
+<li>
+Summary statistics </li>
+</ul>
+<p><b>Error Handling:</b> If the file does not exist or metadata cannot be extracted, an appropriate message is written to the Markdown file. The method does not throw exceptions for metadata extraction failures. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ObjectDisposedException</td><td>Thrown if this instance has been disposed. </td></tr>
+    <tr><td class="paramname">IOException</td><td>Thrown if the output file cannot be written. </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Creating a metadata report: </p><div class="fragment"><div class="line">var config = <a class="code hl_class" href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a>.<a class="code hl_function" href="../../df/dbb/class_f_i_r_e_configration.html#a89e6c0a8550de0522eda231500c9aa75">Load</a>(<span class="stringliteral">&quot;Configuration.yaml&quot;</span>);</div>
+<div class="line">var dbPath = Path.Combine(config.DataBasePath, config.DataBaseFileName);</div>
+<div class="line"><span class="keyword">using </span>var database = <span class="keyword">new</span> <a class="code hl_function" href="../../d7/d1a/_f_i_r_e_database_8cs.html#a634ff0b7db64e0e369c7d6c4e1546ee0">FIREDatabase</a>(dbPath);</div>
+<div class="line"><span class="keyword">using </span>var catalog = <span class="keyword">new</span> <a class="code hl_function" href="#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a>(config, database);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Creates &quot;IMG_1234.md&quot; in the same directory</span></div>
+<div class="line">catalog.WriteMetadataToMarkdown(<span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Or specify a custom output path</span></div>
+<div class="line">catalog.WriteMetadataToMarkdown(<span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>, <span class="stringliteral">@&quot;D:\Reports\metadata.md&quot;</span>);</div>
+</div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01299">1299</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+
+<p class="reference">References <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01199">GetAllAvailableMetadata()</a>.</p>
 
 </div>
 </div>

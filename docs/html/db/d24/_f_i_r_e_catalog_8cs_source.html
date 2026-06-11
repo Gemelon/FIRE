@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span> </div>
 <div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>            progressCallback?.Invoke(record.SourceFilePath);</div>
 <div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span> </div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>            var extension = Path.GetExtension(record.SourceFilePath);</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>            var extension = Path.GetExtension(record.SourceFilePath).ToLowerInvariant();</div>
 <div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>            <span class="keywordflow">if</span> (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span> </div>
 <div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>            var metadataLookup = record.FileMetaDatas.ToDictionary(</div>
@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span> </div>
 <div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>            progressCallback?.Invoke(record.SourceFilePath);</div>
 <div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span> </div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>            var extension = Path.GetExtension(record.SourceFilePath);</div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>            var extension = Path.GetExtension(record.SourceFilePath).ToLowerInvariant();</div>
 <div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>            <span class="keywordflow">if</span> (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span> </div>
 <div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>            var action = extConfig.Action ?? _configuration.Action ?? <span class="stringliteral">&quot;Copy&quot;</span>;</div>
@@ -460,7 +460,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span></div>
 <div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ProcessFile(<span class="keywordtype">string</span> filePath)</div>
 <div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>    {</div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>        var extension = Path.GetExtension(filePath);</div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>        var extension = Path.GetExtension(filePath).ToLowerInvariant();</div>
 <div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>        <span class="keywordflow">if</span> (!_configuration.<a class="code hl_variable" href="../../df/dbb/class_f_i_r_e_configration.html#a076a2da18160edf92386073c50428b3e">FileExtensions</a>.TryGetValue(extension, out var extConfig)) <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span> </div>
 <div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>        var fileIdInfo = GetFileIdInfo(filePath);</div>
@@ -707,7 +707,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>        <span class="keywordflow">if</span> (!metadata.TryGetValue(baseName, out var value) || <span class="keywordtype">string</span>.IsNullOrWhiteSpace(value))</div>
 <div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
 <div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span> </div>
-<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>        <a class="code hl_function" href="../../dd/d5c/_program_8cs.html#a84ef8ed5fe64f697374a7ac3e173ca77">if</a> (property == null) <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>        <a class="code hl_function" href="../../d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#a84ef8ed5fe64f697374a7ac3e173ca77">if</a> (property == null) <span class="keywordflow">return</span> value;</div>
 <div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span> </div>
 <div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>        <span class="comment">// Zeile 548 – vorher: DateTime.TryParse (schlägt bei EXIF-Dates fehl)</span></div>
 <div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>        <span class="keywordflow">if</span> (TryNormalizeDateTime(value, out var normalizedValue) &amp;&amp;</div>
@@ -764,11 +764,192 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>        <span class="keywordflow">catch</span> { }</div>
 <div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>    }</div>
 <div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span></div>
-<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ThrowIfDisposed()</div>
-<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>    {</div>
-<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span>        <span class="keywordflow">if</span> (_disposed) <span class="keywordflow">throw</span> <span class="keyword">new</span> ObjectDisposedException(nameof(<a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a>));</div>
-<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span>    }</div>
-<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>}</div>
+<div class="foldopen" id="foldopen01199" data-start="{" data-end="}">
+<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"><a class="line" href="../../db/d24/_f_i_r_e_catalog_8cs.html#aef7ba4394188e308379ddd8a487ac5f1"> 1199</a></span>    <span class="keyword">public</span> List&lt;(<span class="keywordtype">string</span> Source, <span class="keywordtype">string</span> Key, <span class="keywordtype">string</span> Value)&gt; <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#aef7ba4394188e308379ddd8a487ac5f1">GetAllAvailableMetadata</a>(<span class="keywordtype">string</span> filePath)</div>
+<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span>    {</div>
+<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span>        ThrowIfDisposed();</div>
+<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span>        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);</div>
+<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span> </div>
+<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>        var result = <span class="keyword">new</span> List&lt;(string Source, string Key, string Value)&gt;();</div>
+<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span> </div>
+<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span>        <span class="keywordflow">if</span> (!File.Exists(filePath))</div>
+<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>        {</div>
+<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>            <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>        }</div>
+<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span> </div>
+<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span>        <span class="comment">// Iterate through all registered metadata sources</span></div>
+<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>        <span class="comment">// Note: _metadataRegistry does not expose a public enumeration method,</span></div>
+<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>        <span class="comment">// so we&#39;ll try to get the known built-in sources: FILEINFO and EXIFTOOL</span></div>
+<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>        var knownSources = <span class="keyword">new</span>[] { <span class="stringliteral">&quot;FILEINFO&quot;</span>, <span class="stringliteral">&quot;EXIFTOOL&quot;</span> };</div>
+<div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span> </div>
+<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>        <span class="keywordflow">foreach</span> (var sourceName <span class="keywordflow">in</span> knownSources)</div>
+<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>        {</div>
+<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span>            var source = _metadataRegistry.GetSource(sourceName);</div>
+<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span>            <span class="keywordflow">if</span> (source == null)</div>
+<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span>            {</div>
+<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span>            }</div>
+<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span> </div>
+<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span>            <span class="keywordflow">try</span></div>
+<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span>            {</div>
+<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span>                var metadata = source.ExtractMetadata(filePath);</div>
+<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span>                <span class="keywordflow">foreach</span> (var kvp <span class="keywordflow">in</span> metadata)</div>
+<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span>                {</div>
+<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"> 1229</span>                    <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrWhiteSpace(kvp.Key) &amp;&amp; kvp.Value != null)</div>
+<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span>                    {</div>
+<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span>                        result.Add((source.SourceName, kvp.Key, kvp.Value));</div>
+<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span>                    }</div>
+<div class="line"><a id="l01233" name="l01233"></a><span class="lineno"> 1233</span>                }</div>
+<div class="line"><a id="l01234" name="l01234"></a><span class="lineno"> 1234</span>            }</div>
+<div class="line"><a id="l01235" name="l01235"></a><span class="lineno"> 1235</span>            <span class="keywordflow">catch</span></div>
+<div class="line"><a id="l01236" name="l01236"></a><span class="lineno"> 1236</span>            {</div>
+<div class="line"><a id="l01237" name="l01237"></a><span class="lineno"> 1237</span>                <span class="comment">// If metadata extraction fails for this source, continue with other sources</span></div>
+<div class="line"><a id="l01238" name="l01238"></a><span class="lineno"> 1238</span>            }</div>
+<div class="line"><a id="l01239" name="l01239"></a><span class="lineno"> 1239</span>        }</div>
+<div class="line"><a id="l01240" name="l01240"></a><span class="lineno"> 1240</span> </div>
+<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l01242" name="l01242"></a><span class="lineno"> 1242</span>    }</div>
+</div>
+<div class="line"><a id="l01243" name="l01243"></a><span class="lineno"> 1243</span></div>
+<div class="foldopen" id="foldopen01299" data-start="{" data-end="}">
+<div class="line"><a id="l01299" name="l01299"></a><span class="lineno"><a class="line" href="../../db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2"> 1299</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2">WriteMetadataToMarkdown</a>(<span class="keywordtype">string</span> filePath, <span class="keywordtype">string</span>? outputPath = null)</div>
+<div class="line"><a id="l01300" name="l01300"></a><span class="lineno"> 1300</span>    {</div>
+<div class="line"><a id="l01301" name="l01301"></a><span class="lineno"> 1301</span>        ThrowIfDisposed();</div>
+<div class="line"><a id="l01302" name="l01302"></a><span class="lineno"> 1302</span>        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);</div>
+<div class="line"><a id="l01303" name="l01303"></a><span class="lineno"> 1303</span> </div>
+<div class="line"><a id="l01304" name="l01304"></a><span class="lineno"> 1304</span>        <span class="comment">// Determine output path</span></div>
+<div class="line"><a id="l01305" name="l01305"></a><span class="lineno"> 1305</span>        <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrWhiteSpace(outputPath))</div>
+<div class="line"><a id="l01306" name="l01306"></a><span class="lineno"> 1306</span>        {</div>
+<div class="line"><a id="l01307" name="l01307"></a><span class="lineno"> 1307</span>            var directory = Path.GetDirectoryName(filePath) ?? <span class="stringliteral">&quot;.&quot;</span>;</div>
+<div class="line"><a id="l01308" name="l01308"></a><span class="lineno"> 1308</span>            var fileNameWithoutExt = Path.GetFileNameWithoutExtension(filePath);</div>
+<div class="line"><a id="l01309" name="l01309"></a><span class="lineno"> 1309</span>            outputPath = Path.Combine(directory, $<span class="stringliteral">&quot;{fileNameWithoutExt}.md&quot;</span>);</div>
+<div class="line"><a id="l01310" name="l01310"></a><span class="lineno"> 1310</span>        }</div>
+<div class="line"><a id="l01311" name="l01311"></a><span class="lineno"> 1311</span> </div>
+<div class="line"><a id="l01312" name="l01312"></a><span class="lineno"> 1312</span>        <span class="comment">// Get all metadata</span></div>
+<div class="line"><a id="l01313" name="l01313"></a><span class="lineno"> 1313</span>        var metadata = <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#aef7ba4394188e308379ddd8a487ac5f1">GetAllAvailableMetadata</a>(filePath);</div>
+<div class="line"><a id="l01314" name="l01314"></a><span class="lineno"> 1314</span> </div>
+<div class="line"><a id="l01315" name="l01315"></a><span class="lineno"> 1315</span>        <span class="comment">// Prepare markdown content</span></div>
+<div class="line"><a id="l01316" name="l01316"></a><span class="lineno"> 1316</span>        <span class="keyword">using </span>var writer = <span class="keyword">new</span> StreamWriter(outputPath, <span class="keyword">false</span>, System.Text.Encoding.UTF8);</div>
+<div class="line"><a id="l01317" name="l01317"></a><span class="lineno"> 1317</span> </div>
+<div class="line"><a id="l01318" name="l01318"></a><span class="lineno"> 1318</span>        <span class="comment">// Header</span></div>
+<div class="line"><a id="l01319" name="l01319"></a><span class="lineno"> 1319</span>        writer.WriteLine(<span class="stringliteral">&quot;# FIRE Metadata Report&quot;</span>);</div>
+<div class="line"><a id="l01320" name="l01320"></a><span class="lineno"> 1320</span>        writer.WriteLine();</div>
+<div class="line"><a id="l01321" name="l01321"></a><span class="lineno"> 1321</span>        writer.WriteLine($<span class="stringliteral">&quot;**Generated:** {DateTime.Now:yyyy-MM-dd HH:mm:ss}&quot;</span>);</div>
+<div class="line"><a id="l01322" name="l01322"></a><span class="lineno"> 1322</span>        writer.WriteLine();</div>
+<div class="line"><a id="l01323" name="l01323"></a><span class="lineno"> 1323</span> </div>
+<div class="line"><a id="l01324" name="l01324"></a><span class="lineno"> 1324</span>        <span class="comment">// File Information</span></div>
+<div class="line"><a id="l01325" name="l01325"></a><span class="lineno"> 1325</span>        writer.WriteLine(<span class="stringliteral">&quot;## File Information&quot;</span>);</div>
+<div class="line"><a id="l01326" name="l01326"></a><span class="lineno"> 1326</span>        writer.WriteLine();</div>
+<div class="line"><a id="l01327" name="l01327"></a><span class="lineno"> 1327</span> </div>
+<div class="line"><a id="l01328" name="l01328"></a><span class="lineno"> 1328</span>        <span class="keywordflow">if</span> (File.Exists(filePath))</div>
+<div class="line"><a id="l01329" name="l01329"></a><span class="lineno"> 1329</span>        {</div>
+<div class="line"><a id="l01330" name="l01330"></a><span class="lineno"> 1330</span>            var fileInfo = <span class="keyword">new</span> FileInfo(filePath);</div>
+<div class="line"><a id="l01331" name="l01331"></a><span class="lineno"> 1331</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Path:** `{filePath}`&quot;</span>);</div>
+<div class="line"><a id="l01332" name="l01332"></a><span class="lineno"> 1332</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Name:** `{fileInfo.Name}`&quot;</span>);</div>
+<div class="line"><a id="l01333" name="l01333"></a><span class="lineno"> 1333</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Size:** {FormatFileSize(fileInfo.Length)}&quot;</span>);</div>
+<div class="line"><a id="l01334" name="l01334"></a><span class="lineno"> 1334</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Created:** {fileInfo.CreationTime:yyyy-MM-dd HH:mm:ss}&quot;</span>);</div>
+<div class="line"><a id="l01335" name="l01335"></a><span class="lineno"> 1335</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Modified:** {fileInfo.LastWriteTime:yyyy-MM-dd HH:mm:ss}&quot;</span>);</div>
+<div class="line"><a id="l01336" name="l01336"></a><span class="lineno"> 1336</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Accessed:** {fileInfo.LastAccessTime:yyyy-MM-dd HH:mm:ss}&quot;</span>);</div>
+<div class="line"><a id="l01337" name="l01337"></a><span class="lineno"> 1337</span>        }</div>
+<div class="line"><a id="l01338" name="l01338"></a><span class="lineno"> 1338</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l01339" name="l01339"></a><span class="lineno"> 1339</span>        {</div>
+<div class="line"><a id="l01340" name="l01340"></a><span class="lineno"> 1340</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Path:** `{filePath}`&quot;</span>);</div>
+<div class="line"><a id="l01341" name="l01341"></a><span class="lineno"> 1341</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Status:** ⚠️ File not found&quot;</span>);</div>
+<div class="line"><a id="l01342" name="l01342"></a><span class="lineno"> 1342</span>        }</div>
+<div class="line"><a id="l01343" name="l01343"></a><span class="lineno"> 1343</span> </div>
+<div class="line"><a id="l01344" name="l01344"></a><span class="lineno"> 1344</span>        writer.WriteLine();</div>
+<div class="line"><a id="l01345" name="l01345"></a><span class="lineno"> 1345</span> </div>
+<div class="line"><a id="l01346" name="l01346"></a><span class="lineno"> 1346</span>        <span class="comment">// Metadata by Source</span></div>
+<div class="line"><a id="l01347" name="l01347"></a><span class="lineno"> 1347</span>        writer.WriteLine(<span class="stringliteral">&quot;## Extracted Metadata&quot;</span>);</div>
+<div class="line"><a id="l01348" name="l01348"></a><span class="lineno"> 1348</span>        writer.WriteLine();</div>
+<div class="line"><a id="l01349" name="l01349"></a><span class="lineno"> 1349</span> </div>
+<div class="line"><a id="l01350" name="l01350"></a><span class="lineno"> 1350</span>        <span class="keywordflow">if</span> (metadata.Count == 0)</div>
+<div class="line"><a id="l01351" name="l01351"></a><span class="lineno"> 1351</span>        {</div>
+<div class="line"><a id="l01352" name="l01352"></a><span class="lineno"> 1352</span>            writer.WriteLine(<span class="stringliteral">&quot;⚠️ No metadata could be extracted from this file.&quot;</span>);</div>
+<div class="line"><a id="l01353" name="l01353"></a><span class="lineno"> 1353</span>            writer.WriteLine();</div>
+<div class="line"><a id="l01354" name="l01354"></a><span class="lineno"> 1354</span>        }</div>
+<div class="line"><a id="l01355" name="l01355"></a><span class="lineno"> 1355</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l01356" name="l01356"></a><span class="lineno"> 1356</span>        {</div>
+<div class="line"><a id="l01357" name="l01357"></a><span class="lineno"> 1357</span>            var groupedBySource = metadata.GroupBy(m =&gt; m.Source).OrderBy(g =&gt; g.Key);</div>
+<div class="line"><a id="l01358" name="l01358"></a><span class="lineno"> 1358</span> </div>
+<div class="line"><a id="l01359" name="l01359"></a><span class="lineno"> 1359</span>            <span class="keywordflow">foreach</span> (var sourceGroup <span class="keywordflow">in</span> groupedBySource)</div>
+<div class="line"><a id="l01360" name="l01360"></a><span class="lineno"> 1360</span>            {</div>
+<div class="line"><a id="l01361" name="l01361"></a><span class="lineno"> 1361</span>                writer.WriteLine($<span class="stringliteral">&quot;### {sourceGroup.Key}&quot;</span>);</div>
+<div class="line"><a id="l01362" name="l01362"></a><span class="lineno"> 1362</span>                writer.WriteLine();</div>
+<div class="line"><a id="l01363" name="l01363"></a><span class="lineno"> 1363</span>                writer.WriteLine($<span class="stringliteral">&quot;**Count:** {sourceGroup.Count()} metadata entries&quot;</span>);</div>
+<div class="line"><a id="l01364" name="l01364"></a><span class="lineno"> 1364</span>                writer.WriteLine();</div>
+<div class="line"><a id="l01365" name="l01365"></a><span class="lineno"> 1365</span> </div>
+<div class="line"><a id="l01366" name="l01366"></a><span class="lineno"> 1366</span>                <span class="comment">// Table header</span></div>
+<div class="line"><a id="l01367" name="l01367"></a><span class="lineno"> 1367</span>                writer.WriteLine(<span class="stringliteral">&quot;| Key | Value |&quot;</span>);</div>
+<div class="line"><a id="l01368" name="l01368"></a><span class="lineno"> 1368</span>                writer.WriteLine(<span class="stringliteral">&quot;|-----|-------|&quot;</span>);</div>
+<div class="line"><a id="l01369" name="l01369"></a><span class="lineno"> 1369</span> </div>
+<div class="line"><a id="l01370" name="l01370"></a><span class="lineno"> 1370</span>                <span class="comment">// Table rows</span></div>
+<div class="line"><a id="l01371" name="l01371"></a><span class="lineno"> 1371</span>                <span class="keywordflow">foreach</span> (var (_, key, value) in sourceGroup.OrderBy(m =&gt; m.Key))</div>
+<div class="line"><a id="l01372" name="l01372"></a><span class="lineno"> 1372</span>                {</div>
+<div class="line"><a id="l01373" name="l01373"></a><span class="lineno"> 1373</span>                    var escapedValue = EscapeMarkdown(value);</div>
+<div class="line"><a id="l01374" name="l01374"></a><span class="lineno"> 1374</span>                    writer.WriteLine($<span class="stringliteral">&quot;| `{key}` | {escapedValue} |&quot;</span>);</div>
+<div class="line"><a id="l01375" name="l01375"></a><span class="lineno"> 1375</span>                }</div>
+<div class="line"><a id="l01376" name="l01376"></a><span class="lineno"> 1376</span> </div>
+<div class="line"><a id="l01377" name="l01377"></a><span class="lineno"> 1377</span>                writer.WriteLine();</div>
+<div class="line"><a id="l01378" name="l01378"></a><span class="lineno"> 1378</span>            }</div>
+<div class="line"><a id="l01379" name="l01379"></a><span class="lineno"> 1379</span> </div>
+<div class="line"><a id="l01380" name="l01380"></a><span class="lineno"> 1380</span>            <span class="comment">// Summary</span></div>
+<div class="line"><a id="l01381" name="l01381"></a><span class="lineno"> 1381</span>            writer.WriteLine(<span class="stringliteral">&quot;## Summary&quot;</span>);</div>
+<div class="line"><a id="l01382" name="l01382"></a><span class="lineno"> 1382</span>            writer.WriteLine();</div>
+<div class="line"><a id="l01383" name="l01383"></a><span class="lineno"> 1383</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Total Metadata Entries:** {metadata.Count}&quot;</span>);</div>
+<div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>            writer.WriteLine($<span class="stringliteral">&quot;- **Sources Used:** {groupedBySource.Count()}&quot;</span>);</div>
+<div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span> </div>
+<div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>            <span class="keywordflow">foreach</span> (var sourceGroup <span class="keywordflow">in</span> groupedBySource)</div>
+<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>            {</div>
+<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>                writer.WriteLine($<span class="stringliteral">&quot;  - {sourceGroup.Key}: {sourceGroup.Count()} entries&quot;</span>);</div>
+<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>            }</div>
+<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>        }</div>
+<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span> </div>
+<div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span>        writer.WriteLine();</div>
+<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>        writer.WriteLine(<span class="stringliteral">&quot;---&quot;</span>);</div>
+<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>        writer.WriteLine();</div>
+<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>        writer.WriteLine(<span class="stringliteral">&quot;*This report was generated by FIRE (File Information Reorganizer and Extractor).*&quot;</span>);</div>
+<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>        writer.WriteLine();</div>
+<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>        writer.WriteLine(<span class="stringliteral">&quot;**Usage:** The keys listed above can be used in your YAML configuration file under `AvailableKeyWords` to extract and use these metadata values for file organization.&quot;</span>);</div>
+<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>    }</div>
+</div>
+<div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span></div>
+<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> FormatFileSize(<span class="keywordtype">long</span> bytes)</div>
+<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span>    {</div>
+<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>        <span class="keywordtype">string</span>[] sizes = { <span class="stringliteral">&quot;B&quot;</span>, <span class="stringliteral">&quot;KB&quot;</span>, <span class="stringliteral">&quot;MB&quot;</span>, <span class="stringliteral">&quot;GB&quot;</span>, <span class="stringliteral">&quot;TB&quot;</span> };</div>
+<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>        <span class="keywordtype">double</span> len = bytes;</div>
+<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>        <span class="keywordtype">int</span> order = 0;</div>
+<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>        <span class="keywordflow">while</span> (len &gt;= 1024 &amp;&amp; order &lt; sizes.Length - 1)</div>
+<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>        {</div>
+<div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span>            order++;</div>
+<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>            len = len / 1024;</div>
+<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>        }</div>
+<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span>        <span class="keywordflow">return</span> $<span class="stringliteral">&quot;{len:0.##} {sizes[order]}&quot;</span>;</div>
+<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span>    }</div>
+<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span></div>
+<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">string</span> EscapeMarkdown(<span class="keywordtype">string</span> text)</div>
+<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>    {</div>
+<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span>        <span class="keywordflow">if</span> (<span class="keywordtype">string</span>.IsNullOrEmpty(text))</div>
+<div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span>            <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Empty;</div>
+<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span> </div>
+<div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span>        <span class="comment">// Escape pipe characters for table cells</span></div>
+<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span>        text = text.Replace(<span class="stringliteral">&quot;|&quot;</span>, <span class="stringliteral">&quot;\\|&quot;</span>);</div>
+<div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span> </div>
+<div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span>        <span class="comment">// Truncate very long values</span></div>
+<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span>        <span class="keywordflow">if</span> (text.Length &gt; 200)</div>
+<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"> 1433</span>        {</div>
+<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"> 1434</span>            text = text.Substring(0, 197) + <span class="stringliteral">&quot;...&quot;</span>;</div>
+<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span>        }</div>
+<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span> </div>
+<div class="line"><a id="l01437" name="l01437"></a><span class="lineno"> 1437</span>        <span class="keywordflow">return</span> text;</div>
+<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span>    }</div>
+<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span></div>
+<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> ThrowIfDisposed()</div>
+<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span>    {</div>
+<div class="line"><a id="l01445" name="l01445"></a><span class="lineno"> 1445</span>        <span class="keywordflow">if</span> (_disposed) <span class="keywordflow">throw</span> <span class="keyword">new</span> ObjectDisposedException(nameof(<a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a>));</div>
+<div class="line"><a id="l01446" name="l01446"></a><span class="lineno"> 1446</span>    }</div>
+<div class="line"><a id="l01447" name="l01447"></a><span class="lineno"> 1447</span>}</div>
+<div class="ttc" id="a_f_i_r_e_8_console_2_program_8cs_html_a84ef8ed5fe64f697374a7ac3e173ca77"><div class="ttname"><a href="../../d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#a84ef8ed5fe64f697374a7ac3e173ca77">if</a></div><div class="ttdeci">if(args.Length==0)</div><div class="ttdef"><b>Definition</b> <a href="../../d8/dc6/_f_i_r_e_8_console_2_program_8cs_source.html#l00008">Program.cs:8</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a00278eba084553a42cf32c32d033fe56"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a00278eba084553a42cf32c32d033fe56">FileStorageInfo</a></div><div class="ttdeci">FileStorageInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00016">FIRECatalog.cs:16</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a0d02d911a08582556e386934a3f480df"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a0d02d911a08582556e386934a3f480df">FileNameInfo</a></div><div class="ttdeci">FileNameInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00002">FIRECatalog.cs:2</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a1f15bce6bdcbc5520b861dd7ca51d6c7"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a1f15bce6bdcbc5520b861dd7ca51d6c7">IMetadataSource</a></div><div class="ttdeci">FileInfoMetadataSource IMetadataSource</div><div class="ttdoc">Metadata source for extracting embedded file metadata using ExifTool.</div></div>
@@ -806,6 +987,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_aaa451bcd7c50ba0d405334167166cd18"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#aaa451bcd7c50ba0d405334167166cd18">FileCompressionInfo</a></div><div class="ttdeci">FileCompressionInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00008">FIRECatalog.cs:8</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_aabad7ffbbc308dd17439b66f277ee2d0"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#aabad7ffbbc308dd17439b66f277ee2d0">FileAllocationInfo</a></div><div class="ttdeci">FileAllocationInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00005">FIRECatalog.cs:5</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_ab1b69b8f32d8f8982103cf3ae5edd336"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#ab1b69b8f32d8f8982103cf3ae5edd336">FileIoPriorityHintInfo</a></div><div class="ttdeci">FileIoPriorityHintInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00012">FIRECatalog.cs:12</a></div></div>
+<div class="ttc" id="a_f_i_r_e_catalog_8cs_html_ab585df3741aa7104afc3c6b3d9b8e9e2"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2">WriteMetadataToMarkdown</a></div><div class="ttdeci">void WriteMetadataToMarkdown(string filePath, string? outputPath=null)</div><div class="ttdoc">Retrieves all available metadata for a single file and writes it to a Markdown file.</div><div class="ttdef"><b>Definition</b> <a href="#l01299">FIRECatalog.cs:1299</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_acfa36f4ecafea68f8667cc0931ce2801"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#acfa36f4ecafea68f8667cc0931ce2801">NumberOfLinks</a></div><div class="ttdeci">uint NumberOfLinks</div><div class="ttdef"><b>Definition</b> <a href="#l00517">FIRECatalog.cs:517</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_ad04b748afd8c2c059087ab20fbacb276"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#ad04b748afd8c2c059087ab20fbacb276">FileStandardInfo</a></div><div class="ttdeci">FileStandardInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00001">FIRECatalog.cs:1</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_ad1170fe11f743d09a5c0215fe58a0bf6"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#ad1170fe11f743d09a5c0215fe58a0bf6">FileIdExtdDirectoryRestartInfo</a></div><div class="ttdeci">FileIdExtdDirectoryRestartInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00020">FIRECatalog.cs:20</a></div></div>
@@ -815,6 +997,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_ade8ca80f0c3053af5a3c46260b5b8a66"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#ade8ca80f0c3053af5a3c46260b5b8a66">MetadataSourceRegistry</a></div><div class="ttdeci">MetadataSourceRegistry()</div><div class="ttdoc">Initializes a new instance of MetadataSourceRegistry.</div><div class="ttdef"><b>Definition</b> <a href="#l00010">FIRECatalog.cs:10</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_ae03b337fb935f5276a534f5220615928"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#ae03b337fb935f5276a534f5220615928">FileInfoByHandleClass</a></div><div class="ttdeci">FileInfoByHandleClass</div><div class="ttdef"><b>Definition</b> <a href="#l00034">FIRECatalog.cs:35</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_ae5398e3ef19fee6587c5121f76e18110"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#ae5398e3ef19fee6587c5121f76e18110">FileSizeHigh</a></div><div class="ttdeci">uint FileSizeHigh</div><div class="ttdef"><b>Definition</b> <a href="#l00515">FIRECatalog.cs:515</a></div></div>
+<div class="ttc" id="a_f_i_r_e_catalog_8cs_html_aef7ba4394188e308379ddd8a487ac5f1"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#aef7ba4394188e308379ddd8a487ac5f1">GetAllAvailableMetadata</a></div><div class="ttdeci">List&lt;(string Source, string Key, string Value)&gt; GetAllAvailableMetadata(string filePath)</div><div class="ttdoc">Retrieves all available metadata for a single file from all registered metadata sources.</div><div class="ttdef"><b>Definition</b> <a href="#l01199">FIRECatalog.cs:1199</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_af020a49b57fe3e772eeec3aa6e466144"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#af020a49b57fe3e772eeec3aa6e466144">FileIndexLow</a></div><div class="ttdeci">uint FileIndexLow</div><div class="ttdef"><b>Definition</b> <a href="#l00519">FIRECatalog.cs:519</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_afea3e6f4e6095d3d0d5c3d1c3ceb4e6e"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#afea3e6f4e6095d3d0d5c3d1c3ceb4e6e">FileBasicInfo</a></div><div class="ttdeci">FileBasicInfo</div><div class="ttdef"><b>Definition</b> <a href="#l00000">FIRECatalog.cs:0</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_d0/d27/struct_f_i_l_e___i_d___i_n_f_o"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#d0/d27/struct_f_i_l_e___i_d___i_n_f_o">FILE_ID_INFO</a></div><div class="ttdoc">Marshalled structure for retrieving file ID information from Windows NTFS.</div><div class="ttdef"><b>Definition</b> <a href="#l00494">FIRECatalog.cs:495</a></div></div>
@@ -824,7 +1007,6 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d24/_f_i_r_
 <div class="ttc" id="a_f_i_r_e_database_8cs_html_a411d4d2f4e1601ede6c530814eddac90"><div class="ttname"><a href="../../d7/d1a/_f_i_r_e_database_8cs.html#a411d4d2f4e1601ede6c530814eddac90">SourceFilePath</a></div><div class="ttdeci">string SourceFilePath</div><div class="ttdoc">Gets or sets the original source file path as discovered during the collect phase.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00199">FIREDatabase.cs:199</a></div></div>
 <div class="ttc" id="a_f_i_r_e_database_8cs_html_a634ff0b7db64e0e369c7d6c4e1546ee0"><div class="ttname"><a href="../../d7/d1a/_f_i_r_e_database_8cs.html#a634ff0b7db64e0e369c7d6c4e1546ee0">FIREDatabase</a></div><div class="ttdeci">FIREDatabase(string databaseFilePath, bool recreateIfExists=false)</div><div class="ttdoc">Creates a new instance of FIREDatabase backed by the specified SQLite file.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00402">FIREDatabase.cs:402</a></div></div>
 <div class="ttc" id="a_f_i_r_e_database_8cs_html_aa1d2e27212394c8c5ec775073aeb5979"><div class="ttname"><a href="../../d7/d1a/_f_i_r_e_database_8cs.html#aa1d2e27212394c8c5ec775073aeb5979">FileId</a></div><div class="ttdeci">byte[] FileId</div><div class="ttdoc">Gets or sets the binary file identifier from the NTFS file system, if available.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00188">FIREDatabase.cs:188</a></div></div>
-<div class="ttc" id="a_program_8cs_html_a84ef8ed5fe64f697374a7ac3e173ca77"><div class="ttname"><a href="../../dd/d5c/_program_8cs.html#a84ef8ed5fe64f697374a7ac3e173ca77">if</a></div><div class="ttdeci">if(args.Length==0)</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d5c/_program_8cs_source.html#l00008">Program.cs:8</a></div></div>
 <div class="ttc" id="aclass_available_keyword_configuration_html_a644c6e36c655560123458574410f7bc2"><div class="ttname"><a href="../../d3/daf/class_available_keyword_configuration.html#a644c6e36c655560123458574410f7bc2">AvailableKeywordConfiguration::DataType</a></div><div class="ttdeci">string DataType</div><div class="ttdoc">Gets or sets the data type of the metadata value.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00584">FIREConfigration.cs:584</a></div></div>
 <div class="ttc" id="aclass_f_i_r_e_configration_html"><div class="ttname"><a href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a></div><div class="ttdoc">Represents the root configuration document loaded from the FIRE configuration YAML file.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00086">FIREConfigration.cs:87</a></div></div>
 <div class="ttc" id="aclass_f_i_r_e_configration_html_a076a2da18160edf92386073c50428b3e"><div class="ttname"><a href="../../df/dbb/class_f_i_r_e_configration.html#a076a2da18160edf92386073c50428b3e">FIREConfigration::FileExtensions</a></div><div class="ttdeci">Dictionary&lt; string, FileExtensionConfiguration &gt; FileExtensions</div><div class="ttdoc">Gets or sets a dictionary of file extension-specific configurations.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00224">FIREConfigration.cs:224</a></div></div>
