@@ -8,5 +8,6 @@ var searchData=
   ['configuration_5',['Configuration',['../index.html#config_sec',1,'']]],
   ['configuration_20reference_6',['Configuration Reference',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md19',1,'']]],
   ['contents_7',['Table of Contents',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md3',1,'']]],
-  ['core_20classes_8',['Core Classes',['../index.html#autotoc_md0',1,'']]]
+  ['core_20classes_8',['Core Classes',['../index.html#autotoc_md0',1,'']]],
+  ['credits_9',['Credits',['../index.html#credits_sec',1,'Third-Party Credits'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'Third-Party Credits']]]
 ];

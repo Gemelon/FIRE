@@ -865,6 +865,11 @@
     <path>FIRE/</path>
     <filename>d9/dd6/_r_e_a_d_m_e_8md.html</filename>
   </compound>
+  <compound kind="file">
+    <name>THIRD-PARTY-NOTICES.md</name>
+    <path>FIRE/</path>
+    <filename>da/dc3/_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s_8md.html</filename>
+  </compound>
   <compound kind="class">
     <name>AvailableKeywordConfiguration</name>
     <filename>d3/daf/class_available_keyword_configuration.html</filename>
@@ -1263,6 +1268,11 @@
       <arglist>(string sourceName)</arglist>
     </member>
   </compound>
+  <compound kind="page">
+    <name>md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s</name>
+    <title>Third-Party Notices</title>
+    <filename>d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html</filename>
+  </compound>
   <compound kind="dir">
     <name>FIRE/docs</name>
     <path>FIRE/docs/</path>
@@ -1306,6 +1316,7 @@
     <docanchor file="index.html" title="Template Placeholders">placeholders_sec</docanchor>
     <docanchor file="index.html" title="Sidecar Files">sidecar_sec</docanchor>
     <docanchor file="index.html" title="License">license_sec</docanchor>
+    <docanchor file="index.html" title="Third-Party Credits">credits_sec</docanchor>
     <docanchor file="index.html" title="Links">links_sec</docanchor>
   </compound>
 </tagfile>

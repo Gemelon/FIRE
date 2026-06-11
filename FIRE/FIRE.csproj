@@ -4,6 +4,10 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Gemelon/FIRE</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Gemelon/FIRE</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +23,7 @@
 
   <ItemGroup>
     <None Include="..\ConfigurationFiles\Configuration.yaml" Link="ConfigurationFiles\Configuration.yaml" />
+    <None Include="..\THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" />
   </ItemGroup>
 
 </Project>

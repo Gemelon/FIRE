@@ -13,5 +13,6 @@ var index =
     [ "Template Placeholders", "index.html#placeholders_sec", null ],
     [ "Sidecar Files", "index.html#sidecar_sec", null ],
     [ "License", "index.html#license_sec", null ],
+    [ "Third-Party Credits", "index.html#credits_sec", null ],
     [ "Links", "index.html#links_sec", null ]
 ];

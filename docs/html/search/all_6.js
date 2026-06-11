@@ -18,5 +18,6 @@ var searchData=
   ['core_20classes_15',['Core Classes',['../index.html#autotoc_md0',1,'']]],
   ['count_16',['Count',['../d7/d1a/_f_i_r_e_database_8cs.html#aad462966ed963f892117056de1eba502',1,'FIREDatabase.cs']]],
   ['creationtime_17',['CreationTime',['../db/d24/_f_i_r_e_catalog_8cs.html#a5b34ed4fd541dd9ebdbf8b7f03dd12d8',1,'FIRECatalog.cs']]],
-  ['culture_18',['culture',['../dd/d5c/_program_8cs.html#aaca62e4b78ac038ade08c841b7587678',1,'Program.cs']]]
+  ['credits_18',['Credits',['../index.html#credits_sec',1,'Third-Party Credits'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'Third-Party Credits']]],
+  ['culture_19',['culture',['../dd/d5c/_program_8cs.html#aaca62e4b78ac038ade08c841b7587678',1,'Program.cs']]]
 ];

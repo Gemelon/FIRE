@@ -145,9 +145,18 @@
  *
  * See the LICENSE file in the repository root for full license text.
  *
+ * @section credits_sec Third-Party Credits
+ *
+ * FIRE uses third-party components:
+ *
+ * - ExifTool by Phil Harvey (https://exiftool.org), licensed under the Artistic License 2.0 (alternatively GNU GPL)
+ * - SharpExifTool by Junian Triajianto (https://www.nuget.org/packages/SharpExifTool), licensed under the MIT License
+ *
+ * See THIRD-PARTY-NOTICES.md in the repository root for details.
+ *
  * @section links_sec Links
  *
- * - Source code: https://github.com/tstoll/FIRE
+ * - Source code: https://github.com/Gemelon/FIRE
  * - ExifTool: https://exiftool.org
  * - SharpExifTool NuGet: https://www.nuget.org/packages/SharpExifTool
  */

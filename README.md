@@ -27,6 +27,7 @@ finally copies, moves, or hard-links each file to its computed target location.
 - [Examples](#examples)
 - [Building from Source](#building-from-source)
 - [Documentation](#documentation)
+- [Third-Party Credits](#third-party-credits)
 - [License](#license)
 
 ---
@@ -91,7 +92,7 @@ FIRE/
 ### From source
 
 ```powershell
-git clone https://github.com/tstoll/FIRE.git
+git clone https://github.com/Gemelon/FIRE.git
 cd FIRE
 dotnet build -c Release
 ```
@@ -326,6 +327,19 @@ The HTML output is written to `docs/html/index.html`.
 
 > **Tip:** Install [Graphviz](https://graphviz.org/) and set `HAVE_DOT = YES`
 > in `docs/Doxyfile` to generate class and call graphs.
+
+---
+
+## Third-Party Credits
+
+This project uses third-party components:
+
+- **ExifTool** by Phil Harvey — https://exiftool.org  
+  License: Artistic License 2.0 (alternatively GNU GPL)
+- **SharpExifTool** by Junian Triajianto — https://www.nuget.org/packages/SharpExifTool  
+  License: MIT License
+
+For details, see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 ---
 
