@@ -1,0 +1,153 @@
+/**
+ * @mainpage FIRE — File Information Reorganizer and Extractor
+ *
+ * @image html fire_logo.png width=200px
+ *
+ * @section intro_sec Overview
+ *
+ * **FIRE** is a .NET 10 library and command-line application for automated
+ * file reorganization based on embedded metadata. It reads file system
+ * information and rich EXIF/XMP metadata (via ExifTool), stores the results
+ * in a local SQLite database, computes template-driven target paths, and
+ * finally copies, moves, or hard-links the files to their new location.
+ *
+ * @section arch_sec Architecture
+ *
+ * The solution consists of two projects:
+ *
+ * | Project | Type | Responsibility |
+ * |---------|------|----------------|
+ * | `FIRE` | Class library (.NET 10) | Core engine: configuration, catalog, database |
+ * | `FIRE.Console` | Console application (.NET 10) | CLI front-end (`collect`, `generate`, `execute`) |
+ *
+ * ### Core Classes
+ *
+ * | Class | Description |
+ * |-------|-------------|
+ * | FIRE::FIRECatalog | Orchestrates collection, path generation, and file operations |
+ * | FIRE::FIREDatabase | SQLite-backed list of FIRE::FIREDbRecord entries |
+ * | FIRE::FIREConfigration | Deserialized YAML configuration root |
+ * | FIRE::IMetadataSource | Abstraction for metadata providers |
+ * | FIRE::FileInfoMetadataSource | File-system metadata provider (creation/modification/access time) |
+ * | FIRE::ExifToolMetadataSource | ExifTool-based metadata provider (EXIF, XMP, IPTC, …) |
+ * | FIRE::MetadataSourceRegistry | Registry that maps source names to IMetadataSource instances |
+ *
+ * @section workflow_sec Three-Step Workflow
+ *
+ * FIRE operates in three distinct, sequential steps:
+ *
+ * @subsection step1 Step 1 — collect
+ * Scans all directories listed in `FilesRootPath`, extracts metadata for each
+ * file through the registered IMetadataSource implementations, and persists
+ * the results as FIRE::FIREDbRecord entries in the SQLite database.
+ *
+ * @code{.sh}
+ * FIRE.Console collect --config Configuration.yaml --culture de-DE
+ * @endcode
+ *
+ * @subsection step2 Step 2 — generate
+ * Reads the database, evaluates the `SortingPatern` and `FileNamePatern`
+ * templates by substituting `{Keyword}` placeholders with resolved metadata
+ * values, and writes the computed target path back into each record.
+ *
+ * @code{.sh}
+ * FIRE.Console generate --config Configuration.yaml --culture de-DE
+ * @endcode
+ *
+ * @subsection step3 Step 3 — execute
+ * Performs the actual file operation (Copy, Move, or Link) from the source
+ * path to the target path stored in every database record.
+ *
+ * @code{.sh}
+ * FIRE.Console execute --config Configuration.yaml --culture de-DE
+ * @endcode
+ *
+ * @section config_sec Configuration
+ *
+ * All behaviour is driven by a single YAML file. A minimal example:
+ *
+ * @code{.yaml}
+ * ConfigurationVersion: 1.00
+ * FilesRootPath:
+ *   - D:\Photos\Import
+ * DataBasePath: D:\Photos
+ * DataBaseFileName: FIRE.db
+ * Action: Copy
+ * MediaRootPath: D:\Photos\Sorted
+ * SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{Make}\\{Model}"
+ * FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{FileName}"
+ * FileExtensions:
+ *   .jpg:
+ *     FileType: Image
+ *     FileClass: RegularFile
+ *     Action: Copy
+ *     AvailableKeyWords:
+ *       Make:
+ *         DataType: STRING
+ *         Source: EXIFTOOL
+ *         KeyWords:
+ *           - IFD0:Make
+ *       MetaCreationTime:
+ *         DataType: DATETIME
+ *         Source: EXIFTOOL
+ *         ValAttribute: LOWEST
+ *         KeyWords:
+ *           - ExifIFD:DateTimeOriginal
+ *           - IFD0:DateTime
+ * @endcode
+ *
+ * @section keywords_sec Keyword Selection
+ *
+ * When multiple EXIF tags can satisfy the same logical keyword (e.g.
+ * `DateTimeOriginal` and `DateTime`), FIRE picks one value according to
+ * `ValAttribute`:
+ *
+ * | ValAttribute | Behaviour |
+ * |---|---|
+ * | `LOWEST` (default) | Returns the chronologically or numerically smallest value |
+ * | `HIGHEST` | Returns the chronologically or numerically largest value |
+ *
+ * Supported `DataType` values: `STRING`, `INT`, `INTEGER`, `DATETIME`, `DATE`, `TIME`.
+ *
+ * @section meta_sources_sec Metadata Sources
+ *
+ * | Source Name | Description |
+ * |---|---|
+ * | `FILEINFO` | File system timestamps (CreationTime, ModificationTime, AccessTime) |
+ * | `EXIFTOOL` | Full metadata extracted by ExifTool (EXIF, XMP, IPTC, QuickTime, …) |
+ *
+ * @section placeholders_sec Template Placeholders
+ *
+ * Placeholders in `SortingPatern` and `FileNamePatern` use `{KeywordName}` syntax.
+ * Sub-properties are separated by a dot, e.g. `{MetaCreationTime.Year}`.
+ *
+ * | Placeholder | Example output |
+ * |---|---|
+ * | `{FileName}` | `IMG_1234.jpg` |
+ * | `{FileName.Noext}` | `IMG_1234` |
+ * | `{Make}` | `Apple` |
+ * | `{Model}` | `iPhone 15 Pro` |
+ * | `{MetaCreationTime.Year}` | `2026` |
+ * | `{MetaCreationTime.Month}` | `07` |
+ * | `{MetaCreationTime.Day}` | `04` |
+ * | `{MediaRootPath}` | configured root path |
+ *
+ * @section sidecar_sec Sidecar Files
+ *
+ * Each file extension configuration can list associated sidecar extensions
+ * (e.g. `.xmp` for `.jpg`). Sidecar files are processed alongside their
+ * primary file and inherit the same computed target path with their own extension.
+ *
+ * @section license_sec License
+ *
+ * FIRE is released under the **MIT License**.
+ * Copyright © 2026 by Thomas Stoll.
+ *
+ * See the LICENSE file in the repository root for full license text.
+ *
+ * @section links_sec Links
+ *
+ * - Source code: https://github.com/tstoll/FIRE
+ * - ExifTool: https://exiftool.org
+ * - SharpExifTool NuGet: https://www.nuget.org/packages/SharpExifTool
+ */

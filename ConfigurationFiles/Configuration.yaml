@@ -1,0 +1,252 @@
+﻿---
+ConfigurationVersion: 1.00
+FilesRootPath: 
+  - D:\Projekte\Projekte_2026\TestData\05
+  - D:\Projekte\Projekte_2026\TestData\04
+DataBasePath: D:\Projekte\Projekte_2026\TestDataTarget
+DataBaseFileName: FiReDatabase.db
+Action: Copy
+MediaRootPath: D:\Media
+RootPath: "{MediaRootPath}"
+SortingPatern: "E:\\Projekte\\Projekte_2026\\TestDataTarget\\Media Test\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
+FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}-{FileName}"
+StringReplacements:
+  SM-G985F: SM-G985F Galaxy S20
+  SM-S938B: SM-S938B Galaxy S25 Ultra
+  SM-F766B: SM-F766B Galaxy Z Flip7
+  SM-A528B: SM-A528B Galaxy A52s
+  Galaxy Z Flip7: SM-F766B Galaxy Z Flip7
+  Galaxy S25 Ultra: SM-S938B Galaxy S25 Ultra
+FileExtensions:
+  .jpg:
+    FileType: Image # TODO: Enum for FileType and FileClass
+    FileClass: RegularFile
+    Action: Copy # todo: Enum for Action Move, Copy, Link
+    RootPath: "{MediaRootPath}"
+    SortingPatern: "D:\\Projekte\\Projekte_2026\\TestDataTarget\\Media Test\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
+    FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{FileName.Noext}.JPG"
+    SidecarFileExtensions:
+    - .xmp
+    AvailableKeyWords:
+      CreationTime:
+        DataType: DATETIME
+        Source: FILEINFO
+        KeyWords:
+        - CreationTime
+      ModificationTime:
+        DataType: DATETIME
+        Source: FILEINFO
+        KeyWords:
+        - ModificationTime
+      AccessTime:
+        DataType: DATETIME
+        Source: FILEINFO
+        KeyWords:
+        - AccessTime
+      MIMEType:
+        DataType: STRING
+        Source: EXIFTOOL
+        KeyWords:
+        - "File:MIMEType"
+      Make:
+        DataType: STRING
+        Source: EXIFTOOL
+        KeyWords:
+        - exififd:make
+        - "DJI:Make"
+        - "IFD0:Make"
+      Model:
+        DataType: STRING
+        Source: EXIFTOOL
+        KeyWords:
+        - IFD0:Model
+        - IFD0:UniqueCameraModel
+      Orientation:
+        DataType: INT
+        Source: EXIFTOOL
+        KeyWords:
+        - IFD0:Orientation
+      XResolution:
+        DataType: INT
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - IFD0:XResolution
+        - IFD1:XResolution
+        - JFIF:XResolution
+      YResolution:
+        DataType: INT
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - IFD0:YResolution
+        - IFD1:YResolution
+        - JFIF:YResolution
+      ResolutionUnit:
+        DataType: STRING
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - IFD0:ResolutionUnit
+        - JFIF:ResolutionUnit
+      ImageHeight:
+        DataType: INT
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - File:ImageHeight
+        - ExifIFD:ExifImageHeight
+        - Sony:SonyImageHeight
+      ImageWidth:
+        DataType: INT
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - File:ImageWidth
+        - ExifIFD:ExifImageWidth
+        - Sony:SonyImageWidth
+      MetaCreationTime:
+        DataType: DATETIME
+        Source: EXIFTOOL
+        ValAttribute: LOWEST
+        KeyWords:
+        - Composite:DateTimeCreated
+        - Composite:SubSecCreateDate
+        - ExifIFD:CreateDate
+        - IPTC:DateCreated
+        - IPTC:TimeCreated
+        - XMP-photoshop:DateCreated
+        - XMP-xmp:CreateDate
+      MetaModificationTime:
+        DataType: DATETIME
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - Composite:SubSecModifyDate
+        - IFD0:ModifyDate
+        - System:FileModifyDate
+        - XMP-xmp:ModifyDate
+      MetaAccessTime:
+        DataType: DATETIME
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - 'IFD0: ModifyDate'
+        - IFD0:ModifyDate
+        - ExifIFD:ModifyDate
+  .png:
+    FileType: Image
+    FileClass: RegularFile
+    Action: Copy
+    RootPath: "{MediaRootPath}"
+    SortingPatern: "{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}/{Make}/{Model}"
+    FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{FileName.Noext}.JPG"
+    SidecarFileExtensions:
+    - .xmp
+    AvailableKeyWords:
+      CreationTime:
+        DataType: DATETIME
+        Source: FILEINFO
+        KeyWords:
+        - CreationTime
+      ModificationTime:
+        DataType: DATETIME
+        Source: FILEINFO
+        KeyWords:
+        - ModificationTime
+      AccessTime:
+        DataType: DATETIME
+        Source: FILEINFO
+        KeyWords:
+        - AccessTime
+      MIMEType:
+        DataType: STRING
+        Source: EXIFTOOL
+        KeyWords:
+        - "File:MIMEType"
+      Make:
+        DataType: STRING
+        Source: EXIFTOOL
+        KeyWords:
+        - exififd:make
+        - "DJI:Make"
+        - "IFD0:Make"
+      Model:
+        DataType: STRING
+        Source: EXIFTOOL
+        KeyWords:
+        - IFD0:Model
+        - IFD0:UniqueCameraModel
+      Orientation:
+        DataType: INT
+        Source: EXIFTOOL
+        KeyWords:
+        - IFD0:Orientation
+      XResolution:
+        DataType: INT
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - IFD0:XResolution
+        - IFD1:XResolution
+        - JFIF:XResolution
+      YResolution:
+        DataType: INT
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - IFD0:YResolution
+        - IFD1:YResolution
+        - JFIF:YResolution
+      ResolutionUnit:
+        DataType: STRING
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - IFD0:ResolutionUnit
+        - JFIF:ResolutionUnit
+      ImageHeight:
+        DataType: INT
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - File:ImageHeight
+        - ExifIFD:ExifImageHeight
+        - Sony:SonyImageHeight
+      ImageWidth:
+        DataType: INT
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - File:ImageWidth
+        - ExifIFD:ExifImageWidth
+        - Sony:SonyImageWidth
+      MetaCreationTime:
+        DataType: DATETIME
+        Source: EXIFTOOL
+        ValAttribute: LOWEST
+        KeyWords:
+        - Composite:DateTimeCreated
+        - Composite:SubSecCreateDate
+        - ExifIFD:CreateDate
+        - IPTC:DateCreated
+        - IPTC:TimeCreated
+        - XMP-photoshop:DateCreated
+        - XMP-xmp:CreateDate
+      MetaModificationTime:
+        DataType: DATETIME
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - Composite:SubSecModifyDate
+        - IFD0:ModifyDate
+        - System:FileModifyDate
+        - XMP-xmp:ModifyDate
+      MetaAccessTime:
+        DataType: DATETIME
+        Source: EXIFTOOL
+        ValAttribute: HIGHEST
+        KeyWords:
+        - 'IFD0: ModifyDate'
+        - IFD0:ModifyDate
+        - ExifIFD:ModifyDate

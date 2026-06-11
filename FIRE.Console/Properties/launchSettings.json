@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "FIRE.Console Collect": {
+      "commandName": "Project",
+      "commandLineArgs": "collect --config \"D:\\Projekte\\Projekte_2026\\FIRE\\ConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
+    },
+    "FIRE.Console Generate": {
+      "commandName": "Project",
+      "commandLineArgs": "generate --config \"D:\\Projekte\\Projekte_2026\\FIRE\\ConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
+    },
+    "FIRE.Console Execute": {
+      "commandName": "Project",
+      "commandLineArgs": "execute --config \"D:\\Projekte\\Projekte_2026\\FIRE\\ConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
+    }
+  }
+}
