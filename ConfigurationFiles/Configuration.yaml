@@ -20,14 +20,12 @@ StringReplacements:
   Galaxy S25 Ultra: SM-S938B Galaxy S25 Ultra
 FileExtensions:
   .jpg:
-    FileType: Image # TODO: Enum for FileType and FileClass
+    FileType: Image 
     FileClass: RegularFile
-    Action: Copy # todo: Enum for Action Move, Copy, Link
+    Action: Copy 
     RootPath: "{MediaRootPath}"
     SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
     FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG"
-    SidecarFileExtensions:
-    - .xmp
     AvailableKeyWords:
       Make:
         DataType: STRING

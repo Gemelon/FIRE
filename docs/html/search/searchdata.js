@@ -3,8 +3,8 @@ var indexSectionsWithContent =
   0: "123_abcdefghijklmnopqrstuvwxyz—",
   1: "afm",
   2: "fmprt",
-  3: "acdefgilmnprstwy",
-  4: "_acdefgiklmnrstv",
+  3: "cdefgilmnprstwy",
+  4: "_acdfgiklmnrstv",
   5: "f",
   6: "123abcdefghijklmnopqrstuwxz—"
 };

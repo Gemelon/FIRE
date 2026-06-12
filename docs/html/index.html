@@ -135,7 +135,7 @@ Architecture</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">FIRE</span>  </td><td class="markdownTableBodyNone">Class library (.NET 10)  </td><td class="markdownTableBodyNone">Core engine: configuration, catalog, database  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI front-end (<span class="tt">collect</span>, <span class="tt"><a class="el" href="d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span>, <span class="tt">execute</span>)  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI front-end (<span class="tt">collect</span>, <span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span>, <span class="tt">execute</span>)  </td></tr>
 </table>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
 Core Classes</h3>
@@ -249,9 +249,78 @@ Template Placeholders</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">{Counter:D3}</span>  </td><td class="markdownTableBodyNone">sequential number per target directory (e.g. 001, 002, 003)  </td></tr>
 </table>
-<h1 class="doxsection"><a class="anchor" id="sidecar_sec"></a>
+<h1 class="doxsection"><a class="anchor" id="metadata_inspection_sec"></a>
+Metadata Inspection Helpers</h1>
+<p>FIRE::FIRECatalog exposes helper APIs to inspect metadata before writing <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a63323b332ded7ed3a4edc12fc1754d16" title="Gets or sets a dictionary of available metadata keywords for this extension.">AvailableKeyWords</a></span> mappings in YAML configuration.</p>
+<h2 class="doxsection"><a class="anchor" id="get_all_metadata_subsec"></a>
+GetAllAvailableMetadata</h2>
+<p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aef7ba4394188e308379ddd8a487ac5f1" title="Retrieves all available metadata for a single file from all registered metadata sources.">GetAllAvailableMetadata(string filePath)</a></span> returns all discovered metadata entries for one file as tuples:</p>
+<ul>
+<li><span class="tt">Source</span> (e.g. <span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
+<li><span class="tt">Key</span> (metadata key/tag name)</li>
+<li><span class="tt">Value</span> (string representation)</li>
+</ul>
+<p>Notes:</p><ul>
+<li>Returns an empty list if the file does not exist.</li>
+<li>Continues with other sources if one source fails.</li>
+<li>Useful for metadata discovery.</li>
+</ul>
+<div class="fragment"><div class="line">var metadata = catalog.GetAllAvailableMetadata(<span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>);</div>
+<div class="line"><span class="keywordflow">foreach</span> (var (source, key, value) in metadata)</div>
+<div class="line">{</div>
+<div class="line">    Console.WriteLine($<span class="stringliteral">&quot;[{source}] {key}: {value}&quot;</span>);</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="write_metadata_md_subsec"></a>
+WriteMetadataToMarkdown</h2>
+<p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2" title="Retrieves all available metadata for a single file and writes it to a Markdown file.">WriteMetadataToMarkdown</a>(<a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a5d8d7c996845adbb001c9fe685ba97ca" title="Defines an abstraction for metadata extraction from files.">string</a> filePath, <a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a5d8d7c996845adbb001c9fe685ba97ca" title="Defines an abstraction for metadata extraction from files.">string</a>? outputPath = null)</span> writes a Markdown report containing:</p>
+<ul>
+<li>File information (path, name, size, timestamps)</li>
+<li>Metadata grouped by source (<span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
+<li>Key/value tables</li>
+<li>Summary statistics</li>
+</ul>
+<p>Notes:</p><ul>
+<li>If <span class="tt">outputPath</span> is omitted, a <span class="tt">.md</span> file is created next to the source file.</li>
+<li>The report is still generated when no metadata entries are available.</li>
+</ul>
+<div class="fragment"><div class="line"><span class="comment">// Creates &quot;IMG_1234.md&quot; next to the source file</span></div>
+<div class="line">catalog.WriteMetadataToMarkdown(<span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Custom report path</span></div>
+<div class="line">catalog.WriteMetadataToMarkdown(</div>
+<div class="line">    <span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">@&quot;D:\Reports\IMG_1234-metadata.md&quot;</span>);</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="sidecar_sec"></a>
 Sidecar Files</h1>
-<p>Each file extension configuration can list associated sidecar extensions (e.g. <span class="tt">.xmp</span> for <span class="tt">.jpg</span>). Sidecar files are processed alongside their primary file and inherit the same computed target path with their own extension.</p>
+<p>FIRE automatically processes sidecar files (e.g. <span class="tt">.xmp</span>, <span class="tt">.pp3</span>) alongside their primary files through a four-phase workflow:</p>
+<h2 class="doxsection"><a class="anchor" id="sidecar_config"></a>
+Configuration</h2>
+<p>Define sidecar extensions in the primary file's configuration:</p>
+<div class="fragment"><div class="line">FileExtensions:</div>
+<div class="line">  .jpg:</div>
+<div class="line">    SidecarFileExtensions:</div>
+<div class="line">      - .xmp</div>
+<div class="line">      - .pp3</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="sidecar_collection"></a>
+Collection Phase</h2>
+<p>After adding a primary file record to the database, FIRE::FIRECatalog::ProcessSidecarFiles() searches the same directory for files matching the configured extensions and the same base name. Each found sidecar is added as a separate FIRE::FIREDbRecord with:</p><ul>
+<li>FIRE::FileClassification::SidecarFile classification</li>
+<li>Cloned metadata from the primary file</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="sidecar_generation"></a>
+Path Generation Phase</h2>
+<p>FIRE::FIRECatalog::GenerateTargetPaths() treats sidecar records specially:</p><ul>
+<li>Locates the primary file by matching source directory and base name</li>
+<li>Inherits the primary file's target directory and base filename</li>
+<li>Preserves the sidecar's own extension</li>
+</ul>
+<p>Example:</p><ul>
+<li>Primary: <span class="tt">D:\Import\IMG_1234.jpg</span> → <span class="tt">D:\Sorted\2026\07\2026-07-04_001.jpg</span></li>
+<li>Sidecar: <span class="tt">D:\Import\IMG_1234.xmp</span> → <span class="tt">D:\Sorted\2026\07\2026-07-04_001.xmp</span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="sidecar_execution"></a>
+Execution Phase</h2>
+<p>FIRE::FIRECatalog::ExecuteFileOperations() processes sidecar files using the global action setting (Copy/Move/Link) from the configuration root, since sidecar extensions typically have no dedicated extension configuration.</p>
 <h1 class="doxsection"><a class="anchor" id="license_sec"></a>
 License</h1>
 <p>FIRE is released under the <b>MIT License</b>. Copyright © 2026 by Thomas Stoll.</p>

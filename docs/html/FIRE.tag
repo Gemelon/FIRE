@@ -6,6 +6,116 @@
     <filename>d5/d4d/mainpage_8dox.html</filename>
   </compound>
   <compound kind="file">
+    <name>Program.cs</name>
+    <path>FIRE/FIRE.Console/</path>
+    <filename>dd/d5c/_program_8cs.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a84ef8ed5fe64f697374a7ac3e173ca77</anchor>
+      <arglist>(args.Length==0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>for</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a3693342da52d760d0681c068d1bff044</anchor>
+      <arglist>(int i=1;i&lt; args.Length;i++)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a74cf3b529baa4b4f9ea52790b08afefc</anchor>
+      <arglist>(string.IsNullOrWhiteSpace(configPath))</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a366dc1663908062d6d0b2abaf5b80407</anchor>
+      <arglist>(string.IsNullOrWhiteSpace(culture))</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ShowHelp</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>aaaf450777f9e0f705510063bb48a64f4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteCollect</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a33a1022b76d465aae062457c32f41e22</anchor>
+      <arglist>(string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteGenerate</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a212272b90b3d6056be7582d063026024</anchor>
+      <arglist>(string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteOperations</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a8c1c626b2d8cfd29330f1324532aed55</anchor>
+      <arglist>(string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteInspect</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>abb7329a2aabb4bd1ab7436a37f81df6d</anchor>
+      <arglist>(string[] args, string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static string</type>
+      <name>TruncatePath</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>aa8d9c0fbba0c4b1fbd8fba934e1a6014</anchor>
+      <arglist>(string path, int maxLength)</arglist>
+    </member>
+    <member kind="variable">
+      <type>var</type>
+      <name>command</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a108b51efc46c603df382f88d19f8451e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>configPath</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>ad62bfc699867fc1751fe0a6159827b01</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>culture</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>aaca62e4b78ac038ade08c841b7587678</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>return command</type>
+      <name>switch</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a24768e217b121708b9b8e266eb8a6aa5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>return command</type>
+      <name>generate</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a2322e5d351b925c75e98348014dd10a4</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>FIRECatalog.cs</name>
     <path>FIRE/FIRE/</path>
     <filename>db/d24/_f_i_r_e_catalog_8cs.html</filename>
@@ -529,362 +639,13 @@
     <path>FIRE/FIRE/</path>
     <filename>d7/d1a/_f_i_r_e_database_8cs.html</filename>
     <class kind="class">FIREFileMetaData</class>
-    <class kind="class">FIREStatusRecord</class>
-    <class kind="class">FIREFileMetaDataEntity</class>
-    <class kind="class">FIREDatabaseStatusEntity</class>
-    <member kind="function">
-      <type></type>
-      <name>FIREDatabase</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a634ff0b7db64e0e369c7d6c4e1546ee0</anchor>
-      <arglist>(string databaseFilePath, bool recreateIfExists=false)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Reload</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a189465410ad8d15c2fc047de3fec0421</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>RecreateDatabase</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a86fa889edb061cda3b853538e883724f</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Save</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a5df140c1ee51aadf7fe88ce3fb9cac33</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Add</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a3df032f8048c7a8a271bc4543458106b</anchor>
-      <arglist>(FIREDbRecord item)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Clear</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>aa71d36872f416feaa853788a7a7a7ef8</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>Contains</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a9d19477ba8076ffadde03d422d7e80d8</anchor>
-      <arglist>(FIREDbRecord item)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>CopyTo</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a129fd3c3a3ee486599f4d9c2dc45b131</anchor>
-      <arglist>(FIREDbRecord[] array, int arrayIndex)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>PersistCurrentState</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a79b940850ffa15d822cd269b5a3def66</anchor>
-      <arglist>(&quot;Updated&quot;, true, null)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>IndexOf</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a7a42534f81d33a5577de1ba67bab2b97</anchor>
-      <arglist>(FIREDbRecord item)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Insert</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a85a9f621e009230addade70c4e899698</anchor>
-      <arglist>(int index, FIREDbRecord item)</arglist>
-    </member>
-    <member kind="function">
-      <type>bool</type>
-      <name>Remove</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a21c474c7a2521a2a3e292eea216bcb60</anchor>
-      <arglist>(FIREDbRecord item)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>RemoveAt</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>ad7c925d24a4e07389d2331e0508618ea</anchor>
-      <arglist>(int index)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Dispose</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a6e2d745cdb7a7b983f861ed6a9a541a7</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>IReadOnlyList&lt; FIREDbRecord &gt;</type>
-      <name>AsReadOnlyList</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a5dd091dca4c5a79a0a1e24224be17395</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>IEnumerator&lt; FIREDbRecord &gt;</type>
-      <name>GetEnumerator</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>aa85eaf6280a192e8b5b7f02982c6bcfd</anchor>
-      <arglist>()</arglist>
-    </member>
     <member kind="variable">
       <type>class FIREFileMetaData</type>
-      <name>get</name>
+      <name>RegularFile</name>
       <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a25561f3ff869e8114067195daeaa8e2d</anchor>
+      <anchor>a686291d47e5e4f2cb120f8c76f559a03</anchor>
       <arglist></arglist>
     </member>
-    <member kind="variable">
-      <type></type>
-      <name>set</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a112a711f766db446c2f517b794a1c04a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>byte[]</type>
-      <name>FileId</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>aa1d2e27212394c8c5ec775073aeb5979</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>SourceFilePath</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a411d4d2f4e1601ede6c530814eddac90</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>TargetFilePath</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>ac056107d24b6e034d1dfe9a31870486f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>List&lt; FIREFileMetaData &gt;</type>
-      <name>FileMetaDatas</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a8b80e6a329ae6d42560b62a7705c9dea</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>class FIREStatusRecord</type>
-      <name>FIREDbRecord</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a2575a6b0ec78cc6e7792e72e9b43bc16</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>class FIREStatusRecord</type>
-      <name>_databaseFilePath</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>aae2512fda26e4e52afa72ec20c6a8fe5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>DatabaseFilePath</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a5048d7d74229d33e3a7930474570423f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>FIREStatusRecord</type>
-      <name>StatusRecord</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a7219e35ae74e8a963204849ebf1cb8b6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>int</type>
-      <name>Count</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>aad462966ed963f892117056de1eba502</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>bool</type>
-      <name>IsReadOnly</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>ad1b02f19e753582b3c5f9ed71bb0318a</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>FIREDbRecord</type>
-      <name>this</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a0822c096825bf5a7fe8fe417b867c7e4</anchor>
-      <arglist>[int index]</arglist>
-    </member>
-    <member kind="variable">
-      <type>ulong</type>
-      <name>VolumeSerialNumber</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>aa94be69a6059744e5390c3f376a5f388</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>Status</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>afdaa27edb811d806bc72f1d53c7334cc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>bool</type>
-      <name>Valid</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>aa8a69799bf8690d840821ef7d92baec8</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>DateTime</type>
-      <name>TimeStamp</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a931e980ba3ac85bd305e2842d6425ceb</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>ErrorMessage</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a4a0b9b632a14e17b26850b7c5ddb6096</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>Program.cs</name>
-    <path>FIRE/FIRE.Console/</path>
-    <filename>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</filename>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a84ef8ed5fe64f697374a7ac3e173ca77</anchor>
-      <arglist>(args.Length==0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>for</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a3693342da52d760d0681c068d1bff044</anchor>
-      <arglist>(int i=1;i&lt; args.Length;i++)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a74cf3b529baa4b4f9ea52790b08afefc</anchor>
-      <arglist>(string.IsNullOrWhiteSpace(configPath))</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a366dc1663908062d6d0b2abaf5b80407</anchor>
-      <arglist>(string.IsNullOrWhiteSpace(culture))</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ShowHelp</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>aaaf450777f9e0f705510063bb48a64f4</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ExecuteCollect</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a33a1022b76d465aae062457c32f41e22</anchor>
-      <arglist>(string configPath, string culture)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ExecuteGenerate</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a212272b90b3d6056be7582d063026024</anchor>
-      <arglist>(string configPath, string culture)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ExecuteOperations</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a8c1c626b2d8cfd29330f1324532aed55</anchor>
-      <arglist>(string configPath, string culture)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>ExecuteInspect</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>abb7329a2aabb4bd1ab7436a37f81df6d</anchor>
-      <arglist>(string[] args, string configPath, string culture)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static string</type>
-      <name>TruncatePath</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>aa8d9c0fbba0c4b1fbd8fba934e1a6014</anchor>
-      <arglist>(string path, int maxLength)</arglist>
-    </member>
-    <member kind="variable">
-      <type>var</type>
-      <name>command</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a108b51efc46c603df382f88d19f8451e</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>configPath</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>ad62bfc699867fc1751fe0a6159827b01</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>culture</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>aaca62e4b78ac038ade08c841b7587678</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>return command</type>
-      <name>switch</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a24768e217b121708b9b8e266eb8a6aa5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>return command</type>
-      <name>generate</name>
-      <anchorfile>d8/dc6/_f_i_r_e_8_console_2_program_8cs.html</anchorfile>
-      <anchor>a2322e5d351b925c75e98348014dd10a4</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>Program.cs</name>
-    <path>FIRE/FIRE/</path>
-    <filename>db/d86/_f_i_r_e_2_program_8cs.html</filename>
   </compound>
   <compound kind="file">
     <name>README.md</name>
@@ -1103,18 +864,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>FIREDatabaseStatusEntity</name>
-    <filename>d7/d1a/_f_i_r_e_database_8cs.html</filename>
-    <anchor>da/d80/class_f_i_r_e_database_status_entity</anchor>
-    <member kind="variable">
-      <type>const long</type>
-      <name>SingletonId</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>ad8c3e4b8fe9d2f2356f2e895acfb27d5</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="class">
     <name>FIREFileMetaData</name>
     <filename>d7/d1a/_f_i_r_e_database_8cs.html</filename>
     <anchor>d5/d85/class_f_i_r_e_file_meta_data</anchor>
@@ -1158,114 +907,6 @@
       <name>DataSource</name>
       <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
       <anchor>a5e8dbe87fbcfd5a8ec27a753ea1e2c83</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>FIREFileMetaDataEntity</name>
-    <filename>d7/d1a/_f_i_r_e_database_8cs.html</filename>
-    <anchor>d3/d8c/class_f_i_r_e_file_meta_data_entity</anchor>
-    <member kind="variable">
-      <type>long</type>
-      <name>Id</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a24fa15ebbf058d55281483c98eff1011</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>set</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a125a78b6fd8538b28aed0d46a937df54</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>long</type>
-      <name>RecordId</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a7d59b24dde38def90481d6fab45ef853</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>FIREDbRecordEntity</type>
-      <name>Record</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>aa506e060fb561902dc9162eecd9a920c</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>Key</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a10eea546d40fa7cda5ea6d41e85a05fe</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>Value</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>af9721f21ae4764fddc766c89e69cb961</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>TypeName</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a4bd19e2114fcf0c67c48d30b7fbe4c18</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>DataSource</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a5a4b2e99a3849c340ce9bd923cd2866d</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>FIREStatusRecord</name>
-    <filename>d7/d1a/_f_i_r_e_database_8cs.html</filename>
-    <anchor>d7/d12/class_f_i_r_e_status_record</anchor>
-    <member kind="variable">
-      <type>long</type>
-      <name>Id</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>ae93f2c0c22bf9258a83055a9d62f27b5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>set</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a5e2d1bb0b9d6ca8fb1ee14045f90fea2</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>Status</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a1fb654166a27d34c5c9fdeba39ecb6e8</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>bool</type>
-      <name>Valid</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>af2f9e15d9f5d60ca0c98f599ed8a6f38</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>DateTime</type>
-      <name>TimeStamp</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a8b9be2c6dcf488eda86485059b17a1d1</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>ErrorMessage</name>
-      <anchorfile>d7/d1a/_f_i_r_e_database_8cs.html</anchorfile>
-      <anchor>a1c97b15df88db29fa409870c6c083e88</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1319,7 +960,6 @@
     <file>FIRECatalog.cs</file>
     <file>FIREConfigration.cs</file>
     <file>FIREDatabase.cs</file>
-    <file>Program.cs</file>
   </compound>
   <compound kind="dir">
     <name>FIRE/FIRE.Console</name>
@@ -1341,7 +981,14 @@
     <docanchor file="index.html" title="Keyword Selection">keywords_sec</docanchor>
     <docanchor file="index.html" title="Metadata Sources">meta_sources_sec</docanchor>
     <docanchor file="index.html" title="Template Placeholders">placeholders_sec</docanchor>
+    <docanchor file="index.html" title="Metadata Inspection Helpers">metadata_inspection_sec</docanchor>
+    <docanchor file="index.html" title="GetAllAvailableMetadata">get_all_metadata_subsec</docanchor>
+    <docanchor file="index.html" title="WriteMetadataToMarkdown">write_metadata_md_subsec</docanchor>
     <docanchor file="index.html" title="Sidecar Files">sidecar_sec</docanchor>
+    <docanchor file="index.html" title="Configuration">sidecar_config</docanchor>
+    <docanchor file="index.html" title="Collection Phase">sidecar_collection</docanchor>
+    <docanchor file="index.html" title="Path Generation Phase">sidecar_generation</docanchor>
+    <docanchor file="index.html" title="Execution Phase">sidecar_execution</docanchor>
     <docanchor file="index.html" title="License">license_sec</docanchor>
     <docanchor file="index.html" title="Third-Party Credits">credits_sec</docanchor>
     <docanchor file="index.html" title="Links">links_sec</docanchor>

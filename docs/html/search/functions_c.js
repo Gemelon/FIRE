@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['save_0',['Save',['../d7/d1a/_f_i_r_e_database_8cs.html#a5df140c1ee51aadf7fe88ce3fb9cac33',1,'FIREDatabase.cs']]],
-  ['showhelp_1',['ShowHelp',['../d8/dc6/_f_i_r_e_8_console_2_program_8cs.html#aaaf450777f9e0f705510063bb48a64f4',1,'Program.cs']]]
+  ['truncatepath_0',['TruncatePath',['../dd/d5c/_program_8cs.html#aa8d9c0fbba0c4b1fbd8fba934e1a6014',1,'Program.cs']]]
 ];

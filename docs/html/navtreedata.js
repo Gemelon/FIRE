@@ -27,8 +27,8 @@ var NAVTREE =
   [ "FIRE", "index.html", [
     [ "FIRE — File Information Reorganizer and Extractor", "index.html", "index" ],
     [ "Third-Party Notices", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html", [
-      [ "ExifTool", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md43", null ],
-      [ "SharpExifTool", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md44", null ]
+      [ "ExifTool", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md50", null ],
+      [ "SharpExifTool", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md51", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

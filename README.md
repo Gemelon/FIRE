@@ -261,6 +261,49 @@ message is printed to the console.
 
 ---
 
+## Sidecar File Handling
+
+FIRE automatically detects and processes sidecar files (e.g., `.xmp`, `.pp3`) alongside their primary files.
+
+### How It Works
+
+1. **Configuration**: Define sidecar extensions in your primary file's configuration:
+   ```yaml
+   FileExtensions:
+     .jpg:
+       SidecarFileExtensions:
+         - .xmp
+         - .pp3
+   ```
+
+2. **Collection Phase**: When a primary file is processed, FIRE searches for configured sidecar files in the same directory with the same base name.
+
+3. **Classification**: Each file record is marked as either:
+   - `RegularFile` (0): Primary files
+   - `SidecarFile` (1): Sidecar files
+
+4. **Path Generation**: Sidecar files automatically inherit the target directory and base filename from their primary file, preserving only their own extension.
+
+5. **Execution**: Sidecar files are copied/moved alongside their primary files using the global action setting.
+
+### Example
+
+**Source structure:**
+```
+D:\Import\
+  IMG_1234.jpg
+  IMG_1234.xmp
+```
+
+**After execution:**
+```
+D:\Sorted\2026\07\Apple\
+  2026-07-04_001.jpg
+  2026-07-04_001.xmp
+```
+
+---
+
 ## Examples
 
 ### Sort holiday photos by date and camera model
@@ -339,6 +382,62 @@ The HTML output is written to `docs/html/index.html`.
 
 > **Tip:** Install [Graphviz](https://graphviz.org/) and set `HAVE_DOT = YES`
 > in `docs/Doxyfile` to generate class and call graphs.
+
+### Metadata Inspection API
+
+`FIRECatalog` provides two helper methods for metadata discovery and documentation.
+
+#### `GetAllAvailableMetadata(string filePath)`
+
+Returns all metadata entries for one file as tuples:
+
+- `Source` (e.g. `FILEINFO`, `EXIFTOOL`)
+- `Key` (metadata key/tag name)
+- `Value` (string value)
+
+Behavior:
+
+- Returns an empty list if the file does not exist.
+- Continues gracefully if one metadata source fails.
+- Useful to discover keys for `AvailableKeyWords`.
+
+Example:
+
+```csharp
+var metadata = catalog.GetAllAvailableMetadata(@"D:\Photos\IMG_1234.jpg");
+foreach (var (source, key, value) in metadata)
+{
+    Console.WriteLine($"[{source}] {key}: {value}");
+}
+```
+
+#### `WriteMetadataToMarkdown(string filePath, string? outputPath = null)`
+
+Creates a Markdown report for one file.
+
+Report contains:
+
+- File information (path, name, size, timestamps)
+- Metadata grouped by source
+- Key/value tables
+- Summary statistics
+
+Behavior:
+
+- If `outputPath` is omitted, a `.md` file is created next to the source file.
+- If no metadata is available, the report still contains a warning section.
+
+Example:
+
+```csharp
+// Creates "IMG_1234.md" in the same directory
+catalog.WriteMetadataToMarkdown(@"D:\Photos\IMG_1234.jpg");
+
+// Custom output location
+catalog.WriteMetadataToMarkdown(
+    @"D:\Photos\IMG_1234.jpg",
+    @"D:\Reports\IMG_1234-metadata.md");
+```
 
 ---
 

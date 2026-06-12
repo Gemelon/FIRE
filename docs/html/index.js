@@ -11,7 +11,16 @@ var index =
     [ "Keyword Selection", "index.html#keywords_sec", null ],
     [ "Metadata Sources", "index.html#meta_sources_sec", null ],
     [ "Template Placeholders", "index.html#placeholders_sec", null ],
-    [ "Sidecar Files", "index.html#sidecar_sec", null ],
+    [ "Metadata Inspection Helpers", "index.html#metadata_inspection_sec", [
+      [ "GetAllAvailableMetadata", "index.html#get_all_metadata_subsec", null ],
+      [ "WriteMetadataToMarkdown", "index.html#write_metadata_md_subsec", null ]
+    ] ],
+    [ "Sidecar Files", "index.html#sidecar_sec", [
+      [ "Configuration", "index.html#sidecar_config", null ],
+      [ "Collection Phase", "index.html#sidecar_collection", null ],
+      [ "Path Generation Phase", "index.html#sidecar_generation", null ],
+      [ "Execution Phase", "index.html#sidecar_execution", null ]
+    ] ],
     [ "License", "index.html#license_sec", null ],
     [ "Third-Party Credits", "index.html#credits_sec", null ],
     [ "Links", "index.html#links_sec", null ]

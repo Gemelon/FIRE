@@ -133,11 +133,98 @@
  * | `{MediaRootPath}` | configured root path |
  * | `{Counter:D3}` | sequential number per target directory (e.g. 001, 002, 003) |
  *
+ * @section metadata_inspection_sec Metadata Inspection Helpers
+ *
+ * FIRE::FIRECatalog exposes helper APIs to inspect metadata before writing
+ * `AvailableKeyWords` mappings in YAML configuration.
+ *
+ * @subsection get_all_metadata_subsec GetAllAvailableMetadata
+ *
+ * `GetAllAvailableMetadata(string filePath)` returns all discovered metadata
+ * entries for one file as tuples:
+ *
+ * - `Source` (e.g. `FILEINFO`, `EXIFTOOL`)
+ * - `Key` (metadata key/tag name)
+ * - `Value` (string representation)
+ *
+ * Notes:
+ * - Returns an empty list if the file does not exist.
+ * - Continues with other sources if one source fails.
+ * - Useful for metadata discovery.
+ *
+ * @code{.cs}
+ * var metadata = catalog.GetAllAvailableMetadata(@"D:\Photos\IMG_1234.jpg");
+ * foreach (var (source, key, value) in metadata)
+ * {
+ *     Console.WriteLine($"[{source}] {key}: {value}");
+ * }
+ * @endcode
+ *
+ * @subsection write_metadata_md_subsec WriteMetadataToMarkdown
+ *
+ * `WriteMetadataToMarkdown(string filePath, string? outputPath = null)` writes
+ * a Markdown report containing:
+ *
+ * - File information (path, name, size, timestamps)
+ * - Metadata grouped by source (`FILEINFO`, `EXIFTOOL`)
+ * - Key/value tables
+ * - Summary statistics
+ *
+ * Notes:
+ * - If `outputPath` is omitted, a `.md` file is created next to the source file.
+ * - The report is still generated when no metadata entries are available.
+ *
+ * @code{.cs}
+ * // Creates "IMG_1234.md" next to the source file
+ * catalog.WriteMetadataToMarkdown(@"D:\Photos\IMG_1234.jpg");
+ *
+ * // Custom report path
+ * catalog.WriteMetadataToMarkdown(
+ *     @"D:\Photos\IMG_1234.jpg",
+ *     @"D:\Reports\IMG_1234-metadata.md");
+ * @endcode
+ *
  * @section sidecar_sec Sidecar Files
  *
- * Each file extension configuration can list associated sidecar extensions
- * (e.g. `.xmp` for `.jpg`). Sidecar files are processed alongside their
- * primary file and inherit the same computed target path with their own extension.
+ * FIRE automatically processes sidecar files (e.g. `.xmp`, `.pp3`) alongside
+ * their primary files through a four-phase workflow:
+ *
+ * @subsection sidecar_config Configuration
+ *
+ * Define sidecar extensions in the primary file's configuration:
+ *
+ * @code{.yaml}
+ * FileExtensions:
+ *   .jpg:
+ *     SidecarFileExtensions:
+ *       - .xmp
+ *       - .pp3
+ * @endcode
+ *
+ * @subsection sidecar_collection Collection Phase
+ *
+ * After adding a primary file record to the database, FIRE::FIRECatalog::ProcessSidecarFiles()
+ * searches the same directory for files matching the configured extensions and the same base name.
+ * Each found sidecar is added as a separate FIRE::FIREDbRecord with:
+ * - FIRE::FileClassification::SidecarFile classification
+ * - Cloned metadata from the primary file
+ *
+ * @subsection sidecar_generation Path Generation Phase
+ *
+ * FIRE::FIRECatalog::GenerateTargetPaths() treats sidecar records specially:
+ * - Locates the primary file by matching source directory and base name
+ * - Inherits the primary file's target directory and base filename
+ * - Preserves the sidecar's own extension
+ *
+ * Example:
+ * - Primary: `D:\Import\IMG_1234.jpg` → `D:\Sorted\2026\07\2026-07-04_001.jpg`
+ * - Sidecar: `D:\Import\IMG_1234.xmp` → `D:\Sorted\2026\07\2026-07-04_001.xmp`
+ *
+ * @subsection sidecar_execution Execution Phase
+ *
+ * FIRE::FIRECatalog::ExecuteFileOperations() processes sidecar files using the
+ * global action setting (Copy/Move/Link) from the configuration root, since
+ * sidecar extensions typically have no dedicated extension configuration.
  *
  * @section license_sec License
  *

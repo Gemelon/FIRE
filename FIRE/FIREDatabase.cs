@@ -116,6 +116,62 @@ public class FIREFileMetaData
 }
 
 /// <summary>
+/// Categorizes files by their role in the collection.
+/// </summary>
+/// <remarks>
+/// This enum allows FIRE to distinguish between different file types during
+/// processing. Regular files are processed normally through the metadata extraction
+/// and path generation pipeline. Sidecar files inherit the target path from their
+/// associated primary file (only the extension differs).
+/// </remarks>
+/// <remarks>
+/// <para>
+/// This enumeration distinguishes between primary files that are processed
+/// through the normal metadata extraction pipeline and auxiliary sidecar files
+/// that inherit path generation from their associated primary file.
+/// </para>
+/// <para>
+/// During the collection phase, sidecar files are automatically detected based on
+/// the <c>SidecarFileExtensions</c> configuration and added to the database with
+/// <see cref="SidecarFile"/> classification. In the generate phase, they inherit
+/// the target directory and base filename from their primary file. In the execute
+/// phase, they use the global action setting.
+/// </para>
+/// </remarks>
+public enum FileClassification
+{
+    /// <summary>
+    /// A regular primary file processed through the full FIRE pipeline.
+    /// This is the default classification for all collected files.
+    /// </summary>
+    /// <remarks>
+    /// Regular files (e.g., .jpg, .mp4, .dng) undergo metadata extraction,
+    /// template-based path generation, and file operations according to their
+    /// extension-specific configuration.
+    /// </remarks>
+    RegularFile = 0,
+
+    /// <summary>
+    /// A sidecar file (e.g., .xmp, .pp3) that follows its primary file.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Sidecar files contain auxiliary metadata or processing instructions
+    /// and are typically processed alongside their primary file.
+    /// </para>
+    /// <para>
+    /// Sidecar files inherit the target path from their primary file during
+    /// the generate phase and use the global action during the execute phase.
+    /// They are detected automatically when listed in the primary file's
+    /// <c>SidecarFileExtensions</c> configuration.
+    /// </para>
+    /// </remarks>
+    SidecarFile = 1
+
+    // Future extensions: ThumbnailFile, MetadataFile, PreviewFile, etc.
+}
+
+/// <summary>
 /// Represents one complete file record persisted in the FIRE database.
 /// 
 /// Each <c>FIREDbRecord</c> corresponds to a single source file that has been
@@ -210,6 +266,17 @@ public class FIREDbRecord
     /// Example: <c>D:\Photos\Sorted\2026\07\Apple iPhone 15 Pro\2026-07-04_IMG_1234.jpg</c>
     /// </remarks>
     public string? TargetFilePath { get; set; }
+
+    /// <summary>
+    /// Gets or sets the classification of this file.
+    /// </summary>
+    /// <remarks>
+    /// Determines how the file is processed during the generate phase.
+    /// Regular files have their target paths computed from templates,
+    /// while sidecar files inherit the target path from their associated primary file.
+    /// Defaults to <see cref="FileClassification.RegularFile"/>.
+    /// </remarks>
+    public FileClassification Classification { get; set; } = FileClassification.RegularFile;
 
     /// <summary>
     /// Gets or sets the file metadata entries associated with this record.
@@ -806,6 +873,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             FileId = entity.FileId,
             SourceFilePath = entity.SourceFilePath,
             TargetFilePath = entity.TargetFilePath,
+            Classification = entity.Classification,
             FileMetaDatas = entity.FileMetaDatas
                 .OrderBy(meta => meta.Id)
                 .Select(meta => new FIREFileMetaData
@@ -829,7 +897,8 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             VolumeSerialNumber = model.VolumeSerialNumber,
             FileId = model.FileId,
             SourceFilePath = model.SourceFilePath,
-            TargetFilePath = model.TargetFilePath
+            TargetFilePath = model.TargetFilePath,
+            Classification = model.Classification
         };
 
         foreach (var meta in model.FileMetaDatas)
@@ -921,6 +990,10 @@ internal sealed class FIREDatabaseContext : DbContext
                     value => checked((long)value),
                     value => checked((ulong)value));
 
+            entity.Property(x => x.Classification)
+                .HasConversion<int>()
+                .HasDefaultValue(FileClassification.RegularFile);
+
             entity.HasMany(x => x.FileMetaDatas)
                 .WithOne(x => x.Record)
                 .HasForeignKey(x => x.RecordId)
@@ -980,6 +1053,14 @@ internal sealed class FIREDbRecordEntity
     /// Gets or sets the computed target file path.
     /// </summary>
     public string? TargetFilePath { get; set; }
+
+    /// <summary>
+    /// Gets or sets the classification of this file.
+    /// </summary>
+    /// <remarks>
+    /// Stored as an integer in the database. Defaults to 0 (<see cref="FileClassification.RegularFile"/>).
+    /// </remarks>
+    public FileClassification Classification { get; set; } = FileClassification.RegularFile;
 
     /// <summary>
     /// Gets or sets the collection of file metadata entries associated with this record.

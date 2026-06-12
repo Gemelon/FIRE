@@ -651,6 +651,13 @@ public sealed class FIRECatalog : IDisposable
 
             progressCallback?.Invoke(record.SourceFilePath);
 
+            // Handle sidecar files separately
+            if (record.Classification == FileClassification.SidecarFile)
+            {
+                GenerateSidecarTargetPath(record);
+                continue;
+            }
+
             var extension = Path.GetExtension(record.SourceFilePath).ToLowerInvariant();
             if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) continue;
 
@@ -676,6 +683,60 @@ public sealed class FIRECatalog : IDisposable
                 record.TargetFilePath = Path.Combine(targetDirectory, targetFileName);
         }
         _database.Save();
+    }
+
+    /// <summary>
+    /// Generates the target file path for a sidecar file.
+    /// </summary>
+    /// <param name="sidecarRecord">Database record of the sidecar file.</param>
+    /// <remarks>
+    /// <para>
+    /// Sidecar files inherit the target path from their associated primary file.
+    /// This method searches for the primary file (same directory, same base name,
+    /// different extension) and adopts its target path, retaining only the sidecar's
+    /// original extension.
+    /// </para>
+    /// <para>
+    /// Example:
+    /// <list type="bullet">
+    /// <item><description>Primary: D:\Import\IMG_1234.jpg → D:\Sorted\2026\07\Apple\IMG_1234.jpg</description></item>
+    /// <item><description>Sidecar: D:\Import\IMG_1234.xmp → D:\Sorted\2026\07\Apple\IMG_1234.xmp</description></item>
+    /// </list>
+    /// </para>
+    /// </remarks>
+    private void GenerateSidecarTargetPath(FIREDbRecord sidecarRecord)
+    {
+        if (string.IsNullOrWhiteSpace(sidecarRecord.SourceFilePath))
+            return;
+
+        var sidecarDirectory = Path.GetDirectoryName(sidecarRecord.SourceFilePath);
+        var sidecarBaseName = Path.GetFileNameWithoutExtension(sidecarRecord.SourceFilePath);
+        var sidecarExtension = Path.GetExtension(sidecarRecord.SourceFilePath);
+
+        if (string.IsNullOrWhiteSpace(sidecarDirectory) || string.IsNullOrWhiteSpace(sidecarBaseName))
+            return;
+
+        // Find the primary file in the same directory with the same base name
+        var primaryRecord = _database.FirstOrDefault(r =>
+            r.Classification == FileClassification.RegularFile &&
+            !string.IsNullOrWhiteSpace(r.SourceFilePath) &&
+            string.Equals(Path.GetDirectoryName(r.SourceFilePath), sidecarDirectory, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(Path.GetFileNameWithoutExtension(r.SourceFilePath), sidecarBaseName, StringComparison.OrdinalIgnoreCase));
+
+        if (primaryRecord == null || string.IsNullOrWhiteSpace(primaryRecord.TargetFilePath))
+        {
+            LogMetadataWarning(sidecarRecord.SourceFilePath, "Sidecar", "could not find primary file or primary file has no target path");
+            return;
+        }
+
+        // Inherit target directory and base name from primary, keep sidecar extension
+        var primaryTargetDirectory = Path.GetDirectoryName(primaryRecord.TargetFilePath);
+        var primaryTargetBaseName = Path.GetFileNameWithoutExtension(primaryRecord.TargetFilePath);
+
+        if (!string.IsNullOrWhiteSpace(primaryTargetDirectory) && !string.IsNullOrWhiteSpace(primaryTargetBaseName))
+        {
+            sidecarRecord.TargetFilePath = Path.Combine(primaryTargetDirectory, primaryTargetBaseName + sidecarExtension);
+        }
     }
 
     /// <summary>
@@ -714,10 +775,22 @@ public sealed class FIRECatalog : IDisposable
 
             progressCallback?.Invoke(record.SourceFilePath);
 
-            var extension = Path.GetExtension(record.SourceFilePath).ToLowerInvariant();
-            if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) continue;
+            string action;
 
-            var action = extConfig.Action ?? _configuration.Action ?? "Copy";
+            // Sidecar files inherit the action from their primary file
+            if (record.Classification == FileClassification.SidecarFile)
+            {
+                // Use global default action for sidecars
+                action = _configuration.Action ?? "Copy";
+            }
+            else
+            {
+                // Regular files use their extension-specific configuration
+                var extension = Path.GetExtension(record.SourceFilePath).ToLowerInvariant();
+                if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) continue;
+                action = extConfig.Action ?? _configuration.Action ?? "Copy";
+            }
+
             ExecuteAction(action, record.SourceFilePath, record.TargetFilePath);
         }
         _database.Save();
@@ -815,6 +888,85 @@ public sealed class FIRECatalog : IDisposable
         }
 
         _database.Add(record);
+        ProcessSidecarFiles(filePath, extConfig, record);
+    }
+
+    /// <summary>
+    /// Searches for and processes sidecar files associated with a primary file.
+    /// </summary>
+    /// <param name="primaryFilePath">Absolute path to the primary file.</param>
+    /// <param name="extConfig">File extension configuration for the primary file.</param>
+    /// <param name="primaryRecord">Database record of the primary file.</param>
+    /// <remarks>
+    /// <para>
+    /// Sidecar files are auxiliary files (e.g., .xmp, .pp3) that contain metadata
+    /// or processing instructions for a primary file. This method:
+    /// <list type="number">
+    /// <item><description>Checks if sidecar extensions are configured</description></item>
+    /// <item><description>Searches for each configured sidecar extension in the same directory</description></item>
+    /// <item><description>Creates a database record for each found sidecar</description></item>
+    /// <item><description>Copies metadata from the primary file to enable path generation</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Sidecar records are marked with <see cref="FileClassification.SidecarFile"/> so they
+    /// can be handled specially during the generate phase (they inherit the target path from
+    /// their primary file).
+    /// </para>
+    /// </remarks>
+    private void ProcessSidecarFiles(string primaryFilePath, FileExtensionConfiguration extConfig, FIREDbRecord primaryRecord)
+    {
+        if (extConfig.SidecarFileExtensions == null || extConfig.SidecarFileExtensions.Count == 0)
+            return;
+
+        var directory = Path.GetDirectoryName(primaryFilePath);
+        if (string.IsNullOrWhiteSpace(directory) || !Directory.Exists(directory))
+            return;
+
+        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(primaryFilePath);
+
+        foreach (var sidecarExtension in extConfig.SidecarFileExtensions)
+        {
+            var normalizedExtension = sidecarExtension.StartsWith(".", StringComparison.Ordinal)
+                ? sidecarExtension
+                : "." + sidecarExtension;
+
+            var sidecarPath = Path.Combine(directory, fileNameWithoutExtension + normalizedExtension);
+
+            if (!File.Exists(sidecarPath))
+                continue;
+
+            try
+            {
+                var fileIdInfo = GetFileIdInfo(sidecarPath);
+                var sidecarRecord = new FIREDbRecord
+                {
+                    SourceFilePath = sidecarPath,
+                    VolumeSerialNumber = fileIdInfo.VolumeSerialNumber,
+                    FileId = fileIdInfo.FileId,
+                    Classification = FileClassification.SidecarFile
+                };
+
+                // Clone metadata from primary file so the sidecar can inherit the target path
+                foreach (var metadata in primaryRecord.FileMetaDatas)
+                {
+                    sidecarRecord.FileMetaDatas.Add(new FIREFileMetaData
+                    {
+                        Key = metadata.Key,
+                        Value = metadata.Value,
+                        TypeName = metadata.TypeName,
+                        DataSource = metadata.DataSource
+                    });
+                }
+
+                _database.Add(sidecarRecord);
+            }
+            catch
+            {
+                // If sidecar processing fails, continue with next sidecar
+                // The primary file is already in the database
+            }
+        }
     }
 
     /// <summary>
