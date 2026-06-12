@@ -1,7 +1,7 @@
 # FIRE — File Information Reorganizer and Extractor
 
 <p align="center">
-  <img src="docs/FIRE Logo 3.png" alt="FIRE Logo" width="400"/>
+  <img src="docs/FIRE Logo 3.png" alt="FIRE Logo" width="200"/>
 </p>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
