@@ -1,5 +1,9 @@
 # FIRE — File Information Reorganizer and Extractor
 
+<p align="center">
+  <img src="docs/FIRE Logo 3.png" alt="FIRE Logo" width="400"/>
+</p>
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/10.0)
 [![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](https://www.microsoft.com/windows)
