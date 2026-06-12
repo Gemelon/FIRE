@@ -603,8 +603,8 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         ThrowIfDisposed();
 
         _records.Add(item);
-        PersistCurrentState("Added", true, null);
-        Reload();
+        //PersistCurrentState("Added", true, null);
+        //Reload();
     }
 
     /// <summary>

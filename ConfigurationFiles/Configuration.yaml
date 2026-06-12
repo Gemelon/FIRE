@@ -1,9 +1,10 @@
 ﻿---
 ConfigurationVersion: 1.00
 FilesRootPath: 
-  - D:\Projekte\Projekte_2026\TestData\05
-  - D:\Projekte\Projekte_2026\TestData\04
   - D:\Projekte\Projekte_2026\TestData\Neuer Ordner (3)
+  - D:\Projekte\Projekte_2026\TestData\Samsung SM-F766B
+  - D:\Projekte\Projekte_2026\TestData\Samsung SM-S938B
+  - D:\Projekte\Projekte_2026\TestData\Samsung SM-X520
 DataBasePath: D:\Projekte\Projekte_2026\TestDataTarget
 DataBaseFileName: FiReDatabase.db
 Action: Copy
