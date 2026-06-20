@@ -7,6 +7,8 @@ var searchData=
   ['third_20party_20notices_4',['Third-Party Notices',['../d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html',1,'']]],
   ['third_2dparty_2dnotices_2emd_5',['THIRD-PARTY-NOTICES.md',['../da/dc3/_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s_8md.html',1,'']]],
   ['three_20step_20workflow_6',['Three-Step Workflow',['../index.html#workflow_sec',1,'']]],
-  ['truncatepath_7',['TruncatePath',['../dd/d5c/_program_8cs.html#aa8d9c0fbba0c4b1fbd8fba934e1a6014',1,'Program.cs']]],
-  ['typename_8',['TypeName',['../d7/d1a/_f_i_r_e_database_8cs.html#a2f7c9c3aa885d033c6523e6715dba680',1,'FIREFileMetaData']]]
+  ['throwifcancellationrequested_7',['ThrowIfCancellationRequested',['../d5/d39/class_app_lifetime.html#a369ef0f0b61b7a75d0a8f1c27c124922',1,'AppLifetime']]],
+  ['truncatepath_8',['TruncatePath',['../dd/d5c/_program_8cs.html#aa8d9c0fbba0c4b1fbd8fba934e1a6014',1,'Program.cs']]],
+  ['trycopytoclipboard_9',['TryCopyToClipboard',['../dd/d5c/_program_8cs.html#a87589422517558b0ed017ac8438892ae',1,'Program.cs']]],
+  ['typename_10',['TypeName',['../d7/d1a/_f_i_r_e_database_8cs.html#a2f7c9c3aa885d033c6523e6715dba680',1,'FIREFileMetaData']]]
 ];

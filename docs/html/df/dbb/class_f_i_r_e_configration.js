@@ -10,6 +10,8 @@ var class_f_i_r_e_configration =
     [ "DataBasePath", "df/dbb/class_f_i_r_e_configration.html#a9e21d63a7be7eb2fc97ce51348039180", null ],
     [ "FileExtensions", "df/dbb/class_f_i_r_e_configration.html#a076a2da18160edf92386073c50428b3e", null ],
     [ "FileNamePatern", "df/dbb/class_f_i_r_e_configration.html#aae0421b0feb127698f270828b6f58881", null ],
+    [ "FileSorting", "df/dbb/class_f_i_r_e_configration.html#a0c86337e613a78fea57b9e0eff64399c", null ],
+    [ "FileSortingOrder", "df/dbb/class_f_i_r_e_configration.html#a1879ddb0e28a602725563187cd86c8f6", null ],
     [ "FilesRootPath", "df/dbb/class_f_i_r_e_configration.html#a7330a44bb06214211b69095e34b9df80", null ],
     [ "MediaRootPath", "df/dbb/class_f_i_r_e_configration.html#aa773e66f6dd7f501b1d4c5017ef23a2b", null ],
     [ "RootPath", "df/dbb/class_f_i_r_e_configration.html#ae8b786d3e935425d04a7c35f24b2aa32", null ],

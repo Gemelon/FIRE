@@ -7,6 +7,7 @@ var _f_i_r_e_catalog_8cs =
       [ "VolumeSerialNumber", "db/d24/_f_i_r_e_catalog_8cs.html#a564cffd9bc32c2920de981959cba0e99", null ]
     ] ],
     [ "FileInfoByHandleClass", "db/d24/_f_i_r_e_catalog_8cs.html#ae03b337fb935f5276a534f5220615928", null ],
+    [ "ClearDatabase", "db/d24/_f_i_r_e_catalog_8cs.html#a08c18d301e13f48def803bd50019d276", null ],
     [ "CollectFiles", "db/d24/_f_i_r_e_catalog_8cs.html#a7699db9161ac26db6231f6b201d3b94b", null ],
     [ "Dispose", "db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7", null ],
     [ "DllImport", "db/d24/_f_i_r_e_catalog_8cs.html#a2a7ad26a66f0fc022a8788adfb0c262e", null ],

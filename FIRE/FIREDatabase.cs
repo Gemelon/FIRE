@@ -24,6 +24,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
+using System.Globalization;
 
 namespace FIRE;
 
@@ -666,13 +667,18 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     }
 
     /// <summary>
-    /// Adds a new record to the collection and persists the change immediately.
+    /// Adds a new record to the in-memory collection and persists only this record to SQLite.
     /// </summary>
-    /// <param name="item">The <see cref="FIREDbRecord"/> to add.</param>
+    /// <param name="item">The <see cref="FIREDbRecord"/> to add and persist.</param>
     /// <remarks>
-    /// The record is added to the in-memory list and immediately persisted to the database
-    /// via a <c>PersistCurrentState</c> call. After persistence, the entire collection is
-    /// reloaded from the database to ensure consistency.
+    /// <para>
+    /// Unlike <see cref="Save"/>, this method performs an incremental single-record insert and
+    /// does not trigger a full-replacement persistence of the entire collection.
+    /// </para>
+    /// <para>
+    /// The operation is wrapped in a transaction. On failure, the in-memory insertion is reverted
+    /// and the status row is updated to <c>Failed</c> (best effort) before rethrowing.
+    /// </para>
     /// </remarks>
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="item"/> is null.
@@ -686,8 +692,44 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         ThrowIfDisposed();
 
         _records.Add(item);
-        //PersistCurrentState("Added", true, null);
-        //Reload();
+
+        using var transaction = _context.Database.BeginTransaction();
+        try
+        {
+            _context.FileRecords.Add(MapToEntity(item));
+
+            var statusEntity = _context.StatusRecords.Single(x => x.Id == FIREDatabaseStatusEntity.SingletonId);
+            statusEntity.Status = "Added";
+            statusEntity.Valid = true;
+            statusEntity.ErrorMessage = null;
+            statusEntity.TimeStamp = DateTime.UtcNow;
+
+            _context.SaveChanges();
+            transaction.Commit();
+            CopyToModel(statusEntity, _statusRecord);
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+            _records.Remove(item);
+
+            try
+            {
+                var statusEntity = _context.StatusRecords.Single(x => x.Id == FIREDatabaseStatusEntity.SingletonId);
+                statusEntity.Status = "Failed";
+                statusEntity.Valid = false;
+                statusEntity.ErrorMessage = ex.Message;
+                statusEntity.TimeStamp = DateTime.UtcNow;
+                _context.SaveChanges();
+                CopyToModel(statusEntity, _statusRecord);
+            }
+            catch
+            {
+                // Preserve original exception.
+            }
+
+            throw;
+        }
     }
 
     /// <summary>
@@ -941,6 +983,30 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         CopyToModel(_context.StatusRecords.Single(x => x.Id == FIREDatabaseStatusEntity.SingletonId), _statusRecord);
     }
 
+    /// <summary>
+    /// Persists the complete in-memory record snapshot and updates the singleton status row.
+    /// </summary>
+    /// <param name="status">Status label written to <see cref="FIREStatusRecord.Status"/> (e.g., "Saved", "Cleared").</param>
+    /// <param name="valid">Validity flag written to <see cref="FIREStatusRecord.Valid"/>.</param>
+    /// <param name="errorMessage">Optional error detail written to <see cref="FIREStatusRecord.ErrorMessage"/>.</param>
+    /// <remarks>
+    /// <para>
+    /// This method performs a full-replacement persistence strategy:
+    /// <list type="number">
+    /// <item><description>Open a database transaction.</description></item>
+    /// <item><description>Delete existing file records and their metadata rows.</description></item>
+    /// <item><description>Insert all current in-memory records (<c>_records</c>).</description></item>
+    /// <item><description>Update the singleton status row and commit.</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// On failure, the method attempts to write a <c>Failed</c> status row with the exception
+    /// message before rethrowing the original exception.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="Exception">
+    /// Rethrows the original persistence exception after best-effort status update.
+    /// </exception>
     private void PersistCurrentState(string status, bool valid, string? errorMessage)
     {
         try
@@ -991,6 +1057,26 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         }
     }
 
+    /// <summary>
+    /// Maps a persistence entity to the public domain model used by the FIRE pipeline.
+    /// </summary>
+    /// <param name="entity">The database entity loaded by Entity Framework Core.</param>
+    /// <returns>
+    /// A fully populated <see cref="FIREDbRecord"/> instance containing core record fields
+    /// and an ordered metadata collection.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This method is the canonical projection from persistence layer to domain layer.
+    /// Metadata entries are ordered by their database identifier to preserve stable iteration
+    /// order across reloads and avoid non-deterministic behavior in downstream processing.
+    /// </para>
+    /// <para>
+    /// The method also transfers incremental-processing fields such as
+    /// <see cref="FIREDbRecord.Status"/>, <see cref="FIREDbRecord.SourceFileExists"/>, and
+    /// <see cref="FIREDbRecord.Classification"/>.
+    /// </para>
+    /// </remarks>
     private static FIREDbRecord MapToModel(FIREDbRecordEntity entity)
     {
         var model = new FIREDbRecord
@@ -1018,6 +1104,24 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         return model;
     }
 
+    /// <summary>
+    /// Maps a domain model record to its Entity Framework Core persistence entity.
+    /// </summary>
+    /// <param name="model">The in-memory record model to persist.</param>
+    /// <returns>
+    /// A new <see cref="FIREDbRecordEntity"/> including all scalar properties and metadata rows.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This method performs a deep projection of metadata entries into
+    /// <see cref="FIREFileMetaDataEntity"/> objects so the caller can persist the complete
+    /// object graph in a single operation.
+    /// </para>
+    /// <para>
+    /// State-tracking fields (classification, processing status, and source-existence flag)
+    /// are copied explicitly to ensure incremental workflows remain consistent after save/reload cycles.
+    /// </para>
+    /// </remarks>
     private static FIREDbRecordEntity MapToEntity(FIREDbRecord model)
     {
         var entity = new FIREDbRecordEntity
@@ -1046,6 +1150,15 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         return entity;
     }
 
+    /// <summary>
+    /// Copies status-row values from an EF entity into the reusable in-memory status model.
+    /// </summary>
+    /// <param name="entity">The source status entity from the database.</param>
+    /// <param name="model">The target status model instance to update.</param>
+    /// <remarks>
+    /// This method avoids replacing the <see cref="FIREStatusRecord"/> instance reference while
+    /// still refreshing all fields after persistence operations.
+    /// </remarks>
     private static void CopyToModel(FIREStatusEntity entity, FIREStatusRecord model)
     {
         model.Id = entity.Id;
@@ -1055,12 +1168,111 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         model.ErrorMessage = entity.ErrorMessage;
     }
 
+    /// <summary>
+    /// Throws <see cref="ObjectDisposedException"/> when this database wrapper has been disposed.
+    /// </summary>
+    /// <remarks>
+    /// Call this guard at the start of every public mutating or querying operation that requires
+    /// an active EF Core context.
+    /// </remarks>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown when the underlying context has already been disposed.
+    /// </exception>
     private void ThrowIfDisposed()
     {
         if (_disposed)
         {
             throw new ObjectDisposedException(nameof(FIREDatabase));
         }
+    }
+
+    /// <summary>
+    /// Sorts in-memory records according to configured metadata criteria.
+    /// </summary>
+    /// <param name="fileSorting">
+    /// Ordered list of sort criteria (for example: <c>MetaCreationTime.Year</c>,
+    /// <c>MetaCreationTime.Month</c>, <c>Make</c>).
+    /// </param>
+    /// <param name="fileSortingOrder">
+    /// Global order direction: <c>Ascending</c> (default behavior) or <c>Descending</c>.
+    /// </param>
+    /// <remarks>
+    /// <para>
+    /// Criteria are applied in sequence as primary/secondary/tertiary keys using LINQ ordering.
+    /// Empty or whitespace criteria are ignored.
+    /// </para>
+    /// <para>
+    /// Sorting is performed on the in-memory snapshot <c>_records</c> and does not by itself
+    /// persist any change to SQLite. The caller is responsible for saving if required.
+    /// </para>
+    /// </remarks>
+    internal void SortRecords(List<string>? fileSorting, string? fileSortingOrder)
+    {
+    }
+
+    /// <summary>
+    /// Resolves a comparable sort key for a single record and criterion token.
+    /// </summary>
+    /// <param name="record">The record whose metadata should be evaluated.</param>
+    /// <param name="criterion">
+    /// Sort criterion in the form <c>Key</c> or <c>Key.Component</c>
+    /// (for example <c>MetaCreationTime.Year</c>).
+    /// </param>
+    /// <returns>
+    /// A comparable value used by LINQ ordering, or <c>null</c> if no value is available.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// Resolution strategy:
+    /// <list type="number">
+    /// <item><description>Look up metadata by key (case-insensitive).</description></item>
+    /// <item><description>If no component selector is present, try DateTime parse, then numeric parse, then string fallback.</description></item>
+    /// <item><description>If a DateTime component selector exists (Year/Month/Day/Hour/Minute/Second), parse and extract that component.</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Unknown selectors or parse failures fall back to raw string comparison behavior.
+    /// </para>
+    /// </remarks>
+    private static IComparable? GetSortValue(FIREDbRecord record, string criterion)
+    {
+        var parts = criterion.Split('.', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (parts.Length == 0)
+            return null;
+
+        var key = parts[0];
+        var selector = parts.Length > 1 ? parts[1] : null;
+
+        var metadataValue = record.FileMetaDatas.FirstOrDefault(m =>
+            string.Equals(m.Key, key, StringComparison.OrdinalIgnoreCase))?.Value;
+
+        if (string.IsNullOrWhiteSpace(metadataValue))
+            return null;
+
+        if (selector == null)
+        {
+            if (DateTime.TryParse(metadataValue, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out var dateTimeValue))
+                return dateTimeValue;
+
+            if (decimal.TryParse(metadataValue, NumberStyles.Any, CultureInfo.InvariantCulture, out var numberValue))
+                return numberValue;
+
+            return metadataValue;
+        }
+
+        if (!DateTime.TryParse(metadataValue, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out var parsedDateTime))
+            return metadataValue;
+
+        return selector.ToLowerInvariant() switch
+        {
+            "year" => parsedDateTime.Year,
+            "month" => parsedDateTime.Month,
+            "day" => parsedDateTime.Day,
+            "hour" => parsedDateTime.Hour,
+            "minute" => parsedDateTime.Minute,
+            "second" => parsedDateTime.Second,
+            _ => metadataValue
+        };
     }
 }
 

@@ -27,8 +27,10 @@ var searchData=
   ['filerenameinfo_24',['FileRenameInfo',['../db/d24/_f_i_r_e_catalog_8cs.html#a77180a79f688e4df4f2c4f9b7d4f73d2',1,'FIRECatalog.cs']]],
   ['filesizehigh_25',['FileSizeHigh',['../db/d24/_f_i_r_e_catalog_8cs.html#ae5398e3ef19fee6587c5121f76e18110',1,'FIRECatalog.cs']]],
   ['filesizelow_26',['FileSizeLow',['../db/d24/_f_i_r_e_catalog_8cs.html#a9fa80beffdf0d5c8dd40408ede398e29',1,'FIRECatalog.cs']]],
-  ['filesrootpath_27',['FilesRootPath',['../df/dbb/class_f_i_r_e_configration.html#a7330a44bb06214211b69095e34b9df80',1,'FIREConfigration::FilesRootPath'],['../d1/d3c/_f_i_r_e_configration_8cs.html#ae5a75378c68884efcb0e1c484ae21c23',1,'FilesRootPath:&#160;FIREConfigration.cs']]],
-  ['filestandardinfo_28',['FileStandardInfo',['../db/d24/_f_i_r_e_catalog_8cs.html#ad04b748afd8c2c059087ab20fbacb276',1,'FIRECatalog.cs']]],
-  ['filestorageinfo_29',['FileStorageInfo',['../db/d24/_f_i_r_e_catalog_8cs.html#a00278eba084553a42cf32c32d033fe56',1,'FIRECatalog.cs']]],
-  ['filestreaminfo_30',['FileStreamInfo',['../db/d24/_f_i_r_e_catalog_8cs.html#a244a54a21cb72b217b969b614dc50bfd',1,'FIRECatalog.cs']]]
+  ['filesorting_27',['FileSorting',['../df/dbb/class_f_i_r_e_configration.html#a0c86337e613a78fea57b9e0eff64399c',1,'FIREConfigration::FileSorting'],['../d1/d3c/_f_i_r_e_configration_8cs.html#ac1a440ebd9b6b228eb302c563d496d86',1,'FileSorting:&#160;FIREConfigration.cs']]],
+  ['filesortingorder_28',['FileSortingOrder',['../df/dbb/class_f_i_r_e_configration.html#a1879ddb0e28a602725563187cd86c8f6',1,'FIREConfigration::FileSortingOrder'],['../d1/d3c/_f_i_r_e_configration_8cs.html#ac60df9be0840e23a27e41eaca9f08a37',1,'FileSortingOrder:&#160;FIREConfigration.cs']]],
+  ['filesrootpath_29',['FilesRootPath',['../df/dbb/class_f_i_r_e_configration.html#a7330a44bb06214211b69095e34b9df80',1,'FIREConfigration::FilesRootPath'],['../d1/d3c/_f_i_r_e_configration_8cs.html#ae5a75378c68884efcb0e1c484ae21c23',1,'FilesRootPath:&#160;FIREConfigration.cs']]],
+  ['filestandardinfo_30',['FileStandardInfo',['../db/d24/_f_i_r_e_catalog_8cs.html#ad04b748afd8c2c059087ab20fbacb276',1,'FIRECatalog.cs']]],
+  ['filestorageinfo_31',['FileStorageInfo',['../db/d24/_f_i_r_e_catalog_8cs.html#a00278eba084553a42cf32c32d033fe56',1,'FIRECatalog.cs']]],
+  ['filestreaminfo_32',['FileStreamInfo',['../db/d24/_f_i_r_e_catalog_8cs.html#a244a54a21cb72b217b969b614dc50bfd',1,'FIRECatalog.cs']]]
 ];

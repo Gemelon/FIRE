@@ -605,13 +605,13 @@ public sealed class FIRECatalog : IDisposable
         ThrowIfDisposed();
         // No longer clearing the database automatically - incremental workflow
         // Use ClearDatabase() method explicitly if a fresh start is required
+        // Records are persisted incrementally in FIREDatabase.Add(...)
 
         foreach (var rootPath in _configuration.FilesRootPath)
         {
             if (!Directory.Exists(rootPath)) continue;
             CollectFromDirectory(rootPath, progressCallback);
         }
-        _database.Save();
     }
 
     /// <summary>
@@ -664,6 +664,8 @@ public sealed class FIRECatalog : IDisposable
     {
         ThrowIfDisposed();
         var directoryCounters = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+        _database.SortRecords(_configuration.FileSorting, _configuration.FileSortingOrder);
 
         foreach (var record in _database)
         {

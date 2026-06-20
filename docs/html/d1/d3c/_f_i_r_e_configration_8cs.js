@@ -15,6 +15,8 @@ var _f_i_r_e_configration_8cs =
     [ "FileClass", "d1/d3c/_f_i_r_e_configration_8cs.html#a75f7ba10d4e93a8705107796240bc8ad", null ],
     [ "FileExtensions", "d1/d3c/_f_i_r_e_configration_8cs.html#a218756e7b9554057f91a6fbfa85803a9", null ],
     [ "FileNamePatern", "d1/d3c/_f_i_r_e_configration_8cs.html#a7b7e81bdf960f55fe8288e5549d94c38", null ],
+    [ "FileSorting", "d1/d3c/_f_i_r_e_configration_8cs.html#ac1a440ebd9b6b228eb302c563d496d86", null ],
+    [ "FileSortingOrder", "d1/d3c/_f_i_r_e_configration_8cs.html#ac60df9be0840e23a27e41eaca9f08a37", null ],
     [ "FilesRootPath", "d1/d3c/_f_i_r_e_configration_8cs.html#ae5a75378c68884efcb0e1c484ae21c23", null ],
     [ "MediaRootPath", "d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1", null ],
     [ "RootPath", "d1/d3c/_f_i_r_e_configration_8cs.html#a75b2b0dd23b0061dde23e70727d89fa1", null ],

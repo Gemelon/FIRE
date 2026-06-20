@@ -9,6 +9,7 @@
     <name>Program.cs</name>
     <path>FIRE/FIRE.Console/</path>
     <filename>dd/d5c/_program_8cs.html</filename>
+    <class kind="class">AppLifetime</class>
     <member kind="function">
       <type></type>
       <name>if</name>
@@ -48,8 +49,8 @@
       <type>static int</type>
       <name>ExecuteCollect</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a33a1022b76d465aae062457c32f41e22</anchor>
-      <arglist>(string configPath, string culture)</arglist>
+      <anchor>ae0bd6f748521ce5078bccddef345ce2e</anchor>
+      <arglist>(string configPath, string culture, bool clearDatabase)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static int</type>
@@ -71,6 +72,13 @@
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
       <anchor>abb7329a2aabb4bd1ab7436a37f81df6d</anchor>
       <arglist>(string[] args, string configPath, string culture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static bool</type>
+      <name>TryCopyToClipboard</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a87589422517558b0ed017ac8438892ae</anchor>
+      <arglist>(string text)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static string</type>
@@ -98,6 +106,20 @@
       <name>culture</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
       <anchor>aaca62e4b78ac038ade08c841b7587678</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>bool</type>
+      <name>clearDatabase</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a30aa0df2409a5ff191c700d63dec9fff</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>Console</type>
+      <name>CancelKeyPress</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>acdc93c646070c53e372463f03ccdf388</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -191,6 +213,13 @@
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
       <anchor>a7699db9161ac26db6231f6b201d3b94b</anchor>
       <arglist>(Action&lt; string &gt;? progressCallback=null)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ClearDatabase</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>a08c18d301e13f48def803bd50019d276</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -613,6 +642,20 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>List&lt; string &gt;</type>
+      <name>FileSorting</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>ac1a440ebd9b6b228eb302c563d496d86</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>FileSortingOrder</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>ac60df9be0840e23a27e41eaca9f08a37</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>string</type>
       <name>FileClass</name>
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
@@ -656,6 +699,24 @@
     <name>THIRD-PARTY-NOTICES.md</name>
     <path>FIRE/</path>
     <filename>da/dc3/_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s_8md.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>AppLifetime</name>
+    <filename>d5/d39/class_app_lifetime.html</filename>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>ThrowIfCancellationRequested</name>
+      <anchorfile>d5/d39/class_app_lifetime.html</anchorfile>
+      <anchor>a369ef0f0b61b7a75d0a8f1c27c124922</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static volatile bool</type>
+      <name>IsCancellationRequested</name>
+      <anchorfile>d5/d39/class_app_lifetime.html</anchorfile>
+      <anchor>a4150c509f15565982db5d75b89d30c75</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>AvailableKeywordConfiguration</name>
@@ -860,6 +921,20 @@
       <name>FileExtensions</name>
       <anchorfile>df/dbb/class_f_i_r_e_configration.html</anchorfile>
       <anchor>a076a2da18160edf92386073c50428b3e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>List&lt; string &gt;</type>
+      <name>FileSorting</name>
+      <anchorfile>df/dbb/class_f_i_r_e_configration.html</anchorfile>
+      <anchor>a0c86337e613a78fea57b9e0eff64399c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>FileSortingOrder</name>
+      <anchorfile>df/dbb/class_f_i_r_e_configration.html</anchorfile>
+      <anchor>a1879ddb0e28a602725563187cd86c8f6</anchor>
       <arglist></arglist>
     </member>
   </compound>

@@ -2,7 +2,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FIRE\FIRE.csproj" />
+    <None Include="..\..\..\..\Media\FIRE.collect.bat" Link="ScriptFiles\FIRE.collect.bat" />
+    <None Include="..\..\..\..\Media\FIRE.execute.bat" Link="ScriptFiles\FIRE.execute.bat" />
+    <None Include="..\..\..\..\Media\Fire.generate.bat" Link="ScriptFiles\Fire.generate.bat" />
     <None Include="..\THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ScriptFiles\" />
   </ItemGroup>
 
   <PropertyGroup>

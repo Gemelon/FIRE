@@ -92,7 +92,7 @@ public sealed class FIREConfigration
     /// Configuration files must have <see cref="ConfigurationVersion"/> equal to this value.
     /// If the versions do not match, <see cref="EnsureSupportedConfigurationVersion"/> will throw.
     /// </remarks>
-    public const decimal SupportedConfigurationVersion = 1.00m;
+    public const decimal SupportedConfigurationVersion = 1.10m;
 
     /// <summary>
     /// Gets or sets the configuration format version.
@@ -224,6 +224,33 @@ public sealed class FIREConfigration
     public Dictionary<string, FileExtensionConfiguration> FileExtensions { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
+    /// Gets or sets the ordered list of metadata keys used to sort records before path generation.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Each entry represents one sort criterion. Typical values are metadata keys such as
+    /// <c>Make</c>, <c>Model</c>, or date-time component selectors like
+    /// <c>MetaCreationTime.Year</c>, <c>MetaCreationTime.Month</c>, <c>MetaCreationTime.Day</c>.
+    /// </para>
+    /// <para>
+    /// The criteria are applied in the listed order (primary, secondary, tertiary, ...).
+    /// If the list is empty, no explicit sorting is performed.
+    /// </para>
+    /// </remarks>
+    [YamlMember(Alias = "FileSorting")]
+    public List<string> FileSorting { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the global sorting direction used for <see cref="FileSorting"/>.
+    /// </summary>
+    /// <remarks>
+    /// Supported values are <c>Ascending</c> and <c>Descending</c> (case-insensitive).
+    /// Defaults to <c>Ascending</c>.
+    /// </remarks>
+    [YamlMember(Alias = "FileSortingOrder")]
+    public string FileSortingOrder { get; set; } = "Ascending";
+
+    /// <summary>
     /// Loads a FIRE configuration from a YAML file on disk.
     /// </summary>
     /// <param name="filePath">The absolute or relative path to the configuration YAML file.</param>
@@ -315,6 +342,8 @@ public sealed class FIREConfigration
         RootPath = string.IsNullOrWhiteSpace(RootPath) ? "{MediaRootPath}" : RootPath;
         SortingPatern ??= string.Empty;
         FileNamePatern ??= string.Empty;
+        FileSorting ??= [];
+        FileSortingOrder = string.IsNullOrWhiteSpace(FileSortingOrder) ? "Ascending" : FileSortingOrder;
         StringReplacements ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         FileExtensions ??= new Dictionary<string, FileExtensionConfiguration>(StringComparer.OrdinalIgnoreCase);
 

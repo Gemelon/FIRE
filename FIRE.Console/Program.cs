@@ -1,6 +1,7 @@
 ﻿// (C) 2026 by Thomas Stoll
 // MIT License - See LICENSE file for details
 
+using System.Diagnostics;
 using System.Globalization;
 using FIRE;
 
@@ -15,6 +16,15 @@ var command = args[0].ToLowerInvariant();
 string? configPath = null;
 string? culture = null;
 bool clearDatabase = false;
+
+Console.CancelKeyPress += (_, e) =>
+{
+    e.Cancel = true;
+    AppLifetime.IsCancellationRequested = true;
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.WriteLine("\nCTRL+C detected. Stopping gracefully...");
+    Console.ResetColor();
+};
 
 // Parse arguments
 for (int i = 1; i < args.Length; i++)
@@ -78,6 +88,7 @@ static int ShowHelp()
     Console.WriteLine("  --clear             Short form of --clear-database");
     Console.WriteLine("  --file, -f          Path to the file to inspect (required for inspect command)");
     Console.WriteLine("  --output, -o        Output path for the Markdown report (optional for inspect)");
+    Console.WriteLine("  --copy-path         Copy the generated Markdown path to clipboard (inspect only)");
     Console.WriteLine();
     Console.WriteLine("Examples:");
     Console.WriteLine("  FIRE.Console collect --config \"Configuration.yaml\" --culture \"de-DE\"");
@@ -86,6 +97,7 @@ static int ShowHelp()
     Console.WriteLine("  FIRE.Console execute --config \"Configuration.yaml\" --culture \"de-DE\"");
     Console.WriteLine("  FIRE.Console inspect --config \"Configuration.yaml\" --culture \"de-DE\" --file \"image.jpg\"");
     Console.WriteLine("  FIRE.Console inspect --config \"Configuration.yaml\" --culture \"de-DE\" --file \"image.jpg\" --output \"report.md\"");
+    Console.WriteLine("  FIRE.Console inspect --config \"Configuration.yaml\" --culture \"de-DE\" --file \"image.jpg\" --copy-path");
     return 1;
 }
 
@@ -137,6 +149,7 @@ static int ExecuteCollect(string configPath, string culture, bool clearDatabase)
         int fileCount = 0;
         catalog.CollectFiles(filePath =>
         {
+            AppLifetime.ThrowIfCancellationRequested();
             fileCount++;
             Console.Write($"\r[{fileCount}] Processing: {TruncatePath(filePath, 80)}".PadRight(Console.WindowWidth - 1));
         });
@@ -149,6 +162,13 @@ static int ExecuteCollect(string configPath, string culture, bool clearDatabase)
 
         Console.WriteLine("Use the database to inspect collected files.");
         return 0;
+    }
+    catch (OperationCanceledException)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Operation canceled by user (CTRL+C).");
+        Console.ResetColor();
+        return 2;
     }
     catch (Exception ex)
     {
@@ -196,6 +216,7 @@ static int ExecuteGenerate(string configPath, string culture)
         int fileCount = 0;
         catalog.GenerateTargetPaths(filePath =>
         {
+            AppLifetime.ThrowIfCancellationRequested();
             fileCount++;
             Console.Write($"\r[{fileCount}] Generating: {TruncatePath(filePath, 80)}".PadRight(Console.WindowWidth - 1));
         });
@@ -208,6 +229,13 @@ static int ExecuteGenerate(string configPath, string culture)
 
         Console.WriteLine("Use the database to inspect generated target paths.");
         return 0;
+    }
+    catch (OperationCanceledException)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Operation canceled by user (CTRL+C).");
+        Console.ResetColor();
+        return 2;
     }
     catch (Exception ex)
     {
@@ -255,6 +283,7 @@ static int ExecuteOperations(string configPath, string culture)
         int fileCount = 0;
         catalog.ExecuteFileOperations(filePath =>
         {
+            AppLifetime.ThrowIfCancellationRequested();
             fileCount++;
             Console.Write($"\r[{fileCount}] Executing: {TruncatePath(filePath, 80)}".PadRight(Console.WindowWidth - 1));
         });
@@ -267,6 +296,13 @@ static int ExecuteOperations(string configPath, string culture)
 
         Console.WriteLine("File operations have been executed.");
         return 0;
+    }
+    catch (OperationCanceledException)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Operation canceled by user (CTRL+C).");
+        Console.ResetColor();
+        return 2;
     }
     catch (Exception ex)
     {
@@ -285,6 +321,7 @@ static int ExecuteInspect(string[] args, string configPath, string culture)
         // Parse additional arguments for inspect command
         string? filePath = null;
         string? outputPath = null;
+        bool copyPath = false;
 
         for (int i = 1; i < args.Length; i++)
         {
@@ -295,6 +332,10 @@ static int ExecuteInspect(string[] args, string configPath, string culture)
             else if ((args[i] == "--output" || args[i] == "-o") && i + 1 < args.Length)
             {
                 outputPath = args[++i];
+            }
+            else if (args[i] == "--copy-path")
+            {
+                copyPath = true;
             }
         }
 
@@ -381,13 +422,38 @@ static int ExecuteInspect(string[] args, string configPath, string culture)
         var finalOutputPath = outputPath ?? Path.Combine(
             Path.GetDirectoryName(filePath) ?? ".",
             Path.GetFileNameWithoutExtension(filePath) + ".md");
+        finalOutputPath = Path.GetFullPath(finalOutputPath);
 
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"✓ Markdown report created: {finalOutputPath}");
         Console.ResetColor();
+
+        if (copyPath)
+        {
+            if (TryCopyToClipboard(finalOutputPath))
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("✓ Markdown path copied to clipboard.");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("WARNING: Could not copy Markdown path to clipboard.");
+                Console.ResetColor();
+            }
+        }
+
         Console.WriteLine();
 
         return 0;
+    }
+    catch (OperationCanceledException)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Operation canceled by user (CTRL+C).");
+        Console.ResetColor();
+        return 2;
     }
     catch (Exception ex)
     {
@@ -396,6 +462,41 @@ static int ExecuteInspect(string[] args, string configPath, string culture)
         Console.ResetColor();
         Console.WriteLine(ex.StackTrace);
         return 1;
+    }
+}
+
+static bool TryCopyToClipboard(string text)
+{
+    if (string.IsNullOrWhiteSpace(text) || !OperatingSystem.IsWindows())
+    {
+        return false;
+    }
+
+    try
+    {
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = "clip",
+            RedirectStandardInput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        using var process = Process.Start(startInfo);
+        if (process is null)
+        {
+            return false;
+        }
+
+        process.StandardInput.Write(text);
+        process.StandardInput.Close();
+        process.WaitForExit(2000);
+
+        return process.ExitCode == 0;
+    }
+    catch
+    {
+        return false;
     }
 }
 
@@ -409,4 +510,15 @@ static string TruncatePath(string path, int maxLength)
 
     // Try to show the end of the path which is usually more relevant
     return "..." + path.Substring(path.Length - maxLength + 3);
+}
+
+internal static class AppLifetime
+{
+    public static volatile bool IsCancellationRequested;
+
+    public static void ThrowIfCancellationRequested()
+    {
+        if (IsCancellationRequested)
+            throw new OperationCanceledException("Operation canceled by user.");
+    }
 }

@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "AppLifetime", "d5/d39/class_app_lifetime.html", "d5/d39/class_app_lifetime" ],
     [ "AvailableKeywordConfiguration", "d3/daf/class_available_keyword_configuration.html", "d3/daf/class_available_keyword_configuration" ],
     [ "FILE_ID_INFO", "db/d24/_f_i_r_e_catalog_8cs.html#d0/d27/struct_f_i_l_e___i_d___i_n_f_o", "db/d24/_f_i_r_e_catalog_8cs_d0/d27/struct_f_i_l_e___i_d___i_n_f_o" ],
     [ "FileInfoMetadataSource", "d3/df3/class_file_info_metadata_source.html", "d3/df3/class_file_info_metadata_source" ],
