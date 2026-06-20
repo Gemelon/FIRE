@@ -172,6 +172,57 @@ public enum FileClassification
 }
 
 /// <summary>
+/// Specifies the processing status of a file record in the FIRE pipeline.
+/// </summary>
+/// <remarks>
+/// <para>
+/// This enumeration tracks the progress of a file through the three-step
+/// FIRE workflow: collect → generate → execute.
+/// </para>
+/// <para>
+/// The status progression is linear:
+/// <list type="bullet">
+/// <item><description><see cref="NotProcessed"/>: File collected, awaiting path generation</description></item>
+/// <item><description><see cref="PathGenerated"/>: Target path computed, awaiting execution</description></item>
+/// <item><description><see cref="Executed"/>: File operation completed successfully</description></item>
+/// </list>
+/// </para>
+/// <para>
+/// This allows FIRE to support incremental workflows where only new or
+/// unprocessed files are affected by subsequent generate and execute operations.
+/// </para>
+/// </remarks>
+public enum ProcessingStatus
+{
+    /// <summary>
+    /// File has been collected but no target path has been generated yet.
+    /// This is the default state for newly added files.
+    /// </summary>
+    /// <remarks>
+    /// Files in this state will be processed by the next generate operation.
+    /// </remarks>
+    NotProcessed = 0,
+
+    /// <summary>
+    /// Target path has been generated but the file operation has not been executed.
+    /// </summary>
+    /// <remarks>
+    /// Files in this state will be processed by the next execute operation.
+    /// The <see cref="FIREDbRecord.TargetFilePath"/> field contains the computed path.
+    /// </remarks>
+    PathGenerated = 1,
+
+    /// <summary>
+    /// File operation (copy/move/link) has been successfully completed.
+    /// </summary>
+    /// <remarks>
+    /// Files in this state are excluded from subsequent generate and execute operations
+    /// unless explicitly reprocessed or the database is cleared.
+    /// </remarks>
+    Executed = 2
+}
+
+/// <summary>
 /// Represents one complete file record persisted in the FIRE database.
 /// 
 /// Each <c>FIREDbRecord</c> corresponds to a single source file that has been
@@ -277,6 +328,38 @@ public class FIREDbRecord
     /// Defaults to <see cref="FileClassification.RegularFile"/>.
     /// </remarks>
     public FileClassification Classification { get; set; } = FileClassification.RegularFile;
+
+    /// <summary>
+    /// Gets or sets the current processing status of this file in the FIRE pipeline.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Tracks the file's progress through the workflow: NotProcessed → PathGenerated → Executed.
+    /// This allows FIRE to support incremental processing where only new or unprocessed files
+    /// are affected by generate and execute operations.
+    /// </para>
+    /// <para>
+    /// Defaults to <see cref="ProcessingStatus.NotProcessed"/> for newly collected files.
+    /// </para>
+    /// </remarks>
+    public ProcessingStatus Status { get; set; } = ProcessingStatus.NotProcessed;
+
+    /// <summary>
+    /// Gets or sets whether the source file still exists at <see cref="SourceFilePath"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This field is updated when the user explicitly runs a source-verification command.
+    /// It allows FIRE to track files that have been moved or deleted from their source location
+    /// after being catalogued, without removing them from the database.
+    /// </para>
+    /// <para>
+    /// Defaults to <c>true</c> when the file is first collected. Setting this to <c>false</c>
+    /// does not prevent the file from being processed; it merely records that the source
+    /// location is no longer accessible.
+    /// </para>
+    /// </remarks>
+    public bool SourceFileExists { get; set; } = true;
 
     /// <summary>
     /// Gets or sets the file metadata entries associated with this record.
@@ -634,6 +717,49 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     public bool Contains(FIREDbRecord item) => _records.Contains(item);
 
     /// <summary>
+    /// Determines whether a file with the specified VolumeSerialNumber and FileId already exists in the database.
+    /// </summary>
+    /// <param name="volumeSerialNumber">The volume serial number to check.</param>
+    /// <param name="fileId">The file identifier to check.</param>
+    /// <returns>
+    /// <c>true</c> if a record with matching VolumeSerialNumber and FileId is already present;
+    /// otherwise, <c>false</c>.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This method uses the composite index on VolumeSerialNumber and FileId for efficient
+    /// duplicate detection. It is intended to be called during the collect phase to avoid
+    /// re-adding files that are already catalogued.
+    /// </para>
+    /// <para>
+    /// If <paramref name="fileId"/> is <c>null</c>, this method returns <c>false</c> to allow
+    /// files without identifiers to be collected (e.g., on non-NTFS systems or temporary files).
+    /// </para>
+    /// </remarks>
+    public bool FileExists(ulong volumeSerialNumber, byte[]? fileId)
+    {
+        if (fileId == null)
+            return false;
+
+        ThrowIfDisposed();
+
+        using var transaction = _context.Database.BeginTransaction();
+        try
+        {
+            var exists = _context.Set<FIREDbRecordEntity>()
+                .Any(r => r.VolumeSerialNumber == volumeSerialNumber && r.FileId == fileId);
+            transaction.Commit();
+            return exists;
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
+    }
+
+
+    /// <summary>
     /// Copies the in-memory collection to the specified array, starting at the specified index.
     /// </summary>
     /// <param name="array">The destination array.</param>
@@ -874,6 +1000,8 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             SourceFilePath = entity.SourceFilePath,
             TargetFilePath = entity.TargetFilePath,
             Classification = entity.Classification,
+            Status = entity.Status,
+            SourceFileExists = entity.SourceFileExists,
             FileMetaDatas = entity.FileMetaDatas
                 .OrderBy(meta => meta.Id)
                 .Select(meta => new FIREFileMetaData
@@ -898,7 +1026,9 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             FileId = model.FileId,
             SourceFilePath = model.SourceFilePath,
             TargetFilePath = model.TargetFilePath,
-            Classification = model.Classification
+            Classification = model.Classification,
+            Status = model.Status,
+            SourceFileExists = model.SourceFileExists
         };
 
         foreach (var meta in model.FileMetaDatas)
@@ -994,6 +1124,17 @@ internal sealed class FIREDatabaseContext : DbContext
                 .HasConversion<int>()
                 .HasDefaultValue(FileClassification.RegularFile);
 
+            entity.Property(x => x.Status)
+                .HasConversion<int>()
+                .HasDefaultValue(ProcessingStatus.NotProcessed);
+
+            entity.Property(x => x.SourceFileExists)
+                .HasDefaultValue(true);
+
+            // Composite index on VolumeSerialNumber and FileId for efficient duplicate detection
+            entity.HasIndex(x => new { x.VolumeSerialNumber, x.FileId })
+                .HasDatabaseName("IX_VolumeSerialNumber_FileId");
+
             entity.HasMany(x => x.FileMetaDatas)
                 .WithOne(x => x.Record)
                 .HasForeignKey(x => x.RecordId)
@@ -1061,6 +1202,22 @@ internal sealed class FIREDbRecordEntity
     /// Stored as an integer in the database. Defaults to 0 (<see cref="FileClassification.RegularFile"/>).
     /// </remarks>
     public FileClassification Classification { get; set; } = FileClassification.RegularFile;
+
+    /// <summary>
+    /// Gets or sets the current processing status of this file.
+    /// </summary>
+    /// <remarks>
+    /// Stored as an integer in the database. Defaults to 0 (<see cref="ProcessingStatus.NotProcessed"/>).
+    /// </remarks>
+    public ProcessingStatus Status { get; set; } = ProcessingStatus.NotProcessed;
+
+    /// <summary>
+    /// Gets or sets whether the source file still exists.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to <c>true</c> when the record is created.
+    /// </remarks>
+    public bool SourceFileExists { get; set; } = true;
 
     /// <summary>
     /// Gets or sets the collection of file metadata entries associated with this record.

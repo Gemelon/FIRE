@@ -16,4 +16,8 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <OutputPath>D:\Media\FIRE\</OutputPath>
+  </PropertyGroup>
+
 </Project>

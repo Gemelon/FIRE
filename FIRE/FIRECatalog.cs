@@ -603,7 +603,8 @@ public sealed class FIRECatalog : IDisposable
     public void CollectFiles(Action<string>? progressCallback = null)
     {
         ThrowIfDisposed();
-        _database.Clear();
+        // No longer clearing the database automatically - incremental workflow
+        // Use ClearDatabase() method explicitly if a fresh start is required
 
         foreach (var rootPath in _configuration.FilesRootPath)
         {
@@ -611,6 +612,25 @@ public sealed class FIRECatalog : IDisposable
             CollectFromDirectory(rootPath, progressCallback);
         }
         _database.Save();
+    }
+
+    /// <summary>
+    /// Clears all records from the database.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method should be called explicitly when a fresh collection pass is required.
+    /// The default <see cref="CollectFiles"/> workflow now supports incremental collection,
+    /// preserving existing records and only adding new files.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if this instance has been disposed.
+    /// </exception>
+    public void ClearDatabase()
+    {
+        ThrowIfDisposed();
+        _database.Clear();
     }
 
     /// <summary>
@@ -649,12 +669,18 @@ public sealed class FIRECatalog : IDisposable
         {
             if (string.IsNullOrWhiteSpace(record.SourceFilePath)) continue;
 
+            // Skip files that have already been executed (incremental workflow)
+            if (record.Status == ProcessingStatus.Executed) continue;
+
             progressCallback?.Invoke(record.SourceFilePath);
 
             // Handle sidecar files separately
             if (record.Classification == FileClassification.SidecarFile)
             {
                 GenerateSidecarTargetPath(record);
+                // Update status for sidecars
+                if (!string.IsNullOrWhiteSpace(record.TargetFilePath))
+                    record.Status = ProcessingStatus.PathGenerated;
                 continue;
             }
 
@@ -680,7 +706,11 @@ public sealed class FIRECatalog : IDisposable
             var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath, counter);
 
             if (!string.IsNullOrWhiteSpace(targetFileName))
+            {
                 record.TargetFilePath = Path.Combine(targetDirectory, targetFileName);
+                // Update status after successful path generation
+                record.Status = ProcessingStatus.PathGenerated;
+            }
         }
         _database.Save();
     }
@@ -773,6 +803,9 @@ public sealed class FIRECatalog : IDisposable
             if (string.IsNullOrWhiteSpace(record.SourceFilePath) || string.IsNullOrWhiteSpace(record.TargetFilePath)) continue;
             if (!File.Exists(record.SourceFilePath)) continue;
 
+            // Skip files that have already been executed (incremental workflow)
+            if (record.Status == ProcessingStatus.Executed) continue;
+
             progressCallback?.Invoke(record.SourceFilePath);
 
             string action;
@@ -792,6 +825,9 @@ public sealed class FIRECatalog : IDisposable
             }
 
             ExecuteAction(action, record.SourceFilePath, record.TargetFilePath);
+
+            // Mark as executed after successful operation
+            record.Status = ProcessingStatus.Executed;
         }
         _database.Save();
     }
@@ -838,6 +874,11 @@ public sealed class FIRECatalog : IDisposable
         if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) return;
 
         var fileIdInfo = GetFileIdInfo(filePath);
+
+        // Skip files that are already in the database (incremental workflow)
+        if (_database.FileExists(fileIdInfo.VolumeSerialNumber, fileIdInfo.FileId))
+            return;
+
         var record = new FIREDbRecord
         {
             SourceFilePath = filePath,
@@ -939,12 +980,18 @@ public sealed class FIRECatalog : IDisposable
             try
             {
                 var fileIdInfo = GetFileIdInfo(sidecarPath);
+
+                // Skip sidecar if already in database (incremental workflow)
+                if (_database.FileExists(fileIdInfo.VolumeSerialNumber, fileIdInfo.FileId))
+                    continue;
+
                 var sidecarRecord = new FIREDbRecord
                 {
                     SourceFilePath = sidecarPath,
                     VolumeSerialNumber = fileIdInfo.VolumeSerialNumber,
                     FileId = fileIdInfo.FileId,
-                    Classification = FileClassification.SidecarFile
+                    Classification = FileClassification.SidecarFile,
+                    Status = primaryRecord.Status // Inherit status from primary file
                 };
 
                 // Clone metadata from primary file so the sidecar can inherit the target path

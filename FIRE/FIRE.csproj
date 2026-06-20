@@ -10,6 +10,10 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <OutputPath>D:\Media\FIRE\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.8" />
@@ -18,11 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ConfigurationFiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\ConfigurationFiles\Configuration.yaml" Link="ConfigurationFiles\Configuration.yaml" />
+    <None Include="..\..\..\..\Media\FIREConfigurationFiles\MediaConfiguration.yaml" Link="ConfigurationFiles\MediaConfiguration.yaml" />
     <None Include="..\THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" />
   </ItemGroup>
 

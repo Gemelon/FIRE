@@ -1,4 +1,4 @@
-# FIRE — File Information Reorganizer and Extractor
+# FIRE — File Reorganizer
 
 <p align="center">
   <img src="docs/FIRE Logo 3.png" alt="FIRE Logo" width="200"/>

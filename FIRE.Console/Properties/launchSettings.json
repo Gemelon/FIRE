@@ -2,15 +2,15 @@
   "profiles": {
     "FIRE.Console Collect": {
       "commandName": "Project",
-      "commandLineArgs": "collect --config \"D:\\Projekte\\Projekte_2026\\FIRE\\ConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
+      "commandLineArgs": "collect --config \"D:\\Media old\\FIREConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
     },
     "FIRE.Console Generate": {
       "commandName": "Project",
-      "commandLineArgs": "generate --config \"D:\\Projekte\\Projekte_2026\\FIRE\\ConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
+      "commandLineArgs": "generate --config \"D:\\Media old\\FIREConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
     },
     "FIRE.Console Execute": {
       "commandName": "Project",
-      "commandLineArgs": "execute --config \"D:\\Projekte\\Projekte_2026\\FIRE\\ConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
+      "commandLineArgs": "execute --config \"D:\\Media old\\FIREConfigurationFiles\\Configuration.yaml\" --culture \"de-DE\""
     },
     "FIRE.Console Inspect": {
       "commandName": "Project",

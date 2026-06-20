@@ -14,6 +14,7 @@ if (args.Length == 0)
 var command = args[0].ToLowerInvariant();
 string? configPath = null;
 string? culture = null;
+bool clearDatabase = false;
 
 // Parse arguments
 for (int i = 1; i < args.Length; i++)
@@ -25,6 +26,10 @@ for (int i = 1; i < args.Length; i++)
     else if ((args[i] == "--culture" || args[i] == "-l") && i + 1 < args.Length)
     {
         culture = args[++i];
+    }
+    else if (args[i] == "--clear-database" || args[i] == "--clear")
+    {
+        clearDatabase = true;
     }
 }
 
@@ -46,7 +51,7 @@ if (string.IsNullOrWhiteSpace(culture))
 // Execute command
 return command switch
 {
-    "collect" => ExecuteCollect(configPath, culture),
+    "collect" => ExecuteCollect(configPath, culture, clearDatabase),
     "generate" => ExecuteGenerate(configPath, culture),
     "execute" => ExecuteOperations(configPath, culture),
     "inspect" => ExecuteInspect(args, configPath, culture),
@@ -58,7 +63,7 @@ static int ShowHelp()
     Console.WriteLine("FIRE - File Information Reorganizer and Extractor - Test Console");
     Console.WriteLine();
     Console.WriteLine("Usage:");
-    Console.WriteLine("  FIRE.Console <command> --config <path> --culture <culture>");
+    Console.WriteLine("  FIRE.Console <command> --config <path> --culture <culture> [options]");
     Console.WriteLine();
     Console.WriteLine("Commands:");
     Console.WriteLine("  collect   - Collect files from configured source directories");
@@ -67,13 +72,16 @@ static int ShowHelp()
     Console.WriteLine("  inspect   - Inspect a file and extract all available metadata to Markdown");
     Console.WriteLine();
     Console.WriteLine("Options:");
-    Console.WriteLine("  --config, -c   Path to the configuration YAML file (required)");
-    Console.WriteLine("  --culture, -l  Culture code, e.g., de-DE, en-EN (required)");
-    Console.WriteLine("  --file, -f     Path to the file to inspect (required for inspect command)");
-    Console.WriteLine("  --output, -o   Output path for the Markdown report (optional for inspect)");
+    Console.WriteLine("  --config, -c        Path to the configuration YAML file (required)");
+    Console.WriteLine("  --culture, -l       Culture code, e.g., de-DE, en-EN (required)");
+    Console.WriteLine("  --clear-database    Clear the database before collecting (only for collect command)");
+    Console.WriteLine("  --clear             Short form of --clear-database");
+    Console.WriteLine("  --file, -f          Path to the file to inspect (required for inspect command)");
+    Console.WriteLine("  --output, -o        Output path for the Markdown report (optional for inspect)");
     Console.WriteLine();
     Console.WriteLine("Examples:");
     Console.WriteLine("  FIRE.Console collect --config \"Configuration.yaml\" --culture \"de-DE\"");
+    Console.WriteLine("  FIRE.Console collect --config \"Configuration.yaml\" --culture \"de-DE\" --clear-database");
     Console.WriteLine("  FIRE.Console generate --config \"Configuration.yaml\" --culture \"en-EN\"");
     Console.WriteLine("  FIRE.Console execute --config \"Configuration.yaml\" --culture \"de-DE\"");
     Console.WriteLine("  FIRE.Console inspect --config \"Configuration.yaml\" --culture \"de-DE\" --file \"image.jpg\"");
@@ -82,13 +90,15 @@ static int ShowHelp()
 }
 
 // Implementation methods
-static int ExecuteCollect(string configPath, string culture)
+static int ExecuteCollect(string configPath, string culture, bool clearDatabase)
 {
     try
     {
         Console.WriteLine($"=== FIRE Collect Files ===");
         Console.WriteLine($"Config: {configPath}");
         Console.WriteLine($"Culture: {culture}");
+        if (clearDatabase)
+            Console.WriteLine("Database will be cleared before collecting.");
         Console.WriteLine();
 
         // Set culture
@@ -111,6 +121,15 @@ static int ExecuteCollect(string configPath, string culture)
         using var catalog = new FIRECatalog(config, database);
         Console.WriteLine("Catalog initialized.");
         Console.WriteLine();
+
+        // Clear database if requested
+        if (clearDatabase)
+        {
+            Console.WriteLine("Clearing database...");
+            catalog.ClearDatabase();
+            Console.WriteLine("Database cleared.");
+            Console.WriteLine();
+        }
 
         // Collect files
         Console.WriteLine("Collecting files...");
