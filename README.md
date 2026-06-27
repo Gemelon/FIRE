@@ -237,7 +237,7 @@ Sub-properties are accessed with a dot.
 | `{MetaCreationTime.Month}` | `07` | Zero-padded month |
 | `{MetaCreationTime.Day}` | `04` | Zero-padded day |
 | `{MediaRootPath}` | `D:\Photos\Sorted` | Value of `MediaRootPath` |
-| `{Counter:D3}` | `001`, `002`, `003` | Laufende Nummer pro Zielverzeichnis mit Format `Dx` |
+| `{Counter:D3}` | `001`, `002`, `003` | Persistent laufende Nummer pro Zielpfad mit Format `Dx`; nur aktiv, wenn der Platzhalter im Template verwendet wird |
 
 ---
 
@@ -286,7 +286,7 @@ FIRE automatically detects and processes sidecar files (e.g., `.xmp`, `.pp3`) al
    - `RegularFile` (0): Primary files
    - `SidecarFile` (1): Sidecar files
 
-4. **Path Generation**: Sidecar files automatically inherit the target directory and base filename from their primary file, preserving only their own extension.
+4. **Path Generation**: Sidecar files automatically inherit the target directory and base filename from their primary file, preserving only their own extension. If the primary template uses `{Counter...}`, the same persistent sequence is retained for the generated target path.
 
 5. **Execution**: Sidecar files are copied/moved alongside their primary files using the global action setting.
 
@@ -345,17 +345,20 @@ StringReplacements:
   SM-F766B: Galaxy Z Flip7
 ```
 
-### Laufende Nummer pro Zielordner mit `{Counter:D3}`
+### Laufende Nummer pro Zielpfad mit `{Counter:D3}`
+
+`{Counter...}` aktiviert die Nummerierung nur dann, wenn der Platzhalter im Template enthalten ist. Die zuletzt verwendeten Werte werden in der Datenbank gespeichert, damit nach einem Neustart keine Nummern erneut vergeben werden.
 
 ```yaml
 FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG"
 ```
 
-Beispielausgabe innerhalb desselben Zielordners:
+Beispielausgabe innerhalb desselben Zielpfads:
 - `2026-07-04_001.JPG`
 - `2026-07-04_002.JPG`
 - `2026-07-04_003.JPG`
 
+Hinweis: Für Foto- und Videoarchive sollte `{Counter...}` verwendet werden, wenn eine stabile Reihenfolge erhalten bleiben soll.
 ---
 
 ## Building from Source

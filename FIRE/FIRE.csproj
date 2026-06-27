@@ -11,7 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <OutputPath>D:\Media\FIRE\</OutputPath>
+    <OutputPath>D:\Media\FIRE\FIRE</OutputPath>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\Media\FIREConfigurationFiles\MediaConfiguration.yaml" Link="ConfigurationFiles\MediaConfiguration.yaml" />
+    <None Include="..\..\..\..\Media\FIRE\FIREConfigurationFiles\MediaFireConfiguration.yaml" Link="ConfigurationFiles\MediaFireConfiguration.yaml" />
     <None Include="..\THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" />
   </ItemGroup>
 

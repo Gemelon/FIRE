@@ -236,6 +236,11 @@ public sealed class FIREConfigration
     /// The criteria are applied in the listed order (primary, secondary, tertiary, ...).
     /// If the list is empty, no explicit sorting is performed.
     /// </para>
+    /// <para>
+    /// Optional per-field direction is supported via suffix <c>:Ascending</c> or <c>:Descending</c>
+    /// (short forms <c>:Asc</c> and <c>:Desc</c> are also supported).
+    /// Example: <c>MetaCreationTime.Year:Descending</c>, <c>Make:Asc</c>, <c>Model</c>.
+    /// </para>
     /// </remarks>
     [YamlMember(Alias = "FileSorting")]
     public List<string> FileSorting { get; set; } = [];
@@ -245,6 +250,8 @@ public sealed class FIREConfigration
     /// </summary>
     /// <remarks>
     /// Supported values are <c>Ascending</c> and <c>Descending</c> (case-insensitive).
+    /// This value is used as fallback when an individual <see cref="FileSorting"/> entry
+    /// does not specify its own direction suffix.
     /// Defaults to <c>Ascending</c>.
     /// </remarks>
     [YamlMember(Alias = "FileSortingOrder")]

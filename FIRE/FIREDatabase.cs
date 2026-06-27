@@ -532,6 +532,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     private bool _disposed;
 
     private readonly FIREStatusRecord _statusRecord = new();
+    private readonly Dictionary<string, FIRECounterStateEntity> _counterStates = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Creates a new instance of <c>FIREDatabase</c> backed by the specified SQLite file.
@@ -573,6 +574,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         }
 
         _context.Database.EnsureCreated();
+        EnsureCounterStateTableExists();
         EnsureStatusRowExists();
         Reload();
     }
@@ -619,6 +621,17 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         {
             CopyToModel(statusEntity, _statusRecord);
         }
+
+        _counterStates.Clear();
+        foreach (var counterStateEntity in _context.CounterStates.AsNoTracking().OrderBy(x => x.ScopeKey))
+        {
+            _counterStates[counterStateEntity.ScopeKey] = new FIRECounterStateEntity
+            {
+                ScopeKey = counterStateEntity.ScopeKey,
+                LastValue = counterStateEntity.LastValue,
+                UpdatedAt = counterStateEntity.UpdatedAt
+            };
+        }
     }
 
     /// <summary>
@@ -640,6 +653,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         _context.Database.EnsureCreated();
         EnsureStatusRowExists();
         _records.Clear();
+        _counterStates.Clear();
         PersistCurrentState("Recreated", true, null);
         Reload();
     }
@@ -747,6 +761,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         ThrowIfDisposed();
 
         _records.Clear();
+        _counterStates.Clear();
         PersistCurrentState("Cleared", true, null);
         Reload();
     }
@@ -984,6 +999,50 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     }
 
     /// <summary>
+    /// Ensures that the counter-state table exists even for databases created before the
+    /// counter persistence feature was introduced.
+    /// </summary>
+    private void EnsureCounterStateTableExists()
+    {
+        _context.Database.ExecuteSqlRaw("""
+            CREATE TABLE IF NOT EXISTS "FIRECounterStates" (
+                "ScopeKey" TEXT NOT NULL CONSTRAINT "PK_FIRECounterStates" PRIMARY KEY,
+                "LastValue" INTEGER NOT NULL,
+                "UpdatedAt" TEXT NOT NULL
+            );
+            """);
+    }
+
+    /// <summary>
+    /// Returns the next counter value for the specified scope and keeps it in memory until
+    /// the surrounding database save operation persists it.
+    /// </summary>
+    /// <param name="scopeKey">Logical counter scope, typically the target directory.</param>
+    /// <returns>The next counter value starting at 1.</returns>
+    internal long GetNextCounterValue(string scopeKey)
+    {
+        ThrowIfDisposed();
+        ArgumentException.ThrowIfNullOrWhiteSpace(scopeKey);
+
+        scopeKey = scopeKey.Trim();
+
+        if (!_counterStates.TryGetValue(scopeKey, out var counterState))
+        {
+            counterState = new FIRECounterStateEntity
+            {
+                ScopeKey = scopeKey,
+                LastValue = 0,
+                UpdatedAt = DateTime.UtcNow
+            };
+            _counterStates[scopeKey] = counterState;
+        }
+
+        counterState.LastValue++;
+        counterState.UpdatedAt = DateTime.UtcNow;
+        return counterState.LastValue;
+    }
+
+    /// <summary>
     /// Persists the complete in-memory record snapshot and updates the singleton status row.
     /// </summary>
     /// <param name="status">Status label written to <see cref="FIREStatusRecord.Status"/> (e.g., "Saved", "Cleared").</param>
@@ -1021,9 +1080,26 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
                 _context.SaveChanges();
             }
 
+            var existingCounterStates = _context.CounterStates.ToList();
+            if (existingCounterStates.Count > 0)
+            {
+                _context.CounterStates.RemoveRange(existingCounterStates);
+                _context.SaveChanges();
+            }
+
             foreach (var record in _records)
             {
                 _context.FileRecords.Add(MapToEntity(record));
+            }
+
+            foreach (var counterState in _counterStates.Values)
+            {
+                _context.CounterStates.Add(new FIRECounterStateEntity
+                {
+                    ScopeKey = counterState.ScopeKey,
+                    LastValue = counterState.LastValue,
+                    UpdatedAt = counterState.UpdatedAt
+                });
             }
 
             var statusEntity = _context.StatusRecords.Single(x => x.Id == FIREDatabaseStatusEntity.SingletonId);
@@ -1208,6 +1284,190 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     /// </remarks>
     internal void SortRecords(List<string>? fileSorting, string? fileSortingOrder)
     {
+        ThrowIfDisposed();
+
+        // Nothing to sort when there are zero/one records or no sorting definition.
+        if (_records.Count <= 1 || fileSorting is null || fileSorting.Count == 0)
+            return;
+
+        // Resolve global default direction first (used when no field-specific direction is provided).
+        var globalDirection = ParseGlobalSortDirection(fileSortingOrder);
+        var criteria = new List<SortCriterion>();
+
+        // Parse every configured criterion and preserve the configured order.
+        foreach (var rawCriterion in fileSorting)
+        {
+            if (TryParseSortCriterion(rawCriterion, globalDirection, out var criterion))
+            {
+                criteria.Add(criterion);
+            }
+        }
+
+        // Abort if no valid criterion remained after parsing.
+        if (criteria.Count == 0)
+            return;
+
+        IOrderedEnumerable<FIREDbRecord>? ordered = null;
+
+        // Build a dynamic multi-column sort chain: first criterion => OrderBy, subsequent => ThenBy.
+        foreach (var criterion in criteria)
+        {
+            if (ordered is null)
+            {
+                ordered = criterion.Direction == SortDirection.Descending
+                    ? _records.OrderByDescending(record => GetSortValue(record, criterion.Name), SortValueComparer.Instance)
+                    : _records.OrderBy(record => GetSortValue(record, criterion.Name), SortValueComparer.Instance);
+            }
+            else
+            {
+                ordered = criterion.Direction == SortDirection.Descending
+                    ? ordered.ThenByDescending(record => GetSortValue(record, criterion.Name), SortValueComparer.Instance)
+                    : ordered.ThenBy(record => GetSortValue(record, criterion.Name), SortValueComparer.Instance);
+            }
+        }
+
+        if (ordered is null)
+            return;
+
+        // Deterministic tie-breakers avoid unstable processing order for identical sort values.
+        var sorted = ordered
+            .ThenBy(record => record.SourceFilePath ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(record => record.TargetFilePath ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        // Replace the in-memory sequence so generate/execute consume the new order.
+        _records.Clear();
+        _records.AddRange(sorted);
+    }
+
+    /// <summary>
+    /// Parses the global sort direction configured via <c>FileSortingOrder</c>.
+    /// </summary>
+    /// <param name="fileSortingOrder">Raw direction value from configuration.</param>
+    /// <returns>Resolved sort direction. Defaults to <see cref="SortDirection.Ascending"/>.</returns>
+    private static SortDirection ParseGlobalSortDirection(string? fileSortingOrder)
+    {
+        return TryParseSortDirection(fileSortingOrder, out var direction)
+            ? direction
+            : SortDirection.Ascending;
+    }
+
+    /// <summary>
+    /// Parses a single file-sorting criterion with optional per-field direction.
+    /// </summary>
+    /// <param name="rawCriterion">Raw criterion value from configuration.</param>
+    /// <param name="defaultDirection">Direction used when no field-specific suffix exists.</param>
+    /// <param name="criterion">Parsed criterion result.</param>
+    /// <returns><see langword="true"/> when parsing succeeded; otherwise <see langword="false"/>.</returns>
+    /// <remarks>
+    /// Supported formats:
+    /// <list type="bullet">
+    /// <item><description><c>MetaCreationTime.Year</c> (uses global direction)</description></item>
+    /// <item><description><c>MetaCreationTime.Year:Descending</c> (field-specific direction)</description></item>
+    /// <item><description><c>Make:Asc</c> and <c>Model:Desc</c> (short forms)</description></item>
+    /// </list>
+    /// </remarks>
+    private static bool TryParseSortCriterion(string? rawCriterion, SortDirection defaultDirection, out SortCriterion criterion)
+    {
+        criterion = default;
+
+        if (string.IsNullOrWhiteSpace(rawCriterion))
+            return false;
+
+        var token = rawCriterion.Trim();
+
+        // Per-field direction is encoded as <criterion>:<direction>.
+        var separatorIndex = token.LastIndexOf(':');
+        if (separatorIndex > 0 && separatorIndex < token.Length - 1)
+        {
+            var criterionName = token[..separatorIndex].Trim();
+            var directionToken = token[(separatorIndex + 1)..].Trim();
+
+            if (!string.IsNullOrWhiteSpace(criterionName) && TryParseSortDirection(directionToken, out var parsedDirection))
+            {
+                criterion = new SortCriterion(criterionName, parsedDirection);
+                return true;
+            }
+        }
+
+        // No valid field-specific direction found => fall back to global direction.
+        criterion = new SortCriterion(token, defaultDirection);
+        return true;
+    }
+
+    /// <summary>
+    /// Tries to parse textual direction tokens into a <see cref="SortDirection"/>.
+    /// </summary>
+    /// <param name="value">Raw direction token.</param>
+    /// <param name="direction">Parsed direction value.</param>
+    /// <returns><see langword="true"/> when parsing succeeded; otherwise <see langword="false"/>.</returns>
+    private static bool TryParseSortDirection(string? value, out SortDirection direction)
+    {
+        direction = SortDirection.Ascending;
+
+        if (string.IsNullOrWhiteSpace(value))
+            return false;
+
+        switch (value.Trim().ToUpperInvariant())
+        {
+            case "ASC":
+            case "ASCENDING":
+            case "AUFSTEIGEND":
+                direction = SortDirection.Ascending;
+                return true;
+            case "DESC":
+            case "DESCENDING":
+            case "ABSTEIGEND":
+                direction = SortDirection.Descending;
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /// <summary>
+    /// Defines available sort directions.
+    /// </summary>
+    private enum SortDirection
+    {
+        Ascending,
+        Descending
+    }
+
+    /// <summary>
+    /// Represents a parsed sorting criterion including field name and direction.
+    /// </summary>
+    private readonly record struct SortCriterion(string Name, SortDirection Direction);
+
+    /// <summary>
+    /// Compares heterogeneous sort values produced by <see cref="GetSortValue(FIREDbRecord, string)"/>.
+    /// </summary>
+    /// <remarks>
+    /// Null values are sorted last. Values with different CLR types are compared as invariant strings
+    /// to keep ordering deterministic without throwing comparison exceptions.
+    /// </remarks>
+    private sealed class SortValueComparer : IComparer<IComparable?>
+    {
+        public static readonly SortValueComparer Instance = new();
+
+        public int Compare(IComparable? x, IComparable? y)
+        {
+            if (ReferenceEquals(x, y))
+                return 0;
+
+            // Nulls last: records without sort value are processed after records with values.
+            if (x is null)
+                return 1;
+            if (y is null)
+                return -1;
+
+            if (x.GetType() == y.GetType())
+                return x.CompareTo(y);
+
+            var left = Convert.ToString(x, CultureInfo.InvariantCulture) ?? string.Empty;
+            var right = Convert.ToString(y, CultureInfo.InvariantCulture) ?? string.Empty;
+            return StringComparer.OrdinalIgnoreCase.Compare(left, right);
+        }
     }
 
     /// <summary>
@@ -1284,10 +1544,11 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
 /// for the FIRE SQLite database. It is used internally by <see cref="FIREDatabase"/> to
 /// persist and retrieve file records, metadata entries, and status information.
 /// 
-/// The context configures three main tables:
+/// The context configures four main tables:
 /// <list type="bullet">
 /// <item><description><c>FIREDbRecords</c> – File records with source and target paths.</description></item>
 /// <item><description><c>FIREFileMetaDatas</c> – Metadata key-value pairs associated with each record.</description></item>
+/// <item><description><c>FIRECounterStates</c> – Persistent counter state per target scope.</description></item>
 /// <item><description><c>FIREStatusRecord</c> – Singleton status row tracking database state.</description></item>
 /// </list>
 /// </remarks>
@@ -1313,6 +1574,11 @@ internal sealed class FIREDatabaseContext : DbContext
     public DbSet<FIREFileMetaDataEntity> FileMetaDataRecords => Set<FIREFileMetaDataEntity>();
 
     /// <summary>
+    /// Gets the DbSet for persistent counter state rows.
+    /// </summary>
+    public DbSet<FIRECounterStateEntity> CounterStates => Set<FIRECounterStateEntity>();
+
+    /// <summary>
     /// Gets the DbSet for the database status record.
     /// </summary>
     public DbSet<FIREStatusEntity> StatusRecords => Set<FIREStatusEntity>();
@@ -1329,8 +1595,8 @@ internal sealed class FIREDatabaseContext : DbContext
             entity.HasKey(x => x.Id);
             entity.Property(x => x.VolumeSerialNumber)
                 .HasConversion(
-                    value => checked((long)value),
-                    value => checked((ulong)value));
+                    value => unchecked((long)value),
+                    value => unchecked((ulong)value));
 
             entity.Property(x => x.Classification)
                 .HasConversion<int>()
@@ -1357,6 +1623,12 @@ internal sealed class FIREDatabaseContext : DbContext
         {
             entity.ToTable("FIREFileMetaDatas");
             entity.HasKey(x => x.Id);
+        });
+
+        modelBuilder.Entity<FIRECounterStateEntity>(entity =>
+        {
+            entity.ToTable("FIRECounterStates");
+            entity.HasKey(x => x.ScopeKey);
         });
 
         modelBuilder.Entity<FIREStatusEntity>(entity =>
@@ -1497,6 +1769,31 @@ internal sealed class FIREFileMetaDataEntity
     /// Gets or sets the source of the metadata value.
     /// </summary>
     public string? DataSource { get; set; }
+}
+
+/// <summary>
+/// Entity Framework Core entity class mapping to the FIRECounterStates table.
+/// </summary>
+/// <remarks>
+/// This table stores the last used counter value per target scope so generated filenames
+/// keep their sequence across application restarts.
+/// </remarks>
+internal sealed class FIRECounterStateEntity
+{
+    /// <summary>
+    /// Gets or sets the logical scope key for the counter state.
+    /// </summary>
+    public string ScopeKey { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the last value that was assigned for this scope.
+    /// </summary>
+    public long LastValue { get; set; }
+
+    /// <summary>
+    /// Gets or sets the UTC timestamp when the counter state was last updated.
+    /// </summary>
+    public DateTime UpdatedAt { get; set; }
 }
 
 /// <summary>

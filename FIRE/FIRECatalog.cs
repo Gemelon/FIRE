@@ -663,7 +663,6 @@ public sealed class FIRECatalog : IDisposable
     public void GenerateTargetPaths(Action<string>? progressCallback = null)
     {
         ThrowIfDisposed();
-        var directoryCounters = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         _database.SortRecords(_configuration.FileSorting, _configuration.FileSortingOrder);
 
@@ -671,8 +670,8 @@ public sealed class FIRECatalog : IDisposable
         {
             if (string.IsNullOrWhiteSpace(record.SourceFilePath)) continue;
 
-            // Skip files that have already been executed (incremental workflow)
-            if (record.Status == ProcessingStatus.Executed) continue;
+            // Skip files that already have a generated path or have been executed.
+            if (record.Status is ProcessingStatus.PathGenerated or ProcessingStatus.Executed) continue;
 
             progressCallback?.Invoke(record.SourceFilePath);
 
@@ -700,10 +699,9 @@ public sealed class FIRECatalog : IDisposable
             var targetDirectory = ParseTemplate(sortingPattern, metadataLookup, record.SourceFilePath);
             if (string.IsNullOrWhiteSpace(targetDirectory)) continue;
 
-            var counter = directoryCounters.TryGetValue(targetDirectory, out var currentCounter)
-                ? currentCounter + 1
-                : 1;
-            directoryCounters[targetDirectory] = counter;
+            long? counter = null;
+            if (ContainsCounterPlaceholder(fileNamePattern))
+                counter = _database.GetNextCounterValue(targetDirectory);
 
             var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath, counter);
 
@@ -1203,14 +1201,24 @@ public sealed class FIRECatalog : IDisposable
     }
 
     /// <summary>
+    /// Checks whether a template contains a counter placeholder.
+    /// </summary>
+    /// <param name="template">Template text to inspect.</param>
+    /// <returns><see langword="true"/> if a counter placeholder is present; otherwise <see langword="false"/>.</returns>
+    private static bool ContainsCounterPlaceholder(string template)
+    {
+        return !string.IsNullOrWhiteSpace(template) && Regex.IsMatch(template, @"\{Counter(?::[^}]+)?\}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    }
+
+    /// <summary>
     /// Resolves placeholders within a template string.
     /// </summary>
     /// <param name="template">Template containing placeholders like <c>{Key}</c>.</param>
     /// <param name="metadata">Resolved metadata values indexed by key.</param>
     /// <param name="sourceFilePath">Original source file path.</param>
-    /// <param name="counter">Optional per-target-directory running index used by <c>{Counter:Dx}</c>.</param>
+    /// <param name="counter">Optional persistent per-target-scope running index used by <c>{Counter:Dx}</c>.</param>
     /// <returns>Template result with placeholders replaced.</returns>
-    private string ParseTemplate(string template, Dictionary<string, string> metadata, string sourceFilePath, int? counter = null)
+    private string ParseTemplate(string template, Dictionary<string, string> metadata, string sourceFilePath, long? counter = null)
     {
         if (string.IsNullOrWhiteSpace(template)) return string.Empty;
 
@@ -1232,9 +1240,9 @@ public sealed class FIRECatalog : IDisposable
     /// <param name="key">Placeholder key without braces.</param>
     /// <param name="metadata">Resolved metadata values indexed by key.</param>
     /// <param name="sourceFilePath">Original source file path.</param>
-    /// <param name="counter">Optional per-target-directory running index.</param>
+    /// <param name="counter">Optional persistent per-target-scope running index.</param>
     /// <returns>Resolved placeholder value.</returns>
-    private string ResolvePlaceholder(string key, Dictionary<string, string> metadata, string sourceFilePath, int? counter = null)
+    private string ResolvePlaceholder(string key, Dictionary<string, string> metadata, string sourceFilePath, long? counter = null)
     {
         var parts = key.Split('.');
         var baseName = parts[0];
@@ -1261,7 +1269,7 @@ public sealed class FIRECatalog : IDisposable
 
         if (baseName.Equals("Counter", StringComparison.OrdinalIgnoreCase))
         {
-            var effectiveCounter = counter ?? 1;
+            var effectiveCounter = counter ?? 1L;
             if (!string.IsNullOrWhiteSpace(property) && property.Length > 1 && property.StartsWith("D", StringComparison.OrdinalIgnoreCase)
                 && int.TryParse(property[1..], NumberStyles.None, CultureInfo.InvariantCulture, out var digits)
                 && digits > 0)
