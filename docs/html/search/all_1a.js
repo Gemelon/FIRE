@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['workflow_0',['Three-Step Workflow',['../index.html#workflow_sec',1,'']]],
-  ['works_1',['How It Works',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md30',1,'']]],
-  ['writemetadatatomarkdown_2',['WriteMetadataToMarkdown',['../db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2',1,'WriteMetadataToMarkdown():&#160;FIRECatalog.cs'],['../index.html#write_metadata_md_subsec',1,'WriteMetadataToMarkdown']]],
-  ['writemetadatatomarkdown_20string_20filepath_20string_20outputpath_20null_3',['&lt;span class=&quot;tt&quot;&gt;WriteMetadataToMarkdown(string filePath, string? outputPath = null)&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md44',1,'']]]
+  ['when_20a_20stable_20sequence_20must_20be_20preserved_0',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'']]],
+  ['with_20counter_3ad3_1',['Running number per target path with &lt;span class=&quot;tt&quot;&gt;{Counter:D3}&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md37',1,'']]],
+  ['workflow_2',['Three-Step Workflow',['../index.html#workflow_sec',1,'']]],
+  ['works_3',['How It Works',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md30',1,'']]],
+  ['writemetadatatomarkdown_4',['WriteMetadataToMarkdown',['../db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2',1,'WriteMetadataToMarkdown():&#160;FIRECatalog.cs'],['../index.html#write_metadata_md_subsec',1,'WriteMetadataToMarkdown']]],
+  ['writemetadatatomarkdown_20string_20filepath_20string_20outputpath_20null_5',['&lt;span class=&quot;tt&quot;&gt;WriteMetadataToMarkdown(string filePath, string? outputPath = null)&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md44',1,'']]]
 ];

@@ -17,8 +17,9 @@ var searchData=
   ['configurationversion_14',['ConfigurationVersion',['../df/dbb/class_f_i_r_e_configration.html#afb4343218366cfc95236f616a3b9defb',1,'FIREConfigration::ConfigurationVersion'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a4cc8b64f5a1600f0837112c910b82f41',1,'ConfigurationVersion:&#160;FIREConfigration.cs']]],
   ['contents_15',['Table of Contents',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md3',1,'']]],
   ['core_20classes_16',['Core Classes',['../index.html#autotoc_md0',1,'']]],
-  ['counter_3ad3_17',['Laufende Nummer pro Zielordner mit &lt;span class=&quot;tt&quot;&gt;{Counter:D3}&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md37',1,'']]],
-  ['creationtime_18',['CreationTime',['../db/d24/_f_i_r_e_catalog_8cs.html#a5b34ed4fd541dd9ebdbf8b7f03dd12d8',1,'FIRECatalog.cs']]],
-  ['credits_19',['Credits',['../index.html#credits_sec',1,'Third-Party Credits'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md46',1,'Third-Party Credits']]],
-  ['culture_20',['culture',['../dd/d5c/_program_8cs.html#aaca62e4b78ac038ade08c841b7587678',1,'Program.cs']]]
+  ['counter_20when_20a_20stable_20sequence_20must_20be_20preserved_17',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'']]],
+  ['counter_3ad3_18',['Running number per target path with &lt;span class=&quot;tt&quot;&gt;{Counter:D3}&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md37',1,'']]],
+  ['creationtime_19',['CreationTime',['../db/d24/_f_i_r_e_catalog_8cs.html#a5b34ed4fd541dd9ebdbf8b7f03dd12d8',1,'FIRECatalog.cs']]],
+  ['credits_20',['Credits',['../index.html#credits_sec',1,'Third-Party Credits'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md46',1,'Third-Party Credits']]],
+  ['culture_21',['culture',['../dd/d5c/_program_8cs.html#aaca62e4b78ac038ade08c841b7587678',1,'Program.cs']]]
 ];

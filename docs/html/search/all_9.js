@@ -54,6 +54,7 @@ var searchData=
   ['firedatabase_2ecs_51',['FIREDatabase.cs',['../d7/d1a/_f_i_r_e_database_8cs.html',1,'']]],
   ['firefilemetadata_52',['FIREFileMetaData',['../d7/d1a/_f_i_r_e_database_8cs.html#d5/d85/class_f_i_r_e_file_meta_data',1,'']]],
   ['for_53',['for',['../dd/d5c/_program_8cs.html#a3693342da52d760d0681c068d1bff044',1,'Program.cs']]],
-  ['from_20source_54',['From source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md12',1,'']]],
-  ['from_20source_55',['Building from Source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md39',1,'']]]
+  ['for_20photo_20and_20video_20archives_20use_20counter_20when_20a_20stable_20sequence_20must_20be_20preserved_54',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'']]],
+  ['from_20source_55',['From source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md12',1,'']]],
+  ['from_20source_56',['Building from Source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md39',1,'']]]
 ];

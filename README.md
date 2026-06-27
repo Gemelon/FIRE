@@ -237,7 +237,7 @@ Sub-properties are accessed with a dot.
 | `{MetaCreationTime.Month}` | `07` | Zero-padded month |
 | `{MetaCreationTime.Day}` | `04` | Zero-padded day |
 | `{MediaRootPath}` | `D:\Photos\Sorted` | Value of `MediaRootPath` |
-| `{Counter:D3}` | `001`, `002`, `003` | Persistent laufende Nummer pro Zielpfad mit Format `Dx`; nur aktiv, wenn der Platzhalter im Template verwendet wird |
+| `{Counter:D3}` | `001`, `002`, `003` | Persistent running number per target path with `Dx` formatting; only active when the placeholder is used in the template |
 
 ---
 
@@ -345,20 +345,20 @@ StringReplacements:
   SM-F766B: Galaxy Z Flip7
 ```
 
-### Laufende Nummer pro Zielpfad mit `{Counter:D3}`
+### Running number per target path with `{Counter:D3}`
 
-`{Counter...}` aktiviert die Nummerierung nur dann, wenn der Platzhalter im Template enthalten ist. Die zuletzt verwendeten Werte werden in der Datenbank gespeichert, damit nach einem Neustart keine Nummern erneut vergeben werden.
+`{Counter...}` enables numbering only when the placeholder is present in the template. The last used values are stored in the database so numbers are not reused after an application restart.
 
 ```yaml
 FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG"
 ```
 
-Beispielausgabe innerhalb desselben Zielpfads:
+Example output within the same target path:
 - `2026-07-04_001.JPG`
 - `2026-07-04_002.JPG`
 - `2026-07-04_003.JPG`
 
-Hinweis: Für Foto- und Videoarchive sollte `{Counter...}` verwendet werden, wenn eine stabile Reihenfolge erhalten bleiben soll.
+Note: For photo and video archives, use `{Counter...}` when a stable sequence must be preserved.
 ---
 
 ## Building from Source

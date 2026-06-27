@@ -387,7 +387,7 @@ Template Placeholders</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt">{<a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1" title="Gets or sets the media root path variable used in path templates.">MediaRootPath</a>}</span>  </td><td class="markdownTableBodyNone"><span class="tt">D:\Photos\Sorted</span>  </td><td class="markdownTableBodyNone">Value of <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1" title="Gets or sets the media root path variable used in path templates.">MediaRootPath</a></span>  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">{Counter:D3}</span>  </td><td class="markdownTableBodyNone"><span class="tt">001</span>, <span class="tt">002</span>, <span class="tt">003</span>  </td><td class="markdownTableBodyNone">Laufende Nummer pro Zielverzeichnis mit Format <span class="tt">Dx</span>  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">{Counter:D3}</span>  </td><td class="markdownTableBodyNone"><span class="tt">001</span>, <span class="tt">002</span>, <span class="tt">003</span>  </td><td class="markdownTableBodyNone">Persistent running number per target path with <span class="tt">Dx</span> formatting; only active when the placeholder is used in the template  </td></tr>
 </table>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
@@ -432,7 +432,7 @@ How It Works</h2>
 <li><span class="tt">SidecarFile</span> (1): Sidecar files</li>
 </ul>
 </li>
-<li><b>Path Generation</b>: Sidecar files automatically inherit the target directory and base filename from their primary file, preserving only their own extension.</li>
+<li><b>Path Generation</b>: Sidecar files automatically inherit the target directory and base filename from their primary file, preserving only their own extension. If the primary template uses <span class="tt">{Counter...}</span>, the same persistent sequence is retained for the generated target path.</li>
 <li><b>Execution</b>: Sidecar files are copied/moved alongside their primary files using the global action setting.</li>
 </ol>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
@@ -469,14 +469,16 @@ Normalize camera model names</h2>
 <div class="line">  SM-S938B: Galaxy S25 Ultra</div>
 <div class="line">  SM-F766B: Galaxy Z Flip7</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
-Laufende Nummer pro Zielordner mit <span class="tt">{Counter:D3}</span></h2>
+Running number per target path with <span class="tt">{Counter:D3}</span></h2>
+<p><span class="tt">{Counter...}</span> enables numbering only when the placeholder is present in the template. The last used values are stored in the database so numbers are not reused after an application restart.</p>
 <div class="fragment"><div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG&quot;</div>
-</div><!-- fragment --><p>Beispielausgabe innerhalb desselben Zielordners:</p><ul>
+</div><!-- fragment --><p>Example output within the same target path:</p><ul>
 <li><span class="tt">2026-07-04_001.JPG</span></li>
 <li><span class="tt">2026-07-04_002.JPG</span></li>
 <li><span class="tt">2026-07-04_003.JPG</span></li>
 </ul>
-<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
+Note: For photo and video archives, use <span class="tt">{Counter...}</span> when a stable sequence must be preserved.</h1>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
 Building from Source</h1>
 <div class="fragment"><div class="line"># Restore dependencies</div>

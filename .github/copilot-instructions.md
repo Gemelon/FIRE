@@ -1,11 +1,11 @@
 # Copilot Instructions
 
-## Projektrichtlinien
+## Repository Guidelines
 - The project should be prepared for MIT licensing, with a copyright notice '(C) 2026 by Thomas Stoll' included where appropriate in source headers or documentation.
 
 ## Code Documentation
-- Bei ausgearbeiteten Implementierungen sollen die Änderungen umfassend kommentiert sein ("Alles kommentieren").
+- All documentation and code comments must be written in English.
 
 ## Path Generation
-- Bei der Pfadgenerierung soll der Anwender selbst entscheiden, ob ein Zähler verwendet wird; ein Zähler wird nur bei Platzhaltern wie `{Counter:D3}` aktiviert.
-- Für Foto- und Video-Bestände sollen Zählerstände persistent gespeichert werden, damit gelöschte Nummern nicht wiederverwendet werden und die Bildfolge stabil bleibt.
+- The user should decide whether a counter is used; a counter is only activated when the template contains placeholders such as `{Counter:D3}`.
+- For photo and video collections, counter values must be persisted so deleted numbers are not reused and the image sequence remains stable.

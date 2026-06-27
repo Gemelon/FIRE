@@ -11,6 +11,7 @@ var searchData=
   ['files_20alongside_20their_20jpeg_20keep_20xmp_20sidecars_8',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md35',1,'']]],
   ['fire_20—_20file_20information_20reorganizer_20and_20extractor_9',['FIRE — File Information Reorganizer and Extractor',['../index.html',1,'']]],
   ['fire_20—_20file_20reorganizer_10',['FIRE — File Reorganizer',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md1',1,'']]],
-  ['from_20source_11',['From source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md12',1,'']]],
-  ['from_20source_12',['Building from Source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md39',1,'']]]
+  ['for_20photo_20and_20video_20archives_20use_20counter_20when_20a_20stable_20sequence_20must_20be_20preserved_11',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'']]],
+  ['from_20source_12',['From source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md12',1,'']]],
+  ['from_20source_13',['Building from Source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md39',1,'']]]
 ];

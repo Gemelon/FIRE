@@ -1285,7 +1285,7 @@ public sealed class FIRECatalog : IDisposable
 
         if (property == null) return value;
 
-        // Zeile 548 – vorher: DateTime.TryParse (schlägt bei EXIF-Dates fehl)
+        // Line 548 – previously used DateTime.TryParse, which failed for EXIF-style dates.
         if (TryNormalizeDateTime(value, out var normalizedValue) &&
             DateTime.TryParseExact(normalizedValue, "yyyy:MM:dd HH:mm:ss",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
@@ -1295,7 +1295,7 @@ public sealed class FIRECatalog : IDisposable
                 "YEAR" => dateTime.Year.ToString(CultureInfo.InvariantCulture),
                 "MONTH" => dateTime.Month.ToString("D2", CultureInfo.InvariantCulture),
                 "DAY" => dateTime.Day.ToString("D2", CultureInfo.InvariantCulture),
-                _ => normalizedValue   // gibt immer yyyy:MM:dd HH:mm:ss zurück
+                _ => normalizedValue   // always returns yyyy:MM:dd HH:mm:ss
             };
         }
 

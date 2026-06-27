@@ -7,8 +7,8 @@ var searchData=
   ['metadata_20inspection_20helpers_4',['Metadata Inspection Helpers',['../index.html#metadata_inspection_sec',1,'']]],
   ['metadata_20sources_5',['Metadata Sources',['../index.html#meta_sources_sec',1,'Metadata Sources'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md27',1,'Metadata Sources']]],
   ['metadatasourceregistry_6',['MetadataSourceRegistry',['../de/df7/class_metadata_source_registry.html',1,'MetadataSourceRegistry'],['../de/df7/class_metadata_source_registry.html#a25cfb658e60966e8701aca954547f1a5',1,'MetadataSourceRegistry::MetadataSourceRegistry()'],['../db/d24/_f_i_r_e_catalog_8cs.html#ade8ca80f0c3053af5a3c46260b5b8a66',1,'MetadataSourceRegistry():&#160;FIRECatalog.cs']]],
-  ['mit_20counter_3ad3_7',['Laufende Nummer pro Zielordner mit &lt;span class=&quot;tt&quot;&gt;{Counter:D3}&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md37',1,'']]],
-  ['model_8',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md34',1,'']]],
-  ['model_20names_9',['Normalize camera model names',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md36',1,'']]],
-  ['move_20dng_20raw_20files_20alongside_20their_20jpeg_20keep_20xmp_20sidecars_10',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md35',1,'']]]
+  ['model_7',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md34',1,'']]],
+  ['model_20names_8',['Normalize camera model names',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md36',1,'']]],
+  ['move_20dng_20raw_20files_20alongside_20their_20jpeg_20keep_20xmp_20sidecars_9',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md35',1,'']]],
+  ['must_20be_20preserved_10',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'']]]
 ];

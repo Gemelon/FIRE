@@ -120,6 +120,7 @@
  *
  * Placeholders in `SortingPatern` and `FileNamePatern` use `{KeywordName}` syntax.
  * Sub-properties are separated by a dot, e.g. `{MetaCreationTime.Year}`.
+ * `{Counter...}` is only used when explicitly present in the template, and the last used values are persisted so numbering continues across restarts.
  *
  * | Placeholder | Example output |
  * |---|---|
@@ -131,7 +132,7 @@
  * | `{MetaCreationTime.Month}` | `07` |
  * | `{MetaCreationTime.Day}` | `04` |
  * | `{MediaRootPath}` | configured root path |
- * | `{Counter:D3}` | sequential number per target directory (e.g. 001, 002, 003) |
+ * | `{Counter:D3}` | sequential number per target path (e.g. 001, 002, 003) |
  *
  * @section metadata_inspection_sec Metadata Inspection Helpers
  *
