@@ -9,131 +9,224 @@
     <name>Program.cs</name>
     <path>FIRE/FIRE.Console/</path>
     <filename>dd/d5c/_program_8cs.html</filename>
+    <class kind="class">ProgramHost</class>
+    <class kind="class">GenerateCommand</class>
+    <class kind="class">InspectCommand</class>
+    <class kind="class">CollectSettings</class>
+    <class kind="class">CommandExecutor</class>
+    <class kind="class">ConsoleUi</class>
     <class kind="class">AppLifetime</class>
-    <member kind="function">
+    <member kind="enumeration">
       <type></type>
-      <name>if</name>
+      <name>UiLanguage</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a84ef8ed5fe64f697374a7ac3e173ca77</anchor>
-      <arglist>(args.Length==0)</arglist>
+      <anchor>a214a7ba4e60a1b01dc585e30bd48ba55</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>English</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a214a7ba4e60a1b01dc585e30bd48ba55a49bfa7fcc3d94cb262ab0af5f668b74d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>German</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a214a7ba4e60a1b01dc585e30bd48ba55a2fcdfb5eb134d45c42707f9fd3def282</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>French</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a214a7ba4e60a1b01dc585e30bd48ba55afe66e5596e9202cd7ecff734de46cc09</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Filipino</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a214a7ba4e60a1b01dc585e30bd48ba55aaa81505f396196fadf57bde2671bea1d</anchor>
+      <arglist></arglist>
     </member>
     <member kind="function">
-      <type></type>
-      <name>for</name>
+      <type>return ProgramHost</type>
+      <name>Run</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a3693342da52d760d0681c068d1bff044</anchor>
-      <arglist>(int i=1;i&lt; args.Length;i++)</arglist>
+      <anchor>ab9b66f3c646f45e1ce7a086a3f4b22e0</anchor>
+      <arglist>(args)</arglist>
     </member>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
+    <member kind="function" static="yes">
+      <type>static internal class ProgramHost</type>
+      <name>Execute</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a74cf3b529baa4b4f9ea52790b08afefc</anchor>
-      <arglist>(string.IsNullOrWhiteSpace(configPath))</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a366dc1663908062d6d0b2abaf5b80407</anchor>
-      <arglist>(string.IsNullOrWhiteSpace(culture))</arglist>
+      <anchor>af7aa1c5f4ca117e7d07722000c6d1693</anchor>
+      <arglist>(CommandContext context, CollectSettings settings)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static int</type>
-      <name>ShowHelp</name>
+      <name>Run</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>aaaf450777f9e0f705510063bb48a64f4</anchor>
-      <arglist>()</arglist>
+      <anchor>ada8ff3575ce87335d605fd36b0ce56fe</anchor>
+      <arglist>(string[] args)</arglist>
+    </member>
+    <member kind="function">
+      <type>GenerateCommand Command</type>
+      <name>Execute</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a4d298343aa6fabe91377bf2383d0e39e</anchor>
+      <arglist>(CommandContext context, CommonCommandSettings settings)</arglist>
+    </member>
+    <member kind="function">
+      <type>InspectCommand Command</type>
+      <name>Description</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>ae54a6807acd9a8a22001f22652a3c9d6</anchor>
+      <arglist>(&quot;Path to the configuration YAML file.&quot;)][CommandOption(&quot;--config|-c &lt;CONFIG_PATH&gt;&quot;)] public string? ConfigPath</arglist>
+    </member>
+    <member kind="function">
+      <type>override int</type>
+      <name>Execute</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a6dd68bfe98ea322d83c9b1cf6bfe266d</anchor>
+      <arglist>(CommandContext context, InspectSettings settings)</arglist>
+    </member>
+    <member kind="function">
+      <type>CollectSettings CommonCommandSettings</type>
+      <name>Description</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a623d0ff713bd14fbbf7635f1bccf0db1</anchor>
+      <arglist>(&quot;Path to the file to inspect.&quot;)][CommandOption(&quot;--file|-f &lt;FILE_PATH&gt;&quot;)] public string? FilePath</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static internal class CommandExecutor</type>
+      <name>RuntimeContext</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a3734b5c4cfa462c3c8ad9f8023893619</anchor>
+      <arglist>(string CultureCode, UiLanguage Language, bool NoWrap)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static int</type>
       <name>ExecuteCollect</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>ae0bd6f748521ce5078bccddef345ce2e</anchor>
-      <arglist>(string configPath, string culture, bool clearDatabase)</arglist>
+      <anchor>a3346dc078fdb2e1bcdc66fd43b140f51</anchor>
+      <arglist>(CollectSettings settings, RuntimeContext runtime)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static int</type>
       <name>ExecuteGenerate</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a212272b90b3d6056be7582d063026024</anchor>
-      <arglist>(string configPath, string culture)</arglist>
+      <anchor>a463c764d5df5979b037b23c37a8ced77</anchor>
+      <arglist>(CommonCommandSettings settings, RuntimeContext runtime)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static int</type>
-      <name>ExecuteOperations</name>
+      <name>ExecuteFileOperations</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a8c1c626b2d8cfd29330f1324532aed55</anchor>
-      <arglist>(string configPath, string culture)</arglist>
+      <anchor>a759d8d651d077248931371415a6e37c8</anchor>
+      <arglist>(CommonCommandSettings settings, RuntimeContext runtime)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static int</type>
       <name>ExecuteInspect</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>abb7329a2aabb4bd1ab7436a37f81df6d</anchor>
-      <arglist>(string[] args, string configPath, string culture)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static bool</type>
-      <name>TryCopyToClipboard</name>
-      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a87589422517558b0ed017ac8438892ae</anchor>
-      <arglist>(string text)</arglist>
+      <anchor>a7904950bbffd99fc2a1c3af59708a28f</anchor>
+      <arglist>(InspectSettings settings, RuntimeContext runtime)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static string</type>
-      <name>TruncatePath</name>
+      <name>ReadCultureArgument</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>aa8d9c0fbba0c4b1fbd8fba934e1a6014</anchor>
-      <arglist>(string path, int maxLength)</arglist>
+      <anchor>a6a3aa44b6ef80017dd5069af551a9607</anchor>
+      <arglist>(string[] args)</arglist>
     </member>
-    <member kind="variable">
-      <type>var</type>
-      <name>command</name>
+    <member kind="function" static="yes">
+      <type>static string</type>
+      <name>ResolveCultureCode</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a108b51efc46c603df382f88d19f8451e</anchor>
-      <arglist></arglist>
+      <anchor>aab2d3182896fd5d30de14da4dc0d58e0</anchor>
+      <arglist>(string rawCulture)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static UiLanguage</type>
+      <name>ResolveLanguage</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>ab60fe8b2d858cd1a3bb8cfeae582dbe0</anchor>
+      <arglist>(string cultureCode)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static string</type>
+      <name>Get</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>abf42770faa2e6c7ebeb652c67d2f6395</anchor>
+      <arglist>(UiLanguage language, string key)</arglist>
+    </member>
+    <member kind="function">
+      <type>internal readonly record struct</type>
+      <name>LocalizedText</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>ae7418d1d538743232e8a9bda612115d2</anchor>
+      <arglist>(string English, string German, string French, string Filipino)</arglist>
     </member>
     <member kind="variable">
       <type>string</type>
-      <name>configPath</name>
+      <name>Culture</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>ad62bfc699867fc1751fe0a6159827b01</anchor>
+      <anchor>a0391b18642c9e16b7c2a285fc7db3786</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>string</type>
-      <name>culture</name>
+      <type></type>
+      <name>set</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>aaca62e4b78ac038ade08c841b7587678</anchor>
+      <anchor>a112a711f766db446c2f517b794a1c04a</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
       <type>bool</type>
-      <name>clearDatabase</name>
+      <name>NoWrap</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a30aa0df2409a5ff191c700d63dec9fff</anchor>
+      <anchor>a5e22b3e09c3d1b18cc2a0dc70f3effe0</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>Console</type>
-      <name>CancelKeyPress</name>
+      <type>bool</type>
+      <name>ClearDatabase</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>acdc93c646070c53e372463f03ccdf388</anchor>
+      <anchor>ae5b62c8d00b10d87c47673fbd5653288</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>return command</type>
-      <name>switch</name>
+      <type>string</type>
+      <name>OutputPath</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a24768e217b121708b9b8e266eb8a6aa5</anchor>
+      <anchor>a6d029ed84fe1d5ba24ad30f0d5cb86c5</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>return command</type>
-      <name>generate</name>
+      <type>bool</type>
+      <name>CopyPath</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a2322e5d351b925c75e98348014dd10a4</anchor>
+      <anchor>a22cbcd22ebaebdb9a535d5c5437f54d3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>internal enum UiLanguage</type>
+      <name>string</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a4cb475094dc9de3af5eddaa1a7e87703</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>internal enum UiLanguage</type>
+      <name>CultureAliases</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>af7c6e3ac502073155117e020ca5046f1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static internal class ConsoleUi</type>
+      <name>Texts</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a5621682479052f42bbe2d2046f5adf2c</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -717,6 +810,20 @@
       <anchor>a4150c509f15565982db5d75b89d30c75</anchor>
       <arglist></arglist>
     </member>
+    <member kind="variable" static="yes">
+      <type>static UiLanguage</type>
+      <name>CurrentLanguage</name>
+      <anchorfile>d5/d39/class_app_lifetime.html</anchorfile>
+      <anchor>a625e8e0b1dd8fea33ab714ab65e14605</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static bool</type>
+      <name>NoWrap</name>
+      <anchorfile>d5/d39/class_app_lifetime.html</anchorfile>
+      <anchor>aa4954b22aaffe20d10b1ec69791992bd</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>AvailableKeywordConfiguration</name>
@@ -762,6 +869,137 @@
       <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
       <anchor>a1d31bfc22c535d0312b909e22cc0b1fa</anchor>
       <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>CollectSettings</name>
+    <filename>d9/d06/class_collect_settings.html</filename>
+    <member kind="variable">
+      <type>bool</type>
+      <name>ClearDatabase</name>
+      <anchorfile>d9/d06/class_collect_settings.html</anchorfile>
+      <anchor>a9e307bd2a867e3fdf5e784cc99c6aa60</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>set</name>
+      <anchorfile>d9/d06/class_collect_settings.html</anchorfile>
+      <anchor>a21b3c8efd3b76317d1e141fde2b45e9c</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>CommandExecutor</name>
+    <filename>d7/d0d/class_command_executor.html</filename>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteCollect</name>
+      <anchorfile>d7/d0d/class_command_executor.html</anchorfile>
+      <anchor>a64f3a81ce8a66385fe4ed97c0f9e204f</anchor>
+      <arglist>(CollectSettings settings, RuntimeContext runtime)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteGenerate</name>
+      <anchorfile>d7/d0d/class_command_executor.html</anchorfile>
+      <anchor>aef2bbef9c6774e4ae30d057fbce4e490</anchor>
+      <arglist>(CommonCommandSettings settings, RuntimeContext runtime)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteFileOperations</name>
+      <anchorfile>d7/d0d/class_command_executor.html</anchorfile>
+      <anchor>a2d9930af82fd26a8946da417d5d0256a</anchor>
+      <arglist>(CommonCommandSettings settings, RuntimeContext runtime)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteInspect</name>
+      <anchorfile>d7/d0d/class_command_executor.html</anchorfile>
+      <anchor>a757146be08c3b7cd35e0efd9365c7115</anchor>
+      <arglist>(InspectSettings settings, RuntimeContext runtime)</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>ConsoleUi</name>
+    <filename>d2/d24/class_console_ui.html</filename>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteTitle</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>a18c94d956c0ef084155a77b910f303ce</anchor>
+      <arglist>(RuntimeContext runtime, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteLine</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>aaccf20c274cb719c400a88ecf7dc9780</anchor>
+      <arglist>(RuntimeContext runtime, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteInfo</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>a9ab6f321aa3c0dfb04a997d2ff17ff38</anchor>
+      <arglist>(RuntimeContext runtime, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteSuccess</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>abee1e21de2ad03307ff483bf464631a2</anchor>
+      <arglist>(RuntimeContext runtime, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteWarning</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>a64c9cd2e532be51f5db212173191a1f5</anchor>
+      <arglist>(RuntimeContext runtime, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteWarning</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>a6fb0291675e61c943ab65e5322a69818</anchor>
+      <arglist>(UiLanguage language, bool noWrap, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteError</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>a4bb34e565c34f2f3db3effcef81e4eba</anchor>
+      <arglist>(RuntimeContext runtime, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteError</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>aa8ca2ec3eb2f6de8e146b6a5d22ed3c7</anchor>
+      <arglist>(UiLanguage language, bool noWrap, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteProgress</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>a6aacf2a49e00506ea525fb297790364d</anchor>
+      <arglist>(RuntimeContext runtime, string text)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>EndProgressLine</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>abc2699c431798a542a9264b5a2f74180</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static void</type>
+      <name>WriteEmptyLine</name>
+      <anchorfile>d2/d24/class_console_ui.html</anchorfile>
+      <anchor>a692482b3b022aed6cd622fb35c4b995c</anchor>
+      <arglist>()</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -986,6 +1224,28 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>GenerateCommand</name>
+    <filename>d1/ddd/class_generate_command.html</filename>
+    <member kind="function">
+      <type>override int</type>
+      <name>Execute</name>
+      <anchorfile>d1/ddd/class_generate_command.html</anchorfile>
+      <anchor>a1e40882f71a772183b444c4bb2843fdf</anchor>
+      <arglist>(CommandContext context, CommonCommandSettings settings)</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>InspectCommand</name>
+    <filename>d1/d1a/class_inspect_command.html</filename>
+    <member kind="function">
+      <type>override int</type>
+      <name>Execute</name>
+      <anchorfile>d1/d1a/class_inspect_command.html</anchorfile>
+      <anchor>a25ca614795f0cd12eb97cc6a5b8cc4f2</anchor>
+      <arglist>(CommandContext context, InspectSettings settings)</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>MetadataSourceRegistry</name>
     <filename>de/df7/class_metadata_source_registry.html</filename>
     <member kind="function">
@@ -1008,6 +1268,17 @@
       <anchorfile>de/df7/class_metadata_source_registry.html</anchorfile>
       <anchor>a7ddddd954540d49036c4a794e1923cd6</anchor>
       <arglist>(string sourceName)</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>ProgramHost</name>
+    <filename>d6/d5e/class_program_host.html</filename>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>Run</name>
+      <anchorfile>d6/d5e/class_program_host.html</anchorfile>
+      <anchor>a44c8b8479de1a25cb20723db74971c45</anchor>
+      <arglist>(string[] args)</arglist>
     </member>
   </compound>
   <compound kind="page">
@@ -1052,6 +1323,8 @@
     <docanchor file="index.html" title="Step 1 — collect">step1</docanchor>
     <docanchor file="index.html" title="Step 2 — generate">step2</docanchor>
     <docanchor file="index.html" title="Step 3 — execute">step3</docanchor>
+    <docanchor file="index.html" title="Optional metadata inspection (&lt;tt&gt;inspect&lt;/tt&gt;)">inspect_step</docanchor>
+    <docanchor file="index.html" title="CLI Culture and Output Options">cli_options_sec</docanchor>
     <docanchor file="index.html" title="Configuration">config_sec</docanchor>
     <docanchor file="index.html" title="Keyword Selection">keywords_sec</docanchor>
     <docanchor file="index.html" title="Metadata Sources">meta_sources_sec</docanchor>

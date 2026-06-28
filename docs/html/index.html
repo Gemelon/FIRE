@@ -135,7 +135,7 @@ Architecture</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">FIRE</span>  </td><td class="markdownTableBodyNone">Class library (.NET 10)  </td><td class="markdownTableBodyNone">Core engine: configuration, catalog, database  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI front-end (<span class="tt">collect</span>, <span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span>, <span class="tt">execute</span>)  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI front-end (<span class="tt">collect</span>, <span class="tt">generate</span>, <span class="tt">execute</span>, <span class="tt">inspect</span>)  </td></tr>
 </table>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
 Core Classes</h3>
@@ -172,7 +172,19 @@ Step 2 — generate</h2>
 Step 3 — execute</h2>
 <p>Performs the actual file operation (Copy, Move, or Link) from the source path to the target path stored in every database record.</p>
 <div class="fragment"><div class="line">FIRE.Console execute --config Configuration.yaml --culture de-DE</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="config_sec"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="inspect_step"></a>
+Optional metadata inspection (<span class="tt">inspect</span>)</h2>
+<p><span class="tt">inspect</span> reads one file, prints metadata source statistics, and writes a Markdown report for quick diagnostics and API exploration.</p>
+<div class="fragment"><div class="line">FIRE.Console inspect --config Configuration.yaml --culture en-US --file D:\Photos\IMG_1234.jpg</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="cli_options_sec"></a>
+CLI Culture and Output Options</h1>
+<p>The console supports modern culture codes and localized CLI text output.</p>
+<ul>
+<li>Recommended culture codes: <span class="tt">en-US</span>, <span class="tt">de-DE</span>, <span class="tt">fr-FR</span>, <span class="tt">fil-PH</span></li>
+<li><span class="tt">--culture</span> controls both UI text language and date formatting</li>
+<li><span class="tt">--no-wrap</span> disables line wrapping and clips long console lines</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="config_sec"></a>
 Configuration</h1>
 <p>All behaviour is driven by a single YAML file. A minimal example:</p>
 <div class="fragment"><div class="line">ConfigurationVersion: 1.00</div>
@@ -272,7 +284,7 @@ GetAllAvailableMetadata</h2>
 <div class="line">}</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="write_metadata_md_subsec"></a>
 WriteMetadataToMarkdown</h2>
-<p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2" title="Retrieves all available metadata for a single file and writes it to a Markdown file.">WriteMetadataToMarkdown</a>(<a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a5d8d7c996845adbb001c9fe685ba97ca" title="Defines an abstraction for metadata extraction from files.">string</a> filePath, <a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a5d8d7c996845adbb001c9fe685ba97ca" title="Defines an abstraction for metadata extraction from files.">string</a>? outputPath = null)</span> writes a Markdown report containing:</p>
+<p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2" title="Retrieves all available metadata for a single file and writes it to a Markdown file.">WriteMetadataToMarkdown</a>(<a class="el" href="dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> filePath, <a class="el" href="dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>? outputPath = null)</span> writes a Markdown report containing:</p>
 <ul>
 <li>File information (path, name, size, timestamps)</li>
 <li>Metadata grouped by source (<span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>

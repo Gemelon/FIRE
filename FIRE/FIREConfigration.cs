@@ -38,7 +38,7 @@ namespace FIRE;
 /// <para>
 /// <strong>Configuration Version:</strong>
 /// The configuration includes a <see cref="ConfigurationVersion"/> that must match
-/// <see cref="SupportedConfigurationVersion"/> (1.00). This ensures forward/backward compatibility
+/// <see cref="SupportedConfigurationVersion"/> (1.20). This ensures forward/backward compatibility
 /// and prevents accidental use of incompatible configuration files.
 /// </para>
 /// 
@@ -92,7 +92,7 @@ public sealed class FIREConfigration
     /// Configuration files must have <see cref="ConfigurationVersion"/> equal to this value.
     /// If the versions do not match, <see cref="EnsureSupportedConfigurationVersion"/> will throw.
     /// </remarks>
-    public const decimal SupportedConfigurationVersion = 1.10m;
+    public const decimal SupportedConfigurationVersion = 1.20m;
 
     /// <summary>
     /// Gets or sets the configuration format version.
@@ -649,6 +649,17 @@ public sealed class AvailableKeywordConfiguration
     public string ValAttribute { get; set; } = "LOWEST";
 
     /// <summary>
+    /// Gets or sets the fallback value used when no configured keyword is found in the selected source.
+    /// </summary>
+    /// <remarks>
+    /// If specified, this value is persisted instead of <c>NA</c> when no configured keyword yields a value.
+    /// For <c>DataType=DATETIME</c>, the value may be a date/time string (e.g. "2024-12-31 00:00:00")
+    /// or the special token <c>NOW</c> for the current local date and time.
+    /// </remarks>
+    [YamlMember(Alias = "Default")]
+    public string Default { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the list of metadata field names to query from the metadata source.
     /// </summary>
     /// <remarks>
@@ -672,6 +683,7 @@ public sealed class AvailableKeywordConfiguration
         DataType = string.IsNullOrWhiteSpace(DataType) ? "STRING" : DataType;
         Source = string.IsNullOrWhiteSpace(Source) ? "FILEINFO" : Source;
         ValAttribute = string.IsNullOrWhiteSpace(ValAttribute) ? "LOWEST" : ValAttribute;
+        Default ??= string.Empty;
         KeyWords ??= [];
     }
 }

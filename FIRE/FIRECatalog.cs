@@ -897,14 +897,16 @@ public sealed class FIRECatalog : IDisposable
             if (source == null)
             {
                 LogMetadataWarning(filePath, keywordName, $"metadata source '{sourceName}' was not found");
-                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, "NA", keywordConfig, sourceName));
+                var fallbackValue = ResolveMissingKeywordValue(keywordConfig, filePath, keywordName);
+                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, fallbackValue, keywordConfig, sourceName));
                 continue;
             }
 
             if (keywordConfig.KeyWords.Count == 0)
             {
                 LogMetadataWarning(filePath, keywordName, "no keywords configured");
-                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, "NA", keywordConfig, sourceName));
+                var fallbackValue = ResolveMissingKeywordValue(keywordConfig, filePath, keywordName);
+                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, fallbackValue, keywordConfig, sourceName));
                 continue;
             }
 
@@ -920,7 +922,8 @@ public sealed class FIRECatalog : IDisposable
             if (matchingValues.Count == 0)
             {
                 LogMetadataWarning(filePath, keywordName, $"none of the configured keywords were found in source '{sourceName}'");
-                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, "NA", keywordConfig, sourceName));
+                var fallbackValue = ResolveMissingKeywordValue(keywordConfig, filePath, keywordName);
+                record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, fallbackValue, keywordConfig, sourceName));
                 continue;
             }
 
@@ -1033,6 +1036,48 @@ public sealed class FIRECatalog : IDisposable
             TypeName = keywordConfig.DataType ?? "STRING",
             DataSource = sourceName
         };
+    }
+
+    /// <summary>
+    /// Resolves the fallback value for missing keyword data.
+    /// </summary>
+    /// <param name="keywordConfig">Keyword configuration that may define a default value.</param>
+    /// <param name="filePath">Source file path for diagnostics.</param>
+    /// <param name="keywordName">Logical keyword name for diagnostics.</param>
+    /// <returns>Configured default value or <c>NA</c> when no valid default exists.</returns>
+    private static string ResolveMissingKeywordValue(AvailableKeywordConfiguration keywordConfig, string filePath, string keywordName)
+    {
+        if (string.IsNullOrWhiteSpace(keywordConfig.Default))
+        {
+            return "NA";
+        }
+
+        var configuredDefault = keywordConfig.Default.Trim();
+        var dataType = (keywordConfig.DataType ?? "STRING").Trim();
+
+        if (!dataType.Equals("DATETIME", StringComparison.OrdinalIgnoreCase))
+        {
+            return configuredDefault;
+        }
+
+        if (configuredDefault.Equals("NOW", StringComparison.OrdinalIgnoreCase))
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+        }
+
+        if (TryNormalizeDateTime(configuredDefault, out var normalizedDate) &&
+            DateTime.TryParseExact(
+                normalizedDate,
+                "yyyy:MM:dd HH:mm:ss",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out var parsedDateTime))
+        {
+            return parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+        }
+
+        LogMetadataWarning(filePath, keywordName, $"configured DATETIME default '{configuredDefault}' is invalid; falling back to NA");
+        return "NA";
     }
 
     /// <summary>

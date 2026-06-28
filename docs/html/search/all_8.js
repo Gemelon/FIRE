@@ -1,17 +1,19 @@
 var searchData=
 [
-  ['ensuresupportedconfigurationversion_0',['EnsureSupportedConfigurationVersion',['../df/dbb/class_f_i_r_e_configration.html#a8c74ce8d2e821802ad7a0c5957826737',1,'FIREConfigration::EnsureSupportedConfigurationVersion()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a2909ce7c3cae497a7297eeef183e00d6',1,'EnsureSupportedConfigurationVersion():&#160;FIREConfigration.cs']]],
-  ['example_1',['Example',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md31',1,'']]],
-  ['examples_2',['Examples',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md33',1,'']]],
-  ['execute_3',['Step 3 — execute',['../index.html#step3',1,'']]],
-  ['executecollect_4',['ExecuteCollect',['../dd/d5c/_program_8cs.html#ae0bd6f748521ce5078bccddef345ce2e',1,'Program.cs']]],
-  ['executefileoperations_5',['ExecuteFileOperations',['../db/d24/_f_i_r_e_catalog_8cs.html#a40541e840635f9fec2d30e5b2e85ca30',1,'FIRECatalog.cs']]],
-  ['executegenerate_6',['ExecuteGenerate',['../dd/d5c/_program_8cs.html#a212272b90b3d6056be7582d063026024',1,'Program.cs']]],
-  ['executeinspect_7',['ExecuteInspect',['../dd/d5c/_program_8cs.html#abb7329a2aabb4bd1ab7436a37f81df6d',1,'Program.cs']]],
-  ['executeoperations_8',['ExecuteOperations',['../dd/d5c/_program_8cs.html#a8c1c626b2d8cfd29330f1324532aed55',1,'Program.cs']]],
-  ['execution_20phase_9',['Execution Phase',['../index.html#sidecar_execution',1,'']]],
-  ['exiftool_10',['ExifTool',['../d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md50',1,'']]],
-  ['exiftoolmetadatasource_11',['ExifToolMetadataSource',['../db/d24/_f_i_r_e_catalog_8cs.html#a90486d21550d189c20fd6e8f38736057',1,'FIRECatalog.cs']]],
-  ['extractmetadata_12',['ExtractMetadata',['../d3/df3/class_file_info_metadata_source.html#a1be4fd752b1fa3dea7bc6960b594e9af',1,'FileInfoMetadataSource::ExtractMetadata()'],['../db/d24/_f_i_r_e_catalog_8cs.html#a9948088f14e009eff31758315993daa9',1,'ExtractMetadata(string filePath):&#160;FIRECatalog.cs']]],
-  ['extractor_13',['FIRE — File Information Reorganizer and Extractor',['../index.html',1,'']]]
+  ['endprogressline_0',['EndProgressLine',['../d2/d24/class_console_ui.html#abc2699c431798a542a9264b5a2f74180',1,'ConsoleUi']]],
+  ['english_1',['English',['../dd/d5c/_program_8cs.html#a214a7ba4e60a1b01dc585e30bd48ba55a49bfa7fcc3d94cb262ab0af5f668b74d',1,'Program.cs']]],
+  ['ensuresupportedconfigurationversion_2',['EnsureSupportedConfigurationVersion',['../df/dbb/class_f_i_r_e_configration.html#a8c74ce8d2e821802ad7a0c5957826737',1,'FIREConfigration::EnsureSupportedConfigurationVersion()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a2909ce7c3cae497a7297eeef183e00d6',1,'EnsureSupportedConfigurationVersion():&#160;FIREConfigration.cs']]],
+  ['example_3',['Example',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md32',1,'']]],
+  ['examples_4',['Examples',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md34',1,'']]],
+  ['execute_5',['Execute',['../d1/ddd/class_generate_command.html#a1e40882f71a772183b444c4bb2843fdf',1,'GenerateCommand::Execute()'],['../d1/d1a/class_inspect_command.html#a25ca614795f0cd12eb97cc6a5b8cc4f2',1,'InspectCommand::Execute()'],['../dd/d5c/_program_8cs.html#af7aa1c5f4ca117e7d07722000c6d1693',1,'Execute(CommandContext context, CollectSettings settings):&#160;Program.cs'],['../dd/d5c/_program_8cs.html#a4d298343aa6fabe91377bf2383d0e39e',1,'Execute(CommandContext context, CommonCommandSettings settings):&#160;Program.cs'],['../dd/d5c/_program_8cs.html#a6dd68bfe98ea322d83c9b1cf6bfe266d',1,'Execute(CommandContext context, InspectSettings settings):&#160;Program.cs']]],
+  ['execute_6',['Step 3 — execute',['../index.html#step3',1,'']]],
+  ['executecollect_7',['ExecuteCollect',['../d7/d0d/class_command_executor.html#a64f3a81ce8a66385fe4ed97c0f9e204f',1,'CommandExecutor::ExecuteCollect()'],['../dd/d5c/_program_8cs.html#a3346dc078fdb2e1bcdc66fd43b140f51',1,'ExecuteCollect():&#160;Program.cs']]],
+  ['executefileoperations_8',['ExecuteFileOperations',['../d7/d0d/class_command_executor.html#a2d9930af82fd26a8946da417d5d0256a',1,'CommandExecutor::ExecuteFileOperations()'],['../dd/d5c/_program_8cs.html#a759d8d651d077248931371415a6e37c8',1,'ExecuteFileOperations(CommonCommandSettings settings, RuntimeContext runtime):&#160;Program.cs'],['../db/d24/_f_i_r_e_catalog_8cs.html#a40541e840635f9fec2d30e5b2e85ca30',1,'ExecuteFileOperations(Action&lt; string &gt;? progressCallback=null):&#160;FIRECatalog.cs']]],
+  ['executegenerate_9',['ExecuteGenerate',['../d7/d0d/class_command_executor.html#aef2bbef9c6774e4ae30d057fbce4e490',1,'CommandExecutor::ExecuteGenerate()'],['../dd/d5c/_program_8cs.html#a463c764d5df5979b037b23c37a8ced77',1,'ExecuteGenerate():&#160;Program.cs']]],
+  ['executeinspect_10',['ExecuteInspect',['../d7/d0d/class_command_executor.html#a757146be08c3b7cd35e0efd9365c7115',1,'CommandExecutor::ExecuteInspect()'],['../dd/d5c/_program_8cs.html#a7904950bbffd99fc2a1c3af59708a28f',1,'ExecuteInspect():&#160;Program.cs']]],
+  ['execution_20phase_11',['Execution Phase',['../index.html#sidecar_execution',1,'']]],
+  ['exiftool_12',['ExifTool',['../d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md51',1,'']]],
+  ['exiftoolmetadatasource_13',['ExifToolMetadataSource',['../db/d24/_f_i_r_e_catalog_8cs.html#a90486d21550d189c20fd6e8f38736057',1,'FIRECatalog.cs']]],
+  ['extractmetadata_14',['ExtractMetadata',['../d3/df3/class_file_info_metadata_source.html#a1be4fd752b1fa3dea7bc6960b594e9af',1,'FileInfoMetadataSource::ExtractMetadata()'],['../db/d24/_f_i_r_e_catalog_8cs.html#a9948088f14e009eff31758315993daa9',1,'ExtractMetadata(string filePath):&#160;FIRECatalog.cs']]],
+  ['extractor_15',['FIRE — File Information Reorganizer and Extractor',['../index.html',1,'']]]
 ];

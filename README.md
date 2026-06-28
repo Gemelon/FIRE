@@ -125,18 +125,25 @@ FIRE.Console generate --config Configuration.yaml --culture de-DE
 FIRE.Console execute --config Configuration.yaml --culture de-DE
 ```
 
+Optional metadata inspection command:
+
+```powershell
+FIRE.Console inspect --config Configuration.yaml --culture en-US --file "D:\Photos\IMG_1234.jpg"
+```
+
 ---
 
 ## Usage
 
 ```
-FIRE.Console <command> --config <path> --culture <culture>
+FIRE.Console <command> --config <path> --culture <culture> [options]
 ```
 
 | Argument | Short | Description |
 |----------|-------|-------------|
 | `--config` | `-c` | Path to the YAML configuration file (**required**) |
-| `--culture` | `-l` | Culture code for date formatting, e.g. `de-DE`, `en-US` (**required**) |
+| `--culture` | `-l` | Culture code for UI language and date formatting (**required**). Recommended: `en-US`, `de-DE`, `fr-FR`, `fil-PH`. |
+| `--no-wrap` | - | Disable line wrapping and clip long console lines. Default is line wrapping enabled. |
 
 ### Commands
 
@@ -145,6 +152,15 @@ FIRE.Console <command> --config <path> --culture <culture>
 | `collect` | Scans source directories and writes metadata to the database |
 | `generate` | Computes target paths and file names from configured templates |
 | `execute` | Applies the file operations (Copy / Move / Link) |
+| `inspect` | Inspects one file and writes metadata to a Markdown report |
+
+### Inspect command options
+
+| Argument | Short | Description |
+|----------|-------|-------------|
+| `--file` | `-f` | Source file to inspect (**required** for `inspect`) |
+| `--output` | `-o` | Optional path for the generated Markdown report |
+| `--copy-path` | - | Copy the generated report path to the clipboard |
 
 ---
 
@@ -153,7 +169,7 @@ FIRE.Console <command> --config <path> --culture <culture>
 The configuration is a single YAML file. Every key is case-sensitive.
 
 ```yaml
-ConfigurationVersion: 1.00       # Must be 1.00
+ConfigurationVersion: 1.20       # Must be 1.20
 
 FilesRootPath:                    # One or more source directories
   - D:\Photos\Import
@@ -218,6 +234,7 @@ FileExtensions:
 | `DataType` | string | `STRING` | `STRING`, `INT`, `INTEGER`, `DATETIME`, `DATE`, `TIME` |
 | `Source` | string | `FILEINFO` | `FILEINFO` or `EXIFTOOL` |
 | `ValAttribute` | string | `LOWEST` | `LOWEST` or `HIGHEST` |
+| `Default` | string | — | Fallback value when no configured keyword is found. For `DATETIME`, supports a date string (e.g. `2024-12-31 00:00:00`) or `NOW`. |
 | `KeyWords` | list | — | Ordered list of metadata tag names to try |
 
 ---

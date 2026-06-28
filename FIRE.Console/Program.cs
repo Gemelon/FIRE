@@ -1,524 +1,722 @@
 ﻿// (C) 2026 by Thomas Stoll
 // MIT License - See LICENSE file for details
 
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using FIRE;
+using Spectre.Console.Cli;
 
-// Simple command-line argument parsing
-if (args.Length == 0)
+return ProgramHost.Run(args);
+
+internal static class ProgramHost
 {
-    ShowHelp();
-    return 1;
-}
-
-var command = args[0].ToLowerInvariant();
-string? configPath = null;
-string? culture = null;
-bool clearDatabase = false;
-
-Console.CancelKeyPress += (_, e) =>
-{
-    e.Cancel = true;
-    AppLifetime.IsCancellationRequested = true;
-    Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.WriteLine("\nCTRL+C detected. Stopping gracefully...");
-    Console.ResetColor();
-};
-
-// Parse arguments
-for (int i = 1; i < args.Length; i++)
-{
-    if ((args[i] == "--config" || args[i] == "-c") && i + 1 < args.Length)
+    public static int Run(string[] args)
     {
-        configPath = args[++i];
-    }
-    else if ((args[i] == "--culture" || args[i] == "-l") && i + 1 < args.Length)
-    {
-        culture = args[++i];
-    }
-    else if (args[i] == "--clear-database" || args[i] == "--clear")
-    {
-        clearDatabase = true;
-    }
-}
+        var bootstrapCulture = CultureResolver.ResolveCultureCode(CultureResolver.ReadCultureArgument(args) ?? "en-US");
+        var bootstrapLanguage = CultureResolver.ResolveLanguage(bootstrapCulture);
 
-// Validate required arguments
-if (string.IsNullOrWhiteSpace(configPath))
-{
-    Console.WriteLine("ERROR: --config parameter is required");
-    ShowHelp();
-    return 1;
-}
+        AppLifetime.CurrentLanguage = bootstrapLanguage;
 
-if (string.IsNullOrWhiteSpace(culture))
-{
-    Console.WriteLine("ERROR: --culture parameter is required");
-    ShowHelp();
-    return 1;
-}
-
-// Execute command
-return command switch
-{
-    "collect" => ExecuteCollect(configPath, culture, clearDatabase),
-    "generate" => ExecuteGenerate(configPath, culture),
-    "execute" => ExecuteOperations(configPath, culture),
-    "inspect" => ExecuteInspect(args, configPath, culture),
-    _ => ShowHelp()
-};
-
-static int ShowHelp()
-{
-    Console.WriteLine("FIRE - File Information Reorganizer and Extractor - Test Console");
-    Console.WriteLine();
-    Console.WriteLine("Usage:");
-    Console.WriteLine("  FIRE.Console <command> --config <path> --culture <culture> [options]");
-    Console.WriteLine();
-    Console.WriteLine("Commands:");
-    Console.WriteLine("  collect   - Collect files from configured source directories");
-    Console.WriteLine("  generate  - Generate target paths and names for collected files");
-    Console.WriteLine("  execute   - Execute file operations (copy/move/link)");
-    Console.WriteLine("  inspect   - Inspect a file and extract all available metadata to Markdown");
-    Console.WriteLine();
-    Console.WriteLine("Options:");
-    Console.WriteLine("  --config, -c        Path to the configuration YAML file (required)");
-    Console.WriteLine("  --culture, -l       Culture code, e.g., de-DE, en-EN (required)");
-    Console.WriteLine("  --clear-database    Clear the database before collecting (only for collect command)");
-    Console.WriteLine("  --clear             Short form of --clear-database");
-    Console.WriteLine("  --file, -f          Path to the file to inspect (required for inspect command)");
-    Console.WriteLine("  --output, -o        Output path for the Markdown report (optional for inspect)");
-    Console.WriteLine("  --copy-path         Copy the generated Markdown path to clipboard (inspect only)");
-    Console.WriteLine();
-    Console.WriteLine("Examples:");
-    Console.WriteLine("  FIRE.Console collect --config \"Configuration.yaml\" --culture \"de-DE\"");
-    Console.WriteLine("  FIRE.Console collect --config \"Configuration.yaml\" --culture \"de-DE\" --clear-database");
-    Console.WriteLine("  FIRE.Console generate --config \"Configuration.yaml\" --culture \"en-EN\"");
-    Console.WriteLine("  FIRE.Console execute --config \"Configuration.yaml\" --culture \"de-DE\"");
-    Console.WriteLine("  FIRE.Console inspect --config \"Configuration.yaml\" --culture \"de-DE\" --file \"image.jpg\"");
-    Console.WriteLine("  FIRE.Console inspect --config \"Configuration.yaml\" --culture \"de-DE\" --file \"image.jpg\" --output \"report.md\"");
-    Console.WriteLine("  FIRE.Console inspect --config \"Configuration.yaml\" --culture \"de-DE\" --file \"image.jpg\" --copy-path");
-    return 1;
-}
-
-// Implementation methods
-static int ExecuteCollect(string configPath, string culture, bool clearDatabase)
-{
-    try
-    {
-        Console.WriteLine($"=== FIRE Collect Files ===");
-        Console.WriteLine($"Config: {configPath}");
-        Console.WriteLine($"Culture: {culture}");
-        if (clearDatabase)
-            Console.WriteLine("Database will be cleared before collecting.");
-        Console.WriteLine();
-
-        // Set culture
-        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo(culture);
-
-        // Load configuration
-        Console.WriteLine("Loading configuration...");
-        var config = FIREConfigration.Load(configPath);
-        config.EnsureSupportedConfigurationVersion();
-        Console.WriteLine($"Configuration loaded successfully (Version: {config.ConfigurationVersion})");
-        Console.WriteLine();
-
-        // Create database path
-        var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
-        Console.WriteLine($"Database: {dbPath}");
-
-        // Create catalog
-        Console.WriteLine("Initializing catalog...");
-        using var database = new FIREDatabase(dbPath);
-        using var catalog = new FIRECatalog(config, database);
-        Console.WriteLine("Catalog initialized.");
-        Console.WriteLine();
-
-        // Clear database if requested
-        if (clearDatabase)
+        Console.CancelKeyPress += (_, eventArgs) =>
         {
-            Console.WriteLine("Clearing database...");
-            catalog.ClearDatabase();
-            Console.WriteLine("Database cleared.");
-            Console.WriteLine();
+            eventArgs.Cancel = true;
+            AppLifetime.IsCancellationRequested = true;
+            ConsoleUi.WriteWarning(AppLifetime.CurrentLanguage, AppLifetime.NoWrap, TextCatalog.Get(AppLifetime.CurrentLanguage, "cancel_requested"));
+        };
+
+        var app = new CommandApp();
+        app.Configure(configuration =>
+        {
+            configuration.SetApplicationName("FIRE.Console");
+            configuration.ValidateExamples();
+
+            configuration
+                .AddCommand<CollectCommand>("collect")
+                .WithDescription(TextCatalog.Get(bootstrapLanguage, "cmd_collect"))
+                .WithExample("collect", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "en-US")
+                .WithExample("collect", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "de-DE", "--clear-database")
+                .WithExample("collect", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "fr-FR", "--no-wrap");
+
+            configuration
+                .AddCommand<GenerateCommand>("generate")
+                .WithDescription(TextCatalog.Get(bootstrapLanguage, "cmd_generate"))
+                .WithExample("generate", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "en-US");
+
+            configuration
+                .AddCommand<ExecuteCommand>("execute")
+                .WithDescription(TextCatalog.Get(bootstrapLanguage, "cmd_execute"))
+                .WithExample("execute", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "de-DE");
+
+            configuration
+                .AddCommand<InspectCommand>("inspect")
+                .WithDescription(TextCatalog.Get(bootstrapLanguage, "cmd_inspect"))
+                .WithExample("inspect", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "en-US", "--file", "image.jpg")
+                .WithExample("inspect", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "fil-PH", "--file", "image.jpg", "--copy-path");
+        });
+
+        try
+        {
+            return app.Run(args);
         }
-
-        // Collect files
-        Console.WriteLine("Collecting files...");
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        int fileCount = 0;
-        catalog.CollectFiles(filePath =>
+        catch (Exception ex)
         {
-            AppLifetime.ThrowIfCancellationRequested();
-            fileCount++;
-            Console.Write($"\r[{fileCount}] Processing: {TruncatePath(filePath, 80)}".PadRight(Console.WindowWidth - 1));
-        });
-        stopwatch.Stop();
-        Console.WriteLine();
-        Console.WriteLine($"File collection completed in {stopwatch.Elapsed.TotalSeconds:F2} seconds.");
-        Console.WriteLine($"Total records: {database.Count}");
-        Console.WriteLine("Warnings: missing metadata entries are reported inline with [WARN].");
-        Console.WriteLine();
-
-        Console.WriteLine("Use the database to inspect collected files.");
-        return 0;
-    }
-    catch (OperationCanceledException)
-    {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Operation canceled by user (CTRL+C).");
-        Console.ResetColor();
-        return 2;
-    }
-    catch (Exception ex)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"ERROR: {ex.Message}");
-        Console.ResetColor();
-        Console.WriteLine(ex.StackTrace);
-        return 1;
-    }
-}
-
-static int ExecuteGenerate(string configPath, string culture)
-{
-    try
-    {
-        Console.WriteLine($"=== FIRE Generate Target Paths ===");
-        Console.WriteLine($"Config: {configPath}");
-        Console.WriteLine($"Culture: {culture}");
-        Console.WriteLine();
-
-        // Set culture
-        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo(culture);
-
-        // Load configuration
-        Console.WriteLine("Loading configuration...");
-        var config = FIREConfigration.Load(configPath);
-        config.EnsureSupportedConfigurationVersion();
-        Console.WriteLine($"Configuration loaded successfully (Version: {config.ConfigurationVersion})");
-        Console.WriteLine();
-
-        // Create database path
-        var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
-        Console.WriteLine($"Database: {dbPath}");
-
-        // Create catalog
-        Console.WriteLine("Initializing catalog...");
-        using var database = new FIREDatabase(dbPath);
-        using var catalog = new FIRECatalog(config, database);
-        Console.WriteLine("Catalog initialized.");
-        Console.WriteLine();
-
-        // Generate target paths
-        Console.WriteLine("Generating target paths...");
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        int fileCount = 0;
-        catalog.GenerateTargetPaths(filePath =>
-        {
-            AppLifetime.ThrowIfCancellationRequested();
-            fileCount++;
-            Console.Write($"\r[{fileCount}] Generating: {TruncatePath(filePath, 80)}".PadRight(Console.WindowWidth - 1));
-        });
-        stopwatch.Stop();
-        Console.WriteLine();
-        Console.WriteLine($"Target path generation completed in {stopwatch.Elapsed.TotalSeconds:F2} seconds.");
-        Console.WriteLine($"Total records: {database.Count}");
-        Console.WriteLine("Warnings: missing metadata entries are reported inline with [WARN].");
-        Console.WriteLine();
-
-        Console.WriteLine("Use the database to inspect generated target paths.");
-        return 0;
-    }
-    catch (OperationCanceledException)
-    {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Operation canceled by user (CTRL+C).");
-        Console.ResetColor();
-        return 2;
-    }
-    catch (Exception ex)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"ERROR: {ex.Message}");
-        Console.ResetColor();
-        Console.WriteLine(ex.StackTrace);
-        return 1;
-    }
-}
-
-static int ExecuteOperations(string configPath, string culture)
-{
-    try
-    {
-        Console.WriteLine($"=== FIRE Execute File Operations ===");
-        Console.WriteLine($"Config: {configPath}");
-        Console.WriteLine($"Culture: {culture}");
-        Console.WriteLine();
-
-        // Set culture
-        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo(culture);
-
-        // Load configuration
-        Console.WriteLine("Loading configuration...");
-        var config = FIREConfigration.Load(configPath);
-        config.EnsureSupportedConfigurationVersion();
-        Console.WriteLine($"Configuration loaded successfully (Version: {config.ConfigurationVersion})");
-        Console.WriteLine();
-
-        // Create database path
-        var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
-        Console.WriteLine($"Database: {dbPath}");
-
-        // Create catalog
-        Console.WriteLine("Initializing catalog...");
-        using var database = new FIREDatabase(dbPath);
-        using var catalog = new FIRECatalog(config, database);
-        Console.WriteLine("Catalog initialized.");
-        Console.WriteLine();
-
-        // Execute file operations
-        Console.WriteLine("Executing file operations...");
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        int fileCount = 0;
-        catalog.ExecuteFileOperations(filePath =>
-        {
-            AppLifetime.ThrowIfCancellationRequested();
-            fileCount++;
-            Console.Write($"\r[{fileCount}] Executing: {TruncatePath(filePath, 80)}".PadRight(Console.WindowWidth - 1));
-        });
-        stopwatch.Stop();
-        Console.WriteLine();
-        Console.WriteLine($"File operations completed in {stopwatch.Elapsed.TotalSeconds:F2} seconds.");
-        Console.WriteLine($"Total records: {database.Count}");
-        Console.WriteLine("Warnings: missing metadata entries are reported inline with [WARN].");
-        Console.WriteLine();
-
-        Console.WriteLine("File operations have been executed.");
-        return 0;
-    }
-    catch (OperationCanceledException)
-    {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Operation canceled by user (CTRL+C).");
-        Console.ResetColor();
-        return 2;
-    }
-    catch (Exception ex)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"ERROR: {ex.Message}");
-        Console.ResetColor();
-        Console.WriteLine(ex.StackTrace);
-        return 1;
-    }
-}
-
-static int ExecuteInspect(string[] args, string configPath, string culture)
-{
-    try
-    {
-        // Parse additional arguments for inspect command
-        string? filePath = null;
-        string? outputPath = null;
-        bool copyPath = false;
-
-        for (int i = 1; i < args.Length; i++)
-        {
-            if ((args[i] == "--file" || args[i] == "-f") && i + 1 < args.Length)
-            {
-                filePath = args[++i];
-            }
-            else if ((args[i] == "--output" || args[i] == "-o") && i + 1 < args.Length)
-            {
-                outputPath = args[++i];
-            }
-            else if (args[i] == "--copy-path")
-            {
-                copyPath = true;
-            }
-        }
-
-        if (string.IsNullOrWhiteSpace(filePath))
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("ERROR: --file parameter is required for inspect command");
-            Console.ResetColor();
-            Console.WriteLine();
-            ShowHelp();
+            ConsoleUi.WriteError(bootstrapLanguage, false, $"{TextCatalog.Get(bootstrapLanguage, "error_prefix")} {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
             return 1;
         }
+    }
+}
 
-        if (!File.Exists(filePath))
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"ERROR: File not found: {filePath}");
-            Console.ResetColor();
-            return 1;
-        }
+internal sealed class CollectCommand : Command<CollectSettings>
+{
+    public override int Execute(CommandContext context, CollectSettings settings)
+    {
+        var runtime = RuntimeContext.Create(settings.Culture ?? "en-US", settings.NoWrap);
+        return CommandExecutor.ExecuteCollect(settings, runtime);
+    }
+}
 
-        Console.WriteLine($"=== FIRE Inspect File Metadata ===");
-        Console.WriteLine($"Config: {configPath}");
-        Console.WriteLine($"Culture: {culture}");
-        Console.WriteLine($"File: {filePath}");
-        if (!string.IsNullOrWhiteSpace(outputPath))
-        {
-            Console.WriteLine($"Output: {outputPath}");
-        }
-        Console.WriteLine();
+internal sealed class GenerateCommand : Command<CommonCommandSettings>
+{
+    public override int Execute(CommandContext context, CommonCommandSettings settings)
+    {
+        var runtime = RuntimeContext.Create(settings.Culture ?? "en-US", settings.NoWrap);
+        return CommandExecutor.ExecuteGenerate(settings, runtime);
+    }
+}
 
-        // Set culture
-        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo(culture);
+internal sealed class ExecuteCommand : Command<CommonCommandSettings>
+{
+    public override int Execute(CommandContext context, CommonCommandSettings settings)
+    {
+        var runtime = RuntimeContext.Create(settings.Culture ?? "en-US", settings.NoWrap);
+        return CommandExecutor.ExecuteFileOperations(settings, runtime);
+    }
+}
 
-        // Load configuration
-        Console.WriteLine("Loading configuration...");
-        var config = FIREConfigration.Load(configPath);
-        config.EnsureSupportedConfigurationVersion();
-        Console.WriteLine($"Configuration loaded successfully (Version: {config.ConfigurationVersion})");
-        Console.WriteLine();
+internal sealed class InspectCommand : Command<InspectSettings>
+{
+    public override int Execute(CommandContext context, InspectSettings settings)
+    {
+        var runtime = RuntimeContext.Create(settings.Culture ?? "en-US", settings.NoWrap);
+        return CommandExecutor.ExecuteInspect(settings, runtime);
+    }
+}
 
-        // Create database path (temporary, needed for catalog initialization)
-        var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
+internal class CommonCommandSettings : CommandSettings
+{
+    [Description("Path to the configuration YAML file.")]
+    [CommandOption("--config|-c <CONFIG_PATH>")]
+    public string? ConfigPath { get; set; }
 
-        // Create catalog
-        Console.WriteLine("Initializing catalog...");
-        using var database = new FIREDatabase(dbPath);
-        using var catalog = new FIRECatalog(config, database);
-        Console.WriteLine("Catalog initialized.");
-        Console.WriteLine();
+    [Description("Culture code for output language and date formatting, e.g. en-US, de-DE, fr-FR, fil-PH.")]
+    [CommandOption("--culture|-l <CULTURE_CODE>")]
+    public string? Culture { get; set; }
 
-        // Extract and display metadata
-        Console.WriteLine("Extracting metadata...");
-        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var metadata = catalog.GetAllAvailableMetadata(filePath);
-        stopwatch.Stop();
-        Console.WriteLine($"Metadata extracted in {stopwatch.Elapsed.TotalMilliseconds:F2} ms.");
-        Console.WriteLine($"Total entries found: {metadata.Count}");
-        Console.WriteLine();
+    [Description("Disable line wrapping and clip long console lines.")]
+    [CommandOption("--no-wrap")]
+    [DefaultValue(false)]
+    public bool NoWrap { get; set; }
+}
 
-        // Display metadata summary
-        if (metadata.Count > 0)
-        {
-            var groupedBySource = metadata.GroupBy(m => m.Source).OrderBy(g => g.Key);
-            Console.WriteLine("Metadata by Source:");
-            foreach (var sourceGroup in groupedBySource)
+internal sealed class CollectSettings : CommonCommandSettings
+{
+    [Description("Clear the database before collecting files.")]
+    [CommandOption("--clear-database|--clear")]
+    [DefaultValue(false)]
+    public bool ClearDatabase { get; set; }
+}
+
+internal sealed class InspectSettings : CommonCommandSettings
+{
+    [Description("Path to the file to inspect.")]
+    [CommandOption("--file|-f <FILE_PATH>")]
+    public string? FilePath { get; set; }
+
+    [Description("Output path for the generated Markdown report.")]
+    [CommandOption("--output|-o <OUTPUT_PATH>")]
+    public string? OutputPath { get; set; }
+
+    [Description("Copy the generated Markdown path to the clipboard.")]
+    [CommandOption("--copy-path")]
+    [DefaultValue(false)]
+    public bool CopyPath { get; set; }
+}
+
+internal static class CommandExecutor
+{
+    public static int ExecuteCollect(CollectSettings settings, RuntimeContext runtime)
+    {
+        return ExecuteCatalogPipeline(
+            settings,
+            runtime,
+            "title_collect",
+            "progress_collecting",
+            "progress_processing",
+            "summary_collect",
+            "summary_collect_hint",
+            catalog =>
             {
-                Console.WriteLine($"  - {sourceGroup.Key}: {sourceGroup.Count()} entries");
+                if (settings.ClearDatabase)
+                {
+                    ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "clear_database"));
+                    catalog.ClearDatabase();
+                    ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "database_cleared"));
+                    ConsoleUi.WriteEmptyLine();
+                }
+            },
+            (catalog, onFile) => catalog.CollectFiles(onFile));
+    }
+
+    public static int ExecuteGenerate(CommonCommandSettings settings, RuntimeContext runtime)
+    {
+        return ExecuteCatalogPipeline(
+            settings,
+            runtime,
+            "title_generate",
+            "progress_generating",
+            "progress_generating_item",
+            "summary_generate",
+            "summary_generate_hint",
+            _ => { },
+            (catalog, onFile) => catalog.GenerateTargetPaths(onFile));
+    }
+
+    public static int ExecuteFileOperations(CommonCommandSettings settings, RuntimeContext runtime)
+    {
+        return ExecuteCatalogPipeline(
+            settings,
+            runtime,
+            "title_execute",
+            "progress_executing",
+            "progress_executing_item",
+            "summary_execute",
+            "summary_execute_hint",
+            _ => { },
+            (catalog, onFile) => catalog.ExecuteFileOperations(onFile));
+    }
+
+    public static int ExecuteInspect(InspectSettings settings, RuntimeContext runtime)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(settings.ConfigPath))
+            {
+                ConsoleUi.WriteError(runtime, TextCatalog.Get(runtime.Language, "error_config_required"));
+                return 1;
             }
-            Console.WriteLine();
-        }
-        else
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("WARNING: No metadata could be extracted from this file.");
-            Console.ResetColor();
-            Console.WriteLine();
-        }
 
-        // Write to Markdown
-        Console.WriteLine("Writing Markdown report...");
-        catalog.WriteMetadataToMarkdown(filePath, outputPath);
-
-        var finalOutputPath = outputPath ?? Path.Combine(
-            Path.GetDirectoryName(filePath) ?? ".",
-            Path.GetFileNameWithoutExtension(filePath) + ".md");
-        finalOutputPath = Path.GetFullPath(finalOutputPath);
-
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine($"✓ Markdown report created: {finalOutputPath}");
-        Console.ResetColor();
-
-        if (copyPath)
-        {
-            if (TryCopyToClipboard(finalOutputPath))
+            if (string.IsNullOrWhiteSpace(settings.FilePath))
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("✓ Markdown path copied to clipboard.");
-                Console.ResetColor();
+                ConsoleUi.WriteError(runtime, TextCatalog.Get(runtime.Language, "error_file_required"));
+                return 1;
+            }
+
+            var filePath = settings.FilePath;
+            if (!File.Exists(filePath))
+            {
+                ConsoleUi.WriteError(runtime, $"{TextCatalog.Get(runtime.Language, "error_file_not_found")} {filePath}");
+                return 1;
+            }
+
+            var normalizedCulture = runtime.CultureCode;
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(normalizedCulture);
+
+            ConsoleUi.WriteTitle(runtime, TextCatalog.Get(runtime.Language, "title_inspect"));
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_config")} {settings.ConfigPath}");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_culture")} {normalizedCulture}");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_file")} {filePath}");
+            if (!string.IsNullOrWhiteSpace(settings.OutputPath))
+            {
+                ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_output")} {settings.OutputPath}");
+            }
+
+            ConsoleUi.WriteEmptyLine();
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "loading_configuration"));
+            var config = FIREConfigration.Load(settings.ConfigPath!);
+            config.EnsureSupportedConfigurationVersion();
+            ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, "configuration_loaded"), config.ConfigurationVersion));
+            ConsoleUi.WriteEmptyLine();
+
+            var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_database")} {dbPath}");
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "initializing_catalog"));
+
+            using var database = new FIREDatabase(dbPath);
+            using var catalog = new FIRECatalog(config, database);
+
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "catalog_initialized"));
+            ConsoleUi.WriteEmptyLine();
+
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "extracting_metadata"));
+            var stopwatch = Stopwatch.StartNew();
+            var metadata = catalog.GetAllAvailableMetadata(filePath);
+            stopwatch.Stop();
+
+            ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, "metadata_extracted_ms"), stopwatch.Elapsed.TotalMilliseconds));
+            ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, "metadata_entries_found"), metadata.Count));
+            ConsoleUi.WriteEmptyLine();
+
+            if (metadata.Count > 0)
+            {
+                ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "metadata_by_source"));
+                foreach (var sourceGroup in metadata.GroupBy(entry => entry.Source).OrderBy(group => group.Key))
+                {
+                    ConsoleUi.WriteLine(runtime, $"  - {sourceGroup.Key}: {sourceGroup.Count()}");
+                }
+                ConsoleUi.WriteEmptyLine();
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("WARNING: Could not copy Markdown path to clipboard.");
-                Console.ResetColor();
+                ConsoleUi.WriteWarning(runtime, TextCatalog.Get(runtime.Language, "warn_no_metadata"));
+                ConsoleUi.WriteEmptyLine();
             }
+
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "writing_markdown"));
+            catalog.WriteMetadataToMarkdown(filePath, settings.OutputPath);
+
+            var finalOutputPath = settings.OutputPath ?? Path.Combine(
+                Path.GetDirectoryName(filePath) ?? ".",
+                Path.GetFileNameWithoutExtension(filePath) + ".md");
+            finalOutputPath = Path.GetFullPath(finalOutputPath);
+
+            ConsoleUi.WriteSuccess(runtime, $"{TextCatalog.Get(runtime.Language, "markdown_created")} {finalOutputPath}");
+
+            if (settings.CopyPath)
+            {
+                if (TryCopyToClipboard(finalOutputPath))
+                {
+                    ConsoleUi.WriteInfo(runtime, TextCatalog.Get(runtime.Language, "markdown_copied"));
+                }
+                else
+                {
+                    ConsoleUi.WriteWarning(runtime, TextCatalog.Get(runtime.Language, "warn_copy_failed"));
+                }
+            }
+
+            ConsoleUi.WriteEmptyLine();
+            return 0;
         }
-
-        Console.WriteLine();
-
-        return 0;
-    }
-    catch (OperationCanceledException)
-    {
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Operation canceled by user (CTRL+C).");
-        Console.ResetColor();
-        return 2;
-    }
-    catch (Exception ex)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"ERROR: {ex.Message}");
-        Console.ResetColor();
-        Console.WriteLine(ex.StackTrace);
-        return 1;
-    }
-}
-
-static bool TryCopyToClipboard(string text)
-{
-    if (string.IsNullOrWhiteSpace(text) || !OperatingSystem.IsWindows())
-    {
-        return false;
-    }
-
-    try
-    {
-        var startInfo = new ProcessStartInfo
+        catch (OperationCanceledException)
         {
-            FileName = "clip",
-            RedirectStandardInput = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
+            ConsoleUi.WriteWarning(runtime, TextCatalog.Get(runtime.Language, "operation_canceled"));
+            return 2;
+        }
+        catch (Exception ex)
+        {
+            ConsoleUi.WriteError(runtime, $"{TextCatalog.Get(runtime.Language, "error_prefix")} {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+            return 1;
+        }
+    }
 
-        using var process = Process.Start(startInfo);
-        if (process is null)
+    private static int ExecuteCatalogPipeline(
+        CommonCommandSettings settings,
+        RuntimeContext runtime,
+        string titleKey,
+        string progressLineKey,
+        string progressVerbKey,
+        string summaryKey,
+        string summaryHintKey,
+        Action<FIRECatalog> beforeAction,
+        Action<FIRECatalog, Action<string>> action)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(settings.ConfigPath))
+            {
+                ConsoleUi.WriteError(runtime, TextCatalog.Get(runtime.Language, "error_config_required"));
+                return 1;
+            }
+
+            var normalizedCulture = runtime.CultureCode;
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(normalizedCulture);
+
+            ConsoleUi.WriteTitle(runtime, TextCatalog.Get(runtime.Language, titleKey));
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_config")} {settings.ConfigPath}");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_culture")} {normalizedCulture}");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_wrap_mode")} {(runtime.NoWrap ? TextCatalog.Get(runtime.Language, "wrap_clipping") : TextCatalog.Get(runtime.Language, "wrap_enabled"))}");
+            ConsoleUi.WriteEmptyLine();
+
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "loading_configuration"));
+            var config = FIREConfigration.Load(settings.ConfigPath!);
+            config.EnsureSupportedConfigurationVersion();
+            ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, "configuration_loaded"), config.ConfigurationVersion));
+            ConsoleUi.WriteEmptyLine();
+
+            var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_database")} {dbPath}");
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "initializing_catalog"));
+
+            using var database = new FIREDatabase(dbPath);
+            using var catalog = new FIRECatalog(config, database);
+
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "catalog_initialized"));
+            ConsoleUi.WriteEmptyLine();
+
+            beforeAction(catalog);
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, progressLineKey));
+
+            var stopwatch = Stopwatch.StartNew();
+            var fileCount = 0;
+            action(catalog, filePath =>
+            {
+                AppLifetime.ThrowIfCancellationRequested();
+                fileCount++;
+                ConsoleUi.WriteProgress(runtime, $"[{fileCount}] {TextCatalog.Get(runtime.Language, progressVerbKey)} {filePath}");
+            });
+            stopwatch.Stop();
+
+            ConsoleUi.EndProgressLine();
+            ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, summaryKey), stopwatch.Elapsed.TotalSeconds));
+            ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, "summary_total_records"), database.Count));
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "summary_warnings"));
+            ConsoleUi.WriteEmptyLine();
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, summaryHintKey));
+            return 0;
+        }
+        catch (OperationCanceledException)
+        {
+            ConsoleUi.WriteWarning(runtime, TextCatalog.Get(runtime.Language, "operation_canceled"));
+            return 2;
+        }
+        catch (Exception ex)
+        {
+            ConsoleUi.WriteError(runtime, $"{TextCatalog.Get(runtime.Language, "error_prefix")} {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+            return 1;
+        }
+    }
+
+    private static bool TryCopyToClipboard(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text) || !OperatingSystem.IsWindows())
         {
             return false;
         }
 
-        process.StandardInput.Write(text);
-        process.StandardInput.Close();
-        process.WaitForExit(2000);
+        try
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "clip",
+                RedirectStandardInput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-        return process.ExitCode == 0;
-    }
-    catch
-    {
-        return false;
+            using var process = Process.Start(startInfo);
+            if (process is null)
+            {
+                return false;
+            }
+
+            process.StandardInput.Write(text);
+            process.StandardInput.Close();
+            process.WaitForExit(2000);
+            return process.ExitCode == 0;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
 
-/// <summary>
-/// Truncates a file path to fit within the specified maximum length.
-/// </summary>
-static string TruncatePath(string path, int maxLength)
+internal readonly record struct RuntimeContext(string CultureCode, UiLanguage Language, bool NoWrap)
 {
-    if (string.IsNullOrEmpty(path) || path.Length <= maxLength)
-        return path;
+    public static RuntimeContext Create(string cultureCode, bool noWrap)
+    {
+        var normalizedCulture = CultureResolver.ResolveCultureCode(cultureCode);
+        var language = CultureResolver.ResolveLanguage(normalizedCulture);
 
-    // Try to show the end of the path which is usually more relevant
-    return "..." + path.Substring(path.Length - maxLength + 3);
+        AppLifetime.CurrentLanguage = language;
+        AppLifetime.NoWrap = noWrap;
+
+        return new RuntimeContext(normalizedCulture, language, noWrap);
+    }
 }
+
+internal enum UiLanguage
+{
+    English,
+    German,
+    French,
+    Filipino
+}
+
+internal static class CultureResolver
+{
+    private static readonly Dictionary<string, string> CultureAliases = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["en"] = "en-US",
+        ["en-en"] = "en-US",
+        ["en-gb"] = "en-GB",
+        ["de"] = "de-DE",
+        ["fr"] = "fr-FR",
+        ["fil"] = "fil-PH",
+        ["tl"] = "fil-PH",
+        ["ph"] = "fil-PH"
+    };
+
+    public static string? ReadCultureArgument(string[] args)
+    {
+        for (var index = 0; index < args.Length; index++)
+        {
+            if ((args[index].Equals("--culture", StringComparison.OrdinalIgnoreCase) || args[index].Equals("-l", StringComparison.OrdinalIgnoreCase))
+                && index + 1 < args.Length)
+            {
+                return args[index + 1];
+            }
+        }
+
+        return null;
+    }
+
+    public static string ResolveCultureCode(string rawCulture)
+    {
+        if (string.IsNullOrWhiteSpace(rawCulture))
+        {
+            return "en-US";
+        }
+
+        var trimmed = rawCulture.Trim();
+        if (CultureAliases.TryGetValue(trimmed, out var alias))
+        {
+            return alias;
+        }
+
+        try
+        {
+            var culture = CultureInfo.GetCultureInfo(trimmed);
+            if (CultureAliases.TryGetValue(culture.Name, out var mappedSpecificCulture))
+            {
+                return mappedSpecificCulture;
+            }
+
+            return culture.Name;
+        }
+        catch
+        {
+            return "en-US";
+        }
+    }
+
+    public static UiLanguage ResolveLanguage(string cultureCode)
+    {
+        if (cultureCode.StartsWith("de", StringComparison.OrdinalIgnoreCase))
+        {
+            return UiLanguage.German;
+        }
+
+        if (cultureCode.StartsWith("fr", StringComparison.OrdinalIgnoreCase))
+        {
+            return UiLanguage.French;
+        }
+
+        if (cultureCode.StartsWith("fil", StringComparison.OrdinalIgnoreCase) || cultureCode.StartsWith("tl", StringComparison.OrdinalIgnoreCase))
+        {
+            return UiLanguage.Filipino;
+        }
+
+        return UiLanguage.English;
+    }
+}
+
+internal static class ConsoleUi
+{
+    public static void WriteTitle(RuntimeContext runtime, string text)
+    {
+        WriteLine(runtime, $"=== {text} ===");
+    }
+
+    public static void WriteLine(RuntimeContext runtime, string text)
+    {
+        Console.WriteLine(FormatLine(text, runtime.NoWrap));
+    }
+
+    public static void WriteInfo(RuntimeContext runtime, string text)
+    {
+        var previous = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(FormatLine(text, runtime.NoWrap));
+        Console.ForegroundColor = previous;
+    }
+
+    public static void WriteSuccess(RuntimeContext runtime, string text)
+    {
+        var previous = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(FormatLine(text, runtime.NoWrap));
+        Console.ForegroundColor = previous;
+    }
+
+    public static void WriteWarning(RuntimeContext runtime, string text)
+    {
+        var previous = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(FormatLine(text, runtime.NoWrap));
+        Console.ForegroundColor = previous;
+    }
+
+    public static void WriteWarning(UiLanguage language, bool noWrap, string text)
+    {
+        var previous = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(FormatLine(text, noWrap));
+        Console.ForegroundColor = previous;
+    }
+
+    public static void WriteError(RuntimeContext runtime, string text)
+    {
+        var previous = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(FormatLine(text, runtime.NoWrap));
+        Console.ForegroundColor = previous;
+    }
+
+    public static void WriteError(UiLanguage language, bool noWrap, string text)
+    {
+        var previous = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(FormatLine(text, noWrap));
+        Console.ForegroundColor = previous;
+    }
+
+    public static void WriteProgress(RuntimeContext runtime, string text)
+    {
+        var width = GetSafeWidth();
+        var line = runtime.NoWrap ? FormatLine(text, true) : text;
+        Console.Write($"\r{line}".PadRight(width));
+    }
+
+    public static void EndProgressLine()
+    {
+        Console.WriteLine();
+    }
+
+    public static void WriteEmptyLine()
+    {
+        Console.WriteLine();
+    }
+
+    private static string FormatLine(string text, bool noWrap)
+    {
+        if (!noWrap)
+        {
+            return text;
+        }
+
+        var width = GetSafeWidth();
+        if (width < 4 || text.Length <= width)
+        {
+            return text;
+        }
+
+        return string.Concat(text.AsSpan(0, width - 3), "...");
+    }
+
+    private static int GetSafeWidth()
+    {
+        try
+        {
+            return Math.Max(Console.WindowWidth - 1, 20);
+        }
+        catch
+        {
+            return 120;
+        }
+    }
+}
+
+internal static class TextCatalog
+{
+    private static readonly IReadOnlyDictionary<string, LocalizedText> Texts = new Dictionary<string, LocalizedText>(StringComparer.Ordinal)
+    {
+        ["cmd_collect"] = new("Collect files from configured source directories.", "Dateien aus den konfigurierten Quellverzeichnissen sammeln.", "Collecter les fichiers depuis les dossiers source configurés.", "Mangolekta ng mga file mula sa mga naka-configure na source directory."),
+        ["cmd_generate"] = new("Generate target paths and names for collected files.", "Zielpfade und Namen für gesammelte Dateien erzeugen.", "Générer les chemins et noms cibles pour les fichiers collectés.", "Bumuo ng target na path at pangalan para sa mga nakolektang file."),
+        ["cmd_execute"] = new("Execute file operations (copy/move/link).", "Dateioperationen ausführen (Kopieren/Verschieben/Verknüpfen).", "Exécuter les opérations sur fichiers (copier/déplacer/lier).", "Isagawa ang mga file operation (copy/move/link)."),
+        ["cmd_inspect"] = new("Inspect one file and export metadata to Markdown.", "Eine Datei prüfen und Metadaten nach Markdown exportieren.", "Inspecter un fichier et exporter les métadonnées en Markdown.", "Siyasatin ang isang file at i-export ang metadata sa Markdown."),
+        ["cancel_requested"] = new("CTRL+C detected. Stopping gracefully...", "CTRL+C erkannt. Vorgang wird sauber beendet...", "CTRL+C détecté. Arrêt propre en cours...", "Nakita ang CTRL+C. Maayos na itinitigil..."),
+        ["error_prefix"] = new("ERROR:", "FEHLER:", "ERREUR :", "ERROR:"),
+        ["error_config_required"] = new("ERROR: --config is required.", "FEHLER: --config ist erforderlich.", "ERREUR : --config est requis.", "ERROR: Kailangan ang --config."),
+        ["error_file_required"] = new("ERROR: --file is required for inspect.", "FEHLER: --file ist für inspect erforderlich.", "ERREUR : --file est requis pour inspect.", "ERROR: Kailangan ang --file para sa inspect."),
+        ["error_file_not_found"] = new("File not found:", "Datei nicht gefunden:", "Fichier introuvable :", "Hindi nahanap ang file:"),
+        ["title_collect"] = new("FIRE Collect Files", "FIRE Dateien sammeln", "FIRE Collecte des fichiers", "FIRE Pangongolekta ng mga File"),
+        ["title_generate"] = new("FIRE Generate Target Paths", "FIRE Zielpfade erzeugen", "FIRE Génération des chemins cibles", "FIRE Pagbuo ng Target Paths"),
+        ["title_execute"] = new("FIRE Execute File Operations", "FIRE Dateioperationen ausführen", "FIRE Exécution des opérations sur fichiers", "FIRE Pagpapatupad ng File Operations"),
+        ["title_inspect"] = new("FIRE Inspect File Metadata", "FIRE Datei-Metadaten prüfen", "FIRE Inspection des métadonnées", "FIRE Pagsusuri ng Metadata ng File"),
+        ["label_config"] = new("Config:", "Konfiguration:", "Configuration :", "Config:"),
+        ["label_culture"] = new("Culture:", "Kultur:", "Culture :", "Culture:"),
+        ["label_database"] = new("Database:", "Datenbank:", "Base de données :", "Database:"),
+        ["label_file"] = new("File:", "Datei:", "Fichier :", "File:"),
+        ["label_output"] = new("Output:", "Ausgabe:", "Sortie :", "Output:"),
+        ["label_wrap_mode"] = new("Long line mode:", "Modus für lange Zeilen:", "Mode des lignes longues :", "Mode ng mahahabang linya:"),
+        ["wrap_enabled"] = new("Wrap enabled", "Zeilenumbruch aktiv", "Retour à la ligne activé", "Naka-enable ang line wrap"),
+        ["wrap_clipping"] = new("No wrap, clipping enabled", "Kein Umbruch, Abschneiden aktiv", "Sans retour à la ligne, rognage activé", "Walang line wrap, naka-enable ang clipping"),
+        ["loading_configuration"] = new("Loading configuration...", "Lade Konfiguration...", "Chargement de la configuration...", "Nilo-load ang configuration..."),
+        ["configuration_loaded"] = new("Configuration loaded successfully (Version: {0}).", "Konfiguration erfolgreich geladen (Version: {0}).", "Configuration chargée avec succès (Version : {0}).", "Matagumpay na na-load ang configuration (Version: {0})."),
+        ["initializing_catalog"] = new("Initializing catalog...", "Initialisiere Katalog...", "Initialisation du catalogue...", "Ini-initialize ang catalog..."),
+        ["catalog_initialized"] = new("Catalog initialized.", "Katalog initialisiert.", "Catalogue initialisé.", "Na-initialize ang catalog."),
+        ["clear_database"] = new("Clearing database...", "Lösche Datenbank...", "Nettoyage de la base de données...", "Nililinis ang database..."),
+        ["database_cleared"] = new("Database cleared.", "Datenbank gelöscht.", "Base de données nettoyée.", "Nalinis ang database."),
+        ["progress_collecting"] = new("Collecting files...", "Sammle Dateien...", "Collecte des fichiers...", "Nangongolekta ng mga file..."),
+        ["progress_generating"] = new("Generating target paths...", "Erzeuge Zielpfade...", "Génération des chemins cibles...", "Bumubuo ng target paths..."),
+        ["progress_executing"] = new("Executing file operations...", "Führe Dateioperationen aus...", "Exécution des opérations sur fichiers...", "Isinasagawa ang file operations..."),
+        ["progress_processing"] = new("Processing:", "Verarbeite:", "Traitement :", "Pinoproseso:"),
+        ["progress_generating_item"] = new("Generating:", "Erzeuge:", "Génération :", "Binubuo:"),
+        ["progress_executing_item"] = new("Executing:", "Führe aus:", "Exécution :", "Isinasagawa:"),
+        ["summary_collect"] = new("File collection completed in {0:F2} seconds.", "Dateisammlung in {0:F2} Sekunden abgeschlossen.", "Collecte terminée en {0:F2} secondes.", "Natapos ang pangongolekta sa loob ng {0:F2} segundo."),
+        ["summary_generate"] = new("Target path generation completed in {0:F2} seconds.", "Zielpfad-Erzeugung in {0:F2} Sekunden abgeschlossen.", "Génération des chemins terminée en {0:F2} secondes.", "Natapos ang pagbuo ng target path sa loob ng {0:F2} segundo."),
+        ["summary_execute"] = new("File operations completed in {0:F2} seconds.", "Dateioperationen in {0:F2} Sekunden abgeschlossen.", "Opérations terminées en {0:F2} secondes.", "Natapos ang file operations sa loob ng {0:F2} segundo."),
+        ["summary_total_records"] = new("Total records: {0}", "Datensätze gesamt: {0}", "Total des enregistrements : {0}", "Kabuuang records: {0}"),
+        ["summary_warnings"] = new("Warnings: missing metadata entries are reported inline with [WARN].", "Warnungen: fehlende Metadaten werden inline mit [WARN] ausgegeben.", "Avertissements : les métadonnées manquantes sont signalées avec [WARN].", "Babala: ang nawawalang metadata ay ipinapakita gamit ang [WARN]."),
+        ["summary_collect_hint"] = new("Use the database to inspect collected files.", "Verwenden Sie die Datenbank, um gesammelte Dateien zu prüfen.", "Utilisez la base de données pour inspecter les fichiers collectés.", "Gamitin ang database para siyasatin ang mga nakolektang file."),
+        ["summary_generate_hint"] = new("Use the database to inspect generated target paths.", "Verwenden Sie die Datenbank, um erzeugte Zielpfade zu prüfen.", "Utilisez la base de données pour inspecter les chemins générés.", "Gamitin ang database para siyasatin ang mga nabuong target path."),
+        ["summary_execute_hint"] = new("File operations have been executed.", "Dateioperationen wurden ausgeführt.", "Les opérations sur fichiers ont été exécutées.", "Naipatupad ang file operations."),
+        ["extracting_metadata"] = new("Extracting metadata...", "Extrahiere Metadaten...", "Extraction des métadonnées...", "Kinukuha ang metadata..."),
+        ["metadata_extracted_ms"] = new("Metadata extracted in {0:F2} ms.", "Metadaten in {0:F2} ms extrahiert.", "Métadonnées extraites en {0:F2} ms.", "Nakuha ang metadata sa {0:F2} ms."),
+        ["metadata_entries_found"] = new("Total entries found: {0}", "Gefundene Einträge: {0}", "Entrées trouvées : {0}", "Kabuuang nahanap na entry: {0}"),
+        ["metadata_by_source"] = new("Metadata by source:", "Metadaten nach Quelle:", "Métadonnées par source :", "Metadata ayon sa source:"),
+        ["warn_no_metadata"] = new("WARNING: No metadata could be extracted from this file.", "WARNUNG: Für diese Datei konnten keine Metadaten extrahiert werden.", "AVERTISSEMENT : aucune métadonnée n'a pu être extraite de ce fichier.", "BABALA: Walang metadata na nakuha mula sa file na ito."),
+        ["writing_markdown"] = new("Writing Markdown report...", "Schreibe Markdown-Bericht...", "Écriture du rapport Markdown...", "Isinusulat ang ulat na Markdown..."),
+        ["markdown_created"] = new("✓ Markdown report created:", "✓ Markdown-Bericht erstellt:", "✓ Rapport Markdown créé :", "✓ Nalikha ang ulat na Markdown:"),
+        ["markdown_copied"] = new("✓ Markdown path copied to clipboard.", "✓ Markdown-Pfad in Zwischenablage kopiert.", "✓ Chemin Markdown copié dans le presse-papiers.", "✓ Nakopya sa clipboard ang landas ng Markdown."),
+        ["warn_copy_failed"] = new("WARNING: Could not copy Markdown path to clipboard.", "WARNUNG: Markdown-Pfad konnte nicht in die Zwischenablage kopiert werden.", "AVERTISSEMENT : impossible de copier le chemin Markdown dans le presse-papiers.", "BABALA: Hindi makopya sa clipboard ang landas ng Markdown."),
+        ["operation_canceled"] = new("Operation canceled by user (CTRL+C).", "Vorgang vom Benutzer abgebrochen (CTRL+C).", "Opération annulée par l'utilisateur (CTRL+C).", "Kinansela ng user ang operasyon (CTRL+C).")
+    };
+
+    public static string Get(UiLanguage language, string key)
+    {
+        if (!Texts.TryGetValue(key, out var text))
+        {
+            return key;
+        }
+
+        return language switch
+        {
+            UiLanguage.German => text.German,
+            UiLanguage.French => text.French,
+            UiLanguage.Filipino => text.Filipino,
+            _ => text.English
+        };
+    }
+}
+
+internal readonly record struct LocalizedText(string English, string German, string French, string Filipino);
 
 internal static class AppLifetime
 {
     public static volatile bool IsCancellationRequested;
+    public static UiLanguage CurrentLanguage = UiLanguage.English;
+    public static bool NoWrap;
 
     public static void ThrowIfCancellationRequested()
     {
         if (IsCancellationRequested)
+        {
             throw new OperationCanceledException("Operation canceled by user.");
+        }
     }
 }

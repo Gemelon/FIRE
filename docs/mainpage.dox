@@ -18,7 +18,7 @@
  * | Project | Type | Responsibility |
  * |---------|------|----------------|
  * | `FIRE` | Class library (.NET 10) | Core engine: configuration, catalog, database |
- * | `FIRE.Console` | Console application (.NET 10) | CLI front-end (`collect`, `generate`, `execute`) |
+ * | `FIRE.Console` | Console application (.NET 10) | CLI front-end (`collect`, `generate`, `execute`, `inspect`) |
  *
  * ### Core Classes
  *
@@ -62,12 +62,28 @@
  * FIRE.Console execute --config Configuration.yaml --culture de-DE
  * @endcode
  *
+ * @subsection inspect_step Optional metadata inspection (`inspect`)
+ * `inspect` reads one file, prints metadata source statistics, and writes a
+ * Markdown report for quick diagnostics and API exploration.
+ *
+ * @code{.sh}
+ * FIRE.Console inspect --config Configuration.yaml --culture en-US --file D:\Photos\IMG_1234.jpg
+ * @endcode
+ *
+ * @section cli_options_sec CLI Culture and Output Options
+ *
+ * The console supports modern culture codes and localized CLI text output.
+ *
+ * - Recommended culture codes: `en-US`, `de-DE`, `fr-FR`, `fil-PH`
+ * - `--culture` controls both UI text language and date formatting
+ * - `--no-wrap` disables line wrapping and clips long console lines
+ *
  * @section config_sec Configuration
  *
  * All behaviour is driven by a single YAML file. A minimal example:
  *
  * @code{.yaml}
- * ConfigurationVersion: 1.00
+ * ConfigurationVersion: 1.20
  * FilesRootPath:
  *   - D:\Photos\Import
  * DataBasePath: D:\Photos

@@ -5,8 +5,10 @@ var index =
     [ "Three-Step Workflow", "index.html#workflow_sec", [
       [ "Step 1 — collect", "index.html#step1", null ],
       [ "Step 2 — generate", "index.html#step2", null ],
-      [ "Step 3 — execute", "index.html#step3", null ]
+      [ "Step 3 — execute", "index.html#step3", null ],
+      [ "Optional metadata inspection (<span class=\"tt\">inspect</span>)", "index.html#inspect_step", null ]
     ] ],
+    [ "CLI Culture and Output Options", "index.html#cli_options_sec", null ],
     [ "Configuration", "index.html#config_sec", null ],
     [ "Keyword Selection", "index.html#keywords_sec", null ],
     [ "Metadata Sources", "index.html#meta_sources_sec", null ],

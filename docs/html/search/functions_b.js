@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['showhelp_0',['ShowHelp',['../dd/d5c/_program_8cs.html#aaaf450777f9e0f705510063bb48a64f4',1,'Program.cs']]]
+  ['throwifcancellationrequested_0',['ThrowIfCancellationRequested',['../d5/d39/class_app_lifetime.html#a369ef0f0b61b7a75d0a8f1c27c124922',1,'AppLifetime']]]
 ];

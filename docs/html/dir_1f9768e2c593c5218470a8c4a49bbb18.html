@@ -186,13 +186,13 @@ Table of Contents</h1>
 Features</h1>
 <ul>
 <li><b>Metadata-driven file sorting</b> — JPEG, RAW, video, and any other file type supported by ExifTool</li>
-<li><b>Three-step pipeline</b> — <span class="tt">collect</span> → <span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span> → <span class="tt">execute</span></li>
+<li><b>Three-step pipeline</b> — <span class="tt">collect</span> → <span class="tt">generate</span> → <span class="tt">execute</span></li>
 <li><b>SQLite persistence</b> — inspect and audit every decision before committing</li>
 <li><b>Flexible templates</b> — arbitrary directory hierarchy and filename patterns using <span class="tt">{Keyword}</span> placeholders</li>
 <li><b>Multi-keyword fallback</b> — define ordered lists of EXIF tags; FIRE picks the lowest/highest value</li>
 <li><b>Sidecar file support</b> — <span class="tt">.xmp</span>, <span class="tt">.pp3</span>, or any companion extension follows its primary file automatically</li>
 <li><b>String replacements</b> — normalize camera model names or other metadata values globally</li>
-<li><b>Culture-aware</b> — date formatting respects the <span class="tt">--<a class="el" href="dd/d5c/_program_8cs.html#aaca62e4b78ac038ade08c841b7587678">culture</a></span> flag</li>
+<li><b>Culture-aware</b> — date formatting respects the <span class="tt">--culture</span> flag</li>
 </ul>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
@@ -256,17 +256,21 @@ Quick Start</h1>
 <div class="line"> </div>
 <div class="line"># Step 3 — copy/move/link files to their new locations</div>
 <div class="line">FIRE.Console execute --config Configuration.yaml --culture de-DE</div>
+</div><!-- fragment --><p>Optional metadata inspection command:</p>
+<div class="fragment"><div class="line">FIRE.Console inspect --config Configuration.yaml --culture en-US --file &quot;D:\Photos\IMG_1234.jpg&quot;</div>
 </div><!-- fragment --><hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
 Usage</h1>
-<div class="fragment"><div class="line">FIRE.Console &lt;command&gt; --config &lt;path&gt; --culture &lt;culture&gt;</div>
+<div class="fragment"><div class="line">FIRE.Console &lt;command&gt; --config &lt;path&gt; --culture &lt;culture&gt; [options]</div>
 </div><!-- fragment --><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Argument  </th><th class="markdownTableHeadNone">Short  </th><th class="markdownTableHeadNone">Description  </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">--config</span>  </td><td class="markdownTableBodyNone"><span class="tt">-c</span>  </td><td class="markdownTableBodyNone">Path to the YAML configuration file (<b>required</b>)  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">--<a class="el" href="dd/d5c/_program_8cs.html#aaca62e4b78ac038ade08c841b7587678">culture</a></span>  </td><td class="markdownTableBodyNone"><span class="tt">-l</span>  </td><td class="markdownTableBodyNone">Culture code for date formatting, e.g. <span class="tt">de-DE</span>, <span class="tt">en-US</span> (<b>required</b>)  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">--culture</span>  </td><td class="markdownTableBodyNone"><span class="tt">-l</span>  </td><td class="markdownTableBodyNone">Culture code for UI language and date formatting (<b>required</b>). Recommended: <span class="tt">en-US</span>, <span class="tt">de-DE</span>, <span class="tt">fr-FR</span>, <span class="tt">fil-PH</span>.  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">--no-wrap</span>  </td><td class="markdownTableBodyNone">-  </td><td class="markdownTableBodyNone">Disable line wrapping and clip long console lines. Default is line wrapping enabled.  </td></tr>
 </table>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
 Commands</h2>
@@ -276,12 +280,26 @@ Commands</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">collect</span>  </td><td class="markdownTableBodyNone">Scans source directories and writes metadata to the database  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a2322e5d351b925c75e98348014dd10a4">generate</a></span>  </td><td class="markdownTableBodyNone">Computes target paths and file names from configured templates  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">generate</span>  </td><td class="markdownTableBodyNone">Computes target paths and file names from configured templates  </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">execute</span>  </td><td class="markdownTableBodyNone">Applies the file operations (Copy / Move / Link)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">inspect</span>  </td><td class="markdownTableBodyNone">Inspects one file and writes metadata to a Markdown report  </td></tr>
+</table>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md18"></a>
+Inspect command options</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Argument  </th><th class="markdownTableHeadNone">Short  </th><th class="markdownTableHeadNone">Description  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">--file</span>  </td><td class="markdownTableBodyNone"><span class="tt">-f</span>  </td><td class="markdownTableBodyNone">Source file to inspect (<b>required</b> for <span class="tt">inspect</span>)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">--output</span>  </td><td class="markdownTableBodyNone"><span class="tt">-o</span>  </td><td class="markdownTableBodyNone">Optional path for the generated Markdown report  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">--copy-path</span>  </td><td class="markdownTableBodyNone">-  </td><td class="markdownTableBodyNone">Copy the generated report path to the clipboard  </td></tr>
 </table>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
 Configuration Reference</h1>
 <p>The configuration is a single YAML file. Every key is case-sensitive.</p>
 <div class="fragment"><div class="line">ConfigurationVersion: 1.00       # Must be 1.00</div>
@@ -327,7 +345,7 @@ Configuration Reference</h1>
 <div class="line">        KeyWords:</div>
 <div class="line">          - ExifIFD:DateTimeOriginal</div>
 <div class="line">          - IFD0:DateTime</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
 <span class="tt">FileExtensions</span> properties</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -349,7 +367,7 @@ Configuration Reference</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a63323b332ded7ed3a4edc12fc1754d16" title="Gets or sets a dictionary of available metadata keywords for this extension.">AvailableKeyWords</a></span>  </td><td class="markdownTableBodyNone">map  </td><td class="markdownTableBodyNone">Keyword definitions (see below)  </td></tr>
 </table>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
 <span class="tt">AvailableKeyWords</span> properties</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -364,7 +382,7 @@ Configuration Reference</h1>
 <td class="markdownTableBodyNone"><span class="tt">KeyWords</span>  </td><td class="markdownTableBodyNone">list  </td><td class="markdownTableBodyNone">—  </td><td class="markdownTableBodyNone">Ordered list of metadata tag names to try  </td></tr>
 </table>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
 Template Placeholders</h1>
 <p>Use <span class="tt">{KeywordName}</span> in <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a3cbabcf9e16d587d8c46845ae16fbadb" title="Gets or sets the directory sorting path pattern (may contain metadata placeholders).">SortingPatern</a></span> and <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a7b7e81bdf960f55fe8288e5549d94c38" title="Gets or sets the file name pattern (may contain metadata placeholders).">FileNamePatern</a></span>. Sub-properties are accessed with a dot.</p>
 <table class="markdownTable">
@@ -390,7 +408,7 @@ Template Placeholders</h1>
 <td class="markdownTableBodyNone"><span class="tt">{Counter:D3}</span>  </td><td class="markdownTableBodyNone"><span class="tt">001</span>, <span class="tt">002</span>, <span class="tt">003</span>  </td><td class="markdownTableBodyNone">Persistent running number per target path with <span class="tt">Dx</span> formatting; only active when the placeholder is used in the template  </td></tr>
 </table>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
 Keyword Selection</h1>
 <p>When a keyword lists multiple EXIF tags, FIRE queries each tag and picks one value based on <span class="tt">ValAttribute</span>:</p>
 <table class="markdownTable">
@@ -403,7 +421,7 @@ Keyword Selection</h1>
 </table>
 <p>If none of the listed tags yields a value, <span class="tt">NA</span> is written and a <span class="tt">[WARN]</span> message is printed to the console.</p>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md27"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md28"></a>
 Metadata Sources</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -414,10 +432,10 @@ Metadata Sources</h1>
 <td class="markdownTableBodyNone"><span class="tt">EXIFTOOL</span>  </td><td class="markdownTableBodyNone">Any tag readable by ExifTool (EXIF, XMP, IPTC, QuickTime, ID3, …)  </td></tr>
 </table>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md29"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md30"></a>
 Sidecar File Handling</h1>
 <p>FIRE automatically detects and processes sidecar files (e.g., <span class="tt">.xmp</span>, <span class="tt">.pp3</span>) alongside their primary files.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md30"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
 How It Works</h2>
 <ol type="1">
 <li><b>Configuration</b>: Define sidecar extensions in your primary file's configuration: <div class="fragment"><div class="line">FileExtensions:</div>
@@ -435,7 +453,7 @@ How It Works</h2>
 <li><b>Path Generation</b>: Sidecar files automatically inherit the target directory and base filename from their primary file, preserving only their own extension. If the primary template uses <span class="tt">{Counter...}</span>, the same persistent sequence is retained for the generated target path.</li>
 <li><b>Execution</b>: Sidecar files are copied/moved alongside their primary files using the global action setting.</li>
 </ol>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md32"></a>
 Example</h2>
 <p><b>Source structure:</b> </p><div class="fragment"><div class="line">D:\Import\</div>
 <div class="line">  IMG_1234.jpg</div>
@@ -444,9 +462,9 @@ Example</h2>
 <div class="line">  2026-07-04_001.jpg</div>
 <div class="line">  2026-07-04_001.xmp</div>
 </div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md33"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md34"></a>
 Examples</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md34"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md35"></a>
 Sort holiday photos by date and camera model</h2>
 <div class="fragment"><div class="line">SortingPatern: &quot;{MediaRootPath}\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{Make} {Model}&quot;</div>
 <div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}{MetaCreationTime.Month}{MetaCreationTime.Day}_{FileName}&quot;</div>
@@ -455,7 +473,7 @@ Sort holiday photos by date and camera model</h2>
 <div class="line">    07\</div>
 <div class="line">      Apple iPhone 15 Pro\</div>
 <div class="line">        20260704_IMG_1234.jpg</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md35"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md36"></a>
 Move DNG raw files alongside their JPEG, keep XMP sidecars</h2>
 <div class="fragment"><div class="line">FileExtensions:</div>
 <div class="line">  .jpg:</div>
@@ -463,12 +481,12 @@ Move DNG raw files alongside their JPEG, keep XMP sidecars</h2>
 <div class="line">    SidecarFileExtensions:</div>
 <div class="line">      - .xmp</div>
 <div class="line">      - .dng</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md36"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
 Normalize camera model names</h2>
 <div class="fragment"><div class="line">StringReplacements:</div>
 <div class="line">  SM-S938B: Galaxy S25 Ultra</div>
 <div class="line">  SM-F766B: Galaxy Z Flip7</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
 Running number per target path with <span class="tt">{Counter:D3}</span></h2>
 <p><span class="tt">{Counter...}</span> enables numbering only when the placeholder is present in the template. The last used values are stored in the database so numbers are not reused after an application restart.</p>
 <div class="fragment"><div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG&quot;</div>
@@ -477,9 +495,9 @@ Running number per target path with <span class="tt">{Counter:D3}</span></h2>
 <li><span class="tt">2026-07-04_002.JPG</span></li>
 <li><span class="tt">2026-07-04_003.JPG</span></li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
-Note: For photo and video archives, use <span class="tt">{Counter...}</span> when a stable sequence must be preserved.</h1>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
+Note: For photo and video archives, use <span class="tt">{Counter...}</span> when a stable sequence must be preserved.</h1>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
 Building from Source</h1>
 <div class="fragment"><div class="line"># Restore dependencies</div>
 <div class="line">dotnet restore FIRE.slnx</div>
@@ -490,7 +508,7 @@ Building from Source</h1>
 <div class="line"># Run the console</div>
 <div class="line">dotnet run --project FIRE.Console -- collect --config ConfigurationFiles\Configuration.yaml --culture de-DE</div>
 </div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
 Documentation</h1>
 <p>API documentation is generated with <b>Doxygen 1.17.0</b>.</p>
 <div class="fragment"><div class="line"># Run from the repository root</div>
@@ -499,10 +517,10 @@ Documentation</h1>
 <blockquote class="doxtable">
 <p><b>Tip:</b> Install <a href="https://graphviz.org/">Graphviz</a> and set <span class="tt">HAVE_DOT = YES</span> in <span class="tt">docs/Doxyfile</span> to generate class and call graphs. </p>
 </blockquote>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
 Metadata Inspection API</h2>
 <p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2" title="Initializes a new instance of FIRECatalog.">FIRECatalog</a></span> provides two helper methods for metadata discovery and documentation.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
 <span class="tt">GetAllAvailableMetadata(string filePath)</span></h3>
 <p>Returns all metadata entries for one file as tuples:</p>
 <ul>
@@ -522,7 +540,7 @@ Metadata Inspection API</h2>
 <div class="line">{</div>
 <div class="line">    Console.WriteLine($<span class="stringliteral">&quot;[{source}] {key}: {value}&quot;</span>);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
 <span class="tt">WriteMetadataToMarkdown(string filePath, string? outputPath = null)</span></h3>
 <p>Creates a Markdown report for one file.</p>
 <p>Report contains:</p>
@@ -546,7 +564,7 @@ Metadata Inspection API</h2>
 <div class="line">    <span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>,</div>
 <div class="line">    <span class="stringliteral">@&quot;D:\Reports\IMG_1234-metadata.md&quot;</span>);</div>
 </div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md46"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
 Third-Party Credits</h1>
 <p>This project uses third-party components:</p>
 <ul>
@@ -557,7 +575,7 @@ Third-Party Credits</h1>
 </ul>
 <p>For details, see <a class="el" href="d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html" title="Third-Party Notices">THIRD-PARTY-NOTICES.md</a>.</p>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md49"></a>
 License</h1>
 <p>Copyright © 2026 by Thomas Stoll. <br  />
  Released under the [MIT License](LICENSE). </p>
