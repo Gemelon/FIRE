@@ -14,11 +14,11 @@
     },
     "FIRE.Console Inspect": {
       "commandName": "Project",
-      "commandLineArgs": "inspect --config \"D:\\Media\\FIREConfigurationFiles\\MediaConfiguration.yaml\" --culture \"de-DE\" --file \"D:\\Media Originale\\Automatic Upload\\Samsung SM-S938B\\DJI Album\\dji_fly_20260331_162156_0009_1774970419235_photo_beautify.jpg\" --copy-path"
+      "commandLineArgs": "inspect --config \"S:\\Media FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\" --file \"D:\\Media Originale\\Automatic Upload\\Samsung SM-S938B\\DJI Album\\dji_fly_20260224_195548_0001_1771962080740_video.mp4\" --copy-path"
     },
     "FIRE.Console Clear Collect": {
       "commandName": "Project",
-      "commandLineArgs": "collect --clear --config \"D:\\Media\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
+      "commandLineArgs": "collect --clear --config \"S:\\Media FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
     }
   }
 }

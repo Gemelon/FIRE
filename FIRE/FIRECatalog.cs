@@ -1062,7 +1062,7 @@ public sealed class FIRECatalog : IDisposable
 
         if (configuredDefault.Equals("NOW", StringComparison.OrdinalIgnoreCase))
         {
-            return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            return DateTime.Now.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
         }
 
         if (TryNormalizeDateTime(configuredDefault, out var normalizedDate) &&
@@ -1071,9 +1071,9 @@ public sealed class FIRECatalog : IDisposable
                 "yyyy:MM:dd HH:mm:ss",
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
-                out var parsedDateTime))
+                out _))
         {
-            return parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            return normalizedDate;
         }
 
         LogMetadataWarning(filePath, keywordName, $"configured DATETIME default '{configuredDefault}' is invalid; falling back to NA");
