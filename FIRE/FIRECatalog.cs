@@ -1274,9 +1274,44 @@ public sealed class FIRECatalog : IDisposable
             ResolvePlaceholder(match.Groups["key"].Value, metadata, sourceFilePath, counter));
 
         foreach (var replacement in _configuration.StringReplacements)
-            result = result.Replace(replacement.Key, replacement.Value, StringComparison.OrdinalIgnoreCase);
+            result = ApplyStringReplacement(result, replacement.Key, replacement.Value);
 
         return result;
+    }
+
+    private static string ApplyStringReplacement(string input, string pattern, string replacement)
+    {
+        if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(pattern))
+            return input;
+
+        replacement ??= string.Empty;
+
+        if (pattern.StartsWith("regex:", StringComparison.OrdinalIgnoreCase))
+        {
+            var regexPattern = pattern["regex:".Length..];
+            if (string.IsNullOrWhiteSpace(regexPattern))
+                return input;
+
+            try
+            {
+                return Regex.Replace(input, regexPattern, replacement, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            }
+            catch (ArgumentException)
+            {
+                return input;
+            }
+        }
+
+        if (pattern.Contains('*'))
+        {
+            if (pattern.All(c => c == '*'))
+                return replacement;
+
+            var wildcardRegex = Regex.Escape(pattern).Replace("\\*", ".*");
+            return Regex.Replace(input, wildcardRegex, replacement, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        }
+
+        return input.Replace(pattern, replacement, StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>

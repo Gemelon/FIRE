@@ -354,13 +354,20 @@ FileExtensions:
 	  - .dng
 ```
 
-### Normalize camera model names
+### Normalize values with exact, wildcard, or regex replacements
 
 ```yaml
 StringReplacements:
-  SM-S938B: Galaxy S25 Ultra
-  SM-F766B: Galaxy Z Flip7
+  SM-S938B: Galaxy S25 Ultra      # exact string replacement
+  DJI*: DJI                       # wildcard: replace match where * means any char sequence
+  *\[IS0 14496-12:2003\]: ""       # wildcard can include surrounding text
+  "regex:\\bSM-(S938B|F766B)\\b": Samsung Device
 ```
+
+Rules:
+- Without wildcard and without `regex:` prefix, an exact substring replacement is applied.
+- Wildcard mode is active when `*` is present in the key (`*` = any character sequence).
+- Regex mode is active when the key starts with `regex:`.
 
 ### Running number per target path with `{Counter:D3}`
 
