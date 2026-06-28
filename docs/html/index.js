@@ -2,6 +2,7 @@ var index =
 [
     [ "Overview", "index.html#intro_sec", null ],
     [ "Architecture", "index.html#arch_sec", null ],
+    [ "API Localization", "index.html#localization_sec", null ],
     [ "Three-Step Workflow", "index.html#workflow_sec", [
       [ "Step 1 — collect", "index.html#step1", null ],
       [ "Step 2 — generate", "index.html#step2", null ],

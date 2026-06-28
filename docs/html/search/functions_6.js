@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['load_0',['Load',['../df/dbb/class_f_i_r_e_configration.html#a89e6c0a8550de0522eda231500c9aa75',1,'FIREConfigration::Load()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a016bde7230cf88484e9dfc8af96bb1b4',1,'Load(string filePath):&#160;FIREConfigration.cs']]],
-  ['localizedtext_1',['LocalizedText',['../dd/d5c/_program_8cs.html#ae7418d1d538743232e8a9bda612115d2',1,'Program.cs']]]
+  ['isconfigurationversionsupported_0',['IsConfigurationVersionSupported',['../df/dbb/class_f_i_r_e_configration.html#a7a2fd301bd6cd3e6702d0d38d283c164',1,'FIREConfigration::IsConfigurationVersionSupported()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a2127e8e5c4beba369943506c78f33a56',1,'IsConfigurationVersionSupported():&#160;FIREConfigration.cs']]]
 ];

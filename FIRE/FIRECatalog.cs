@@ -22,6 +22,7 @@
  * SOFTWARE.
  ********************************************************************************/
 
+using FIRE.Localization;
 using Microsoft.Win32.SafeHandles;
 using SharpExifTool;
 using System.Globalization;
@@ -482,7 +483,22 @@ public sealed class FIRECatalog : IDisposable
     private readonly FIREConfigration _configuration;
     private readonly FIREDatabase _database;
     private readonly MetadataSourceRegistry _metadataRegistry;
+    private readonly List<string> _lastCollectedSourcePaths = [];
     private bool _disposed;
+
+    public event EventHandler<FIRECatalogProgressEventArgs>? ProgressChanged;
+
+    public CultureInfo Culture { get; set; } = CultureInfo.GetCultureInfo("en-US");
+
+    public FIRECatalogStage? CurrentStage { get; private set; }
+
+    public string? CurrentFilePath { get; private set; }
+
+    public int ProcessedFileCount { get; private set; }
+
+    public int TotalFileCount { get; private set; }
+
+    public IReadOnlyList<string> LastCollectedSourcePaths => _lastCollectedSourcePaths;
 
     /// <summary>
     /// Marshalled structure for retrieving file ID information from Windows NTFS.
@@ -534,6 +550,67 @@ public sealed class FIRECatalog : IDisposable
         _configuration = configuration;
         _database = database;
         _metadataRegistry = new MetadataSourceRegistry();
+    }
+
+    private void BeginStage(FIRECatalogStage stage, int totalCount)
+    {
+        CurrentStage = stage;
+        CurrentFilePath = null;
+        ProcessedFileCount = 0;
+        TotalFileCount = Math.Max(totalCount, 0);
+
+        if (stage == FIRECatalogStage.Collect)
+        {
+            _lastCollectedSourcePaths.Clear();
+        }
+
+        EmitProgress(FIRECatalogMessageLevel.Info, "status.started");
+    }
+
+    private void CompleteCurrentStage()
+    {
+        EmitProgress(FIRECatalogMessageLevel.Info, "status.completed");
+    }
+
+    private void ReportFileProgress(string filePath)
+    {
+        CurrentFilePath = filePath;
+        ProcessedFileCount++;
+
+        if (CurrentStage == FIRECatalogStage.Collect)
+        {
+            _lastCollectedSourcePaths.Add(filePath);
+        }
+
+        EmitProgress(FIRECatalogMessageLevel.Trace, "status.file_processing", filePath);
+    }
+
+    private void EmitProgress(FIRECatalogMessageLevel level, string messageKey, params object[] messageArgs)
+    {
+        var stage = CurrentStage ?? FIRECatalogStage.Collect;
+        var stageKey = stage switch
+        {
+            FIRECatalogStage.Collect => "stage.collect",
+            FIRECatalogStage.Generate => "stage.generate",
+            FIRECatalogStage.Execute => "stage.execute",
+            FIRECatalogStage.Inspect => "stage.inspect",
+            _ => "stage.collect"
+        };
+
+        var args = messageArgs.Length == 0 ? [ApiLocalizer.Get(stageKey, Culture)] : messageArgs;
+        var message = ApiLocalizer.Format(messageKey, Culture, args);
+
+        ProgressChanged?.Invoke(this, new FIRECatalogProgressEventArgs
+        {
+            Stage = stage,
+            Level = level,
+            Message = message,
+            MessageKey = messageKey,
+            CurrentFilePath = CurrentFilePath,
+            ProcessedCount = ProcessedFileCount,
+            TotalCount = TotalFileCount,
+            Culture = Culture
+        });
     }
 
     /// <summary>
@@ -603,15 +680,20 @@ public sealed class FIRECatalog : IDisposable
     public void CollectFiles(Action<string>? progressCallback = null)
     {
         ThrowIfDisposed();
-        // No longer clearing the database automatically - incremental workflow
-        // Use ClearDatabase() method explicitly if a fresh start is required
-        // Records are persisted incrementally in FIREDatabase.Add(...)
+
+        var totalFiles = _configuration.FilesRootPath
+            .Where(Directory.Exists)
+            .Sum(root => Directory.EnumerateFiles(root, "*", SearchOption.AllDirectories).Count());
+
+        BeginStage(FIRECatalogStage.Collect, totalFiles);
 
         foreach (var rootPath in _configuration.FilesRootPath)
         {
             if (!Directory.Exists(rootPath)) continue;
             CollectFromDirectory(rootPath, progressCallback);
         }
+
+        CompleteCurrentStage();
     }
 
     /// <summary>
@@ -666,6 +748,12 @@ public sealed class FIRECatalog : IDisposable
 
         _database.SortRecords(_configuration.FileSorting, _configuration.FileSortingOrder);
 
+        var pendingCount = _database.Count(record =>
+            !string.IsNullOrWhiteSpace(record.SourceFilePath) &&
+            record.Status is not (ProcessingStatus.PathGenerated or ProcessingStatus.Executed));
+
+        BeginStage(FIRECatalogStage.Generate, pendingCount);
+
         foreach (var record in _database)
         {
             if (string.IsNullOrWhiteSpace(record.SourceFilePath)) continue;
@@ -674,6 +762,7 @@ public sealed class FIRECatalog : IDisposable
             if (record.Status is ProcessingStatus.PathGenerated or ProcessingStatus.Executed) continue;
 
             progressCallback?.Invoke(record.SourceFilePath);
+            ReportFileProgress(record.SourceFilePath);
 
             // Handle sidecar files separately
             if (record.Classification == FileClassification.SidecarFile)
@@ -712,7 +801,9 @@ public sealed class FIRECatalog : IDisposable
                 record.Status = ProcessingStatus.PathGenerated;
             }
         }
+
         _database.Save();
+        CompleteCurrentStage();
     }
 
     /// <summary>
@@ -798,6 +889,14 @@ public sealed class FIRECatalog : IDisposable
     {
         ThrowIfDisposed();
 
+        var pendingCount = _database.Count(record =>
+            !string.IsNullOrWhiteSpace(record.SourceFilePath) &&
+            !string.IsNullOrWhiteSpace(record.TargetFilePath) &&
+            record.Status != ProcessingStatus.Executed &&
+            File.Exists(record.SourceFilePath));
+
+        BeginStage(FIRECatalogStage.Execute, pendingCount);
+
         foreach (var record in _database)
         {
             if (string.IsNullOrWhiteSpace(record.SourceFilePath) || string.IsNullOrWhiteSpace(record.TargetFilePath)) continue;
@@ -807,6 +906,7 @@ public sealed class FIRECatalog : IDisposable
             if (record.Status == ProcessingStatus.Executed) continue;
 
             progressCallback?.Invoke(record.SourceFilePath);
+            ReportFileProgress(record.SourceFilePath);
 
             string action;
 
@@ -829,7 +929,9 @@ public sealed class FIRECatalog : IDisposable
             // Mark as executed after successful operation
             record.Status = ProcessingStatus.Executed;
         }
+
         _database.Save();
+        CompleteCurrentStage();
     }
 
     /// <summary>
@@ -858,6 +960,7 @@ public sealed class FIRECatalog : IDisposable
             foreach (var filePath in Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories))
             {
                 progressCallback?.Invoke(filePath);
+                ReportFileProgress(filePath);
                 ProcessFile(filePath);
             }
         }
@@ -1045,7 +1148,24 @@ public sealed class FIRECatalog : IDisposable
     /// <param name="filePath">Source file path for diagnostics.</param>
     /// <param name="keywordName">Logical keyword name for diagnostics.</param>
     /// <returns>Configured default value or <c>NA</c> when no valid default exists.</returns>
-    private static string ResolveMissingKeywordValue(AvailableKeywordConfiguration keywordConfig, string filePath, string keywordName)
+    private string ResolveMissingKeywordValue(AvailableKeywordConfiguration keywordConfig, string filePath, string keywordName)
+    {
+        var resolved = ResolveKeywordDefaultValue(keywordConfig, DateTime.Now);
+        if (!string.Equals(resolved, "NA", StringComparison.Ordinal))
+        {
+            return resolved;
+        }
+
+        if (!string.IsNullOrWhiteSpace(keywordConfig.Default) &&
+            string.Equals((keywordConfig.DataType ?? "STRING").Trim(), "DATETIME", StringComparison.OrdinalIgnoreCase))
+        {
+            LogMetadataWarning(filePath, keywordName, $"configured DATETIME default '{keywordConfig.Default.Trim()}' is invalid; falling back to NA");
+        }
+
+        return "NA";
+    }
+
+    internal static string ResolveKeywordDefaultValue(AvailableKeywordConfiguration keywordConfig, DateTime now)
     {
         if (string.IsNullOrWhiteSpace(keywordConfig.Default))
         {
@@ -1062,7 +1182,7 @@ public sealed class FIRECatalog : IDisposable
 
         if (configuredDefault.Equals("NOW", StringComparison.OrdinalIgnoreCase))
         {
-            return DateTime.Now.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+            return now.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
         }
 
         if (TryNormalizeDateTime(configuredDefault, out var normalizedDate) &&
@@ -1076,7 +1196,6 @@ public sealed class FIRECatalog : IDisposable
             return normalizedDate;
         }
 
-        LogMetadataWarning(filePath, keywordName, $"configured DATETIME default '{configuredDefault}' is invalid; falling back to NA");
         return "NA";
     }
 
@@ -1089,7 +1208,7 @@ public sealed class FIRECatalog : IDisposable
     /// <param name="filePath">Source file path for diagnostics.</param>
     /// <param name="keywordName">Logical keyword name for diagnostics.</param>
     /// <returns>The selected metadata value.</returns>
-    private static string SelectValue(List<string> values, string valAttribute, string dataType, string filePath, string keywordName)
+    private string SelectValue(List<string> values, string valAttribute, string dataType, string filePath, string keywordName)
     {
         var selectionMode = valAttribute.Trim().ToUpperInvariant();
         var normalizedDataType = dataType.Trim().ToUpperInvariant();
@@ -1135,7 +1254,7 @@ public sealed class FIRECatalog : IDisposable
     /// <param name="filePath">Source file path for diagnostics.</param>
     /// <param name="keywordName">Logical keyword name for diagnostics.</param>
     /// <returns>The selected extreme value as string.</returns>
-    private static string SelectExtremeValue(List<string> values, string normalizedDataType, bool highest, string filePath, string keywordName)
+    private string SelectExtremeValue(List<string> values, string normalizedDataType, bool highest, string filePath, string keywordName)
     {
         var candidates = new List<(string RawValue, IComparable ComparableValue)>(values.Count);
 
@@ -1235,14 +1354,26 @@ public sealed class FIRECatalog : IDisposable
     }
 
     /// <summary>
-    /// Writes a standardized metadata warning to the console.
+    /// Reports a standardized metadata warning through the catalog progress event.
     /// </summary>
     /// <param name="filePath">Source file path associated with the warning.</param>
     /// <param name="keywordName">Logical keyword name associated with the warning.</param>
     /// <param name="reason">Human-readable warning reason.</param>
-    private static void LogMetadataWarning(string filePath, string keywordName, string reason)
+    private void LogMetadataWarning(string filePath, string keywordName, string reason)
     {
-        Console.WriteLine($"[WARN] {Path.GetFileName(filePath)} / {keywordName}: {reason}");
+        var warningText = ApiLocalizer.Format("warning.metadata", Culture, Path.GetFileName(filePath), keywordName, reason);
+
+        ProgressChanged?.Invoke(this, new FIRECatalogProgressEventArgs
+        {
+            Stage = CurrentStage ?? FIRECatalogStage.Collect,
+            Level = FIRECatalogMessageLevel.Warning,
+            Message = warningText,
+            MessageKey = "warning.metadata",
+            CurrentFilePath = CurrentFilePath,
+            ProcessedCount = ProcessedFileCount,
+            TotalCount = TotalFileCount,
+            Culture = Culture
+        });
     }
 
     /// <summary>
@@ -1273,13 +1404,26 @@ public sealed class FIRECatalog : IDisposable
         result = placeholderPattern.Replace(result, match =>
             ResolvePlaceholder(match.Groups["key"].Value, metadata, sourceFilePath, counter));
 
+        return result;
+    }
+
+    private string ApplyConfiguredStringReplacements(string value)
+    {
+        if (string.IsNullOrEmpty(value) || _configuration.StringReplacements.Count == 0)
+        {
+            return value;
+        }
+
+        var result = value;
         foreach (var replacement in _configuration.StringReplacements)
+        {
             result = ApplyStringReplacement(result, replacement.Key, replacement.Value);
+        }
 
         return result;
     }
 
-    private static string ApplyStringReplacement(string input, string pattern, string replacement)
+    internal static string ApplyStringReplacement(string input, string pattern, string replacement)
     {
         if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(pattern))
             return input;
@@ -1337,12 +1481,12 @@ public sealed class FIRECatalog : IDisposable
         if (baseName.Equals("FileName", StringComparison.OrdinalIgnoreCase))
         {
             if (property != null && property.Equals("Noext", StringComparison.OrdinalIgnoreCase))
-                return Path.GetFileNameWithoutExtension(sourceFilePath);
-            return Path.GetFileName(sourceFilePath);
+                return ApplyConfiguredStringReplacements(Path.GetFileNameWithoutExtension(sourceFilePath));
+            return ApplyConfiguredStringReplacements(Path.GetFileName(sourceFilePath));
         }
 
         if (baseName.Equals("MediaRootPath", StringComparison.OrdinalIgnoreCase))
-            return _configuration.MediaRootPath;
+            return ApplyConfiguredStringReplacements(_configuration.MediaRootPath);
 
         if (baseName.Equals("RootPath", StringComparison.OrdinalIgnoreCase))
             return ParseTemplate(_configuration.RootPath, metadata, sourceFilePath, counter);
@@ -1363,7 +1507,7 @@ public sealed class FIRECatalog : IDisposable
         if (!metadata.TryGetValue(baseName, out var value) || string.IsNullOrWhiteSpace(value))
             return "Unknown";
 
-        if (property == null) return value;
+        if (property == null) return ApplyConfiguredStringReplacements(value);
 
         // Line 548 – previously used DateTime.TryParse, which failed for EXIF-style dates.
         if (TryNormalizeDateTime(value, out var normalizedValue) &&
@@ -1390,7 +1534,7 @@ public sealed class FIRECatalog : IDisposable
         //    };
         //}
 
-        return value;
+        return ApplyConfiguredStringReplacements(value);
     }
 
     /// <summary>

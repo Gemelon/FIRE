@@ -128,15 +128,18 @@ Overview</h1>
 <p><b>FIRE</b> is a .NET 10 library and command-line application for automated file reorganization based on embedded metadata. It reads file system information and rich EXIF/XMP metadata (via ExifTool), stores the results in a local SQLite database, computes template-driven target paths, and finally copies, moves, or hard-links the files to their new location.</p>
 <h1 class="doxsection"><a class="anchor" id="arch_sec"></a>
 Architecture</h1>
-<p>The solution consists of two projects:</p>
+<p>The solution consists of three projects:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Project  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Responsibility  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">FIRE</span>  </td><td class="markdownTableBodyNone">Class library (.NET 10)  </td><td class="markdownTableBodyNone">Core engine: configuration, catalog, database  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">FIRE</span>  </td><td class="markdownTableBodyNone">Class library (.NET 10)  </td><td class="markdownTableBodyNone">Core engine: configuration, catalog, database, localization, progress/state events  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI front-end (<span class="tt">collect</span>, <span class="tt">generate</span>, <span class="tt">execute</span>, <span class="tt">inspect</span>)  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI adapter for API testing and quick start (<span class="tt">collect</span>, <span class="tt">generate</span>, <span class="tt">execute</span>, <span class="tt">inspect</span>)  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">FIRE.Tests</span>  </td><td class="markdownTableBodyNone">Test project (.NET 10)  </td><td class="markdownTableBodyNone">Unit tests for core library behavior  </td></tr>
 </table>
+<p>UI apps should consume the <span class="tt">FIRE</span> library directly (not the console process) and subscribe to catalog progress/state events.</p>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
 Core Classes</h3>
 <table class="markdownTable">
@@ -156,7 +159,16 @@ Core Classes</h3>
 <td class="markdownTableBodyNone">FIRE::ExifToolMetadataSource  </td><td class="markdownTableBodyNone">ExifTool-based metadata provider (EXIF, XMP, IPTC, …)  </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">FIRE::MetadataSourceRegistry  </td><td class="markdownTableBodyNone">Registry that maps source names to IMetadataSource instances  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">FIRE::FIRECatalogProgressEventArgs  </td><td class="markdownTableBodyNone">Event payload for API progress/status notifications  </td></tr>
 </table>
+<h1 class="doxsection"><a class="anchor" id="localization_sec"></a>
+API Localization</h1>
+<p>API runtime messages are localized via resource files in <span class="tt">FIRE/Resources</span> and resolved by <span class="tt">FIRE::Localization::ApiLocalizer</span>.</p>
+<ul>
+<li>Default/fallback language: English (<span class="tt">en-US</span>)</li>
+<li>Additional cultures: <span class="tt">de-DE</span>, <span class="tt">fr-FR</span>, <span class="tt">fil-PH</span></li>
+</ul>
 <h1 class="doxsection"><a class="anchor" id="workflow_sec"></a>
 Three-Step Workflow</h1>
 <p>FIRE operates in three distinct, sequential steps:</p>
@@ -187,7 +199,7 @@ CLI Culture and Output Options</h1>
 <h1 class="doxsection"><a class="anchor" id="config_sec"></a>
 Configuration</h1>
 <p>All behaviour is driven by a single YAML file. A minimal example:</p>
-<div class="fragment"><div class="line">ConfigurationVersion: 1.00</div>
+<div class="fragment"><div class="line">ConfigurationVersion: 1.20</div>
 <div class="line">FilesRootPath:</div>
 <div class="line">  - D:\Photos\Import</div>
 <div class="line">DataBasePath: D:\Photos</div>

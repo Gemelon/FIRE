@@ -231,6 +231,12 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>UnitTest1.cs</name>
+    <path>FIRE/FIRE.Tests/</path>
+    <filename>de/d6a/_unit_test1_8cs.html</filename>
+    <class kind="class">UnitTest1</class>
+  </compound>
+  <compound kind="file">
     <name>FIRECatalog.cs</name>
     <path>FIRE/FIRE/</path>
     <filename>db/d24/_f_i_r_e_catalog_8cs.html</filename>
@@ -532,6 +538,62 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>event EventHandler&lt; FIRECatalogProgressEventArgs &gt;</type>
+      <name>ProgressChanged</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>aead28fb01c01b00a7bbbd1557ed455d7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>CultureInfo</type>
+      <name>Culture</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>ab248cbfbd011375a62bf31c640ea6559</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>set</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>a112a711f766db446c2f517b794a1c04a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>FIRECatalogStage</type>
+      <name>CurrentStage</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>ad6e3ce861d4a5f5772ce00c59c91789a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>CurrentFilePath</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>a4a6c1207ff87a242380f60f9491e640e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>ProcessedFileCount</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>a0c7afb1a46673160b6732204f4f48c93</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>TotalFileCount</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>ab7bc51d4a61158d80661ad7805b8210b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>IReadOnlyList&lt; string &gt;</type>
+      <name>LastCollectedSourcePaths</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>a7e4b773b2216d56b9b9d2fb9fae30d4f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>struct FILE_ID_INFO</type>
       <name>FileAttributes</name>
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
@@ -599,6 +661,126 @@
       <name>FileIndexLow</name>
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
       <anchor>af020a49b57fe3e772eeec3aa6e466144</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>FIRECatalogProgress.cs</name>
+    <path>FIRE/FIRE/</path>
+    <filename>dc/d87/_f_i_r_e_catalog_progress_8cs.html</filename>
+    <member kind="enumeration">
+      <type></type>
+      <name>FIRECatalogStage</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a47c4de6beb40683c67f85cbdebf55b59</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Collect</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a47c4de6beb40683c67f85cbdebf55b59a65dddcfa19b099a3493bd593dbfd2b92</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Generate</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a47c4de6beb40683c67f85cbdebf55b59a13f619682461c16618971bf40437b4ef</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Execute</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a47c4de6beb40683c67f85cbdebf55b59a31b7313c05d32519f3869a3de8be95e6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Inspect</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a47c4de6beb40683c67f85cbdebf55b59adcf3bba8dca8116c2b3a5c37c2ca1d16</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>enum FIRECatalogStage</type>
+      <name>Trace</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a6461b873ebed382efa7e574fd3ddbfe2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>enum FIRECatalogStage</type>
+      <name>Info</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a95b85e952064b6939b16e62cb9590e91</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>enum FIRECatalogStage</type>
+      <name>Warning</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a95e3544a64bdc9ce3c1a03c4ea6cc208</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>enum FIRECatalogStage</type>
+      <name>get</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>ac79c4ab1dd17857b215662c294e93616</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>init</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a978c1602c1c480e86c09f3c3a1b8cc98</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>required FIRECatalogMessageLevel</type>
+      <name>Level</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a705b4dedbaecef5be6dfc859c77c44b6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>required string</type>
+      <name>Message</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>afb283ab001bbf2518427dae6320efcfa</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>MessageKey</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>afe0fe171a4ab9aa2291d8919719ab6e9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>CurrentFilePath</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a4a6c1207ff87a242380f60f9491e640e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>ProcessedCount</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a944c06e999e15c1b345fcc6b7720e747</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>TotalCount</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>a9dd7dc8c4fec548749f9e6619d237885</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>CultureInfo</type>
+      <name>Culture</name>
+      <anchorfile>dc/d87/_f_i_r_e_catalog_progress_8cs.html</anchorfile>
+      <anchor>ab248cbfbd011375a62bf31c640ea6559</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -784,6 +966,17 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>ApiLocalizer.cs</name>
+    <path>FIRE/FIRE/Localization/</path>
+    <filename>dd/d1c/_api_localizer_8cs.html</filename>
+    <class kind="class">ApiLocalizer</class>
+  </compound>
+  <compound kind="file">
+    <name>AssemblyInfo.cs</name>
+    <path>FIRE/FIRE/Properties/</path>
+    <filename>d7/d2f/_assembly_info_8cs.html</filename>
+  </compound>
+  <compound kind="file">
     <name>README.md</name>
     <path>FIRE/</path>
     <filename>d9/dd6/_r_e_a_d_m_e_8md.html</filename>
@@ -792,6 +985,24 @@
     <name>THIRD-PARTY-NOTICES.md</name>
     <path>FIRE/</path>
     <filename>da/dc3/_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s_8md.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>ApiLocalizer</name>
+    <filename>d6/d50/class_api_localizer.html</filename>
+    <member kind="function" static="yes">
+      <type>static string</type>
+      <name>Get</name>
+      <anchorfile>d6/d50/class_api_localizer.html</anchorfile>
+      <anchor>ae20112b68f53db89f0334a53bbe80e3c</anchor>
+      <arglist>(string key, CultureInfo? culture=null)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static string</type>
+      <name>Format</name>
+      <anchorfile>d6/d50/class_api_localizer.html</anchorfile>
+      <anchor>ac202062c7eea1de336ba7e23144ddf5a</anchor>
+      <arglist>(string key, CultureInfo? culture=null, params object[] args)</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>AppLifetime</name>
@@ -861,6 +1072,13 @@
       <name>ValAttribute</name>
       <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
       <anchor>ad6370667010a92c28493fcc16aef5936</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>Default</name>
+      <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
+      <anchor>af691edf1cbae194bc942a15bef257b25</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -1281,6 +1499,59 @@
       <arglist>(string[] args)</arglist>
     </member>
   </compound>
+  <compound kind="class">
+    <name>UnitTest1</name>
+    <filename>d7/d81/class_unit_test1.html</filename>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyStringReplacement_ExactPattern_ReplacesOnlyMatchingSubstring</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>a8c0a139372d19c57119440ae0c99ac6e</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyStringReplacement_WildcardPattern_ReplacesMatchedSegment</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>a74b6b968b781d953e5f42f8c9bc67f48</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ApplyStringReplacement_RegexPrefix_UsesRegexReplacement</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>a18d7f604f48ef17c445760f13583eb90</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResolveKeywordDefaultValue_DatetimeNow_UsesProvidedNowValueAndNormalizes</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>acbdf3495a3632ab888240892a7bf8e20</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResolveKeywordDefaultValue_DatetimeString_NormalizesToDatabaseFormat</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>a440b4f806bae4271886f382d37f03bf6</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResolveKeywordDefaultValue_InvalidDatetimeDefault_ReturnsNA</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>a65e3fed4c292dd081267784aaa6e5003</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ResolveKeywordDefaultValue_StringDefault_ReturnsDefaultUnchanged</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>a6c0ac62dfd6510e50f40cb54d35a8022</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
   <compound kind="page">
     <name>md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s</name>
     <title>Third-Party Notices</title>
@@ -1298,12 +1569,16 @@
     <dir>FIRE/docs</dir>
     <dir>FIRE/FIRE</dir>
     <dir>FIRE/FIRE.Console</dir>
+    <dir>FIRE/FIRE.Tests</dir>
   </compound>
   <compound kind="dir">
     <name>FIRE/FIRE</name>
     <path>FIRE/FIRE/</path>
     <filename>dir_027ae1c642818204f1d2b0e289285598.html</filename>
+    <dir>FIRE/FIRE/Localization</dir>
+    <dir>FIRE/FIRE/Properties</dir>
     <file>FIRECatalog.cs</file>
+    <file>FIRECatalogProgress.cs</file>
     <file>FIREConfigration.cs</file>
     <file>FIREDatabase.cs</file>
   </compound>
@@ -1313,12 +1588,31 @@
     <filename>dir_34712068e75e4f8a851a4fa1ab20db3f.html</filename>
     <file>Program.cs</file>
   </compound>
+  <compound kind="dir">
+    <name>FIRE/FIRE.Tests</name>
+    <path>FIRE/FIRE.Tests/</path>
+    <filename>dir_168a0deea1a80b54accc11d218723f4f.html</filename>
+    <file>UnitTest1.cs</file>
+  </compound>
+  <compound kind="dir">
+    <name>FIRE/FIRE/Localization</name>
+    <path>FIRE/FIRE/Localization/</path>
+    <filename>dir_d924e2942acae4adf859cdb0d3f51e3c.html</filename>
+    <file>ApiLocalizer.cs</file>
+  </compound>
+  <compound kind="dir">
+    <name>FIRE/FIRE/Properties</name>
+    <path>FIRE/FIRE/Properties/</path>
+    <filename>dir_25b85a9469b7ff762775243dc31c6afb.html</filename>
+    <file>AssemblyInfo.cs</file>
+  </compound>
   <compound kind="page">
     <name>index</name>
     <title>FIRE — File Information Reorganizer and Extractor</title>
     <filename>index.html</filename>
     <docanchor file="index.html" title="Overview">intro_sec</docanchor>
     <docanchor file="index.html" title="Architecture">arch_sec</docanchor>
+    <docanchor file="index.html" title="API Localization">localization_sec</docanchor>
     <docanchor file="index.html" title="Three-Step Workflow">workflow_sec</docanchor>
     <docanchor file="index.html" title="Step 1 — collect">step1</docanchor>
     <docanchor file="index.html" title="Step 2 — generate">step2</docanchor>

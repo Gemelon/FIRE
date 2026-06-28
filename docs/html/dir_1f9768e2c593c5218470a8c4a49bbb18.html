@@ -126,6 +126,7 @@ Directories</h2></td></tr>
 <tr class="memitem:docs" id="r_docs"><td class="memItemLeft"><span class="iconfolder"><div class="folder-icon"></div></span>&#160;</td><td class="memItemRight"><a class="el" href="dir_580823591837e4cab4ee5a22f2fff719.html">docs</a></td></tr>
 <tr class="memitem:FIRE" id="r_FIRE"><td class="memItemLeft"><span class="iconfolder"><div class="folder-icon"></div></span>&#160;</td><td class="memItemRight"><a class="el" href="dir_027ae1c642818204f1d2b0e289285598.html">FIRE</a></td></tr>
 <tr class="memitem:FIRE_2EConsole" id="r_FIRE_2EConsole"><td class="memItemLeft"><span class="iconfolder"><div class="folder-icon"></div></span>&#160;</td><td class="memItemRight"><a class="el" href="dir_34712068e75e4f8a851a4fa1ab20db3f.html">FIRE.Console</a></td></tr>
+<tr class="memitem:FIRE_2ETests" id="r_FIRE_2ETests"><td class="memItemLeft"><span class="iconfolder"><div class="folder-icon"></div></span>&#160;</td><td class="memItemRight"><a class="el" href="dir_168a0deea1a80b54accc11d218723f4f.html">FIRE.Tests</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
@@ -193,6 +194,8 @@ Features</h1>
 <li><b>Sidecar file support</b> — <span class="tt">.xmp</span>, <span class="tt">.pp3</span>, or any companion extension follows its primary file automatically</li>
 <li><b>String replacements</b> — normalize camera model names or other metadata values globally</li>
 <li><b>Culture-aware</b> — date formatting respects the <span class="tt">--culture</span> flag</li>
+<li><b>Localized API messages</b> — resource-based API messages with English fallback (<span class="tt">en-US</span>) and translations for <span class="tt">de-DE</span>, <span class="tt">fr-FR</span>, and <span class="tt">fil-PH</span></li>
+<li><b>UI-ready API progress model</b> — <span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2" title="Initializes a new instance of FIRECatalog.">FIRECatalog</a></span> exposes progress/state events and properties for direct UI integration (WPF/WinUI/etc.)</li>
 </ul>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
@@ -208,11 +211,19 @@ Project Structure</h1>
 <div class="line">├── FIRE/</div>
 <div class="line">│   ├── FIRE.csproj</div>
 <div class="line">│   ├── FIRECatalog.cs              # Core orchestration engine</div>
+<div class="line">│   ├── FIRECatalogProgress.cs      # Progress/state event contracts for UI integration</div>
 <div class="line">│   ├── FIREConfigration.cs         # YAML configuration model</div>
-<div class="line">│   └── FIREDatabase.cs             # SQLite database abstraction</div>
+<div class="line">│   ├── FIREDatabase.cs             # SQLite database abstraction</div>
+<div class="line">│   ├── Localization/</div>
+<div class="line">│   │   └── ApiLocalizer.cs         # Resource-based API localization helper</div>
+<div class="line">│   └── Resources/</div>
+<div class="line">│       └── ApiStrings*.resx        # API message translations (EN/DE/FR/fil-PH)</div>
 <div class="line">├── FIRE.Console/</div>
 <div class="line">│   ├── FIRE.Console.csproj</div>
-<div class="line">│   └── Program.cs                  # CLI entry point</div>
+<div class="line">│   └── Program.cs                  # CLI test/demo adapter for the FIRE API</div>
+<div class="line">├── FIRE.Tests/</div>
+<div class="line">│   ├── FIRE.Tests.csproj</div>
+<div class="line">│   └── UnitTest1.cs                # Initial unit tests for core logic</div>
 <div class="line">├── FIRE.slnx</div>
 <div class="line">├── LICENSE</div>
 <div class="line">└── README.md</div>
@@ -261,6 +272,7 @@ Quick Start</h1>
 </div><!-- fragment --><hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
 Usage</h1>
+<p><span class="tt">FIRE.Console</span> is a CLI adapter for testing and fast onboarding. UI applications should reference the <span class="tt">FIRE</span> library directly and consume <span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2" title="Initializes a new instance of FIRECatalog.">FIRECatalog</a></span> progress/state events instead of invoking the console process.</p>
 <div class="fragment"><div class="line">FIRE.Console &lt;command&gt; --config &lt;path&gt; --culture &lt;culture&gt; [options]</div>
 </div><!-- fragment --><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -302,7 +314,7 @@ Inspect command options</h2>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
 Configuration Reference</h1>
 <p>The configuration is a single YAML file. Every key is case-sensitive.</p>
-<div class="fragment"><div class="line">ConfigurationVersion: 1.00       # Must be 1.00</div>
+<div class="fragment"><div class="line">ConfigurationVersion: 1.20       # Must be 1.20</div>
 <div class="line"> </div>
 <div class="line">FilesRootPath:                    # One or more source directories</div>
 <div class="line">  - D:\Photos\Import</div>
@@ -379,6 +391,8 @@ Configuration Reference</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">ValAttribute</span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">LOWEST</span>  </td><td class="markdownTableBodyNone"><span class="tt">LOWEST</span> or <span class="tt">HIGHEST</span>  </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">Default</span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">—  </td><td class="markdownTableBodyNone">Fallback value when no configured keyword is found. For <span class="tt">DATETIME</span>, supports a date string (e.g. <span class="tt">2024-12-31 00:00:00</span>) or <span class="tt">NOW</span>.  </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">KeyWords</span>  </td><td class="markdownTableBodyNone">list  </td><td class="markdownTableBodyNone">—  </td><td class="markdownTableBodyNone">Ordered list of metadata tag names to try  </td></tr>
 </table>
 <hr  />
@@ -482,11 +496,19 @@ Move DNG raw files alongside their JPEG, keep XMP sidecars</h2>
 <div class="line">      - .xmp</div>
 <div class="line">      - .dng</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
-Normalize camera model names</h2>
+Normalize values with exact, wildcard, or regex replacements</h2>
 <div class="fragment"><div class="line">StringReplacements:</div>
-<div class="line">  SM-S938B: Galaxy S25 Ultra</div>
-<div class="line">  SM-F766B: Galaxy Z Flip7</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
+<div class="line">  SM-S938B: Galaxy S25 Ultra      # exact string replacement</div>
+<div class="line">  DJI*: DJI                       # wildcard: replace match where * means any char sequence</div>
+<div class="line">  *\&zwj;[IS0 14496-12:2003\&zwj;]: &quot;&quot;       # wildcard can include surrounding text</div>
+<div class="line">  &quot;regex:\\bSM-(S938B|F766B)\\b&quot;: Samsung Device</div>
+</div><!-- fragment --><p>Rules:</p><ul>
+<li>Replacements are applied to each resolved placeholder value (e.g. <span class="tt">{Make}</span>, <span class="tt">{Model}</span>) before it is inserted into the final pattern string.</li>
+<li>Without wildcard and without <span class="tt">regex:</span> prefix, an exact substring replacement is applied.</li>
+<li>Wildcard mode is active when <span class="tt">*</span> is present in the key (<span class="tt">*</span> = any character sequence).</li>
+<li>Regex mode is active when the key starts with <span class="tt">regex:</span>.</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
 Running number per target path with <span class="tt">{Counter:D3}</span></h2>
 <p><span class="tt">{Counter...}</span> enables numbering only when the placeholder is present in the template. The last used values are stored in the database so numbers are not reused after an application restart.</p>
 <div class="fragment"><div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG&quot;</div>

@@ -9,3 +9,6 @@
 ## Path Generation
 - The user should decide whether a counter is used; a counter is only activated when the template contains placeholders such as `{Counter:D3}`.
 - For photo and video collections, counter values must be persisted so deleted numbers are not reused and the image sequence remains stable.
+
+## Application Structure
+- The console app serves as a test/quick-start client for the API and should not play a role in UI applications; UI applications should directly integrate the FIRE library.

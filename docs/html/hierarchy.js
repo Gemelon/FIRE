@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "ApiLocalizer", "d6/d50/class_api_localizer.html", null ],
     [ "AppLifetime", "d5/d39/class_app_lifetime.html", null ],
     [ "AvailableKeywordConfiguration", "d3/daf/class_available_keyword_configuration.html", null ],
     [ "Command", null, [
@@ -18,5 +19,6 @@ var hierarchy =
       [ "FileInfoMetadataSource", "d3/df3/class_file_info_metadata_source.html", null ]
     ] ],
     [ "MetadataSourceRegistry", "de/df7/class_metadata_source_registry.html", null ],
-    [ "ProgramHost", "d6/d5e/class_program_host.html", null ]
+    [ "ProgramHost", "d6/d5e/class_program_host.html", null ],
+    [ "UnitTest1", "d7/d81/class_unit_test1.html", null ]
 ];

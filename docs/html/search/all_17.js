@@ -10,5 +10,8 @@ var searchData=
   ['third_2dparty_2dnotices_2emd_7',['THIRD-PARTY-NOTICES.md',['../da/dc3/_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s_8md.html',1,'']]],
   ['three_20step_20workflow_8',['Three-Step Workflow',['../index.html#workflow_sec',1,'']]],
   ['throwifcancellationrequested_9',['ThrowIfCancellationRequested',['../d5/d39/class_app_lifetime.html#a369ef0f0b61b7a75d0a8f1c27c124922',1,'AppLifetime']]],
-  ['typename_10',['TypeName',['../d7/d1a/_f_i_r_e_database_8cs.html#a2f7c9c3aa885d033c6523e6715dba680',1,'FIREFileMetaData']]]
+  ['totalcount_10',['TotalCount',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a9dd7dc8c4fec548749f9e6619d237885',1,'FIRECatalogProgress.cs']]],
+  ['totalfilecount_11',['TotalFileCount',['../db/d24/_f_i_r_e_catalog_8cs.html#ab7bc51d4a61158d80661ad7805b8210b',1,'FIRECatalog.cs']]],
+  ['trace_12',['Trace',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a6461b873ebed382efa7e574fd3ddbfe2',1,'FIRECatalogProgress.cs']]],
+  ['typename_13',['TypeName',['../d7/d1a/_f_i_r_e_database_8cs.html#a2f7c9c3aa885d033c6523e6715dba680',1,'FIREFileMetaData']]]
 ];

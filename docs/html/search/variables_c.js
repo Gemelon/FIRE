@@ -1,11 +1,6 @@
 var searchData=
 [
-  ['set_0',['set',['../d9/d06/class_collect_settings.html#a21b3c8efd3b76317d1e141fde2b45e9c',1,'CollectSettings::set'],['../df/dbb/class_f_i_r_e_configration.html#a2611d5688d84cdfd922318ad9f3fa451',1,'FIREConfigration::set'],['../d3/daf/class_available_keyword_configuration.html#a0498422cf2d9f165fc718b6ed09a3196',1,'AvailableKeywordConfiguration::set'],['../d7/d1a/_f_i_r_e_database_8cs.html#a2b4f3c6856d4b3b8393f5afc352854d7',1,'FIREFileMetaData::set'],['../dd/d5c/_program_8cs.html#a112a711f766db446c2f517b794a1c04a',1,'set:&#160;Program.cs'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a112a711f766db446c2f517b794a1c04a',1,'set:&#160;FIREConfigration.cs']]],
-  ['sidecarfileextensions_1',['SidecarFileExtensions',['../d1/d3c/_f_i_r_e_configration_8cs.html#a17fb8db34a5e91f9f3c5726747f32226',1,'FIREConfigration.cs']]],
-  ['sortingpatern_2',['SortingPatern',['../df/dbb/class_f_i_r_e_configration.html#af2ad6573c54a4d718873d92d181a1553',1,'FIREConfigration::SortingPatern'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a3cbabcf9e16d587d8c46845ae16fbadb',1,'SortingPatern:&#160;FIREConfigration.cs']]],
-  ['source_3',['Source',['../d3/daf/class_available_keyword_configuration.html#a36bf41d9f6134301933ea084b1dd4b25',1,'AvailableKeywordConfiguration']]],
-  ['sourcename_4',['SourceName',['../d3/df3/class_file_info_metadata_source.html#a32cba1600aaabce5aaba6ca1d8a189a7',1,'FileInfoMetadataSource::SourceName'],['../db/d24/_f_i_r_e_catalog_8cs.html#a651798f55a94e395df9f863283ef447c',1,'SourceName:&#160;FIRECatalog.cs']]],
-  ['string_5',['string',['../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703',1,'string:&#160;Program.cs'],['../db/d24/_f_i_r_e_catalog_8cs.html#a5d8d7c996845adbb001c9fe685ba97ca',1,'string:&#160;FIRECatalog.cs']]],
-  ['stringreplacements_6',['StringReplacements',['../df/dbb/class_f_i_r_e_configration.html#a4c6ec16e124123c544bead8e64fb94dc',1,'FIREConfigration::StringReplacements'],['../d1/d3c/_f_i_r_e_configration_8cs.html#afdba3e756dc6f3cbf4d4d8303cdfb4ff',1,'StringReplacements:&#160;FIREConfigration.cs']]],
-  ['supportedconfigurationversion_7',['SupportedConfigurationVersion',['../df/dbb/class_f_i_r_e_configration.html#a87dd9cfaa69127725d9cb1b69edb28e6',1,'FIREConfigration::SupportedConfigurationVersion'],['../d1/d3c/_f_i_r_e_configration_8cs.html#aa5389a725ea3efe7c6a97c603bbabb12',1,'SupportedConfigurationVersion:&#160;FIREConfigration.cs']]]
+  ['processedcount_0',['ProcessedCount',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a944c06e999e15c1b345fcc6b7720e747',1,'FIRECatalogProgress.cs']]],
+  ['processedfilecount_1',['ProcessedFileCount',['../db/d24/_f_i_r_e_catalog_8cs.html#a0c7afb1a46673160b6732204f4f48c93',1,'FIRECatalog.cs']]],
+  ['progresschanged_2',['ProgressChanged',['../db/d24/_f_i_r_e_catalog_8cs.html#aead28fb01c01b00a7bbbd1557ed455d7',1,'FIRECatalog.cs']]]
 ];

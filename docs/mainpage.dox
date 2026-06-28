@@ -13,12 +13,15 @@
  *
  * @section arch_sec Architecture
  *
- * The solution consists of two projects:
+ * The solution consists of three projects:
  *
  * | Project | Type | Responsibility |
  * |---------|------|----------------|
- * | `FIRE` | Class library (.NET 10) | Core engine: configuration, catalog, database |
- * | `FIRE.Console` | Console application (.NET 10) | CLI front-end (`collect`, `generate`, `execute`, `inspect`) |
+ * | `FIRE` | Class library (.NET 10) | Core engine: configuration, catalog, database, localization, progress/state events |
+ * | `FIRE.Console` | Console application (.NET 10) | CLI adapter for API testing and quick start (`collect`, `generate`, `execute`, `inspect`) |
+ * | `FIRE.Tests` | Test project (.NET 10) | Unit tests for core library behavior |
+ *
+ * UI apps should consume the `FIRE` library directly (not the console process) and subscribe to catalog progress/state events.
  *
  * ### Core Classes
  *
@@ -31,6 +34,14 @@
  * | FIRE::FileInfoMetadataSource | File-system metadata provider (creation/modification/access time) |
  * | FIRE::ExifToolMetadataSource | ExifTool-based metadata provider (EXIF, XMP, IPTC, …) |
  * | FIRE::MetadataSourceRegistry | Registry that maps source names to IMetadataSource instances |
+ * | FIRE::FIRECatalogProgressEventArgs | Event payload for API progress/status notifications |
+ *
+ * @section localization_sec API Localization
+ *
+ * API runtime messages are localized via resource files in `FIRE/Resources` and resolved by `FIRE::Localization::ApiLocalizer`.
+ *
+ * - Default/fallback language: English (`en-US`)
+ * - Additional cultures: `de-DE`, `fr-FR`, `fil-PH`
  *
  * @section workflow_sec Three-Step Workflow
  *

@@ -51,6 +51,8 @@ finally copies, moves, or hard-links each file to its computed target location.
 - **String replacements** — normalize camera model names or other metadata
   values globally
 - **Culture-aware** — date formatting respects the `--culture` flag
+- **Localized API messages** — resource-based API messages with English fallback (`en-US`) and translations for `de-DE`, `fr-FR`, and `fil-PH`
+- **UI-ready API progress model** — `FIRECatalog` exposes progress/state events and properties for direct UI integration (WPF/WinUI/etc.)
 
 ---
 
@@ -68,11 +70,19 @@ FIRE/
 ├── FIRE/
 │   ├── FIRE.csproj
 │   ├── FIRECatalog.cs              # Core orchestration engine
+│   ├── FIRECatalogProgress.cs      # Progress/state event contracts for UI integration
 │   ├── FIREConfigration.cs         # YAML configuration model
-│   └── FIREDatabase.cs             # SQLite database abstraction
+│   ├── FIREDatabase.cs             # SQLite database abstraction
+│   ├── Localization/
+│   │   └── ApiLocalizer.cs         # Resource-based API localization helper
+│   └── Resources/
+│       └── ApiStrings*.resx        # API message translations (EN/DE/FR/fil-PH)
 ├── FIRE.Console/
 │   ├── FIRE.Console.csproj
-│   └── Program.cs                  # CLI entry point
+│   └── Program.cs                  # CLI test/demo adapter for the FIRE API
+├── FIRE.Tests/
+│   ├── FIRE.Tests.csproj
+│   └── UnitTest1.cs                # Initial unit tests for core logic
 ├── FIRE.slnx
 ├── LICENSE
 └── README.md
@@ -134,6 +144,8 @@ FIRE.Console inspect --config Configuration.yaml --culture en-US --file "D:\Phot
 ---
 
 ## Usage
+
+`FIRE.Console` is a CLI adapter for testing and fast onboarding. UI applications should reference the `FIRE` library directly and consume `FIRECatalog` progress/state events instead of invoking the console process.
 
 ```
 FIRE.Console <command> --config <path> --culture <culture> [options]
@@ -365,6 +377,7 @@ StringReplacements:
 ```
 
 Rules:
+- Replacements are applied to each resolved placeholder value (e.g. `{Make}`, `{Model}`) before it is inserted into the final pattern string.
 - Without wildcard and without `regex:` prefix, an exact substring replacement is applied.
 - Wildcard mode is active when `*` is present in the key (`*` = any character sequence).
 - Regex mode is active when the key starts with `regex:`.

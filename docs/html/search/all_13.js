@@ -11,8 +11,11 @@ var searchData=
   ['photos_20by_20date_20and_20camera_20model_8',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md35',1,'']]],
   ['placeholders_9',['Placeholders',['../index.html#placeholders_sec',1,'Template Placeholders'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md24',1,'Template Placeholders']]],
   ['preserved_10',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md39',1,'']]],
-  ['program_2ecs_11',['Program.cs',['../dd/d5c/_program_8cs.html',1,'']]],
-  ['programhost_12',['ProgramHost',['../d6/d5e/class_program_host.html',1,'']]],
-  ['project_20structure_13',['Project Structure',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md7',1,'']]],
-  ['properties_14',['properties',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md22',1,'&lt;span class=&quot;tt&quot;&gt;AvailableKeyWords&lt;/span&gt; properties'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md21',1,'&lt;span class=&quot;tt&quot;&gt;FileExtensions&lt;/span&gt; properties']]]
+  ['processedcount_11',['ProcessedCount',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a944c06e999e15c1b345fcc6b7720e747',1,'FIRECatalogProgress.cs']]],
+  ['processedfilecount_12',['ProcessedFileCount',['../db/d24/_f_i_r_e_catalog_8cs.html#a0c7afb1a46673160b6732204f4f48c93',1,'FIRECatalog.cs']]],
+  ['program_2ecs_13',['Program.cs',['../dd/d5c/_program_8cs.html',1,'']]],
+  ['programhost_14',['ProgramHost',['../d6/d5e/class_program_host.html',1,'']]],
+  ['progresschanged_15',['ProgressChanged',['../db/d24/_f_i_r_e_catalog_8cs.html#aead28fb01c01b00a7bbbd1557ed455d7',1,'FIRECatalog.cs']]],
+  ['project_20structure_16',['Project Structure',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md7',1,'']]],
+  ['properties_17',['properties',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md22',1,'&lt;span class=&quot;tt&quot;&gt;AvailableKeyWords&lt;/span&gt; properties'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md21',1,'&lt;span class=&quot;tt&quot;&gt;FileExtensions&lt;/span&gt; properties']]]
 ];

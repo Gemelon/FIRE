@@ -1,3 +1,7 @@
 <Solution>
+  <Project Path="FIRE.Console/FIRE.Console.csproj" />
+  <Project Path="FIRE.Tests/FIRE.Tests.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="FIRE/FIRE.csproj" />
-  <Project Path="FIRE.Console/FIRE.Console.csproj" />`r`n</Solution>
+</Solution>

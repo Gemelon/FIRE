@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['maximumfileinfobyhandleclass_0',['MaximumFileInfoByHandleClass',['../db/d24/_f_i_r_e_catalog_8cs.html#a3b415b0ea154baa8bfa5b3b188ce1323',1,'FIRECatalog.cs']]],
-  ['mediarootpath_1',['MediaRootPath',['../df/dbb/class_f_i_r_e_configration.html#aa773e66f6dd7f501b1d4c5017ef23a2b',1,'FIREConfigration::MediaRootPath'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1',1,'MediaRootPath:&#160;FIREConfigration.cs']]]
+  ['lastaccesstime_0',['LastAccessTime',['../db/d24/_f_i_r_e_catalog_8cs.html#a4a2cbe49aac2cf4a70e718c5d358b80b',1,'FIRECatalog.cs']]],
+  ['lastcollectedsourcepaths_1',['LastCollectedSourcePaths',['../db/d24/_f_i_r_e_catalog_8cs.html#a7e4b773b2216d56b9b9d2fb9fae30d4f',1,'FIRECatalog.cs']]],
+  ['lastwritetime_2',['LastWriteTime',['../db/d24/_f_i_r_e_catalog_8cs.html#adca2c4faa6f3b5005d34dcda1abba8cb',1,'FIRECatalog.cs']]],
+  ['level_3',['Level',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a705b4dedbaecef5be6dfc859c77c44b6',1,'FIRECatalogProgress.cs']]],
+  ['lpfileinformation_4',['lpFileInformation',['../db/d24/_f_i_r_e_catalog_8cs.html#a6663de26f833f169d0389caa8d9d7244',1,'FIRECatalog.cs']]]
 ];

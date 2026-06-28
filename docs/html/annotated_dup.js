@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "ApiLocalizer", "d6/d50/class_api_localizer.html", "d6/d50/class_api_localizer" ],
     [ "AppLifetime", "d5/d39/class_app_lifetime.html", "d5/d39/class_app_lifetime" ],
     [ "AvailableKeywordConfiguration", "d3/daf/class_available_keyword_configuration.html", "d3/daf/class_available_keyword_configuration" ],
     [ "CollectSettings", "d9/d06/class_collect_settings.html", "d9/d06/class_collect_settings" ],
@@ -12,5 +13,6 @@ var annotated_dup =
     [ "GenerateCommand", "d1/ddd/class_generate_command.html", "d1/ddd/class_generate_command" ],
     [ "InspectCommand", "d1/d1a/class_inspect_command.html", "d1/d1a/class_inspect_command" ],
     [ "MetadataSourceRegistry", "de/df7/class_metadata_source_registry.html", "de/df7/class_metadata_source_registry" ],
-    [ "ProgramHost", "d6/d5e/class_program_host.html", "d6/d5e/class_program_host" ]
+    [ "ProgramHost", "d6/d5e/class_program_host.html", "d6/d5e/class_program_host" ],
+    [ "UnitTest1", "d7/d81/class_unit_test1.html", "d7/d81/class_unit_test1" ]
 ];

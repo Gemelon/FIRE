@@ -1,10 +1,10 @@
 var searchData=
 [
   ['camera_20model_0',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md35',1,'']]],
-  ['camera_20model_20names_1',['Normalize camera model names',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md37',1,'']]],
-  ['classes_2',['Core Classes',['../index.html#autotoc_md0',1,'']]],
-  ['cleardatabase_3',['ClearDatabase',['../d9/d06/class_collect_settings.html#a9e307bd2a867e3fdf5e784cc99c6aa60',1,'CollectSettings::ClearDatabase'],['../dd/d5c/_program_8cs.html#ae5b62c8d00b10d87c47673fbd5653288',1,'ClearDatabase:&#160;Program.cs'],['../db/d24/_f_i_r_e_catalog_8cs.html#a08c18d301e13f48def803bd50019d276',1,'ClearDatabase():&#160;FIRECatalog.cs']]],
-  ['cli_20culture_20and_20output_20options_4',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
+  ['classes_1',['Core Classes',['../index.html#autotoc_md0',1,'']]],
+  ['cleardatabase_2',['ClearDatabase',['../d9/d06/class_collect_settings.html#a9e307bd2a867e3fdf5e784cc99c6aa60',1,'CollectSettings::ClearDatabase'],['../dd/d5c/_program_8cs.html#ae5b62c8d00b10d87c47673fbd5653288',1,'ClearDatabase:&#160;Program.cs'],['../db/d24/_f_i_r_e_catalog_8cs.html#a08c18d301e13f48def803bd50019d276',1,'ClearDatabase():&#160;FIRECatalog.cs']]],
+  ['cli_20culture_20and_20output_20options_3',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
+  ['collect_4',['Collect',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59a65dddcfa19b099a3493bd593dbfd2b92',1,'FIRECatalogProgress.cs']]],
   ['collect_5',['Step 1 — collect',['../index.html#step1',1,'']]],
   ['collectfiles_6',['CollectFiles',['../db/d24/_f_i_r_e_catalog_8cs.html#a7699db9161ac26db6231f6b201d3b94b',1,'FIRECatalog.cs']]],
   ['collection_20phase_7',['Collection Phase',['../index.html#sidecar_collection',1,'']]],
@@ -23,8 +23,10 @@ var searchData=
   ['counter_3ad3_20',['Running number per target path with &lt;span class=&quot;tt&quot;&gt;{Counter:D3}&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'']]],
   ['creationtime_21',['CreationTime',['../db/d24/_f_i_r_e_catalog_8cs.html#a5b34ed4fd541dd9ebdbf8b7f03dd12d8',1,'FIRECatalog.cs']]],
   ['credits_22',['Credits',['../index.html#credits_sec',1,'Third-Party Credits'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md47',1,'Third-Party Credits']]],
-  ['culture_23',['Culture',['../dd/d5c/_program_8cs.html#a0391b18642c9e16b7c2a285fc7db3786',1,'Program.cs']]],
+  ['culture_23',['Culture',['../dd/d5c/_program_8cs.html#a0391b18642c9e16b7c2a285fc7db3786',1,'Culture:&#160;Program.cs'],['../db/d24/_f_i_r_e_catalog_8cs.html#ab248cbfbd011375a62bf31c640ea6559',1,'Culture:&#160;FIRECatalog.cs'],['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ab248cbfbd011375a62bf31c640ea6559',1,'Culture:&#160;FIRECatalogProgress.cs']]],
   ['culture_20and_20output_20options_24',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
   ['culturealiases_25',['CultureAliases',['../dd/d5c/_program_8cs.html#af7c6e3ac502073155117e020ca5046f1',1,'Program.cs']]],
-  ['currentlanguage_26',['CurrentLanguage',['../d5/d39/class_app_lifetime.html#a625e8e0b1dd8fea33ab714ab65e14605',1,'AppLifetime']]]
+  ['currentfilepath_26',['CurrentFilePath',['../db/d24/_f_i_r_e_catalog_8cs.html#a4a6c1207ff87a242380f60f9491e640e',1,'CurrentFilePath:&#160;FIRECatalog.cs'],['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a4a6c1207ff87a242380f60f9491e640e',1,'CurrentFilePath:&#160;FIRECatalogProgress.cs']]],
+  ['currentlanguage_27',['CurrentLanguage',['../d5/d39/class_app_lifetime.html#a625e8e0b1dd8fea33ab714ab65e14605',1,'AppLifetime']]],
+  ['currentstage_28',['CurrentStage',['../db/d24/_f_i_r_e_catalog_8cs.html#ad6e3ce861d4a5f5772ce00c59c91789a',1,'FIRECatalog.cs']]]
 ];

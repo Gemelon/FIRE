@@ -244,7 +244,10 @@ internal static class CommandExecutor
             ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "initializing_catalog"));
 
             using var database = new FIREDatabase(dbPath);
-            using var catalog = new FIRECatalog(config, database);
+            using var catalog = new FIRECatalog(config, database)
+            {
+                Culture = CultureInfo.CurrentUICulture
+            };
 
             ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "catalog_initialized"));
             ConsoleUi.WriteEmptyLine();
@@ -350,7 +353,30 @@ internal static class CommandExecutor
             ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "initializing_catalog"));
 
             using var database = new FIREDatabase(dbPath);
-            using var catalog = new FIRECatalog(config, database);
+            using var catalog = new FIRECatalog(config, database)
+            {
+                Culture = CultureInfo.CurrentUICulture
+            };
+
+            catalog.ProgressChanged += (_, progressEvent) =>
+            {
+                AppLifetime.ThrowIfCancellationRequested();
+
+                if (progressEvent.Level == FIRECatalogMessageLevel.Warning)
+                {
+                    ConsoleUi.EndProgressLine();
+                    ConsoleUi.WriteWarning(runtime, progressEvent.Message);
+                    return;
+                }
+
+                if (progressEvent.Level == FIRECatalogMessageLevel.Trace &&
+                    !string.IsNullOrWhiteSpace(progressEvent.CurrentFilePath))
+                {
+                    ConsoleUi.WriteProgress(
+                        runtime,
+                        $"[{progressEvent.ProcessedCount}] {TextCatalog.Get(runtime.Language, progressVerbKey)} {progressEvent.CurrentFilePath}");
+                }
+            };
 
             ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "catalog_initialized"));
             ConsoleUi.WriteEmptyLine();
@@ -359,13 +385,7 @@ internal static class CommandExecutor
             ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, progressLineKey));
 
             var stopwatch = Stopwatch.StartNew();
-            var fileCount = 0;
-            action(catalog, filePath =>
-            {
-                AppLifetime.ThrowIfCancellationRequested();
-                fileCount++;
-                ConsoleUi.WriteProgress(runtime, $"[{fileCount}] {TextCatalog.Get(runtime.Language, progressVerbKey)} {filePath}");
-            });
+            action(catalog, _ => { });
             stopwatch.Stop();
 
             ConsoleUi.EndProgressLine();

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+	<value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+	<value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+	<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+	<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="warning.metadata" xml:space="preserve">
+	<value>[WARN] {0} / {1}: {2}</value>
+  </data>
+  <data name="stage.collect" xml:space="preserve">
+	<value>Sammeln</value>
+  </data>
+  <data name="stage.generate" xml:space="preserve">
+	<value>Generieren</value>
+  </data>
+  <data name="stage.execute" xml:space="preserve">
+	<value>Ausführen</value>
+  </data>
+  <data name="stage.inspect" xml:space="preserve">
+	<value>Prüfen</value>
+  </data>
+  <data name="status.started" xml:space="preserve">
+	<value>{0} gestartet.</value>
+  </data>
+  <data name="status.completed" xml:space="preserve">
+	<value>{0} abgeschlossen.</value>
+  </data>
+  <data name="status.file_processing" xml:space="preserve">
+	<value>Verarbeite: {0}</value>
+  </data>
+</root>
