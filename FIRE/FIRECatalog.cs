@@ -497,6 +497,23 @@ public sealed class FIRECatalog : IDisposable
 
     public CultureInfo Culture { get; set; } = CultureInfo.GetCultureInfo("en-US");
 
+    /// <summary>
+    /// Gets or sets the fallback DateTime to use when parsed date values are implausible.
+    /// Defaults to <see cref="DateTime.Now"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// A date is considered implausible if its year is less than 1900 or more than 10 years in the future.
+    /// When an implausible date is detected during metadata processing or path generation, this fallback
+    /// value will be used instead and a warning will be logged.
+    /// </para>
+    /// <para>
+    /// Applications can override this property to use a specific date for reproducible results,
+    /// for example during testing or when processing archived collections with known date ranges.
+    /// </para>
+    /// </remarks>
+    public DateTime FallbackDateTime { get; set; } = DateTime.Now;
+
     public FIRECatalogStage? CurrentStage { get; private set; }
 
     public string? CurrentFilePath { get; private set; }
@@ -818,6 +835,7 @@ public sealed class FIRECatalog : IDisposable
                 record.TargetFilePath = Path.Combine(targetDirectory, targetFileName);
                 // Update status after successful path generation
                 record.Status = ProcessingStatus.PathGenerated;
+                _logger?.LogContinuation(FIRELogLevel.Debug, record.TargetFilePath);
             }
         }
 
@@ -996,6 +1014,275 @@ public sealed class FIRECatalog : IDisposable
         LogCollectStatistics();
         var message = ApiLocalizer.Get("status.cancelled", Culture);
         _logger?.Log(FIRELogLevel.Info, FIRELogger.StageTag(CurrentStage), message);
+    }
+
+    /// <summary>
+    /// Generates a detailed diagnostic report for path generation of a specific source file and writes it to a Markdown file.
+    /// </summary>
+    /// <param name="sourceFilePath">Absolute path of the source file to diagnose.</param>
+    /// <returns>Absolute path of the generated diagnostic Markdown file, or null if the file is not in the database.</returns>
+    /// <remarks>
+    /// <para>
+    /// This method does not modify the database or any records. It performs a read-only analysis
+    /// of how the target path would be generated for the given source file, instrumenting each
+    /// step of the template resolution, string replacement, and counter allocation process.
+    /// </para>
+    /// <para>
+    /// The diagnostic report includes:
+    /// <list type="bullet">
+    /// <item>Database record details (VolumeSerialNumber, FileId, Status, Classification)</item>
+    /// <item>Extension configuration lookup and patterns</item>
+    /// <item>Raw metadata values stored in the database</item>
+    /// <item>Step-by-step placeholder resolution for sorting and filename patterns</item>
+    /// <item>Applied string replacements</item>
+    /// <item>Counter value (if applicable)</item>
+    /// <item>Final target directory, filename, and full path</item>
+    /// <item>Warnings for missing metadata, failed datetime parsing, or "Unknown" fallbacks</item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// The report is written to <c>{LogFilePath}/Diagnose_{timestamp}_{filename}.md</c>.
+    /// If logging is not configured, the report is written to the current directory.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ObjectDisposedException">Thrown if this instance has been disposed.</exception>
+    public string? DiagnoseGeneration(string sourceFilePath)
+    {
+        ThrowIfDisposed();
+
+        var record = _database.FirstOrDefault(r =>
+            string.Equals(r.SourceFilePath, sourceFilePath, StringComparison.OrdinalIgnoreCase));
+
+        if (record == null)
+            return null;
+
+        var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture);
+        var safeFileName = Path.GetFileName(sourceFilePath).Replace(":", "_").Replace("\\", "_").Replace("/", "_");
+        var logDir = _configuration.Logging?.LogFilePath ?? Environment.CurrentDirectory;
+        Directory.CreateDirectory(logDir);
+        var reportPath = Path.Combine(logDir, $"Diagnose_{timestamp}_{safeFileName}.md");
+
+        using var writer = new StreamWriter(reportPath, false, System.Text.Encoding.UTF8);
+
+        writer.WriteLine("# FIRE Path Generation Diagnostic Report");
+        writer.WriteLine();
+        writer.WriteLine($"**Generated**: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        writer.WriteLine($"**Source File**: `{sourceFilePath}`");
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 1. Database Record");
+        writer.WriteLine();
+        writer.WriteLine($"- **Exists**: Yes");
+        writer.WriteLine($"- **VolumeSerialNumber**: `{record.VolumeSerialNumber}`");
+        writer.WriteLine($"- **FileId**: `{BitConverter.ToString(record.FileId).Replace("-", "")}`");
+        writer.WriteLine($"- **Status**: `{record.Status}`");
+        writer.WriteLine($"- **Classification**: `{record.Classification}`");
+        writer.WriteLine($"- **Current TargetFilePath**: `{record.TargetFilePath ?? "(null)"}`");
+        writer.WriteLine();
+
+        var extension = Path.GetExtension(sourceFilePath).ToLowerInvariant();
+        writer.WriteLine("---");
+        writer.WriteLine("## 2. Extension Configuration");
+        writer.WriteLine();
+        writer.WriteLine($"- **Detected Extension**: `{extension}`");
+
+        if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig))
+        {
+            writer.WriteLine($"- ⚠️ **No configuration found for this extension**");
+            writer.WriteLine();
+            writer.WriteLine("**Diagnosis complete: file extension not configured.**");
+            writer.Flush();
+            return reportPath;
+        }
+
+        writer.WriteLine($"- **Configuration Found**: Yes");
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 3. Metadata (Raw from Database)");
+        writer.WriteLine();
+        writer.WriteLine("| Key | Value | DataSource | TypeName |");
+        writer.WriteLine("|-----|-------|------------|----------|");
+        foreach (var meta in record.FileMetaDatas.OrderBy(m => m.Key))
+        {
+            var key = meta.Key ?? "(null)";
+            var value = meta.Value ?? "(null)";
+            var dataSource = meta.DataSource ?? "(null)";
+            var typeName = meta.TypeName ?? "(null)";
+            writer.WriteLine($"| `{key}` | `{value}` | `{dataSource}` | `{typeName}` |");
+        }
+        writer.WriteLine();
+
+        var metadataLookup = record.FileMetaDatas.ToDictionary(
+            m => m.Key ?? string.Empty,
+            m => m.Value ?? string.Empty,
+            StringComparer.OrdinalIgnoreCase);
+
+        var sortingPattern = extConfig.SortingPatern ?? _configuration.SortingPatern ?? string.Empty;
+        var fileNamePattern = extConfig.FileNamePatern ?? _configuration.FileNamePatern ?? string.Empty;
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 4. Template Patterns");
+        writer.WriteLine();
+        writer.WriteLine($"- **SortingPattern** (effective): `{sortingPattern}`");
+        writer.WriteLine($"  - Extension override: `{extConfig.SortingPatern ?? "(none)"}`");
+        writer.WriteLine($"  - Global fallback: `{_configuration.SortingPatern ?? "(none)"}`");
+        writer.WriteLine($"- **FileNamePattern** (effective): `{fileNamePattern}`");
+        writer.WriteLine($"  - Extension override: `{extConfig.FileNamePatern ?? "(none)"}`");
+        writer.WriteLine($"  - Global fallback: `{_configuration.FileNamePatern ?? "(none)"}`");
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 5. Placeholder Resolution — Sorting Pattern");
+        writer.WriteLine();
+
+        var sortingSteps = new List<string>();
+        var sortingResult = InstrumentedParseTemplate(sortingPattern, metadataLookup, sourceFilePath, null, sortingSteps);
+
+        writer.WriteLine($"**Pattern**: `{sortingPattern}`");
+        writer.WriteLine();
+        foreach (var step in sortingSteps)
+            writer.WriteLine(step);
+        writer.WriteLine();
+        writer.WriteLine($"**Resolved Directory**: `{sortingResult}`");
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 6. Counter Allocation");
+        writer.WriteLine();
+
+        long? counter = null;
+        if (ContainsCounterPlaceholder(fileNamePattern))
+        {
+            counter = _database.GetNextCounterValue(sortingResult);
+            writer.WriteLine($"- **Counter Placeholder Detected**: Yes");
+            writer.WriteLine($"- **Allocated Counter Value**: `{counter}`");
+        }
+        else
+        {
+            writer.WriteLine($"- **Counter Placeholder Detected**: No");
+        }
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 7. Placeholder Resolution — FileName Pattern");
+        writer.WriteLine();
+
+        var fileNameSteps = new List<string>();
+        var fileNameResult = InstrumentedParseTemplate(fileNamePattern, metadataLookup, sourceFilePath, counter, fileNameSteps);
+
+        writer.WriteLine($"**Pattern**: `{fileNamePattern}`");
+        writer.WriteLine();
+        foreach (var step in fileNameSteps)
+            writer.WriteLine(step);
+        writer.WriteLine();
+        writer.WriteLine($"**Resolved FileName**: `{fileNameResult}`");
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 8. String Replacements");
+        writer.WriteLine();
+
+        if (_configuration.StringReplacements.Count == 0)
+        {
+            writer.WriteLine("*(No string replacements configured)*");
+        }
+        else
+        {
+            writer.WriteLine("| Pattern | Replacement | Type |");
+            writer.WriteLine("|---------|-------------|------|");
+            foreach (var replacement in _configuration.StringReplacements)
+            {
+                var pattern = replacement.Key ?? "(null)";
+                var repl = replacement.Value ?? "(empty)";
+                var type = pattern.StartsWith("regex:", StringComparison.OrdinalIgnoreCase) ? "Regex" :
+                           pattern.Contains('*') ? "Wildcard" : "Literal";
+                writer.WriteLine($"| `{pattern}` | `{repl}` | {type} |");
+            }
+            writer.WriteLine();
+            writer.WriteLine("*String replacements are applied inside `ApplyConfiguredStringReplacements` during placeholder resolution.*");
+        }
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 9. Final Result");
+        writer.WriteLine();
+
+        var finalPath = Path.Combine(sortingResult, fileNameResult);
+        writer.WriteLine($"- **Target Directory**: `{sortingResult}`");
+        writer.WriteLine($"- **Target FileName**: `{fileNameResult}`");
+        writer.WriteLine($"- **Target FullPath**: `{finalPath}`");
+        writer.WriteLine();
+
+        writer.WriteLine("---");
+        writer.WriteLine("## 10. Warnings & Notes");
+        writer.WriteLine();
+
+        var allSteps = sortingSteps.Concat(fileNameSteps).ToList();
+        var warnings = allSteps.Where(s => s.Contains("⚠️")).ToList();
+
+        if (warnings.Count == 0)
+        {
+            writer.WriteLine("*(No warnings detected)*");
+        }
+        else
+        {
+            foreach (var warning in warnings)
+                writer.WriteLine($"- {warning}");
+        }
+
+        writer.WriteLine();
+        writer.WriteLine("---");
+        writer.WriteLine("**End of Diagnostic Report**");
+        writer.Flush();
+
+        return reportPath;
+    }
+
+    /// <summary>
+    /// Instrumented version of <see cref="ParseTemplate"/> that collects diagnostic steps.
+    /// </summary>
+    private string InstrumentedParseTemplate(
+        string template,
+        Dictionary<string, string> metadata,
+        string sourceFilePath,
+        long? counter,
+        List<string> diagnosticSteps)
+    {
+        if (string.IsNullOrWhiteSpace(template))
+        {
+            diagnosticSteps.Add("*(Template is empty)*");
+            return string.Empty;
+        }
+
+        var result = template;
+        var placeholderPattern = new Regex(@"\{(?<key>[^}]+)\}", RegexOptions.Compiled);
+        var matches = placeholderPattern.Matches(template);
+
+        if (matches.Count == 0)
+        {
+            diagnosticSteps.Add("*(No placeholders found)*");
+            return result;
+        }
+
+        diagnosticSteps.Add($"Found {matches.Count} placeholder(s):");
+        diagnosticSteps.Add("");
+
+        foreach (Match match in matches)
+        {
+            var key = match.Groups["key"].Value;
+            var (resolved, steps) = InstrumentedResolvePlaceholder(key, metadata, sourceFilePath, counter);
+            result = result.Replace(match.Value, resolved);
+
+            foreach (var step in steps)
+                diagnosticSteps.Add(step);
+            diagnosticSteps.Add("");
+        }
+
+        diagnosticSteps.Add($"**Final resolved template**: `{result}`");
+
+        return result;
     }
 
     /// <summary>
@@ -1227,7 +1514,7 @@ public sealed class FIRECatalog : IDisposable
     /// <returns>Configured default value or <c>NA</c> when no valid default exists.</returns>
     private string ResolveMissingKeywordValue(AvailableKeywordConfiguration keywordConfig, string filePath, string keywordName)
     {
-        var resolved = ResolveKeywordDefaultValue(keywordConfig, DateTime.Now);
+        var resolved = ResolveKeywordDefaultValue(keywordConfig, FallbackDateTime);
         if (!string.Equals(resolved, "NA", StringComparison.Ordinal))
         {
             return resolved;
@@ -1242,7 +1529,20 @@ public sealed class FIRECatalog : IDisposable
         return "NA";
     }
 
-    internal static string ResolveKeywordDefaultValue(AvailableKeywordConfiguration keywordConfig, DateTime now)
+    /// <summary>
+    /// Resolves the default value for a keyword configuration.
+    /// </summary>
+    /// <param name="keywordConfig">Keyword configuration that may define a default value.</param>
+    /// <param name="fallbackDate">Fallback DateTime to use when "NOW" is specified.</param>
+    /// <returns>Resolved default value or <c>NA</c> when no valid default exists.</returns>
+    /// <remarks>
+    /// <para>
+    /// For DATETIME keywords with "NOW" as default, the provided <paramref name="fallbackDate"/> is used.
+    /// Other DATETIME defaults are validated and normalized using <see cref="TryNormalizeDateTime"/>,
+    /// which applies plausibility checks and may substitute <see cref="FallbackDateTime"/>.
+    /// </para>
+    /// </remarks>
+    internal string ResolveKeywordDefaultValue(AvailableKeywordConfiguration keywordConfig, DateTime fallbackDate)
     {
         if (string.IsNullOrWhiteSpace(keywordConfig.Default))
         {
@@ -1259,7 +1559,7 @@ public sealed class FIRECatalog : IDisposable
 
         if (configuredDefault.Equals("NOW", StringComparison.OrdinalIgnoreCase))
         {
-            return now.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+            return fallbackDate.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
         }
 
         if (TryNormalizeDateTime(configuredDefault, out var normalizedDate) &&
@@ -1294,12 +1594,18 @@ public sealed class FIRECatalog : IDisposable
         if (values.Count == 1)
         {
             // Normalize DateTime values if applicable
-            if (normalizedDataType is "DATETIME" or "DATE" or "TIME" &&
-                TryNormalizeDateTime(values[0], out var normalizedDate) &&
-                DateTime.TryParseExact(normalizedDate, "yyyy:MM:dd HH:mm:ss",
-                    CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTimeValue))
+            if (normalizedDataType is "DATETIME" or "DATE" or "TIME")
             {
-                return dateTimeValue.ToString();
+                if (TryNormalizeDateTime(values[0], out var normalizedDate, filePath, keywordName) &&
+                    DateTime.TryParseExact(normalizedDate, "yyyy:MM:dd HH:mm:ss",
+                        CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTimeValue))
+                {
+                    return dateTimeValue.ToString();
+                }
+
+                // If normalization failed, use FallbackDateTime
+                LogDateTimeFallback(filePath, keywordName, values[0], "unparseable");
+                return FallbackDateTime.ToString();
             }
             return values[0];
         }
@@ -1372,12 +1678,56 @@ public sealed class FIRECatalog : IDisposable
 ];
 
     /// <summary>
+    /// Checks whether a DateTime value is plausible based on year boundaries.
+    /// </summary>
+    /// <param name="dt">The DateTime to validate.</param>
+    /// <returns>
+    /// <see langword="true"/> if the year is between 1900 and (current year + 10); otherwise <see langword="false"/>.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This method is used to filter out obviously broken metadata values such as dates with year 0 or 1601,
+    /// which are common in corrupted or missing EXIF data. It also rejects dates far into the future, which
+    /// typically indicate file system clock errors or placeholder values.
+    /// </para>
+    /// <para>
+    /// The limit of "current year + 10" allows some tolerance for files created on systems with slightly
+    /// incorrect clocks but prevents wildly incorrect or default placeholder dates (e.g. 9999-12-31) from
+    /// being accepted.
+    /// </para>
+    /// </remarks>
+    private bool IsPlausibleDateTime(DateTime dt)
+    {
+        var currentYear = DateTime.Now.Year;
+        return dt.Year >= 1900 && dt.Year <= currentYear + 10;
+    }
+
+    /// <summary>
     /// Attempts to normalize a date/time value into EXIF-like canonical format.
     /// </summary>
     /// <param name="value">Input value to parse.</param>
     /// <param name="normalized">Normalized value in <c>yyyy:MM:dd HH:mm:ss</c> format.</param>
-    /// <returns><see langword="true"/> if parsing succeeded; otherwise <see langword="false"/>.</returns>
-    private static bool TryNormalizeDateTime(string value, out string normalized)
+    /// <returns><see langword="true"/> if parsing succeeded and date is plausible; otherwise <see langword="false"/>.</returns>
+    /// <remarks>
+    /// <para>
+    /// If the parsed DateTime is implausible (year &lt; 1900 or year &gt; current year + 10), the method
+    /// returns the <see cref="FallbackDateTime"/> value formatted in the normalized format.
+    /// </para>
+    /// </remarks>
+    private bool TryNormalizeDateTime(string value, out string normalized)
+    {
+        return TryNormalizeDateTime(value, out normalized, null, null);
+    }
+
+    /// <summary>
+    /// Attempts to normalize a date/time value into EXIF-like canonical format with optional logging.
+    /// </summary>
+    /// <param name="value">Input value to parse.</param>
+    /// <param name="normalized">Normalized value in <c>yyyy:MM:dd HH:mm:ss</c> format.</param>
+    /// <param name="filePath">Optional file path for logging context.</param>
+    /// <param name="keywordName">Optional keyword name for logging context.</param>
+    /// <returns><see langword="true"/> if parsing succeeded and date is plausible; otherwise <see langword="false"/>.</returns>
+    private bool TryNormalizeDateTime(string value, out string normalized, string? filePath, string? keywordName)
     {
         if (DateTime.TryParseExact(
                 value.Trim(),
@@ -1386,6 +1736,21 @@ public sealed class FIRECatalog : IDisposable
                 DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal,
                 out var dt))
         {
+            if (!IsPlausibleDateTime(dt))
+            {
+                // Log the correction if context is provided
+                if (!string.IsNullOrEmpty(filePath) && !string.IsNullOrEmpty(keywordName))
+                {
+                    var reason = dt.Year < 1900 
+                        ? $"implausible (year {dt.Year} < 1900)" 
+                        : $"implausible (year {dt.Year} > {DateTime.Now.Year + 10})";
+                    LogDateTimeFallback(filePath, keywordName, value, reason);
+                }
+
+                normalized = FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+                return true;
+            }
+
             normalized = dt.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
             return true;
         }
@@ -1401,7 +1766,13 @@ public sealed class FIRECatalog : IDisposable
     /// <param name="normalizedDataType">Normalized target type identifier.</param>
     /// <param name="comparableValue">Converted comparable value when successful.</param>
     /// <returns><see langword="true"/> if conversion succeeded; otherwise <see langword="false"/>.</returns>
-    private static bool TryConvertComparable(string value, string normalizedDataType, out IComparable comparableValue)
+    /// <remarks>
+    /// <para>
+    /// For DateTime types, this method uses <see cref="TryNormalizeDateTime"/> which applies plausibility checks.
+    /// If the input date is implausible, <see cref="FallbackDateTime"/> is used instead.
+    /// </para>
+    /// </remarks>
+    private bool TryConvertComparable(string value, string normalizedDataType, out IComparable comparableValue)
     {
         switch (normalizedDataType)
         {
@@ -1451,6 +1822,32 @@ public sealed class FIRECatalog : IDisposable
             TotalCount = TotalFileCount,
             Culture = Culture
         });
+    }
+
+    /// <summary>
+    /// Logs a warning when an implausible DateTime value is replaced with the fallback.
+    /// </summary>
+    /// <param name="filePath">Source file path associated with the warning.</param>
+    /// <param name="keywordName">Logical keyword name or placeholder associated with the value.</param>
+    /// <param name="originalValue">The original implausible DateTime value.</param>
+    /// <param name="reason">Human-readable reason for the correction.</param>
+    private void LogDateTimeFallback(string filePath, string keywordName, string originalValue, string reason)
+    {
+        var warningText = $"DateTime correction for '{Path.GetFileName(filePath)}': {keywordName} = '{originalValue}' is {reason}, using FallbackDateTime = {FallbackDateTime:yyyy-MM-dd HH:mm:ss}";
+
+        ProgressChanged?.Invoke(this, new FIRECatalogProgressEventArgs
+        {
+            Stage = CurrentStage ?? FIRECatalogStage.Collect,
+            Level = FIRECatalogMessageLevel.Warning,
+            Message = warningText,
+            MessageKey = "warning.datetime_fallback",
+            CurrentFilePath = CurrentFilePath,
+            ProcessedCount = ProcessedFileCount,
+            TotalCount = TotalFileCount,
+            Culture = Culture
+        });
+
+        _logger?.Log(FIRELogLevel.Warning, FIRELogger.StageTag(CurrentStage ?? FIRECatalogStage.Collect), warningText);
     }
 
     /// <summary>
@@ -1586,8 +1983,8 @@ public sealed class FIRECatalog : IDisposable
 
         if (property == null) return ApplyConfiguredStringReplacements(value);
 
-        // Line 548 – previously used DateTime.TryParse, which failed for EXIF-style dates.
-        if (TryNormalizeDateTime(value, out var normalizedValue) &&
+        // DateTime property extraction with plausibility check
+        if (TryNormalizeDateTime(value, out var normalizedValue, sourceFilePath, baseName) &&
             DateTime.TryParseExact(normalizedValue, "yyyy:MM:dd HH:mm:ss",
                 CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
         {
@@ -1600,18 +1997,189 @@ public sealed class FIRECatalog : IDisposable
             };
         }
 
-        //if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
-        //{
-        //    return property.ToUpperInvariant() switch
-        //    {
-        //        "YEAR" => dateTime.Year.ToString(CultureInfo.InvariantCulture),
-        //        "MONTH" => dateTime.Month.ToString("D2", CultureInfo.InvariantCulture),
-        //        "DAY" => dateTime.Day.ToString("D2", CultureInfo.InvariantCulture),
-        //        _ => value
-        //    };
-        //}
+        // If DateTime parsing failed and a property was requested, try fallback
+        if (property != null)
+        {
+            LogDateTimeFallback(sourceFilePath, baseName, value, "unparseable");
+            var fallbackNormalized = FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+            if (DateTime.TryParseExact(fallbackNormalized, "yyyy:MM:dd HH:mm:ss",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var fallbackDt))
+            {
+                return property.ToUpperInvariant() switch
+                {
+                    "YEAR" => fallbackDt.Year.ToString(CultureInfo.InvariantCulture),
+                    "MONTH" => fallbackDt.Month.ToString("D2", CultureInfo.InvariantCulture),
+                    "DAY" => fallbackDt.Day.ToString("D2", CultureInfo.InvariantCulture),
+                    _ => fallbackNormalized
+                };
+            }
+        }
 
         return ApplyConfiguredStringReplacements(value);
+    }
+
+    /// <summary>
+    /// Instrumented version of <see cref="ResolvePlaceholder"/> that returns both the resolved value
+    /// and a detailed diagnostic log of the resolution steps.
+    /// </summary>
+    private (string resolvedValue, List<string> diagnosticSteps) InstrumentedResolvePlaceholder(
+        string key,
+        Dictionary<string, string> metadata,
+        string sourceFilePath,
+        long? counter = null)
+    {
+        var steps = new List<string>();
+        steps.Add($"**Placeholder**: `{{{key}}}`");
+
+        var parts = key.Split('.');
+        var baseName = parts[0];
+        var property = parts.Length > 1 ? parts[1] : null;
+
+        if (baseName.StartsWith("Counter:", StringComparison.OrdinalIgnoreCase))
+        {
+            property = baseName["Counter:".Length..];
+            baseName = "Counter";
+            steps.Add($"  - Detected counter format, property=`{property}`");
+        }
+
+        if (baseName.Equals("FileName", StringComparison.OrdinalIgnoreCase))
+        {
+            string resolved;
+            if (property != null && property.Equals("Noext", StringComparison.OrdinalIgnoreCase))
+            {
+                resolved = Path.GetFileNameWithoutExtension(sourceFilePath);
+                steps.Add($"  - Type: FileName.Noext → `{resolved}`");
+            }
+            else
+            {
+                resolved = Path.GetFileName(sourceFilePath);
+                steps.Add($"  - Type: FileName → `{resolved}`");
+            }
+            var final = ApplyConfiguredStringReplacements(resolved);
+            if (final != resolved)
+                steps.Add($"  - After string replacements: `{final}`");
+            steps.Add($"  - **Result**: `{final}`");
+            return (final, steps);
+        }
+
+        if (baseName.Equals("MediaRootPath", StringComparison.OrdinalIgnoreCase))
+        {
+            var resolved = _configuration.MediaRootPath;
+            steps.Add($"  - Type: MediaRootPath → `{resolved}`");
+            var final = ApplyConfiguredStringReplacements(resolved);
+            if (final != resolved)
+                steps.Add($"  - After string replacements: `{final}`");
+            steps.Add($"  - **Result**: `{final}`");
+            return (final, steps);
+        }
+
+        if (baseName.Equals("RootPath", StringComparison.OrdinalIgnoreCase))
+        {
+            steps.Add($"  - Type: RootPath (recursive expansion)");
+            var resolved = ParseTemplate(_configuration.RootPath, metadata, sourceFilePath, counter);
+            steps.Add($"  - **Result**: `{resolved}`");
+            return (resolved, steps);
+        }
+
+        if (baseName.Equals("Counter", StringComparison.OrdinalIgnoreCase))
+        {
+            var effectiveCounter = counter ?? 1L;
+            steps.Add($"  - Type: Counter, value={effectiveCounter}");
+            if (!string.IsNullOrWhiteSpace(property) && property.Length > 1 && property.StartsWith("D", StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(property[1..], NumberStyles.None, CultureInfo.InvariantCulture, out var digits)
+                && digits > 0)
+            {
+                var formatted = effectiveCounter.ToString($"D{digits}", CultureInfo.InvariantCulture);
+                steps.Add($"  - Format: D{digits} → `{formatted}`");
+                steps.Add($"  - **Result**: `{formatted}`");
+                return (formatted, steps);
+            }
+
+            var plain = effectiveCounter.ToString(CultureInfo.InvariantCulture);
+            steps.Add($"  - **Result**: `{plain}`");
+            return (plain, steps);
+        }
+
+        if (!metadata.TryGetValue(baseName, out var value) || string.IsNullOrWhiteSpace(value))
+        {
+            steps.Add($"  - ⚠️ Metadata key `{baseName}` not found or empty in DB");
+            steps.Add($"  - **Result**: `Unknown`");
+            return ("Unknown", steps);
+        }
+
+        steps.Add($"  - Metadata lookup: `{baseName}` = `{value}`");
+
+        if (property == null)
+        {
+            var final = ApplyConfiguredStringReplacements(value);
+            if (final != value)
+                steps.Add($"  - After string replacements: `{final}`");
+            steps.Add($"  - **Result**: `{final}`");
+            return (final, steps);
+        }
+
+        if (TryNormalizeDateTime(value, out var normalizedValue))
+        {
+            steps.Add($"  - Normalized datetime: `{normalizedValue}`");
+
+            // Check if the normalized value was replaced by FallbackDateTime
+            var fallbackNormalized = FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+            if (normalizedValue == fallbackNormalized)
+            {
+                steps.Add($"  - ⚠️ Original value was implausible (year < 1900 or > current + 10), replaced with FallbackDateTime");
+            }
+
+            if (DateTime.TryParseExact(normalizedValue, "yyyy:MM:dd HH:mm:ss",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
+            {
+                steps.Add($"  - Parsed as DateTime: {dateTime:yyyy-MM-dd HH:mm:ss}");
+                var result = property.ToUpperInvariant() switch
+                {
+                    "YEAR" => dateTime.Year.ToString(CultureInfo.InvariantCulture),
+                    "MONTH" => dateTime.Month.ToString("D2", CultureInfo.InvariantCulture),
+                    "DAY" => dateTime.Day.ToString("D2", CultureInfo.InvariantCulture),
+                    _ => normalizedValue
+                };
+                steps.Add($"  - Property extraction: `{property}` → `{result}`");
+                steps.Add($"  - **Result**: `{result}`");
+                return (result, steps);
+            }
+            else
+            {
+                steps.Add($"  - ⚠️ DateTime parse failed for normalized value `{normalizedValue}`");
+            }
+        }
+        else
+        {
+            steps.Add($"  - ⚠️ DateTime normalization failed for `{value}`");
+        }
+
+        // Use FallbackDateTime if normalization/parsing failed and a property was requested
+        if (property != null)
+        {
+            steps.Add($"  - Attempting fallback with FallbackDateTime: `{FallbackDateTime:yyyy-MM-dd HH:mm:ss}`");
+            var fallbackNormalized = FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+            if (DateTime.TryParseExact(fallbackNormalized, "yyyy:MM:dd HH:mm:ss",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out var fallbackDt))
+            {
+                var result = property.ToUpperInvariant() switch
+                {
+                    "YEAR" => fallbackDt.Year.ToString(CultureInfo.InvariantCulture),
+                    "MONTH" => fallbackDt.Month.ToString("D2", CultureInfo.InvariantCulture),
+                    "DAY" => fallbackDt.Day.ToString("D2", CultureInfo.InvariantCulture),
+                    _ => fallbackNormalized
+                };
+                steps.Add($"  - Property extraction from fallback: `{property}` → `{result}`");
+                steps.Add($"  - **Result**: `{result}` (from FallbackDateTime)");
+                return (result, steps);
+            }
+        }
+
+        var fallback = ApplyConfiguredStringReplacements(value);
+        if (fallback != value)
+            steps.Add($"  - After string replacements: `{fallback}`");
+        steps.Add($"  - **Result**: `{fallback}`");
+        return (fallback, steps);
     }
 
     /// <summary>

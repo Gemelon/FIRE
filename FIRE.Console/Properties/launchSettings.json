@@ -19,6 +19,10 @@
     "FIRE.Console Clear Collect": {
       "commandName": "Project",
       "commandLineArgs": "collect --clear --config \"S:\\Media FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
+    },
+    "FIRE.Console Diagnose": {
+      "commandName": "Project",
+      "commandLineArgs": "diagnose --config \"S:\\Media FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --source-path \"D:\\Media Originale\\Automatic Upload\\Samsung SM-S938B\\DCIM\\Camera\\20260604_080904_425.mp4\" --culture de-DE"
     }
   }
 }

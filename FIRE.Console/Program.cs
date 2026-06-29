@@ -53,6 +53,12 @@ internal static class ProgramHost
                 .WithDescription(TextCatalog.Get(bootstrapLanguage, "cmd_inspect"))
                 .WithExample("inspect", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "en-US", "--file", "image.jpg")
                 .WithExample("inspect", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "fil-PH", "--file", "image.jpg", "--copy-path");
+
+            configuration
+                .AddCommand<DiagnoseCommand>("diagnose")
+                .WithDescription("Diagnoses path generation for a specific source file and writes a detailed Markdown report.")
+                .WithExample("diagnose", "--config", "ConfigurationFiles\\Configuration.yaml", "--source-path", "D:\\Photos\\image.jpg")
+                .WithExample("diagnose", "--config", "ConfigurationFiles\\Configuration.yaml", "--culture", "de-DE", "--source-path", "D:\\Videos\\video.mp4");
         });
 
         try
@@ -104,6 +110,15 @@ internal sealed class InspectCommand : Command<InspectSettings>
     }
 }
 
+internal sealed class DiagnoseCommand : Command<DiagnoseSettings>
+{
+    public override int Execute(CommandContext context, DiagnoseSettings settings)
+    {
+        var runtime = RuntimeContext.Create(settings.Culture ?? "en-US", settings.NoWrap);
+        return CommandExecutor.ExecuteDiagnose(settings, runtime);
+    }
+}
+
 internal class CommonCommandSettings : CommandSettings
 {
     [Description("Path to the configuration YAML file.")]
@@ -142,6 +157,13 @@ internal sealed class InspectSettings : CommonCommandSettings
     [CommandOption("--copy-path")]
     [DefaultValue(false)]
     public bool CopyPath { get; set; }
+}
+
+internal sealed class DiagnoseSettings : CommonCommandSettings
+{
+    [Description("Path to the source file to diagnose.")]
+    [CommandOption("--source-path|-s <SOURCE_PATH>")]
+    public string? SourcePath { get; set; }
 }
 
 internal static class CommandExecutor
@@ -305,6 +327,93 @@ internal static class CommandExecutor
         {
             ConsoleUi.WriteWarning(runtime, TextCatalog.Get(runtime.Language, "operation_canceled"));
             return 2;
+        }
+        catch (Exception ex)
+        {
+            ConsoleUi.WriteError(runtime, $"{TextCatalog.Get(runtime.Language, "error_prefix")} {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+            return 1;
+        }
+    }
+
+    public static int ExecuteDiagnose(DiagnoseSettings settings, RuntimeContext runtime)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(settings.ConfigPath))
+            {
+                ConsoleUi.WriteError(runtime, TextCatalog.Get(runtime.Language, "error_config_required"));
+                return 1;
+            }
+
+            if (string.IsNullOrWhiteSpace(settings.SourcePath))
+            {
+                ConsoleUi.WriteError(runtime, "Source path is required. Use --source-path to specify the file.");
+                return 1;
+            }
+
+            var sourcePath = settings.SourcePath;
+            if (!File.Exists(sourcePath))
+            {
+                ConsoleUi.WriteError(runtime, $"Source file not found: {sourcePath}");
+                return 1;
+            }
+
+            var normalizedCulture = runtime.CultureCode;
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(normalizedCulture);
+
+            ConsoleUi.WriteTitle(runtime, "FIRE Path Generation Diagnosis");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_config")} {settings.ConfigPath}");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_culture")} {normalizedCulture}");
+            ConsoleUi.WriteLine(runtime, $"Source File: {sourcePath}");
+            ConsoleUi.WriteEmptyLine();
+
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "loading_configuration"));
+            var config = FIREConfigration.Load(settings.ConfigPath!);
+            config.EnsureSupportedConfigurationVersion();
+            ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, "configuration_loaded"), config.ConfigurationVersion));
+            ConsoleUi.WriteEmptyLine();
+
+            var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
+            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_database")} {dbPath}");
+
+            if (!File.Exists(dbPath))
+            {
+                ConsoleUi.WriteError(runtime, $"Database not found: {dbPath}");
+                ConsoleUi.WriteWarning(runtime, "Please run 'collect' first to populate the database.");
+                return 1;
+            }
+
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "initializing_catalog"));
+
+            using var database = new FIREDatabase(dbPath);
+            using var catalog = new FIRECatalog(config, database)
+            {
+                Culture = CultureInfo.CurrentUICulture
+            };
+
+            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "catalog_initialized"));
+            ConsoleUi.WriteEmptyLine();
+
+            ConsoleUi.WriteLine(runtime, "Generating diagnostic report...");
+            var stopwatch = Stopwatch.StartNew();
+            var reportPath = catalog.DiagnoseGeneration(sourcePath);
+            stopwatch.Stop();
+
+            if (reportPath == null)
+            {
+                ConsoleUi.WriteWarning(runtime, $"Source file not found in database: {sourcePath}");
+                ConsoleUi.WriteWarning(runtime, "This file has not been collected yet. Run 'collect' first.");
+                ConsoleUi.WriteEmptyLine();
+                return 1;
+            }
+
+            ConsoleUi.WriteLine(runtime, $"Diagnosis completed in {stopwatch.Elapsed.TotalMilliseconds:F0} ms");
+            ConsoleUi.WriteEmptyLine();
+            ConsoleUi.WriteSuccess(runtime, $"Diagnostic report written to: {reportPath}");
+            ConsoleUi.WriteEmptyLine();
+
+            return 0;
         }
         catch (Exception ex)
         {

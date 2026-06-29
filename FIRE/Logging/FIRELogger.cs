@@ -134,6 +134,33 @@ internal sealed class FIRELogger : IDisposable
         }
     }
 
+    /// <summary>
+    /// Writes a continuation line beneath the previous log entry at the same level.
+    /// </summary>
+    /// <remarks>
+    /// The timestamp, level, and stage columns are left empty so the message
+    /// appears visually indented in the same message column as the preceding row.
+    /// The message is prefixed with <c>→ </c> to signal it is a continuation.
+    /// The entry is only written when <paramref name="level"/> is at or above the
+    /// configured minimum and a writer is already open (i.e. <see cref="Log"/> was
+    /// called first for the same stage/date).
+    /// </remarks>
+    /// <param name="level">Severity — must be at or above the configured minimum.</param>
+    /// <param name="message">The continuation text. Pipe characters are escaped.</param>
+    internal void LogContinuation(FIRELogLevel level, string message)
+    {
+        if (level < _minLevel) return;
+
+        var safeMessage = message.Replace("|", "\\|");
+
+        lock (_lock)
+        {
+            if (_writer == null) return;
+            _writer.WriteLine($"|                     |          |      | \u2192 {safeMessage} |");
+            _writer.Flush();
+        }
+    }
+
     // Opens a writer for the correct file, switching when the stage or date changes.
     private void EnsureWriter(string stageTag, DateOnly today)
     {
