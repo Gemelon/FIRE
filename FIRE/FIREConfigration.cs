@@ -92,7 +92,7 @@ public sealed class FIREConfigration
     /// Configuration files must have <see cref="ConfigurationVersion"/> equal to this value.
     /// If the versions do not match, <see cref="EnsureSupportedConfigurationVersion"/> will throw.
     /// </remarks>
-    public const decimal SupportedConfigurationVersion = 1.21m;
+    public const decimal SupportedConfigurationVersion = 1.30m;
 
     /// <summary>
     /// Gets or sets the configuration format version.
@@ -582,11 +582,11 @@ public sealed class FileExtensionConfiguration
 /// </para>
 /// 
 /// <para>
-/// <strong>Keyword Names:</strong>
-/// The <see cref="KeyWords"/> list contains the actual metadata field names to query from the source.
+/// <strong>Source Field Names:</strong>
+/// The <see cref="SourceFields"/> list contains the actual metadata field names to query from the source.
 /// For EXIFTOOL, these are EXIF tag names (e.g., "Make", "Model", "DateTimeOriginal").
 /// For FILEINFO, these are system property names (e.g., "CreationTime", "LastWriteTime").
-/// When multiple keywords are listed, the first matching value is used.
+/// When multiple field names are listed, the first matching value is used.
 /// </para>
 /// 
 /// <para>
@@ -603,7 +603,7 @@ public sealed class FileExtensionConfiguration
 ///     DataType = "STRING",
 ///     Source = "EXIFTOOL",
 ///     ValAttribute = "FIRST",
-///     KeyWords = new List&lt;string&gt; { "Make" }
+///     SourceFields = new List&lt;string&gt; { "Make" }
 /// };
 /// </code>
 /// 
@@ -614,7 +614,7 @@ public sealed class FileExtensionConfiguration
 ///     DataType = "DATETIME",
 ///     Source = "EXIFTOOL",
 ///     ValAttribute = "LOWEST",
-///     KeyWords = new List&lt;string&gt; { "DateTimeOriginal", "DateTimeDigitized", "DateTime" }
+///     SourceFields = new List&lt;string&gt; { "DateTimeOriginal", "DateTimeDigitized", "DateTime" }
 /// };
 /// </code>
 /// </example>
@@ -680,8 +680,8 @@ public sealed class AvailableKeywordConfiguration
     /// When querying, the first non-empty value from this list is used.
     /// Defaults to an empty list if not specified.
     /// </remarks>
-    [YamlMember(Alias = "KeyWords")]
-    public List<string> KeyWords { get; set; } = [];
+    [YamlMember(Alias = "SourceFields")]
+    public List<string> SourceFields { get; set; } = [];
 
     /// <summary>
     /// Normalizes all properties to their defaults if not specified.
@@ -696,7 +696,7 @@ public sealed class AvailableKeywordConfiguration
         Source = string.IsNullOrWhiteSpace(Source) ? "FILEINFO" : Source;
         ValAttribute = string.IsNullOrWhiteSpace(ValAttribute) ? "LOWEST" : ValAttribute;
         Default ??= string.Empty;
-        KeyWords ??= [];
+        SourceFields ??= [];
     }
 }
 

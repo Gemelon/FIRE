@@ -825,18 +825,22 @@ public sealed class FIRECatalog : IDisposable
                 m => m.Key ?? string.Empty,
                 m => m.Value ?? string.Empty,
                 StringComparer.OrdinalIgnoreCase);
+            var metadataTypeLookup = record.FileMetaDatas.ToDictionary(
+                m => m.Key ?? string.Empty,
+                m => m.TypeName ?? string.Empty,
+                StringComparer.OrdinalIgnoreCase);
 
             var sortingPattern = extConfig.SortingPatern ?? _configuration.SortingPatern ?? string.Empty;
             var fileNamePattern = extConfig.FileNamePatern ?? _configuration.FileNamePatern ?? string.Empty;
 
-            var targetDirectory = ParseTemplate(sortingPattern, metadataLookup, record.SourceFilePath);
+            var targetDirectory = ParseTemplate(sortingPattern, metadataLookup, record.SourceFilePath, null, metadataTypeLookup);
             if (string.IsNullOrWhiteSpace(targetDirectory)) continue;
 
             long? counter = null;
             if (ContainsCounterPlaceholder(fileNamePattern))
                 counter = _database.GetNextCounterValue(targetDirectory);
 
-            var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath, counter);
+            var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath, counter, metadataTypeLookup);
 
             if (!string.IsNullOrWhiteSpace(targetFileName))
             {
@@ -1141,6 +1145,10 @@ public sealed class FIRECatalog : IDisposable
             m => m.Key ?? string.Empty,
             m => m.Value ?? string.Empty,
             StringComparer.OrdinalIgnoreCase);
+        var metadataTypeLookup = record.FileMetaDatas.ToDictionary(
+            m => m.Key ?? string.Empty,
+            m => m.TypeName ?? string.Empty,
+            StringComparer.OrdinalIgnoreCase);
 
         var sortingPattern = extConfig.SortingPatern ?? _configuration.SortingPatern ?? string.Empty;
         var fileNamePattern = extConfig.FileNamePatern ?? _configuration.FileNamePatern ?? string.Empty;
@@ -1161,7 +1169,7 @@ public sealed class FIRECatalog : IDisposable
         writer.WriteLine();
 
         var sortingSteps = new List<string>();
-        var sortingResult = InstrumentedParseTemplate(sortingPattern, metadataLookup, sourceFilePath, null, sortingSteps);
+        var sortingResult = InstrumentedParseTemplate(sortingPattern, metadataLookup, sourceFilePath, null, sortingSteps, metadataTypeLookup);
 
         writer.WriteLine($"**Pattern**: `{sortingPattern}`");
         writer.WriteLine();
@@ -1193,7 +1201,7 @@ public sealed class FIRECatalog : IDisposable
         writer.WriteLine();
 
         var fileNameSteps = new List<string>();
-        var fileNameResult = InstrumentedParseTemplate(fileNamePattern, metadataLookup, sourceFilePath, counter, fileNameSteps);
+        var fileNameResult = InstrumentedParseTemplate(fileNamePattern, metadataLookup, sourceFilePath, counter, fileNameSteps, metadataTypeLookup);
 
         writer.WriteLine($"**Pattern**: `{fileNamePattern}`");
         writer.WriteLine();
@@ -1271,7 +1279,8 @@ public sealed class FIRECatalog : IDisposable
         Dictionary<string, string> metadata,
         string sourceFilePath,
         long? counter,
-        List<string> diagnosticSteps)
+        List<string> diagnosticSteps,
+        Dictionary<string, string>? metadataTypes = null)
     {
         if (string.IsNullOrWhiteSpace(template))
         {
@@ -1295,7 +1304,7 @@ public sealed class FIRECatalog : IDisposable
         foreach (Match match in matches)
         {
             var key = match.Groups["key"].Value;
-            var (resolved, steps) = InstrumentedResolvePlaceholder(key, metadata, sourceFilePath, counter);
+            var (resolved, steps) = InstrumentedResolvePlaceholder(key, metadata, sourceFilePath, counter, metadataTypes);
             result = result.Replace(match.Value, resolved);
 
             foreach (var step in steps)
@@ -1390,9 +1399,9 @@ public sealed class FIRECatalog : IDisposable
                 continue;
             }
 
-            if (keywordConfig.KeyWords.Count == 0)
+            if (keywordConfig.SourceFields.Count == 0)
             {
-                LogMetadataWarning(filePath, keywordName, "no keywords configured");
+                LogMetadataWarning(filePath, keywordName, "no source fields configured");
                 var fallbackValue = ResolveMissingKeywordValue(keywordConfig, filePath, keywordName);
                 record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, fallbackValue, keywordConfig, sourceName));
                 continue;
@@ -1401,9 +1410,9 @@ public sealed class FIRECatalog : IDisposable
             var extractedMetadata = source.ExtractMetadata(filePath);
             var matchingValues = new List<string>();
 
-            foreach (var keyword in keywordConfig.KeyWords)
+            foreach (var fieldName in keywordConfig.SourceFields)
             {
-                if (extractedMetadata.TryGetValue(keyword, out var value) && !string.IsNullOrWhiteSpace(value))
+                if (extractedMetadata.TryGetValue(fieldName, out var value) && !string.IsNullOrWhiteSpace(value))
                     matchingValues.Add(value);
             }
 
@@ -1891,7 +1900,12 @@ public sealed class FIRECatalog : IDisposable
     /// <param name="sourceFilePath">Original source file path.</param>
     /// <param name="counter">Optional persistent per-target-scope running index used by <c>{Counter:Dx}</c>.</param>
     /// <returns>Template result with placeholders replaced.</returns>
-    private string ParseTemplate(string template, Dictionary<string, string> metadata, string sourceFilePath, long? counter = null)
+    private string ParseTemplate(
+        string template,
+        Dictionary<string, string> metadata,
+        string sourceFilePath,
+        long? counter = null,
+        Dictionary<string, string>? metadataTypes = null)
     {
         if (string.IsNullOrWhiteSpace(template)) return string.Empty;
 
@@ -1899,7 +1913,7 @@ public sealed class FIRECatalog : IDisposable
         var placeholderPattern = new Regex(@"\{(?<key>[^}]+)\}", RegexOptions.Compiled);
 
         result = placeholderPattern.Replace(result, match =>
-            ResolvePlaceholder(match.Groups["key"].Value, metadata, sourceFilePath, counter));
+            ResolvePlaceholder(match.Groups["key"].Value, metadata, sourceFilePath, counter, metadataTypes));
 
         return result;
     }
@@ -1962,22 +1976,20 @@ public sealed class FIRECatalog : IDisposable
     /// <param name="metadata">Resolved metadata values indexed by key.</param>
     /// <param name="sourceFilePath">Original source file path.</param>
     /// <param name="counter">Optional persistent per-target-scope running index.</param>
+    /// <param name="metadataTypes">Optional metadata type lookup by keyword name.</param>
     /// <returns>Resolved placeholder value.</returns>
-    private string ResolvePlaceholder(string key, Dictionary<string, string> metadata, string sourceFilePath, long? counter = null)
+    private string ResolvePlaceholder(
+        string key,
+        Dictionary<string, string> metadata,
+        string sourceFilePath,
+        long? counter = null,
+        Dictionary<string, string>? metadataTypes = null)
     {
-        var parts = key.Split('.');
-        var baseName = parts[0];
-        var property = parts.Length > 1 ? parts[1] : null;
-
-        if (baseName.StartsWith("Counter:", StringComparison.OrdinalIgnoreCase))
-        {
-            property = baseName["Counter:".Length..];
-            baseName = "Counter";
-        }
+        var (baseName, suffix) = ParsePlaceholderExpression(key);
 
         if (baseName.Equals("FileName", StringComparison.OrdinalIgnoreCase))
         {
-            if (property != null && property.Equals("Noext", StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(suffix) && suffix.Equals("Noext", StringComparison.OrdinalIgnoreCase))
                 return ApplyConfiguredStringReplacements(Path.GetFileNameWithoutExtension(sourceFilePath));
             return ApplyConfiguredStringReplacements(Path.GetFileName(sourceFilePath));
         }
@@ -1986,13 +1998,13 @@ public sealed class FIRECatalog : IDisposable
             return ApplyConfiguredStringReplacements(_configuration.MediaRootPath);
 
         if (baseName.Equals("RootPath", StringComparison.OrdinalIgnoreCase))
-            return ParseTemplate(_configuration.RootPath, metadata, sourceFilePath, counter);
+            return ParseTemplate(_configuration.RootPath, metadata, sourceFilePath, counter, metadataTypes);
 
         if (baseName.Equals("Counter", StringComparison.OrdinalIgnoreCase))
         {
             var effectiveCounter = counter ?? 1L;
-            if (!string.IsNullOrWhiteSpace(property) && property.Length > 1 && property.StartsWith("D", StringComparison.OrdinalIgnoreCase)
-                && int.TryParse(property[1..], NumberStyles.None, CultureInfo.InvariantCulture, out var digits)
+            if (!string.IsNullOrWhiteSpace(suffix) && suffix.Length > 1 && suffix.StartsWith("D", StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(suffix[1..], NumberStyles.None, CultureInfo.InvariantCulture, out var digits)
                 && digits > 0)
             {
                 return effectiveCounter.ToString($"D{digits}", CultureInfo.InvariantCulture);
@@ -2004,41 +2016,111 @@ public sealed class FIRECatalog : IDisposable
         if (!metadata.TryGetValue(baseName, out var value) || string.IsNullOrWhiteSpace(value))
             return "Unknown";
 
-        if (property == null) return ApplyConfiguredStringReplacements(value);
+        if (string.IsNullOrWhiteSpace(suffix))
+            return ApplyConfiguredStringReplacements(value);
 
-        // DateTime property extraction with plausibility check
-        if (TryNormalizeDateTime(value, out var normalizedValue, sourceFilePath, baseName) &&
-            DateTime.TryParseExact(normalizedValue, "yyyy:MM:dd HH:mm:ss",
-                CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
+        string? dataType = null;
+        if (metadataTypes != null)
+            metadataTypes.TryGetValue(baseName, out dataType);
+
+        if (!IsDateTimeDataType(dataType))
+            return ApplyConfiguredStringReplacements(value);
+
+        var resolvedDateTimeValue = ResolveDateTimePlaceholderValue(value, suffix, sourceFilePath, baseName, logFallback: true);
+        return ApplyConfiguredStringReplacements(resolvedDateTimeValue);
+    }
+
+    private static (string BaseName, string? Suffix) ParsePlaceholderExpression(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            return (string.Empty, null);
+
+        if (key.StartsWith("Counter:", StringComparison.OrdinalIgnoreCase))
+            return ("Counter", key["Counter:".Length..]);
+
+        var dotIndex = key.IndexOf('.');
+        if (dotIndex > 0)
+            return (key[..dotIndex], key[(dotIndex + 1)..]);
+
+        var colonIndex = key.IndexOf(':');
+        if (colonIndex > 0)
         {
-            return property.ToUpperInvariant() switch
-            {
-                "YEAR" => dateTime.Year.ToString(CultureInfo.InvariantCulture),
-                "MONTH" => dateTime.Month.ToString("D2", CultureInfo.InvariantCulture),
-                "DAY" => dateTime.Day.ToString("D2", CultureInfo.InvariantCulture),
-                _ => normalizedValue   // always returns yyyy:MM:dd HH:mm:ss
-            };
+            var baseName = key[..colonIndex];
+            if (!baseName.Equals("Counter", StringComparison.OrdinalIgnoreCase))
+                return (baseName, key[(colonIndex + 1)..]);
         }
 
-        // If DateTime parsing failed and a property was requested, try fallback
-        if (property != null)
+        return (key, null);
+    }
+
+    private static bool IsDateTimeDataType(string? dataType)
+    {
+        if (string.IsNullOrWhiteSpace(dataType))
+            return false;
+
+        return dataType.Trim().ToUpperInvariant() is "DATETIME" or "DATE" or "TIME";
+    }
+
+    private string ResolveDateTimePlaceholderValue(string rawValue, string suffix, string sourceFilePath, string keywordName, bool logFallback)
+    {
+        if (TryNormalizeDateTime(rawValue, out var normalizedValue, sourceFilePath, keywordName) &&
+            DateTime.TryParseExact(normalizedValue, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
         {
-            LogDateTimeFallback(sourceFilePath, baseName, value, "unparseable");
-            var fallbackNormalized = FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
-            if (DateTime.TryParseExact(fallbackNormalized, "yyyy:MM:dd HH:mm:ss",
-                CultureInfo.InvariantCulture, DateTimeStyles.None, out var fallbackDt))
-            {
-                return property.ToUpperInvariant() switch
-                {
-                    "YEAR" => fallbackDt.Year.ToString(CultureInfo.InvariantCulture),
-                    "MONTH" => fallbackDt.Month.ToString("D2", CultureInfo.InvariantCulture),
-                    "DAY" => fallbackDt.Day.ToString("D2", CultureInfo.InvariantCulture),
-                    _ => fallbackNormalized
-                };
-            }
+            return ResolveDateTimeSuffixValue(dateTime, suffix, normalizedValue);
         }
 
-        return ApplyConfiguredStringReplacements(value);
+        if (logFallback)
+            LogDateTimeFallback(sourceFilePath, keywordName, rawValue, "unparseable");
+
+        var fallbackNormalized = FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+        if (DateTime.TryParseExact(fallbackNormalized, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var fallbackDateTime))
+        {
+            return ResolveDateTimeSuffixValue(fallbackDateTime, suffix, fallbackNormalized);
+        }
+
+        return fallbackNormalized;
+    }
+
+    private static string ResolveDateTimeSuffixValue(DateTime dateTime, string suffix, string normalizedValue)
+    {
+        if (string.IsNullOrWhiteSpace(suffix))
+            return normalizedValue;
+
+        var trimmedSuffix = suffix.Trim();
+        var suffixUpper = trimmedSuffix.ToUpperInvariant();
+
+        return suffixUpper switch
+        {
+            "YEAR" => dateTime.Year.ToString(CultureInfo.InvariantCulture),
+            "MONTH" => dateTime.Month.ToString("D2", CultureInfo.InvariantCulture),
+            "DAY" => dateTime.Day.ToString("D2", CultureInfo.InvariantCulture),
+            "HOUR" => dateTime.Hour.ToString("D2", CultureInfo.InvariantCulture),
+            "MINUTE" => dateTime.Minute.ToString("D2", CultureInfo.InvariantCulture),
+            "SECOND" => dateTime.Second.ToString("D2", CultureInfo.InvariantCulture),
+            _ => ResolveGenericDateTimeSuffixValue(dateTime, trimmedSuffix, normalizedValue)
+        };
+    }
+
+    private static string ResolveGenericDateTimeSuffixValue(DateTime dateTime, string suffix, string normalizedValue)
+    {
+        var property = typeof(DateTime).GetProperty(suffix, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase);
+        if (property != null && property.GetIndexParameters().Length == 0)
+        {
+            var propertyValue = property.GetValue(dateTime);
+            if (propertyValue is IFormattable formattable)
+                return formattable.ToString(null, CultureInfo.InvariantCulture);
+
+            return propertyValue?.ToString() ?? normalizedValue;
+        }
+
+        try
+        {
+            return dateTime.ToString(suffix, CultureInfo.InvariantCulture);
+        }
+        catch (FormatException)
+        {
+            return normalizedValue;
+        }
     }
 
     /// <summary>
@@ -2049,26 +2131,18 @@ public sealed class FIRECatalog : IDisposable
         string key,
         Dictionary<string, string> metadata,
         string sourceFilePath,
-        long? counter = null)
+        long? counter = null,
+        Dictionary<string, string>? metadataTypes = null)
     {
         var steps = new List<string>();
         steps.Add($"**Placeholder**: `{{{key}}}`");
 
-        var parts = key.Split('.');
-        var baseName = parts[0];
-        var property = parts.Length > 1 ? parts[1] : null;
-
-        if (baseName.StartsWith("Counter:", StringComparison.OrdinalIgnoreCase))
-        {
-            property = baseName["Counter:".Length..];
-            baseName = "Counter";
-            steps.Add($"  - Detected counter format, property=`{property}`");
-        }
+        var (baseName, suffix) = ParsePlaceholderExpression(key);
 
         if (baseName.Equals("FileName", StringComparison.OrdinalIgnoreCase))
         {
             string resolved;
-            if (property != null && property.Equals("Noext", StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(suffix) && suffix.Equals("Noext", StringComparison.OrdinalIgnoreCase))
             {
                 resolved = Path.GetFileNameWithoutExtension(sourceFilePath);
                 steps.Add($"  - Type: FileName.Noext → `{resolved}`");
@@ -2078,6 +2152,7 @@ public sealed class FIRECatalog : IDisposable
                 resolved = Path.GetFileName(sourceFilePath);
                 steps.Add($"  - Type: FileName → `{resolved}`");
             }
+
             var final = ApplyConfiguredStringReplacements(resolved);
             if (final != resolved)
                 steps.Add($"  - After string replacements: `{final}`");
@@ -2098,8 +2173,8 @@ public sealed class FIRECatalog : IDisposable
 
         if (baseName.Equals("RootPath", StringComparison.OrdinalIgnoreCase))
         {
-            steps.Add($"  - Type: RootPath (recursive expansion)");
-            var resolved = ParseTemplate(_configuration.RootPath, metadata, sourceFilePath, counter);
+            steps.Add("  - Type: RootPath (recursive expansion)");
+            var resolved = ParseTemplate(_configuration.RootPath, metadata, sourceFilePath, counter, metadataTypes);
             steps.Add($"  - **Result**: `{resolved}`");
             return (resolved, steps);
         }
@@ -2108,8 +2183,9 @@ public sealed class FIRECatalog : IDisposable
         {
             var effectiveCounter = counter ?? 1L;
             steps.Add($"  - Type: Counter, value={effectiveCounter}");
-            if (!string.IsNullOrWhiteSpace(property) && property.Length > 1 && property.StartsWith("D", StringComparison.OrdinalIgnoreCase)
-                && int.TryParse(property[1..], NumberStyles.None, CultureInfo.InvariantCulture, out var digits)
+
+            if (!string.IsNullOrWhiteSpace(suffix) && suffix.Length > 1 && suffix.StartsWith("D", StringComparison.OrdinalIgnoreCase)
+                && int.TryParse(suffix[1..], NumberStyles.None, CultureInfo.InvariantCulture, out var digits)
                 && digits > 0)
             {
                 var formatted = effectiveCounter.ToString($"D{digits}", CultureInfo.InvariantCulture);
@@ -2126,13 +2202,13 @@ public sealed class FIRECatalog : IDisposable
         if (!metadata.TryGetValue(baseName, out var value) || string.IsNullOrWhiteSpace(value))
         {
             steps.Add($"  - ⚠️ Metadata key `{baseName}` not found or empty in DB");
-            steps.Add($"  - **Result**: `Unknown`");
+            steps.Add("  - **Result**: `Unknown`");
             return ("Unknown", steps);
         }
 
         steps.Add($"  - Metadata lookup: `{baseName}` = `{value}`");
 
-        if (property == null)
+        if (string.IsNullOrWhiteSpace(suffix))
         {
             var final = ApplyConfiguredStringReplacements(value);
             if (final != value)
@@ -2141,68 +2217,29 @@ public sealed class FIRECatalog : IDisposable
             return (final, steps);
         }
 
-        if (TryNormalizeDateTime(value, out var normalizedValue))
-        {
-            steps.Add($"  - Normalized datetime: `{normalizedValue}`");
+        string? dataType = null;
+        if (metadataTypes != null)
+            metadataTypes.TryGetValue(baseName, out dataType);
 
-            // Check if the normalized value was replaced by FallbackDateTime
-            var fallbackNormalized = FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
-            if (normalizedValue == fallbackNormalized)
-            {
-                steps.Add($"  - ⚠️ Original value was implausible (year < 1900 or > current + 10), replaced with FallbackDateTime");
-            }
+        steps.Add($"  - Metadata type: `{dataType ?? "(unknown)"}`");
 
-            if (DateTime.TryParseExact(normalizedValue, "yyyy:MM:dd HH:mm:ss",
-                CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime))
-            {
-                steps.Add($"  - Parsed as DateTime: {dateTime:yyyy-MM-dd HH:mm:ss}");
-                var result = property.ToUpperInvariant() switch
-                {
-                    "YEAR" => dateTime.Year.ToString(CultureInfo.InvariantCulture),
-                    "MONTH" => dateTime.Month.ToString("D2", CultureInfo.InvariantCulture),
-                    "DAY" => dateTime.Day.ToString("D2", CultureInfo.InvariantCulture),
-                    _ => normalizedValue
-                };
-                steps.Add($"  - Property extraction: `{property}` → `{result}`");
-                steps.Add($"  - **Result**: `{result}`");
-                return (result, steps);
-            }
-            else
-            {
-                steps.Add($"  - ⚠️ DateTime parse failed for normalized value `{normalizedValue}`");
-            }
-        }
-        else
+        if (!IsDateTimeDataType(dataType))
         {
-            steps.Add($"  - ⚠️ DateTime normalization failed for `{value}`");
+            steps.Add($"  - Suffix `{suffix}` ignored because key is not DATETIME/DATE/TIME");
+            var final = ApplyConfiguredStringReplacements(value);
+            if (final != value)
+                steps.Add($"  - After string replacements: `{final}`");
+            steps.Add($"  - **Result**: `{final}`");
+            return (final, steps);
         }
 
-        // Use FallbackDateTime if normalization/parsing failed and a property was requested
-        if (property != null)
-        {
-            steps.Add($"  - Attempting fallback with FallbackDateTime: `{FallbackDateTime:yyyy-MM-dd HH:mm:ss}`");
-            var fallbackNormalized = FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
-            if (DateTime.TryParseExact(fallbackNormalized, "yyyy:MM:dd HH:mm:ss",
-                CultureInfo.InvariantCulture, DateTimeStyles.None, out var fallbackDt))
-            {
-                var result = property.ToUpperInvariant() switch
-                {
-                    "YEAR" => fallbackDt.Year.ToString(CultureInfo.InvariantCulture),
-                    "MONTH" => fallbackDt.Month.ToString("D2", CultureInfo.InvariantCulture),
-                    "DAY" => fallbackDt.Day.ToString("D2", CultureInfo.InvariantCulture),
-                    _ => fallbackNormalized
-                };
-                steps.Add($"  - Property extraction from fallback: `{property}` → `{result}`");
-                steps.Add($"  - **Result**: `{result}` (from FallbackDateTime)");
-                return (result, steps);
-            }
-        }
-
-        var fallback = ApplyConfiguredStringReplacements(value);
-        if (fallback != value)
-            steps.Add($"  - After string replacements: `{fallback}`");
-        steps.Add($"  - **Result**: `{fallback}`");
-        return (fallback, steps);
+        var resolvedDatePart = ResolveDateTimePlaceholderValue(value, suffix, sourceFilePath, baseName, logFallback: false);
+        steps.Add($"  - DateTime suffix extraction: `{suffix}` → `{resolvedDatePart}`");
+        var replacedDatePart = ApplyConfiguredStringReplacements(resolvedDatePart);
+        if (replacedDatePart != resolvedDatePart)
+            steps.Add($"  - After string replacements: `{replacedDatePart}`");
+        steps.Add($"  - **Result**: `{replacedDatePart}`");
+        return (replacedDatePart, steps);
     }
 
     /// <summary>

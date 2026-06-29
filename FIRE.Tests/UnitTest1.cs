@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
 
 namespace FIRE.Tests;
 
@@ -41,7 +44,8 @@ public class UnitTest1
         };
 
         var fixedNow = new DateTime(2026, 12, 31, 23, 59, 58, DateTimeKind.Local);
-        var result = FIRECatalog.ResolveKeywordDefaultValue(keywordConfig, fixedNow);
+        using var catalog = CreateCatalog();
+        var result = catalog.ResolveKeywordDefaultValue(keywordConfig, fixedNow);
 
         Assert.Equal("2026:12:31 23:59:58", result);
     }
@@ -55,7 +59,8 @@ public class UnitTest1
             Default = "2024-12-31 00:00:00"
         };
 
-        var result = FIRECatalog.ResolveKeywordDefaultValue(keywordConfig, DateTime.Now);
+        using var catalog = CreateCatalog();
+        var result = catalog.ResolveKeywordDefaultValue(keywordConfig, DateTime.Now);
 
         Assert.Equal("2024:12:31 00:00:00", result);
     }
@@ -69,7 +74,8 @@ public class UnitTest1
             Default = "not-a-date"
         };
 
-        var result = FIRECatalog.ResolveKeywordDefaultValue(keywordConfig, DateTime.Now);
+        using var catalog = CreateCatalog();
+        var result = catalog.ResolveKeywordDefaultValue(keywordConfig, DateTime.Now);
 
         Assert.Equal("NA", result);
     }
@@ -83,8 +89,61 @@ public class UnitTest1
             Default = "UnknownCamera"
         };
 
-        var result = FIRECatalog.ResolveKeywordDefaultValue(keywordConfig, DateTime.Now);
+        using var catalog = CreateCatalog();
+        var result = catalog.ResolveKeywordDefaultValue(keywordConfig, DateTime.Now);
 
         Assert.Equal("UnknownCamera", result);
+    }
+
+    [Fact]
+    public void ParseTemplate_DatetimeKeywordSupport_ResolvesNamedAndFormatSuffixes()
+    {
+        using var catalog = CreateCatalog();
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["CapturedAt"] = "2026:07:02 14:05:09"
+        };
+        var metadataTypes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["CapturedAt"] = "DATETIME"
+        };
+
+        var result = InvokeParseTemplate(catalog, "{CapturedAt.Year}_{CapturedAt.Minute}_{CapturedAt:yyyy-MM-dd}", metadata, metadataTypes);
+
+        Assert.Equal("2026_05_2026-07-02", result);
+    }
+
+    [Fact]
+    public void ParseTemplate_NonDatetimeKeywordWithSuffix_DoesNotApplyDateFallback()
+    {
+        using var catalog = CreateCatalog();
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Model"] = "Canon"
+        };
+        var metadataTypes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Model"] = "STRING"
+        };
+
+        var result = InvokeParseTemplate(catalog, "{Model.Year}", metadata, metadataTypes);
+
+        Assert.Equal("Canon", result);
+    }
+
+    private static string InvokeParseTemplate(FIRECatalog catalog, string template, Dictionary<string, string> metadata, Dictionary<string, string> metadataTypes)
+    {
+        var parseTemplate = typeof(FIRECatalog).GetMethod("ParseTemplate", BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(parseTemplate);
+
+        return (string)parseTemplate!.Invoke(catalog, [template, metadata, @"C:\\Temp\\source.jpg", null, metadataTypes])!;
+    }
+
+    private static FIRECatalog CreateCatalog()
+    {
+        var databasePath = Path.Combine(Path.GetTempPath(), $"fire-tests-{Guid.NewGuid():N}.db");
+        var configuration = new FIREConfigration();
+        var database = new FIREDatabase(databasePath, recreateIfExists: true);
+        return new FIRECatalog(configuration, database);
     }
 }
