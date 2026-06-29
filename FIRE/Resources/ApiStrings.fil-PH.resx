@@ -36,4 +36,16 @@
   <data name="status.file_processing" xml:space="preserve">
 	<value>Pinoproseso: {0}</value>
   </data>
+  <data name="status.cancelled" xml:space="preserve">
+	<value>Kinansela ng gumagamit ang operasyon (Ctrl+C).</value>
+  </data>
+  <data name="stats.collect.total" xml:space="preserve">
+	<value>Istatistika ng collect — kabuuang bilang ng nahanap na file: {0}</value>
+  </data>
+  <data name="stats.collect.added" xml:space="preserve">
+	<value>Istatistika ng collect — mga file na idinagdag sa database: {0}</value>
+  </data>
+  <data name="stats.collect.skipped_extensions" xml:space="preserve">
+	<value>Istatistika ng collect — mga extension na hindi konfigurasyón: {0}</value>
+  </data>
 </root>

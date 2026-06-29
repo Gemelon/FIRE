@@ -56,9 +56,12 @@ var searchData=
   ['fireconfigration_2ecs_53',['FIREConfigration.cs',['../d1/d3c/_f_i_r_e_configration_8cs.html',1,'']]],
   ['firedatabase_2ecs_54',['FIREDatabase.cs',['../d7/d1a/_f_i_r_e_database_8cs.html',1,'']]],
   ['firefilemetadata_55',['FIREFileMetaData',['../d7/d1a/_f_i_r_e_database_8cs.html#d5/d85/class_f_i_r_e_file_meta_data',1,'']]],
-  ['for_20photo_20and_20video_20archives_20use_20counter_20when_20a_20stable_20sequence_20must_20be_20preserved_56',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md39',1,'']]],
-  ['format_57',['Format',['../d6/d50/class_api_localizer.html#ac202062c7eea1de336ba7e23144ddf5a',1,'ApiLocalizer']]],
-  ['french_58',['French',['../dd/d5c/_program_8cs.html#a214a7ba4e60a1b01dc585e30bd48ba55afe66e5596e9202cd7ecff734de46cc09',1,'Program.cs']]],
-  ['from_20source_59',['From source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md12',1,'']]],
-  ['from_20source_60',['Building from Source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md40',1,'']]]
+  ['firelogger_2ecs_56',['FIRELogger.cs',['../d1/dcc/_f_i_r_e_logger_8cs.html',1,'']]],
+  ['fireloglevel_57',['FIRELogLevel',['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d',1,'FIRELogger.cs']]],
+  ['for_20photo_20and_20video_20archives_20use_20counter_20when_20a_20stable_20sequence_20must_20be_20preserved_58',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md39',1,'']]],
+  ['format_59',['Format',['../d6/d50/class_api_localizer.html#ac202062c7eea1de336ba7e23144ddf5a',1,'ApiLocalizer']]],
+  ['french_60',['French',['../dd/d5c/_program_8cs.html#a214a7ba4e60a1b01dc585e30bd48ba55afe66e5596e9202cd7ecff734de46cc09',1,'Program.cs']]],
+  ['from_20source_61',['From source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md12',1,'']]],
+  ['from_20source_62',['Building from Source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md40',1,'']]],
+  ['frommessagelevel_63',['FromMessageLevel',['../d1/dcc/_f_i_r_e_logger_8cs.html#a97a9719365174ef86f9d5e1a7f79c9f1',1,'FIRELogger.cs']]]
 ];

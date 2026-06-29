@@ -36,4 +36,16 @@
   <data name="status.file_processing" xml:space="preserve">
 	<value>Verarbeite: {0}</value>
   </data>
+  <data name="status.cancelled" xml:space="preserve">
+	<value>Vorgang durch Benutzer abgebrochen (Strg+C).</value>
+  </data>
+  <data name="stats.collect.total" xml:space="preserve">
+	<value>Collect-Statistik — gefundene Dateien gesamt: {0}</value>
+  </data>
+  <data name="stats.collect.added" xml:space="preserve">
+	<value>Collect-Statistik — in Datenbank aufgenommen: {0}</value>
+  </data>
+  <data name="stats.collect.skipped_extensions" xml:space="preserve">
+	<value>Collect-Statistik — nicht konfigurierte Dateiendungen: {0}</value>
+  </data>
 </root>

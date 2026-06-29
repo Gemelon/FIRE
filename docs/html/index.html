@@ -228,7 +228,7 @@ Configuration</h1>
 <div class="line">          - IFD0:DateTime</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="keywords_sec"></a>
 Keyword Selection</h1>
-<p>When multiple EXIF tags can satisfy the same logical keyword (e.g. <span class="tt">DateTimeOriginal</span> and <span class="tt">DateTime</span>), FIRE picks one value according to <span class="tt">ValAttribute</span>:</p>
+<p>When multiple EXIF tags can satisfy the same logical keyword (e.g. <span class="tt">DateTimeOriginal</span> and <span class="tt">DateTime</span>), FIRE picks one value according to <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a386f09885d44e5915217eb752f47e561" title="Gets or sets the value selection attribute that determines which value to use when multiple are found...">ValAttribute</a></span>:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">ValAttribute  </th><th class="markdownTableHeadNone">Behaviour  </th></tr>
@@ -237,7 +237,7 @@ Keyword Selection</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt">HIGHEST</span>  </td><td class="markdownTableBodyNone">Returns the chronologically or numerically largest value  </td></tr>
 </table>
-<p>Supported <span class="tt">DataType</span> values: <span class="tt">STRING</span>, <span class="tt">INT</span>, <span class="tt">INTEGER</span>, <span class="tt">DATETIME</span>, <span class="tt">DATE</span>, <span class="tt">TIME</span>.</p>
+<p>Supported <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ae0846a526671ac8ea5c31fb1ed328a9d" title="Gets or sets the data type of the metadata value.">DataType</a></span> values: <span class="tt">STRING</span>, <span class="tt">INT</span>, <span class="tt">INTEGER</span>, <span class="tt">DATETIME</span>, <span class="tt">DATE</span>, <span class="tt">TIME</span>.</p>
 <h1 class="doxsection"><a class="anchor" id="meta_sources_sec"></a>
 Metadata Sources</h1>
 <table class="markdownTable">
@@ -280,7 +280,7 @@ Metadata Inspection Helpers</h1>
 GetAllAvailableMetadata</h2>
 <p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aef7ba4394188e308379ddd8a487ac5f1" title="Retrieves all available metadata for a single file from all registered metadata sources.">GetAllAvailableMetadata(string filePath)</a></span> returns all discovered metadata entries for one file as tuples:</p>
 <ul>
-<li><span class="tt">Source</span> (e.g. <span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
+<li><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ac34de2a54dcaa5e190990544213c2a65" title="Gets or sets the metadata source for this keyword.">Source</a></span> (e.g. <span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
 <li><span class="tt">Key</span> (metadata key/tag name)</li>
 <li><span class="tt">Value</span> (string representation)</li>
 </ul>

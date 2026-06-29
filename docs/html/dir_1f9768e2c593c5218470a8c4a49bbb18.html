@@ -385,15 +385,15 @@ Configuration Reference</h1>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Property  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Default  </th><th class="markdownTableHeadNone">Description  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">DataType</span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">STRING</span>  </td><td class="markdownTableBodyNone"><span class="tt">STRING</span>, <span class="tt">INT</span>, <span class="tt">INTEGER</span>, <span class="tt">DATETIME</span>, <span class="tt">DATE</span>, <span class="tt">TIME</span>  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ae0846a526671ac8ea5c31fb1ed328a9d" title="Gets or sets the data type of the metadata value.">DataType</a></span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">STRING</span>  </td><td class="markdownTableBodyNone"><span class="tt">STRING</span>, <span class="tt">INT</span>, <span class="tt">INTEGER</span>, <span class="tt">DATETIME</span>, <span class="tt">DATE</span>, <span class="tt">TIME</span>  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">Source</span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">FILEINFO</span>  </td><td class="markdownTableBodyNone"><span class="tt">FILEINFO</span> or <span class="tt">EXIFTOOL</span>  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ac34de2a54dcaa5e190990544213c2a65" title="Gets or sets the metadata source for this keyword.">Source</a></span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">FILEINFO</span>  </td><td class="markdownTableBodyNone"><span class="tt">FILEINFO</span> or <span class="tt">EXIFTOOL</span>  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">ValAttribute</span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">LOWEST</span>  </td><td class="markdownTableBodyNone"><span class="tt">LOWEST</span> or <span class="tt">HIGHEST</span>  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a386f09885d44e5915217eb752f47e561" title="Gets or sets the value selection attribute that determines which value to use when multiple are found...">ValAttribute</a></span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">LOWEST</span>  </td><td class="markdownTableBodyNone"><span class="tt">LOWEST</span> or <span class="tt">HIGHEST</span>  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">Default</span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">—  </td><td class="markdownTableBodyNone">Fallback value when no configured keyword is found. For <span class="tt">DATETIME</span>, supports a date string (e.g. <span class="tt">2024-12-31 00:00:00</span>) or <span class="tt">NOW</span>.  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a57818ca0924f9791fd2e538c3e12ccd7" title="Gets or sets the fallback value used when no configured keyword is found in the selected source.">Default</a></span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">—  </td><td class="markdownTableBodyNone">Fallback value when no configured keyword is found. For <span class="tt">DATETIME</span>, supports a date string (e.g. <span class="tt">2024-12-31 00:00:00</span>) or <span class="tt">NOW</span>.  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">KeyWords</span>  </td><td class="markdownTableBodyNone">list  </td><td class="markdownTableBodyNone">—  </td><td class="markdownTableBodyNone">Ordered list of metadata tag names to try  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ad4fff62c68af6218dfbbad696eb5cea2" title="Gets or sets the list of metadata field names to query from the metadata source.">KeyWords</a></span>  </td><td class="markdownTableBodyNone">list  </td><td class="markdownTableBodyNone">—  </td><td class="markdownTableBodyNone">Ordered list of metadata tag names to try  </td></tr>
 </table>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
@@ -424,7 +424,7 @@ Template Placeholders</h1>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
 Keyword Selection</h1>
-<p>When a keyword lists multiple EXIF tags, FIRE queries each tag and picks one value based on <span class="tt">ValAttribute</span>:</p>
+<p>When a keyword lists multiple EXIF tags, FIRE queries each tag and picks one value based on <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a386f09885d44e5915217eb752f47e561" title="Gets or sets the value selection attribute that determines which value to use when multiple are found...">ValAttribute</a></span>:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">ValAttribute  </th><th class="markdownTableHeadNone">Behaviour  </th></tr>
@@ -546,7 +546,7 @@ Metadata Inspection API</h2>
 <span class="tt">GetAllAvailableMetadata(string filePath)</span></h3>
 <p>Returns all metadata entries for one file as tuples:</p>
 <ul>
-<li><span class="tt">Source</span> (e.g. <span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
+<li><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ac34de2a54dcaa5e190990544213c2a65" title="Gets or sets the metadata source for this keyword.">Source</a></span> (e.g. <span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
 <li><span class="tt">Key</span> (metadata key/tag name)</li>
 <li><span class="tt">Value</span> (string value)</li>
 </ul>

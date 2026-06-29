@@ -132,8 +132,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4ace28242cd80c2f1d0c5f9fd9336d79" id="r_a4ace28242cd80c2f1d0c5f9fd9336d79"><td class="memItemLeft">sealed class <a class="el" href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a>&#160;</td><td class="memItemRight"><a class="el" href="#a4ace28242cd80c2f1d0c5f9fd9336d79">YamlMember</a> (Alias=&quot;FileType&quot;)] public <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> FileType</td></tr>
-<tr class="memdesc:a4ace28242cd80c2f1d0c5f9fd9336d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents configuration for a specific file extension within the FIRE configuration.  <br /></td></tr>
+<tr class="memitem:a3612a17b60733dfb291baab823502312" id="r_a3612a17b60733dfb291baab823502312"><td class="memItemLeft">sealed class <a class="el" href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a>&#160;</td><td class="memItemRight"><a class="el" href="#a3612a17b60733dfb291baab823502312">YamlMember</a> (Alias=&quot;FileType&quot;)] public <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> FileType</td></tr>
+<tr class="memdesc:a3612a17b60733dfb291baab823502312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents configuration for a specific file extension within the FIRE configuration.  <br /></td></tr>
 <tr class="memitem:a016bde7230cf88484e9dfc8af96bb1b4" id="r_a016bde7230cf88484e9dfc8af96bb1b4"><td class="memItemLeft">static <a class="el" href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a>&#160;</td><td class="memItemRight"><a class="el" href="#a016bde7230cf88484e9dfc8af96bb1b4">Load</a> (<a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> filePath)</td></tr>
 <tr class="memdesc:a016bde7230cf88484e9dfc8af96bb1b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a FIRE configuration from a YAML file on disk.  <br /></td></tr>
 <tr class="memitem:a1f4427fec476e7a156258bbcd80116b0" id="r_a1f4427fec476e7a156258bbcd80116b0"><td class="memItemLeft">static <a class="el" href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a>&#160;</td><td class="memItemRight"><a class="el" href="#a1f4427fec476e7a156258bbcd80116b0">Parse</a> (<a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> yaml)</td></tr>
@@ -142,10 +142,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:a2127e8e5c4beba369943506c78f33a56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the loaded configuration version matches the supported version.  <br /></td></tr>
 <tr class="memitem:a2909ce7c3cae497a7297eeef183e00d6" id="r_a2909ce7c3cae497a7297eeef183e00d6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2909ce7c3cae497a7297eeef183e00d6">EnsureSupportedConfigurationVersion</a> ()</td></tr>
 <tr class="memdesc:a2909ce7c3cae497a7297eeef183e00d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Throws an exception if the configuration version is not supported.  <br /></td></tr>
+<tr class="memitem:a1c35f2ed6f60246e742841a824a7cb75" id="r_a1c35f2ed6f60246e742841a824a7cb75"><td class="memItemLeft">internal void&#160;</td><td class="memItemRight"><a class="el" href="#a1c35f2ed6f60246e742841a824a7cb75">Normalize</a> (<a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> databasePath)</td></tr>
+<tr class="memdesc:a1c35f2ed6f60246e742841a824a7cb75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalizes all properties to their defaults.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:aa5389a725ea3efe7c6a97c603bbabb12" id="r_aa5389a725ea3efe7c6a97c603bbabb12"><td class="memItemLeft">const decimal&#160;</td><td class="memItemRight"><a class="el" href="#aa5389a725ea3efe7c6a97c603bbabb12">SupportedConfigurationVersion</a> = 1.20m</td></tr>
+<tr class="memitem:aa5389a725ea3efe7c6a97c603bbabb12" id="r_aa5389a725ea3efe7c6a97c603bbabb12"><td class="memItemLeft">const decimal&#160;</td><td class="memItemRight"><a class="el" href="#aa5389a725ea3efe7c6a97c603bbabb12">SupportedConfigurationVersion</a> = 1.21m</td></tr>
 <tr class="memdesc:aa5389a725ea3efe7c6a97c603bbabb12"><td class="mdescLeft">&#160;</td><td class="mdescRight">The semantic version of the configuration format currently supported by this build.  <br /></td></tr>
 <tr class="memitem:a4cc8b64f5a1600f0837112c910b82f41" id="r_a4cc8b64f5a1600f0837112c910b82f41"><td class="memItemLeft">decimal&#160;</td><td class="memItemRight"><a class="el" href="#a4cc8b64f5a1600f0837112c910b82f41">ConfigurationVersion</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
 <tr class="memdesc:a4cc8b64f5a1600f0837112c910b82f41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the configuration format version.  <br /></td></tr>
@@ -170,6 +172,8 @@ Variables</h2></td></tr>
 <tr class="memdesc:afdba3e756dc6f3cbf4d4d8303cdfb4ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets a dictionary of global string replacements applied to all resolved paths.  <br /></td></tr>
 <tr class="memitem:a218756e7b9554057f91a6fbfa85803a9" id="r_a218756e7b9554057f91a6fbfa85803a9"><td class="memItemLeft">Dictionary&lt; <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>, FileExtensionConfiguration &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a218756e7b9554057f91a6fbfa85803a9">FileExtensions</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
 <tr class="memdesc:a218756e7b9554057f91a6fbfa85803a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets a dictionary of file extension-specific configurations.  <br /></td></tr>
+<tr class="memitem:aa3a64aa45e67c53f8f3af3c5653cd729" id="r_aa3a64aa45e67c53f8f3af3c5653cd729"><td class="memItemLeft">LoggingConfiguration&#160;</td><td class="memItemRight"><a class="el" href="#aa3a64aa45e67c53f8f3af3c5653cd729">Logging</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:aa3a64aa45e67c53f8f3af3c5653cd729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the optional logging configuration.  <br /></td></tr>
 <tr class="memitem:ac1a440ebd9b6b228eb302c563d496d86" id="r_ac1a440ebd9b6b228eb302c563d496d86"><td class="memItemLeft">List&lt; <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ac1a440ebd9b6b228eb302c563d496d86">FileSorting</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
 <tr class="memdesc:ac1a440ebd9b6b228eb302c563d496d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the ordered list of metadata keys used to sort records before path generation.  <br /></td></tr>
 <tr class="memitem:ac60df9be0840e23a27e41eaca9f08a37" id="r_ac60df9be0840e23a27e41eaca9f08a37"><td class="memItemLeft"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac60df9be0840e23a27e41eaca9f08a37">FileSortingOrder</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
@@ -180,6 +184,24 @@ Variables</h2></td></tr>
 <tr class="memdesc:a17fb8db34a5e91f9f3c5726747f32226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets a list of file extensions that are considered sidecar files for this extension.  <br /></td></tr>
 <tr class="memitem:a63323b332ded7ed3a4edc12fc1754d16" id="r_a63323b332ded7ed3a4edc12fc1754d16"><td class="memItemLeft">Dictionary&lt; <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>, <a class="el" href="../../d3/daf/class_available_keyword_configuration.html">AvailableKeywordConfiguration</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a63323b332ded7ed3a4edc12fc1754d16">AvailableKeyWords</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
 <tr class="memdesc:a63323b332ded7ed3a4edc12fc1754d16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets a dictionary of available metadata keywords for this extension.  <br /></td></tr>
+<tr class="memitem:ae0846a526671ac8ea5c31fb1ed328a9d" id="r_ae0846a526671ac8ea5c31fb1ed328a9d"><td class="memItemLeft"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#ae0846a526671ac8ea5c31fb1ed328a9d">DataType</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:ae0846a526671ac8ea5c31fb1ed328a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the data type of the metadata value.  <br /></td></tr>
+<tr class="memitem:ac34de2a54dcaa5e190990544213c2a65" id="r_ac34de2a54dcaa5e190990544213c2a65"><td class="memItemLeft"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac34de2a54dcaa5e190990544213c2a65">Source</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:ac34de2a54dcaa5e190990544213c2a65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the metadata source for this keyword.  <br /></td></tr>
+<tr class="memitem:a386f09885d44e5915217eb752f47e561" id="r_a386f09885d44e5915217eb752f47e561"><td class="memItemLeft"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#a386f09885d44e5915217eb752f47e561">ValAttribute</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:a386f09885d44e5915217eb752f47e561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the value selection attribute that determines which value to use when multiple are found.  <br /></td></tr>
+<tr class="memitem:a57818ca0924f9791fd2e538c3e12ccd7" id="r_a57818ca0924f9791fd2e538c3e12ccd7"><td class="memItemLeft"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#a57818ca0924f9791fd2e538c3e12ccd7">Default</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:a57818ca0924f9791fd2e538c3e12ccd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the fallback value used when no configured keyword is found in the selected source.  <br /></td></tr>
+<tr class="memitem:ad4fff62c68af6218dfbbad696eb5cea2" id="r_ad4fff62c68af6218dfbbad696eb5cea2"><td class="memItemLeft">List&lt; <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ad4fff62c68af6218dfbbad696eb5cea2">KeyWords</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:ad4fff62c68af6218dfbbad696eb5cea2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the list of metadata field names to query from the metadata source.  <br /></td></tr>
+<tr class="memitem:a65d8359dcb16e8d807b59a51d9bffce6" id="r_a65d8359dcb16e8d807b59a51d9bffce6"><td class="memItemLeft"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#a65d8359dcb16e8d807b59a51d9bffce6">LogFileName</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:a65d8359dcb16e8d807b59a51d9bffce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the base name of the log files (without extension).  <br /></td></tr>
+<tr class="memitem:a9647e3ff64f75fba67077f0021234871" id="r_a9647e3ff64f75fba67077f0021234871"><td class="memItemLeft"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9647e3ff64f75fba67077f0021234871">LogLevel</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:a9647e3ff64f75fba67077f0021234871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the minimum log level to record.  <br /></td></tr>
+<tr class="memitem:a5a7cd280c18f28e71c9851170346ba89" id="r_a5a7cd280c18f28e71c9851170346ba89"><td class="memItemLeft">long&#160;</td><td class="memItemRight"><a class="el" href="#a5a7cd280c18f28e71c9851170346ba89">MaxFileSizeBytes</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:a5a7cd280c18f28e71c9851170346ba89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the maximum log file size in bytes before a new segment is started.  <br /></td></tr>
+<tr class="memitem:a356140f47d350238184f6084793a0513" id="r_a356140f47d350238184f6084793a0513"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a356140f47d350238184f6084793a0513">MaxAgeDays</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:a356140f47d350238184f6084793a0513"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the number of days to retain log files.  <br /></td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="a2909ce7c3cae497a7297eeef183e00d6" name="a2909ce7c3cae497a7297eeef183e00d6"></a>
@@ -206,9 +228,9 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00682">682</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00704">704</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00620">AvailableKeywordConfiguration::DataType</a>, <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00660">AvailableKeywordConfiguration::Default</a>, <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00672">AvailableKeywordConfiguration::KeyWords</a>, <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00634">AvailableKeywordConfiguration::Source</a>, and <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00649">AvailableKeywordConfiguration::ValAttribute</a>.</p>
+<p class="reference">References <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a>, <a class="el" href="../../dd/d5c/_program_8cs_source.html#l00115">set</a>, and <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00447">YamlMember()</a>.</p>
 
 </div>
 </div>
@@ -274,7 +296,34 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00626">626</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00648">648</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="a1c35f2ed6f60246e742841a824a7cb75" name="a1c35f2ed6f60246e742841a824a7cb75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c35f2ed6f60246e742841a824a7cb75">&#9670;&#160;</a></span>Normalize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">internal void Normalize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a></td>          <td class="paramname"><span class="paramname"><em>databasePath</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Normalizes all properties to their defaults. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">databasePath</td><td>The configured database path, used as fallback for LogFilePath.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00788">788</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -318,18 +367,18 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00648">648</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00670">670</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
-<a id="a4ace28242cd80c2f1d0c5f9fd9336d79" name="a4ace28242cd80c2f1d0c5f9fd9336d79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ace28242cd80c2f1d0c5f9fd9336d79">&#9670;&#160;</a></span>YamlMember()</h2>
+<a id="a3612a17b60733dfb291baab823502312" name="a3612a17b60733dfb291baab823502312"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3612a17b60733dfb291baab823502312">&#9670;&#160;</a></span>YamlMember()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">sealed class <a class="el" href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a> YamlMember </td>
+          <td class="memname">sealed class <a class="el" href="../../d3/daf/class_available_keyword_configuration.html">AvailableKeywordConfiguration</a> YamlMember </td>
           <td>(</td>
           <td class="paramtype">Alias</td>          <td class="paramname"><span class="paramname"><em></em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;FileType&quot;</span></td><td>)</td>
           <td></td>
@@ -338,6 +387,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Represents configuration for a specific file extension within the FIRE configuration. </p>
+<p>Configures the FIRE logging subsystem.</p>
 <p><code>FileExtensionConfiguration</code> allows per-extension overrides for sorting patterns, file name patterns, file operations, and available metadata keywords. This enables different handling for different file types (e.g., images, videos, documents).</p>
 <p><b>File Classification:</b> FileType and FileClass are descriptive labels that categorize the file (e.g., FileType="Photo", FileClass="Image"). These are meant for documentation and are not used programmatically by FIRE. </p>
 <p><b>Extension-Specific Overrides:</b> All properties (Action, RootPath, SortingPatern, FileNamePatern) override the root configuration values if set. If a property is null or whitespace, the root configuration value is used instead. This per-extension mechanism allows fine-grained control over the file processing pipeline for different file types. </p>
@@ -354,19 +404,29 @@ Variables</h2></td></tr>
 <div class="line">    <a class="code hl_variable" href="#a7b7e81bdf960f55fe8288e5549d94c38">FileNamePatern</a> = <span class="stringliteral">&quot;{DateTimeOriginal:yyyy-MM-dd_HHmmss}&quot;</span>,</div>
 <div class="line">    <a class="code hl_variable" href="#a63323b332ded7ed3a4edc12fc1754d16">AvailableKeyWords</a> = <span class="keyword">new</span> Dictionary&lt;string, AvailableKeywordConfiguration&gt;</div>
 <div class="line">    {</div>
-<div class="line">        [<span class="stringliteral">&quot;Make&quot;</span>] = <span class="keyword">new</span>() { Source = <span class="stringliteral">&quot;EXIFTOOL&quot;</span>, DataType = <span class="stringliteral">&quot;STRING&quot;</span> }</div>
+<div class="line">        [<span class="stringliteral">&quot;Make&quot;</span>] = <span class="keyword">new</span>() { <a class="code hl_variable" href="#ac34de2a54dcaa5e190990544213c2a65">Source</a> = <span class="stringliteral">&quot;EXIFTOOL&quot;</span>, <a class="code hl_variable" href="#ae0846a526671ac8ea5c31fb1ed328a9d">DataType</a> = <span class="stringliteral">&quot;STRING&quot;</span> }</div>
 <div class="line">    }</div>
 <div class="line">};</div>
-<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a3cbabcf9e16d587d8c46845ae16fbadb"><div class="ttname"><a href="#a3cbabcf9e16d587d8c46845ae16fbadb">SortingPatern</a></div><div class="ttdeci">string SortingPatern</div><div class="ttdoc">Gets or sets the directory sorting path pattern (may contain metadata placeholders).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00535">FIREConfigration.cs:535</a></div></div>
-<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a63323b332ded7ed3a4edc12fc1754d16"><div class="ttname"><a href="#a63323b332ded7ed3a4edc12fc1754d16">AvailableKeyWords</a></div><div class="ttdeci">Dictionary&lt; string, AvailableKeywordConfiguration &gt; AvailableKeyWords</div><div class="ttdoc">Gets or sets a dictionary of available metadata keywords for this extension.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00515">FIREConfigration.cs:515</a></div></div>
-<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a6cbcc18d725aac9ed8a4f9040221606c"><div class="ttname"><a href="#a6cbcc18d725aac9ed8a4f9040221606c">Action</a></div><div class="ttdeci">string Action</div><div class="ttdoc">Gets or sets the default file operation for all files (Copy, Move, or Link).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00500">FIREConfigration.cs:500</a></div></div>
-<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a75b2b0dd23b0061dde23e70727d89fa1"><div class="ttname"><a href="#a75b2b0dd23b0061dde23e70727d89fa1">RootPath</a></div><div class="ttdeci">string RootPath</div><div class="ttdoc">Gets or sets the base root path for output directories (may contain placeholders).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00523">FIREConfigration.cs:523</a></div></div>
-<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a75f7ba10d4e93a8705107796240bc8ad"><div class="ttname"><a href="#a75f7ba10d4e93a8705107796240bc8ad">FileClass</a></div><div class="ttdeci">string FileClass</div><div class="ttdoc">Gets or sets a descriptive file class label (e.g., &quot;Image&quot;, &quot;Video&quot;, &quot;Audio&quot;).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00446">FIREConfigration.cs:446</a></div></div>
-<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a7b7e81bdf960f55fe8288e5549d94c38"><div class="ttname"><a href="#a7b7e81bdf960f55fe8288e5549d94c38">FileNamePatern</a></div><div class="ttdeci">string FileNamePatern</div><div class="ttdoc">Gets or sets the file name pattern (may contain metadata placeholders).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00546">FIREConfigration.cs:546</a></div></div>
+<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a3cbabcf9e16d587d8c46845ae16fbadb"><div class="ttname"><a href="#a3cbabcf9e16d587d8c46845ae16fbadb">SortingPatern</a></div><div class="ttdeci">string SortingPatern</div><div class="ttdoc">Gets or sets the directory sorting path pattern (may contain metadata placeholders).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00547">FIREConfigration.cs:547</a></div></div>
+<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a63323b332ded7ed3a4edc12fc1754d16"><div class="ttname"><a href="#a63323b332ded7ed3a4edc12fc1754d16">AvailableKeyWords</a></div><div class="ttdeci">Dictionary&lt; string, AvailableKeywordConfiguration &gt; AvailableKeyWords</div><div class="ttdoc">Gets or sets a dictionary of available metadata keywords for this extension.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00527">FIREConfigration.cs:527</a></div></div>
+<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a6cbcc18d725aac9ed8a4f9040221606c"><div class="ttname"><a href="#a6cbcc18d725aac9ed8a4f9040221606c">Action</a></div><div class="ttdeci">string Action</div><div class="ttdoc">Gets or sets the default file operation for all files (Copy, Move, or Link).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00512">FIREConfigration.cs:512</a></div></div>
+<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a75b2b0dd23b0061dde23e70727d89fa1"><div class="ttname"><a href="#a75b2b0dd23b0061dde23e70727d89fa1">RootPath</a></div><div class="ttdeci">string RootPath</div><div class="ttdoc">Gets or sets the base root path for output directories (may contain placeholders).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00535">FIREConfigration.cs:535</a></div></div>
+<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a75f7ba10d4e93a8705107796240bc8ad"><div class="ttname"><a href="#a75f7ba10d4e93a8705107796240bc8ad">FileClass</a></div><div class="ttdeci">string FileClass</div><div class="ttdoc">Gets or sets a descriptive file class label (e.g., &quot;Image&quot;, &quot;Video&quot;, &quot;Audio&quot;).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00458">FIREConfigration.cs:458</a></div></div>
+<div class="ttc" id="a_f_i_r_e_configration_8cs_html_a7b7e81bdf960f55fe8288e5549d94c38"><div class="ttname"><a href="#a7b7e81bdf960f55fe8288e5549d94c38">FileNamePatern</a></div><div class="ttdeci">string FileNamePatern</div><div class="ttdoc">Gets or sets the file name pattern (may contain metadata placeholders).</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00558">FIREConfigration.cs:558</a></div></div>
+<div class="ttc" id="a_f_i_r_e_configration_8cs_html_ac34de2a54dcaa5e190990544213c2a65"><div class="ttname"><a href="#ac34de2a54dcaa5e190990544213c2a65">Source</a></div><div class="ttdeci">string Source</div><div class="ttdoc">Gets or sets the metadata source for this keyword.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00764">FIREConfigration.cs:764</a></div></div>
+<div class="ttc" id="a_f_i_r_e_configration_8cs_html_ae0846a526671ac8ea5c31fb1ed328a9d"><div class="ttname"><a href="#ae0846a526671ac8ea5c31fb1ed328a9d">DataType</a></div><div class="ttdeci">string DataType</div><div class="ttdoc">Gets or sets the data type of the metadata value.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00750">FIREConfigration.cs:750</a></div></div>
 </div><!-- fragment --> <p>Gets or sets a descriptive file type label (e.g., "Photo", "Video", "Document").</p>
 <p>This is a human-readable classification used for documentation purposes. It does not affect the processing logic and defaults to an empty string if not specified. </p>
+<p><b>Activation:</b> Logging is active only when this section is present in the YAML configuration. If the <code>Logging</code> key is absent, no log files are created. </p>
+<p><b>File naming:</b> One file per calendar day and per stage is created: <code>{LogFileName}.col.{yyyyMMdd}.md</code> (collect), <code>{LogFileName}.gen.{yyyyMMdd}.md</code> (generate), <code>{LogFileName}.exe.{yyyyMMdd}.md</code> (execute). </p>
+<p><b>Rotation:</b> When a log file exceeds MaxFileSizeBytes (default 10 MB), a new numbered segment is started automatically: <code>{LogFileName}.col.{yyyyMMdd}.1.md</code>, <code>.2.md</code>, … A single 10 MB limit keeps individual files easily openable in any text editor. </p>
+<p><b>Retention:</b> On every catalog run, log files older than MaxAgeDays days (default 30) are deleted from the log directory. 30 days covers a reasonable audit window without consuming excessive disk space; adjust downwards for high-volume environments. </p>
+<p>Gets or sets the directory where log files are written.</p>
+<p>Defaults to a <code>Logs</code> subdirectory inside the database directory when omitted. </p>
 
 <p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00086">86</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00704">EnsureSupportedConfigurationVersion()</a>.</p>
 
 </div>
 </div>
@@ -388,9 +448,9 @@ Variables</h2></td></tr>
 <p>Valid values are "Copy", "Move", and "Link". This is the default action applied during the <code>execute</code> phase for files that do not have an extension-specific override in FileExtensions. Defaults to "Copy" if not specified. </p>
 <p>Valid values: "Copy", "Move", or "Link". If null or whitespace, the root configuration FIREConfigration.Action is used. Otherwise, this value overrides the root. Defaults to "Copy" after normalization. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00500">500</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00512">512</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00680">CollectFiles()</a>, <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00888">ExecuteFileOperations()</a>, and <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00745">GenerateTargetPaths()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00699">CollectFiles()</a>, <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00907">ExecuteFileOperations()</a>, and <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00764">GenerateTargetPaths()</a>.</p>
 
 </div>
 </div>
@@ -409,7 +469,7 @@ Variables</h2></td></tr>
 <p>Gets or sets a dictionary of available metadata keywords for this extension. </p>
 <p>Keys are keyword names (e.g., "Make", "Model", "DateTimeOriginal") and values are AvailableKeywordConfiguration objects that specify where and how to extract the metadata. These keywords can be used as placeholders in SortingPatern and FileNamePatern. Case-insensitive comparison is used for keys. Defaults to an empty dictionary if not specified. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00515">515</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00527">527</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -428,7 +488,7 @@ Variables</h2></td></tr>
 <p>Gets or sets the configuration format version. </p>
 <p>This value is loaded from the YAML field <code>ConfigurationVersion</code>. It must match SupportedConfigurationVersion or an exception will be thrown when EnsureSupportedConfigurationVersion is called. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00454">454</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00466">466</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -447,7 +507,7 @@ Variables</h2></td></tr>
 <p>Gets or sets the name of the SQLite database file (e.g., "fire.db"). </p>
 <p>This is combined with DataBasePath to form the full database file path. If not specified in the configuration, it defaults to an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00488">488</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00500">500</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -466,7 +526,49 @@ Variables</h2></td></tr>
 <p>Gets or sets the directory path where the SQLite database file is stored. </p>
 <p>The complete database file path is constructed as <code>Path.Combine(DataBasePath, DataBaseFileName)</code>. If DataBasePath is empty or null, the database file is created in the application's working directory. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00478">478</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00490">490</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="ae0846a526671ac8ea5c31fb1ed328a9d" name="ae0846a526671ac8ea5c31fb1ed328a9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0846a526671ac8ea5c31fb1ed328a9d">&#9670;&#160;</a></span>DataType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> DataType { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the data type of the metadata value. </p>
+<p>Valid values include "STRING", "INT", "INTEGER", "DATETIME", "DATE", "TIME", etc. This is used to interpret and parse the metadata value correctly during path template resolution and value selection. Defaults to "STRING" if not specified. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00750">750</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../de/d6a/_unit_test1_8cs_source.html#l00035">UnitTest1::ResolveKeywordDefaultValue_DatetimeNow_UsesProvidedNowValueAndNormalizes()</a>, <a class="el" href="../../de/d6a/_unit_test1_8cs_source.html#l00050">UnitTest1::ResolveKeywordDefaultValue_DatetimeString_NormalizesToDatabaseFormat()</a>, <a class="el" href="../../de/d6a/_unit_test1_8cs_source.html#l00064">UnitTest1::ResolveKeywordDefaultValue_InvalidDatetimeDefault_ReturnsNA()</a>, and <a class="el" href="../../de/d6a/_unit_test1_8cs_source.html#l00078">UnitTest1::ResolveKeywordDefaultValue_StringDefault_ReturnsDefaultUnchanged()</a>.</p>
+
+</div>
+</div>
+<a id="a57818ca0924f9791fd2e538c3e12ccd7" name="a57818ca0924f9791fd2e538c3e12ccd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57818ca0924f9791fd2e538c3e12ccd7">&#9670;&#160;</a></span>Default</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> Default { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the fallback value used when no configured keyword is found in the selected source. </p>
+<p>If specified, this value is persisted instead of <code>NA</code> when no configured keyword yields a value. For <code>DataType=DATETIME</code>, the value may be a date/time string (e.g. "2024-12-31 00:00:00") or the special token <code>NOW</code> for the current local date and time. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00790">790</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../de/d6a/_unit_test1_8cs_source.html#l00035">UnitTest1::ResolveKeywordDefaultValue_DatetimeNow_UsesProvidedNowValueAndNormalizes()</a>, <a class="el" href="../../de/d6a/_unit_test1_8cs_source.html#l00050">UnitTest1::ResolveKeywordDefaultValue_DatetimeString_NormalizesToDatabaseFormat()</a>, <a class="el" href="../../de/d6a/_unit_test1_8cs_source.html#l00064">UnitTest1::ResolveKeywordDefaultValue_InvalidDatetimeDefault_ReturnsNA()</a>, and <a class="el" href="../../de/d6a/_unit_test1_8cs_source.html#l00078">UnitTest1::ResolveKeywordDefaultValue_StringDefault_ReturnsDefaultUnchanged()</a>.</p>
 
 </div>
 </div>
@@ -485,7 +587,7 @@ Variables</h2></td></tr>
 <p>Gets or sets a descriptive file class label (e.g., "Image", "Video", "Audio"). </p>
 <p>Similar to FileType, this is primarily for documentation. It defaults to an empty string if not specified. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00446">446</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00458">458</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -504,7 +606,7 @@ Variables</h2></td></tr>
 <p>Gets or sets a dictionary of file extension-specific configurations. </p>
 <p>Keys are file extensions (e.g., ".jpg", ".mp4", ".raw") and values are FileExtensionConfiguration objects that override the root configuration for files with that extension. This allows different sorting patterns, keyword sets, and file operations for different file types. Case-insensitive comparison is used for keys. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00572">572</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00584">584</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -525,7 +627,7 @@ Variables</h2></td></tr>
 <p>This template defines the file name (without directory path) for output files. Placeholders are resolved similarly to SortingPatern. Example: <code>{DateTimeOriginal:yyyy-MM-dd_HHmmss}_{Make}_{Model}</code> </p>
 <p>This template defines the output file name for files with this extension. If null or whitespace, the root configuration FIREConfigration.FileNamePatern is used. Defaults to an empty string after normalization. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00546">546</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00558">558</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -546,7 +648,7 @@ Variables</h2></td></tr>
 <p>The criteria are applied in the listed order (primary, secondary, tertiary, ...). If the list is empty, no explicit sorting is performed. </p>
 <p>Optional per-field direction is supported via suffix <code>:Ascending</code> or <code>:Descending</code> (short forms <code>:Asc</code> and <code>:Desc</code> are also supported). Example: <code>MetaCreationTime.Year:Descending</code>, <code>Make:Asc</code>, <code>Model</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00594">594</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00616">616</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -565,7 +667,7 @@ Variables</h2></td></tr>
 <p>Gets or sets the global sorting direction used for FileSorting. </p>
 <p>Supported values are <code>Ascending</code> and <code>Descending</code> (case-insensitive). This value is used as fallback when an individual FileSorting entry does not specify its own direction suffix. Defaults to <code>Ascending</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00606">606</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00628">628</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -584,7 +686,121 @@ Variables</h2></td></tr>
 <p>Gets or sets the list of root directories to scan for source files during collection. </p>
 <p>Each path in this list is recursively scanned to discover all qualifying files that match the configured file extension rules during the <code>collect</code> phase. Paths can use environment variables and relative paths; these should be resolved before passing to the file discovery logic. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00466">466</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00478">478</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="ad4fff62c68af6218dfbbad696eb5cea2" name="ad4fff62c68af6218dfbbad696eb5cea2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4fff62c68af6218dfbbad696eb5cea2">&#9670;&#160;</a></span>KeyWords</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;<a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&gt; KeyWords { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the list of metadata field names to query from the metadata source. </p>
+<p>For EXIFTOOL, these are EXIF/IPTC/XMP tag names (e.g., "Make", "Model", "DateTimeOriginal"). For FILEINFO, these are system property names (e.g., "CreationTime", "LastWriteTime"). When querying, the first non-empty value from this list is used. Defaults to an empty list if not specified. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00802">802</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="a65d8359dcb16e8d807b59a51d9bffce6" name="a65d8359dcb16e8d807b59a51d9bffce6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65d8359dcb16e8d807b59a51d9bffce6">&#9670;&#160;</a></span>LogFileName</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> LogFileName { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the base name of the log files (without extension). </p>
+<p>Defaults to <code>FireLog</code> when omitted. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00750">750</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="aa3a64aa45e67c53f8f3af3c5653cd729" name="aa3a64aa45e67c53f8f3af3c5653cd729"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3a64aa45e67c53f8f3af3c5653cd729">&#9670;&#160;</a></span>Logging</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">LoggingConfiguration Logging { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the optional logging configuration. </p>
+<p>If this section is absent from the YAML file, logging is disabled entirely. When present, the subsection controls log file location, base name, level, rotation, and retention. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00594">594</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="a9647e3ff64f75fba67077f0021234871" name="a9647e3ff64f75fba67077f0021234871"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9647e3ff64f75fba67077f0021234871">&#9670;&#160;</a></span>LogLevel</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> LogLevel { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the minimum log level to record. </p>
+<p>Valid values (case-insensitive): <code>Debug</code>, <code>Info</code>, <code>Warning</code>, <code>Error</code>, <code>Critical</code>. Defaults to <code>Error</code> when omitted. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00760">760</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="a356140f47d350238184f6084793a0513" name="a356140f47d350238184f6084793a0513"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a356140f47d350238184f6084793a0513">&#9670;&#160;</a></span>MaxAgeDays</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MaxAgeDays { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the number of days to retain log files. </p>
+<p>Log files older than this value are deleted at the start of every catalog run. Defaults to 30 days. Set to 0 to disable automatic deletion. Recommended range: 7–90 days, depending on disk space and audit requirements. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00782">782</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="a5a7cd280c18f28e71c9851170346ba89" name="a5a7cd280c18f28e71c9851170346ba89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a7cd280c18f28e71c9851170346ba89">&#9670;&#160;</a></span>MaxFileSizeBytes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long MaxFileSizeBytes { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the maximum log file size in bytes before a new segment is started. </p>
+<p>Defaults to 10 MB (10,485,760 bytes). Files above this threshold are rotated by appending a numeric suffix before the <code>.md</code> extension. Recommended range: 1 MB–50 MB. Very large files become slow to open in editors. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00771">771</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -603,7 +819,7 @@ Variables</h2></td></tr>
 <p>Gets or sets the media root path variable used in path templates. </p>
 <p>This is a convenience placeholder that can be referenced in path templates as <code>{MediaRootPath}</code> to avoid hardcoding the base directory. Defaults to "CC" if not specified. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00511">511</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00523">523</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -624,7 +840,7 @@ Variables</h2></td></tr>
 <p>This is a template that can reference other configuration placeholders (e.g., <code>{MediaRootPath}</code>). The template is resolved during the <code>generate</code> phase before being combined with the sorting and file name patterns. Defaults to "{MediaRootPath}" if not specified. </p>
 <p>This can contain placeholders like <code>{MediaRootPath}</code>. If null or whitespace, the root configuration FIREConfigration.RootPath is used. Defaults to "{MediaRootPath}" after normalization. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00523">523</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00535">535</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -640,7 +856,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00454">454</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00466">466</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -659,7 +875,7 @@ Variables</h2></td></tr>
 <p>Gets or sets a list of file extensions that are considered sidecar files for this extension. </p>
 <p>Sidecar files typically contain metadata or auxiliary information associated with a primary file. For example, ".jpg.xmp" files are XMP metadata sidecars for ".jpg" files. When a primary file is processed, its sidecars are handled together. Defaults to an empty list if not specified. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00502">502</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00514">514</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -680,7 +896,34 @@ Variables</h2></td></tr>
 <p>This is a template that defines the directory structure under RootPath. Placeholders like <code>{Year}</code>, <code>{Make}</code>, <code>{CreationTime}</code> are replaced with resolved metadata values during the <code>generate</code> phase. Example: <code>{DateTimeOriginal:yyyy}/{DateTimeOriginal:MM}/{Make}</code> </p>
 <p>This template defines the directory structure for files with this extension. If null or whitespace, the root configuration FIREConfigration.SortingPatern is used. Defaults to an empty string after normalization. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00535">535</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00547">547</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="ac34de2a54dcaa5e190990544213c2a65" name="ac34de2a54dcaa5e190990544213c2a65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac34de2a54dcaa5e190990544213c2a65">&#9670;&#160;</a></span>Source</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> Source { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the metadata source for this keyword. </p>
+<p>Valid values: </p><ul>
+<li>
+<code>FILEINFO</code>: File system properties (default) </li>
+<li>
+<code>EXIFTOOL</code>: Embedded file metadata </li>
+</ul>
+<p>Defaults to "FILEINFO" if not specified. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00764">764</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01709">GetAllAvailableMetadata()</a>.</p>
 
 </div>
 </div>
@@ -699,7 +942,7 @@ Variables</h2></td></tr>
 <p>Gets or sets a dictionary of global string replacements applied to all resolved paths. </p>
 <p>After all metadata placeholders are resolved and paths are constructed, each key in this dictionary is replaced with its corresponding value. This is useful for sanitizing or normalizing folder names (e.g., replacing spaces with underscores or removing invalid characters). Case-insensitive comparison is used for keys. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00559">559</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00571">571</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -710,7 +953,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const decimal SupportedConfigurationVersion = 1.20m</td>
+          <td class="memname">const decimal SupportedConfigurationVersion = 1.21m</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -718,7 +961,34 @@ Variables</h2></td></tr>
 <p>The semantic version of the configuration format currently supported by this build. </p>
 <p>Configuration files must have ConfigurationVersion equal to this value. If the versions do not match, EnsureSupportedConfigurationVersion will throw. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00443">443</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00455">455</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="a386f09885d44e5915217eb752f47e561" name="a386f09885d44e5915217eb752f47e561"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a386f09885d44e5915217eb752f47e561">&#9670;&#160;</a></span>ValAttribute</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> ValAttribute { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the value selection attribute that determines which value to use when multiple are found. </p>
+<p>Valid values: </p><ul>
+<li>
+<code>LOWEST</code>: Select the minimum value (for numeric/date types) </li>
+<li>
+<code>HIGHEST</code>: Select the maximum value </li>
+<li>
+<code>FIRST</code>: Select the first value encountered </li>
+</ul>
+<p>Defaults to "LOWEST" if not specified. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00779">779</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>

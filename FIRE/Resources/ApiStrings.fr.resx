@@ -36,4 +36,16 @@
   <data name="status.file_processing" xml:space="preserve">
 	<value>Traitement : {0}</value>
   </data>
+  <data name="status.cancelled" xml:space="preserve">
+	<value>Opération annulée par l'utilisateur (Ctrl+C).</value>
+  </data>
+  <data name="stats.collect.total" xml:space="preserve">
+	<value>Statistiques collect — fichiers trouvés au total : {0}</value>
+  </data>
+  <data name="stats.collect.added" xml:space="preserve">
+	<value>Statistiques collect — fichiers ajoutés à la base de données : {0}</value>
+  </data>
+  <data name="stats.collect.skipped_extensions" xml:space="preserve">
+	<value>Statistiques collect — extensions non configurées : {0}</value>
+  </data>
 </root>

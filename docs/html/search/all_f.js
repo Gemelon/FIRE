@@ -9,5 +9,9 @@ var searchData=
   ['load_6',['Load',['../df/dbb/class_f_i_r_e_configration.html#a89e6c0a8550de0522eda231500c9aa75',1,'FIREConfigration::Load()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a016bde7230cf88484e9dfc8af96bb1b4',1,'Load():&#160;FIREConfigration.cs']]],
   ['localization_7',['API Localization',['../index.html#localization_sec',1,'']]],
   ['localizedtext_8',['LocalizedText',['../dd/d5c/_program_8cs.html#ae7418d1d538743232e8a9bda612115d2',1,'Program.cs']]],
-  ['lpfileinformation_9',['lpFileInformation',['../db/d24/_f_i_r_e_catalog_8cs.html#a6663de26f833f169d0389caa8d9d7244',1,'FIRECatalog.cs']]]
+  ['logcancelled_9',['LogCancelled',['../db/d24/_f_i_r_e_catalog_8cs.html#a0e8ccea48e013f783535370544c3cfea',1,'FIRECatalog.cs']]],
+  ['logfilename_10',['LogFileName',['../d1/d3c/_f_i_r_e_configration_8cs.html#a65d8359dcb16e8d807b59a51d9bffce6',1,'FIREConfigration.cs']]],
+  ['logging_11',['Logging',['../df/dbb/class_f_i_r_e_configration.html#a30ea6ef4d4731fb420cfe95dc06d4b5b',1,'FIREConfigration::Logging'],['../d1/d3c/_f_i_r_e_configration_8cs.html#aa3a64aa45e67c53f8f3af3c5653cd729',1,'Logging:&#160;FIREConfigration.cs']]],
+  ['loglevel_12',['LogLevel',['../d1/d3c/_f_i_r_e_configration_8cs.html#a9647e3ff64f75fba67077f0021234871',1,'FIREConfigration.cs']]],
+  ['lpfileinformation_13',['lpFileInformation',['../db/d24/_f_i_r_e_catalog_8cs.html#a6663de26f833f169d0389caa8d9d7244',1,'FIRECatalog.cs']]]
 ];

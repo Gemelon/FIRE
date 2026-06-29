@@ -325,39 +325,50 @@ internal static class CommandExecutor
         Action<FIRECatalog> beforeAction,
         Action<FIRECatalog, Action<string>> action)
     {
+        if (string.IsNullOrWhiteSpace(settings.ConfigPath))
+        {
+            ConsoleUi.WriteError(runtime, TextCatalog.Get(runtime.Language, "error_config_required"));
+            return 1;
+        }
+
+        var normalizedCulture = runtime.CultureCode;
+        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(normalizedCulture);
+
+        ConsoleUi.WriteTitle(runtime, TextCatalog.Get(runtime.Language, titleKey));
+        ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_config")} {settings.ConfigPath}");
+        ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_culture")} {normalizedCulture}");
+        ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_wrap_mode")} {(runtime.NoWrap ? TextCatalog.Get(runtime.Language, "wrap_clipping") : TextCatalog.Get(runtime.Language, "wrap_enabled"))}");
+        ConsoleUi.WriteEmptyLine();
+
+        ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "loading_configuration"));
+        FIREConfigration config;
         try
         {
-            if (string.IsNullOrWhiteSpace(settings.ConfigPath))
-            {
-                ConsoleUi.WriteError(runtime, TextCatalog.Get(runtime.Language, "error_config_required"));
-                return 1;
-            }
-
-            var normalizedCulture = runtime.CultureCode;
-            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(normalizedCulture);
-
-            ConsoleUi.WriteTitle(runtime, TextCatalog.Get(runtime.Language, titleKey));
-            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_config")} {settings.ConfigPath}");
-            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_culture")} {normalizedCulture}");
-            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_wrap_mode")} {(runtime.NoWrap ? TextCatalog.Get(runtime.Language, "wrap_clipping") : TextCatalog.Get(runtime.Language, "wrap_enabled"))}");
-            ConsoleUi.WriteEmptyLine();
-
-            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "loading_configuration"));
-            var config = FIREConfigration.Load(settings.ConfigPath!);
+            config = FIREConfigration.Load(settings.ConfigPath!);
             config.EnsureSupportedConfigurationVersion();
-            ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, "configuration_loaded"), config.ConfigurationVersion));
-            ConsoleUi.WriteEmptyLine();
+        }
+        catch (Exception ex)
+        {
+            ConsoleUi.WriteError(runtime, $"{TextCatalog.Get(runtime.Language, "error_prefix")} {ex.Message}");
+            Console.WriteLine(ex.StackTrace);
+            return 1;
+        }
 
-            var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
-            ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_database")} {dbPath}");
-            ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "initializing_catalog"));
+        ConsoleUi.WriteLine(runtime, string.Format(CultureInfo.CurrentCulture, TextCatalog.Get(runtime.Language, "configuration_loaded"), config.ConfigurationVersion));
+        ConsoleUi.WriteEmptyLine();
 
-            using var database = new FIREDatabase(dbPath);
-            using var catalog = new FIRECatalog(config, database)
-            {
-                Culture = CultureInfo.CurrentUICulture
-            };
+        var dbPath = Path.Combine(config.DataBasePath ?? ".", config.DataBaseFileName ?? "FIRE.db");
+        ConsoleUi.WriteLine(runtime, $"{TextCatalog.Get(runtime.Language, "label_database")} {dbPath}");
+        ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "initializing_catalog"));
 
+        var database = new FIREDatabase(dbPath);
+        var catalog = new FIRECatalog(config, database)
+        {
+            Culture = CultureInfo.CurrentUICulture
+        };
+
+        try
+        {
             catalog.ProgressChanged += (_, progressEvent) =>
             {
                 AppLifetime.ThrowIfCancellationRequested();
@@ -398,6 +409,8 @@ internal static class CommandExecutor
         }
         catch (OperationCanceledException)
         {
+            catalog.LogCancelled();
+            ConsoleUi.EndProgressLine();
             ConsoleUi.WriteWarning(runtime, TextCatalog.Get(runtime.Language, "operation_canceled"));
             return 2;
         }
@@ -406,6 +419,11 @@ internal static class CommandExecutor
             ConsoleUi.WriteError(runtime, $"{TextCatalog.Get(runtime.Language, "error_prefix")} {ex.Message}");
             Console.WriteLine(ex.StackTrace);
             return 1;
+        }
+        finally
+        {
+            catalog.Dispose();
+            database.Dispose();
         }
     }
 
@@ -608,7 +626,8 @@ internal static class ConsoleUi
     {
         var width = GetSafeWidth();
         var line = runtime.NoWrap ? FormatLine(text, true) : text;
-        Console.Write($"\r{line}".PadRight(width));
+        //Console.Write($"\r{line}".PadRight(width));
+        Console.Write($"\r\n{line}".PadRight(width));
     }
 
     public static void EndProgressLine()

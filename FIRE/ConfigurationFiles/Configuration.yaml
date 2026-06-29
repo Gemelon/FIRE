@@ -1,5 +1,29 @@
 ﻿---
-ConfigurationVersion: 1.20
+ConfigurationVersion: 1.21
+
+# ---------------------------------------------------------------------------
+# Logging (optional section)
+#
+# Remove or comment out the entire Logging block to disable logging.
+#
+# LogFilePath   – Directory where log files are written.
+#                 Default: <DataBasePath>/Logs when omitted.
+# LogFileName   – Base name without extension.
+#                 Default: FireLog when omitted.
+# LogLevel      – Minimum severity to record.
+#                 Values: Debug | Info | Warning | Error | Critical
+#                 Default: Error when omitted.
+# MaxFileSizeBytes – Rotate to a new segment file when this size is reached.
+#                 Recommended range: 1 MB–50 MB.  Default: 10485760 (10 MB).
+# MaxAgeDays    – Log files older than this many days are deleted on each run.
+#                 Set to 0 to keep all files.  Default: 30.
+# ---------------------------------------------------------------------------
+Logging:
+  LogFilePath: D:\Projekte\Projekte_2026\TestDataTarget\Logs
+  LogFileName: FireLog
+  LogLevel: Info
+  MaxFileSizeBytes: 10485760   # 10 MB
+  MaxAgeDays: 30
 
 FilesRootPath: 
   - D:\Projekte\Projekte_2026\TestData\Neuer Ordner (3)

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['warning_0',['Warning',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95e3544a64bdc9ce3c1a03c4ea6cc208',1,'FIRECatalogProgress.cs']]],
+  ['warning_0',['Warning',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95e3544a64bdc9ce3c1a03c4ea6cc208',1,'Warning:&#160;FIRECatalogProgress.cs'],['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763da48f2bb70fceb692a2dedd8cea496c44b',1,'Warning:&#160;FIRELogger.cs']]],
   ['when_20a_20stable_20sequence_20must_20be_20preserved_1',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md39',1,'']]],
   ['wildcard_20or_20regex_20replacements_2',['Normalize values with exact, wildcard, or regex replacements',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md37',1,'']]],
   ['with_20counter_3ad3_3',['Running number per target path with &lt;span class=&quot;tt&quot;&gt;{Counter:D3}&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'']]],

@@ -92,7 +92,7 @@ public sealed class FIREConfigration
     /// Configuration files must have <see cref="ConfigurationVersion"/> equal to this value.
     /// If the versions do not match, <see cref="EnsureSupportedConfigurationVersion"/> will throw.
     /// </remarks>
-    public const decimal SupportedConfigurationVersion = 1.20m;
+    public const decimal SupportedConfigurationVersion = 1.21m;
 
     /// <summary>
     /// Gets or sets the configuration format version.
@@ -222,6 +222,16 @@ public sealed class FIREConfigration
     /// </remarks>
     [YamlMember(Alias = "FileExtensions")]
     public Dictionary<string, FileExtensionConfiguration> FileExtensions { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Gets or sets the optional logging configuration.
+    /// </summary>
+    /// <remarks>
+    /// If this section is absent from the YAML file, logging is disabled entirely.
+    /// When present, the subsection controls log file location, base name, level, rotation, and retention.
+    /// </remarks>
+    [YamlMember(Alias = "Logging")]
+    public LoggingConfiguration? Logging { get; set; }
 
     /// <summary>
     /// Gets or sets the ordered list of metadata keys used to sort records before path generation.
@@ -358,6 +368,8 @@ public sealed class FIREConfigration
         {
             item.Normalize();
         }
+
+        Logging?.Normalize(DataBasePath);
     }
 }
 
@@ -685,5 +697,106 @@ public sealed class AvailableKeywordConfiguration
         ValAttribute = string.IsNullOrWhiteSpace(ValAttribute) ? "LOWEST" : ValAttribute;
         Default ??= string.Empty;
         KeyWords ??= [];
+    }
+}
+
+/// <summary>
+/// Configures the FIRE logging subsystem.
+/// </summary>
+/// <remarks>
+/// <para>
+/// <strong>Activation:</strong>
+/// Logging is active only when this section is present in the YAML configuration.
+/// If the <c>Logging</c> key is absent, no log files are created.
+/// </para>
+/// <para>
+/// <strong>File naming:</strong>
+/// One file per calendar day and per stage is created:
+/// <c>{LogFileName}.col.{yyyyMMdd}.md</c> (collect),
+/// <c>{LogFileName}.gen.{yyyyMMdd}.md</c> (generate),
+/// <c>{LogFileName}.exe.{yyyyMMdd}.md</c> (execute).
+/// </para>
+/// <para>
+/// <strong>Rotation:</strong>
+/// When a log file exceeds <see cref="MaxFileSizeBytes"/> (default 10 MB), a new numbered
+/// segment is started automatically: <c>{LogFileName}.col.{yyyyMMdd}.1.md</c>, <c>.2.md</c>, …
+/// A single 10 MB limit keeps individual files easily openable in any text editor.
+/// </para>
+/// <para>
+/// <strong>Retention:</strong>
+/// On every catalog run, log files older than <see cref="MaxAgeDays"/> days (default 30) are
+/// deleted from the log directory. 30 days covers a reasonable audit window without
+/// consuming excessive disk space; adjust downwards for high-volume environments.
+/// </para>
+/// </remarks>
+public sealed class LoggingConfiguration
+{
+    /// <summary>
+    /// Gets or sets the directory where log files are written.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to a <c>Logs</c> subdirectory inside the database directory when omitted.
+    /// </remarks>
+    [YamlMember(Alias = "LogFilePath")]
+    public string LogFilePath { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the base name of the log files (without extension).
+    /// </summary>
+    /// <remarks>
+    /// Defaults to <c>FireLog</c> when omitted.
+    /// </remarks>
+    [YamlMember(Alias = "LogFileName")]
+    public string LogFileName { get; set; } = "FireLog";
+
+    /// <summary>
+    /// Gets or sets the minimum log level to record.
+    /// </summary>
+    /// <remarks>
+    /// Valid values (case-insensitive): <c>Debug</c>, <c>Info</c>, <c>Warning</c>, <c>Error</c>, <c>Critical</c>.
+    /// Defaults to <c>Error</c> when omitted.
+    /// </remarks>
+    [YamlMember(Alias = "LogLevel")]
+    public string LogLevel { get; set; } = "Error";
+
+    /// <summary>
+    /// Gets or sets the maximum log file size in bytes before a new segment is started.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to 10 MB (10,485,760 bytes). Files above this threshold are rotated by
+    /// appending a numeric suffix before the <c>.md</c> extension.
+    /// Recommended range: 1 MB–50 MB. Very large files become slow to open in editors.
+    /// </remarks>
+    [YamlMember(Alias = "MaxFileSizeBytes")]
+    public long MaxFileSizeBytes { get; set; } = 10 * 1024 * 1024;
+
+    /// <summary>
+    /// Gets or sets the number of days to retain log files.
+    /// </summary>
+    /// <remarks>
+    /// Log files older than this value are deleted at the start of every catalog run.
+    /// Defaults to 30 days. Set to 0 to disable automatic deletion.
+    /// Recommended range: 7–90 days, depending on disk space and audit requirements.
+    /// </remarks>
+    [YamlMember(Alias = "MaxAgeDays")]
+    public int MaxAgeDays { get; set; } = 30;
+
+    /// <summary>
+    /// Normalizes all properties to their defaults.
+    /// </summary>
+    /// <param name="databasePath">The configured database path, used as fallback for <see cref="LogFilePath"/>.</param>
+    internal void Normalize(string databasePath)
+    {
+        LogFileName = string.IsNullOrWhiteSpace(LogFileName) ? "FireLog" : LogFileName;
+        LogLevel = string.IsNullOrWhiteSpace(LogLevel) ? "Error" : LogLevel;
+        MaxFileSizeBytes = MaxFileSizeBytes <= 0 ? 10 * 1024 * 1024 : MaxFileSizeBytes;
+        MaxAgeDays = MaxAgeDays < 0 ? 30 : MaxAgeDays;
+
+        if (string.IsNullOrWhiteSpace(LogFilePath))
+        {
+            LogFilePath = string.IsNullOrWhiteSpace(databasePath)
+                ? Path.Combine(AppContext.BaseDirectory, "Logs")
+                : Path.Combine(databasePath, "Logs");
+        }
     }
 }

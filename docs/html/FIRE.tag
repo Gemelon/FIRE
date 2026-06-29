@@ -335,6 +335,13 @@
       <arglist>(Action&lt; string &gt;? progressCallback=null)</arglist>
     </member>
     <member kind="function">
+      <type>void</type>
+      <name>LogCancelled</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>a0e8ccea48e013f783535370544c3cfea</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <type>List&lt;(string Source, string Key, string Value)&gt;</type>
       <name>GetAllAvailableMetadata</name>
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
@@ -794,7 +801,7 @@
       <type>sealed class FIREConfigration</type>
       <name>YamlMember</name>
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>a4ace28242cd80c2f1d0c5f9fd9336d79</anchor>
+      <anchor>a3612a17b60733dfb291baab823502312</anchor>
       <arglist>(Alias=&quot;FileType&quot;)] public string FileType</arglist>
     </member>
     <member kind="function" static="yes">
@@ -824,6 +831,13 @@
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
       <anchor>a2909ce7c3cae497a7297eeef183e00d6</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>internal void</type>
+      <name>Normalize</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a1c35f2ed6f60246e742841a824a7cb75</anchor>
+      <arglist>(string databasePath)</arglist>
     </member>
     <member kind="variable">
       <type>const decimal</type>
@@ -917,6 +931,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>LoggingConfiguration</type>
+      <name>Logging</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>aa3a64aa45e67c53f8f3af3c5653cd729</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>List&lt; string &gt;</type>
       <name>FileSorting</name>
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
@@ -951,6 +972,69 @@
       <anchor>a63323b332ded7ed3a4edc12fc1754d16</anchor>
       <arglist></arglist>
     </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>DataType</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>ae0846a526671ac8ea5c31fb1ed328a9d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>Source</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>ac34de2a54dcaa5e190990544213c2a65</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>ValAttribute</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a386f09885d44e5915217eb752f47e561</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>Default</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a57818ca0924f9791fd2e538c3e12ccd7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>List&lt; string &gt;</type>
+      <name>KeyWords</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>ad4fff62c68af6218dfbbad696eb5cea2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>LogFileName</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a65d8359dcb16e8d807b59a51d9bffce6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>LogLevel</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a9647e3ff64f75fba67077f0021234871</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>long</type>
+      <name>MaxFileSizeBytes</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a5a7cd280c18f28e71c9851170346ba89</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>MaxAgeDays</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a356140f47d350238184f6084793a0513</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>FIREDatabase.cs</name>
@@ -970,6 +1054,83 @@
     <path>FIRE/FIRE/Localization/</path>
     <filename>dd/d1c/_api_localizer_8cs.html</filename>
     <class kind="class">ApiLocalizer</class>
+  </compound>
+  <compound kind="file">
+    <name>FIRELogger.cs</name>
+    <path>FIRE/FIRE/Logging/</path>
+    <filename>d1/dcc/_f_i_r_e_logger_8cs.html</filename>
+    <member kind="enumeration">
+      <type></type>
+      <name>FIRELogLevel</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a98b250e2290324629b7467b158d9763d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Debug</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a98b250e2290324629b7467b158d9763dac909e86054cb6ad83c22bfc2b3e6e5b8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Info</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a98b250e2290324629b7467b158d9763da1cd805eaf0bb58a90fe7e7e4cf6a3cdc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Warning</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a98b250e2290324629b7467b158d9763da48f2bb70fceb692a2dedd8cea496c44b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Error</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a98b250e2290324629b7467b158d9763da4dfd42ec49d09d8c6555c218301cc30f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>Critical</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a98b250e2290324629b7467b158d9763da6779101cd5bbfab8a7da94cccf1947e2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Dispose</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a6e2d745cdb7a7b983f861ed6a9a541a7</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static internal FIRELogLevel</type>
+      <name>ParseLevel</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a2b034749dc19768fcbb2f94957c4da2c</anchor>
+      <arglist>(string levelName)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static internal FIRELogLevel</type>
+      <name>FromMessageLevel</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a97a9719365174ef86f9d5e1a7f79c9f1</anchor>
+      <arglist>(FIRECatalogMessageLevel level)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static internal string</type>
+      <name>StageTag</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>a7120565336b5ef0a841b6dac0d08b6b7</anchor>
+      <arglist>(FIRECatalogStage? stage)</arglist>
+    </member>
+    <member kind="variable">
+      <type>enum FIRELogLevel</type>
+      <name>TableHeader</name>
+      <anchorfile>d1/dcc/_f_i_r_e_logger_8cs.html</anchorfile>
+      <anchor>aa9eb0bb9975ab9d382645b69280f89dd</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>AssemblyInfo.cs</name>
@@ -1380,6 +1541,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>LoggingConfiguration</type>
+      <name>Logging</name>
+      <anchorfile>df/dbb/class_f_i_r_e_configration.html</anchorfile>
+      <anchor>a30ea6ef4d4731fb420cfe95dc06d4b5b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>List&lt; string &gt;</type>
       <name>FileSorting</name>
       <anchorfile>df/dbb/class_f_i_r_e_configration.html</anchorfile>
@@ -1576,6 +1744,7 @@
     <path>FIRE/FIRE/</path>
     <filename>dir_027ae1c642818204f1d2b0e289285598.html</filename>
     <dir>FIRE/FIRE/Localization</dir>
+    <dir>FIRE/FIRE/Logging</dir>
     <dir>FIRE/FIRE/Properties</dir>
     <file>FIRECatalog.cs</file>
     <file>FIRECatalogProgress.cs</file>
@@ -1599,6 +1768,12 @@
     <path>FIRE/FIRE/Localization/</path>
     <filename>dir_d924e2942acae4adf859cdb0d3f51e3c.html</filename>
     <file>ApiLocalizer.cs</file>
+  </compound>
+  <compound kind="dir">
+    <name>FIRE/FIRE/Logging</name>
+    <path>FIRE/FIRE/Logging/</path>
+    <filename>dir_ecd01bc9629781be892d9e6de41ad66e.html</filename>
+    <file>FIRELogger.cs</file>
   </compound>
   <compound kind="dir">
     <name>FIRE/FIRE/Properties</name>

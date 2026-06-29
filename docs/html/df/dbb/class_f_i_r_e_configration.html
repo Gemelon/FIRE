@@ -140,7 +140,7 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a87dd9cfaa69127725d9cb1b69edb28e6" id="r_a87dd9cfaa69127725d9cb1b69edb28e6"><td class="memItemLeft">const decimal&#160;</td><td class="memItemRight"><a class="el" href="#a87dd9cfaa69127725d9cb1b69edb28e6">SupportedConfigurationVersion</a> = 1.20m</td></tr>
+<tr class="memitem:a87dd9cfaa69127725d9cb1b69edb28e6" id="r_a87dd9cfaa69127725d9cb1b69edb28e6"><td class="memItemLeft">const decimal&#160;</td><td class="memItemRight"><a class="el" href="#a87dd9cfaa69127725d9cb1b69edb28e6">SupportedConfigurationVersion</a> = 1.21m</td></tr>
 <tr class="memdesc:a87dd9cfaa69127725d9cb1b69edb28e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The semantic version of the configuration format currently supported by this build.  <br /></td></tr>
 <tr class="memitem:afb4343218366cfc95236f616a3b9defb" id="r_afb4343218366cfc95236f616a3b9defb"><td class="memItemLeft">decimal&#160;</td><td class="memItemRight"><a class="el" href="#afb4343218366cfc95236f616a3b9defb">ConfigurationVersion</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
 <tr class="memdesc:afb4343218366cfc95236f616a3b9defb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the configuration format version.  <br /></td></tr>
@@ -165,6 +165,8 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a4c6ec16e124123c544bead8e64fb94dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets a dictionary of global string replacements applied to all resolved paths.  <br /></td></tr>
 <tr class="memitem:a076a2da18160edf92386073c50428b3e" id="r_a076a2da18160edf92386073c50428b3e"><td class="memItemLeft">Dictionary&lt; <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>, FileExtensionConfiguration &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a076a2da18160edf92386073c50428b3e">FileExtensions</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
 <tr class="memdesc:a076a2da18160edf92386073c50428b3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets a dictionary of file extension-specific configurations.  <br /></td></tr>
+<tr class="memitem:a30ea6ef4d4731fb420cfe95dc06d4b5b" id="r_a30ea6ef4d4731fb420cfe95dc06d4b5b"><td class="memItemLeft">LoggingConfiguration&#160;</td><td class="memItemRight"><a class="el" href="#a30ea6ef4d4731fb420cfe95dc06d4b5b">Logging</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
+<tr class="memdesc:a30ea6ef4d4731fb420cfe95dc06d4b5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the optional logging configuration.  <br /></td></tr>
 <tr class="memitem:a0c86337e613a78fea57b9e0eff64399c" id="r_a0c86337e613a78fea57b9e0eff64399c"><td class="memItemLeft">List&lt; <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a0c86337e613a78fea57b9e0eff64399c">FileSorting</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
 <tr class="memdesc:a0c86337e613a78fea57b9e0eff64399c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the ordered list of metadata keys used to sort records before path generation.  <br /></td></tr>
 <tr class="memitem:a1879ddb0e28a602725563187cd86c8f6" id="r_a1879ddb0e28a602725563187cd86c8f6"><td class="memItemLeft"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#a1879ddb0e28a602725563187cd86c8f6">FileSortingOrder</a> { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td></tr>
@@ -185,8 +187,8 @@ Public Attributes</h2></td></tr>
 <div class="line">Console.WriteLine($<span class="stringliteral">&quot;Sorting pattern: {config.SortingPatern}&quot;</span>);</div>
 <div class="line">Console.WriteLine($<span class="stringliteral">&quot;File extensions configured: {config.FileExtensions.Count}&quot;</span>);</div>
 <div class="ttc" id="aclass_f_i_r_e_configration_html"><div class="ttname"><a href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a></div><div class="ttdoc">Represents the root configuration document loaded from the FIRE configuration YAML file.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00086">FIREConfigration.cs:87</a></div></div>
-<div class="ttc" id="aclass_f_i_r_e_configration_html_a89e6c0a8550de0522eda231500c9aa75"><div class="ttname"><a href="#a89e6c0a8550de0522eda231500c9aa75">FIREConfigration::Load</a></div><div class="ttdeci">static FIREConfigration Load(string filePath)</div><div class="ttdoc">Loads a FIRE configuration from a YAML file on disk.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00278">FIREConfigration.cs:278</a></div></div>
-<div class="ttc" id="aclass_f_i_r_e_configration_html_a8c74ce8d2e821802ad7a0c5957826737"><div class="ttname"><a href="#a8c74ce8d2e821802ad7a0c5957826737">FIREConfigration::EnsureSupportedConfigurationVersion</a></div><div class="ttdeci">void EnsureSupportedConfigurationVersion()</div><div class="ttdoc">Throws an exception if the configuration version is not supported.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00334">FIREConfigration.cs:334</a></div></div>
+<div class="ttc" id="aclass_f_i_r_e_configration_html_a89e6c0a8550de0522eda231500c9aa75"><div class="ttname"><a href="#a89e6c0a8550de0522eda231500c9aa75">FIREConfigration::Load</a></div><div class="ttdeci">static FIREConfigration Load(string filePath)</div><div class="ttdoc">Loads a FIRE configuration from a YAML file on disk.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00288">FIREConfigration.cs:288</a></div></div>
+<div class="ttc" id="aclass_f_i_r_e_configration_html_a8c74ce8d2e821802ad7a0c5957826737"><div class="ttname"><a href="#a8c74ce8d2e821802ad7a0c5957826737">FIREConfigration::EnsureSupportedConfigurationVersion</a></div><div class="ttdeci">void EnsureSupportedConfigurationVersion()</div><div class="ttdoc">Throws an exception if the configuration version is not supported.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00344">FIREConfigration.cs:344</a></div></div>
 </div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00086">86</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
@@ -222,7 +224,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00334">334</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00344">344</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 <p class="reference">References <a class="el" href="#a7a2fd301bd6cd3e6702d0d38d283c164">IsConfigurationVersionSupported()</a>.</p>
 
@@ -251,7 +253,7 @@ Public Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00106">ConfigurationVersion</a>, and <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00095">SupportedConfigurationVersion</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00334">EnsureSupportedConfigurationVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00344">EnsureSupportedConfigurationVersion()</a>.</p>
 
 </div>
 </div>
@@ -296,9 +298,9 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00278">278</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00288">288</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00300">Parse()</a>.</p>
+<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00310">Parse()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="../../dd/d5c/_program_8cs_source.html#l00200">CommandExecutor::ExecuteInspect()</a>.</p>
 
@@ -344,9 +346,9 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00300">300</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00310">310</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00278">Load()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00288">Load()</a>.</p>
 
 </div>
 </div>
@@ -484,7 +486,7 @@ Public Attributes</h2></td></tr>
 <p>The criteria are applied in the listed order (primary, secondary, tertiary, ...). If the list is empty, no explicit sorting is performed. </p>
 <p>Optional per-field direction is supported via suffix <code>:Ascending</code> or <code>:Descending</code> (short forms <code>:Asc</code> and <code>:Desc</code> are also supported). Example: <code>MetaCreationTime.Year:Descending</code>, <code>Make:Asc</code>, <code>Model</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00246">246</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00256">256</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -503,7 +505,7 @@ Public Attributes</h2></td></tr>
 <p>Gets or sets the global sorting direction used for FileSorting. </p>
 <p>Supported values are <code>Ascending</code> and <code>Descending</code> (case-insensitive). This value is used as fallback when an individual FileSorting entry does not specify its own direction suffix. Defaults to <code>Ascending</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00258">258</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00268">268</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
 
 </div>
 </div>
@@ -523,6 +525,27 @@ Public Attributes</h2></td></tr>
 <p>Each path in this list is recursively scanned to discover all qualifying files that match the configured file extension rules during the <code>collect</code> phase. Paths can use environment variables and relative paths; these should be resolved before passing to the file discovery logic. </p>
 
 <p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00118">118</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+</div>
+</div>
+<a id="a30ea6ef4d4731fb420cfe95dc06d4b5b" name="a30ea6ef4d4731fb420cfe95dc06d4b5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30ea6ef4d4731fb420cfe95dc06d4b5b">&#9670;&#160;</a></span>Logging</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">LoggingConfiguration FIREConfigration::Logging { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets or sets the optional logging configuration. </p>
+<p>If this section is absent from the YAML file, logging is disabled entirely. When present, the subsection controls log file location, base name, level, rotation, and retention. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00234">234</a> of file <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html">FIREConfigration.cs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00553">FIRECatalog()</a>.</p>
 
 </div>
 </div>
@@ -625,7 +648,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const decimal FIREConfigration::SupportedConfigurationVersion = 1.20m</td>
+          <td class="memname">const decimal FIREConfigration::SupportedConfigurationVersion = 1.21m</td>
         </tr>
       </table>
 </div><div class="memdoc">

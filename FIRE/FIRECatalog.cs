@@ -23,6 +23,7 @@
  ********************************************************************************/
 
 using FIRE.Localization;
+using FIRE.Logging;
 using Microsoft.Win32.SafeHandles;
 using SharpExifTool;
 using System.Globalization;
@@ -484,7 +485,13 @@ public sealed class FIRECatalog : IDisposable
     private readonly FIREDatabase _database;
     private readonly MetadataSourceRegistry _metadataRegistry;
     private readonly List<string> _lastCollectedSourcePaths = [];
+    private readonly FIRELogger? _logger;
     private bool _disposed;
+
+    // Collect-session statistics (reset at BeginStage for Collect)
+    private int _collectTotalFiles;
+    private int _collectAddedFiles;
+    private readonly Dictionary<string, int> _collectSkippedExtensions = new(StringComparer.OrdinalIgnoreCase);
 
     public event EventHandler<FIRECatalogProgressEventArgs>? ProgressChanged;
 
@@ -550,6 +557,11 @@ public sealed class FIRECatalog : IDisposable
         _configuration = configuration;
         _database = database;
         _metadataRegistry = new MetadataSourceRegistry();
+
+        if (configuration.Logging != null)
+        {
+            _logger = new FIRELogger(configuration.Logging);
+        }
     }
 
     private void BeginStage(FIRECatalogStage stage, int totalCount)
@@ -562,6 +574,9 @@ public sealed class FIRECatalog : IDisposable
         if (stage == FIRECatalogStage.Collect)
         {
             _lastCollectedSourcePaths.Clear();
+            _collectTotalFiles = 0;
+            _collectAddedFiles = 0;
+            _collectSkippedExtensions.Clear();
         }
 
         EmitProgress(FIRECatalogMessageLevel.Info, "status.started");
@@ -569,6 +584,7 @@ public sealed class FIRECatalog : IDisposable
 
     private void CompleteCurrentStage()
     {
+        LogCollectStatistics();
         EmitProgress(FIRECatalogMessageLevel.Info, "status.completed");
     }
 
@@ -600,7 +616,7 @@ public sealed class FIRECatalog : IDisposable
         var args = messageArgs.Length == 0 ? [ApiLocalizer.Get(stageKey, Culture)] : messageArgs;
         var message = ApiLocalizer.Format(messageKey, Culture, args);
 
-        ProgressChanged?.Invoke(this, new FIRECatalogProgressEventArgs
+        var eventArgs = new FIRECatalogProgressEventArgs
         {
             Stage = stage,
             Level = level,
@@ -610,7 +626,10 @@ public sealed class FIRECatalog : IDisposable
             ProcessedCount = ProcessedFileCount,
             TotalCount = TotalFileCount,
             Culture = Culture
-        });
+        };
+
+        ProgressChanged?.Invoke(this, eventArgs);
+        _logger?.Log(FIRELogger.FromMessageLevel(level), FIRELogger.StageTag(stage), message);
     }
 
     /// <summary>
@@ -935,6 +954,51 @@ public sealed class FIRECatalog : IDisposable
     }
 
     /// <summary>
+    /// Writes collect-session statistics to the log at level Debug.
+    /// </summary>
+    /// <remarks>
+    /// Only emits entries when the current or most-recent stage is <see cref="FIRECatalogStage.Collect"/>
+    /// and logging is enabled. Called both on normal completion and on user cancellation.
+    /// </remarks>
+    private void LogCollectStatistics()
+    {
+        if (_logger == null) return;
+        if (CurrentStage != FIRECatalogStage.Collect) return;
+
+        var tag = FIRELogger.StageTag(FIRECatalogStage.Collect);
+
+        var msgTotal = ApiLocalizer.Format("stats.collect.total", Culture, _collectTotalFiles);
+        _logger.Log(FIRELogLevel.Debug, tag, msgTotal);
+
+        var msgAdded = ApiLocalizer.Format("stats.collect.added", Culture, _collectAddedFiles);
+        _logger.Log(FIRELogLevel.Debug, tag, msgAdded);
+
+        if (_collectSkippedExtensions.Count > 0)
+        {
+            var extList = string.Join(", ", _collectSkippedExtensions
+                .OrderByDescending(kv => kv.Value)
+                .Select(kv => $"{kv.Key} ({kv.Value}x)"));
+            var msgSkipped = ApiLocalizer.Format("stats.collect.skipped_extensions", Culture, extList);
+            _logger.Log(FIRELogLevel.Debug, tag, msgSkipped);
+        }
+    }
+
+    /// <summary>
+    /// Writes a cancellation notice to the log at level Info.
+    /// </summary>
+    /// <remarks>
+    /// Call this method before disposing the catalog when the operation was cancelled
+    /// by the user (e.g. via Ctrl+C). The entry is written directly to the logger without
+    /// raising <see cref="ProgressChanged"/>; if logging is disabled the call is a no-op.
+    /// </remarks>
+    public void LogCancelled()
+    {
+        LogCollectStatistics();
+        var message = ApiLocalizer.Get("status.cancelled", Culture);
+        _logger?.Log(FIRELogLevel.Info, FIRELogger.StageTag(CurrentStage), message);
+    }
+
+    /// <summary>
     /// Disposes the database and metadata sources held by this instance.
     /// </summary>
     /// <remarks>
@@ -944,6 +1008,7 @@ public sealed class FIRECatalog : IDisposable
     public void Dispose()
     {
         if (_disposed) return;
+        _logger?.Dispose();
         _database.Dispose();
         _disposed = true;
     }
@@ -959,6 +1024,7 @@ public sealed class FIRECatalog : IDisposable
         {
             foreach (var filePath in Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories))
             {
+                _collectTotalFiles++;
                 progressCallback?.Invoke(filePath);
                 ReportFileProgress(filePath);
                 ProcessFile(filePath);
@@ -974,7 +1040,16 @@ public sealed class FIRECatalog : IDisposable
     private void ProcessFile(string filePath)
     {
         var extension = Path.GetExtension(filePath).ToLowerInvariant();
-        if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) return;
+        if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig))
+        {
+            if (CurrentStage == FIRECatalogStage.Collect)
+            {
+                var key = string.IsNullOrEmpty(extension) ? "(no extension)" : extension;
+                _collectSkippedExtensions.TryGetValue(key, out var count);
+                _collectSkippedExtensions[key] = count + 1;
+            }
+            return;
+        }
 
         var fileIdInfo = GetFileIdInfo(filePath);
 
@@ -1035,6 +1110,8 @@ public sealed class FIRECatalog : IDisposable
         }
 
         _database.Add(record);
+        if (CurrentStage == FIRECatalogStage.Collect)
+            _collectAddedFiles++;
         ProcessSidecarFiles(filePath, extConfig, record);
     }
 

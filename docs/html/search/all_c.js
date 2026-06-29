@@ -2,7 +2,7 @@ var searchData=
 [
   ['id_0',['Id',['../d7/d1a/_f_i_r_e_database_8cs.html#a22e6dd2966b87b8a4092886882b23cb6',1,'FIREFileMetaData']]],
   ['imetadatasource_1',['IMetadataSource',['../db/d24/_f_i_r_e_catalog_8cs.html#a1f15bce6bdcbc5520b861dd7ca51d6c7',1,'FIRECatalog.cs']]],
-  ['info_2',['Info',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95b85e952064b6939b16e62cb9590e91',1,'FIRECatalogProgress.cs']]],
+  ['info_2',['Info',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95b85e952064b6939b16e62cb9590e91',1,'Info:&#160;FIRECatalogProgress.cs'],['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763da1cd805eaf0bb58a90fe7e7e4cf6a3cdc',1,'Info:&#160;FIRELogger.cs']]],
   ['information_20reorganizer_20and_20extractor_3',['FIRE — File Information Reorganizer and Extractor',['../index.html',1,'']]],
   ['init_4',['init',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a978c1602c1c480e86c09f3c3a1b8cc98',1,'FIRECatalogProgress.cs']]],
   ['inspect_5',['Inspect',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59adcf3bba8dca8116c2b3a5c37c2ca1d16',1,'FIRECatalogProgress.cs']]],

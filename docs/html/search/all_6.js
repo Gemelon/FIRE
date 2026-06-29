@@ -23,10 +23,11 @@ var searchData=
   ['counter_3ad3_20',['Running number per target path with &lt;span class=&quot;tt&quot;&gt;{Counter:D3}&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md38',1,'']]],
   ['creationtime_21',['CreationTime',['../db/d24/_f_i_r_e_catalog_8cs.html#a5b34ed4fd541dd9ebdbf8b7f03dd12d8',1,'FIRECatalog.cs']]],
   ['credits_22',['Credits',['../index.html#credits_sec',1,'Third-Party Credits'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md47',1,'Third-Party Credits']]],
-  ['culture_23',['Culture',['../dd/d5c/_program_8cs.html#a0391b18642c9e16b7c2a285fc7db3786',1,'Culture:&#160;Program.cs'],['../db/d24/_f_i_r_e_catalog_8cs.html#ab248cbfbd011375a62bf31c640ea6559',1,'Culture:&#160;FIRECatalog.cs'],['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ab248cbfbd011375a62bf31c640ea6559',1,'Culture:&#160;FIRECatalogProgress.cs']]],
-  ['culture_20and_20output_20options_24',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
-  ['culturealiases_25',['CultureAliases',['../dd/d5c/_program_8cs.html#af7c6e3ac502073155117e020ca5046f1',1,'Program.cs']]],
-  ['currentfilepath_26',['CurrentFilePath',['../db/d24/_f_i_r_e_catalog_8cs.html#a4a6c1207ff87a242380f60f9491e640e',1,'CurrentFilePath:&#160;FIRECatalog.cs'],['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a4a6c1207ff87a242380f60f9491e640e',1,'CurrentFilePath:&#160;FIRECatalogProgress.cs']]],
-  ['currentlanguage_27',['CurrentLanguage',['../d5/d39/class_app_lifetime.html#a625e8e0b1dd8fea33ab714ab65e14605',1,'AppLifetime']]],
-  ['currentstage_28',['CurrentStage',['../db/d24/_f_i_r_e_catalog_8cs.html#ad6e3ce861d4a5f5772ce00c59c91789a',1,'FIRECatalog.cs']]]
+  ['critical_23',['Critical',['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763da6779101cd5bbfab8a7da94cccf1947e2',1,'FIRELogger.cs']]],
+  ['culture_24',['Culture',['../dd/d5c/_program_8cs.html#a0391b18642c9e16b7c2a285fc7db3786',1,'Culture:&#160;Program.cs'],['../db/d24/_f_i_r_e_catalog_8cs.html#ab248cbfbd011375a62bf31c640ea6559',1,'Culture:&#160;FIRECatalog.cs'],['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ab248cbfbd011375a62bf31c640ea6559',1,'Culture:&#160;FIRECatalogProgress.cs']]],
+  ['culture_20and_20output_20options_25',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
+  ['culturealiases_26',['CultureAliases',['../dd/d5c/_program_8cs.html#af7c6e3ac502073155117e020ca5046f1',1,'Program.cs']]],
+  ['currentfilepath_27',['CurrentFilePath',['../db/d24/_f_i_r_e_catalog_8cs.html#a4a6c1207ff87a242380f60f9491e640e',1,'CurrentFilePath:&#160;FIRECatalog.cs'],['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a4a6c1207ff87a242380f60f9491e640e',1,'CurrentFilePath:&#160;FIRECatalogProgress.cs']]],
+  ['currentlanguage_28',['CurrentLanguage',['../d5/d39/class_app_lifetime.html#a625e8e0b1dd8fea33ab714ab65e14605',1,'AppLifetime']]],
+  ['currentstage_29',['CurrentStage',['../db/d24/_f_i_r_e_catalog_8cs.html#ad6e3ce861d4a5f5772ce00c59c91789a',1,'FIRECatalog.cs']]]
 ];

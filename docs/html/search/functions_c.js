@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['throwifcancellationrequested_0',['ThrowIfCancellationRequested',['../d5/d39/class_app_lifetime.html#a369ef0f0b61b7a75d0a8f1c27c124922',1,'AppLifetime']]]
+  ['stagetag_0',['StageTag',['../d1/dcc/_f_i_r_e_logger_8cs.html#a7120565336b5ef0a841b6dac0d08b6b7',1,'FIRELogger.cs']]]
 ];
