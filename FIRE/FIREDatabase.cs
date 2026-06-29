@@ -363,6 +363,45 @@ public class FIREDbRecord
     public bool SourceFileExists { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets whether this file should be excluded from the Generate phase.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// When set to <c>true</c>, this file will be skipped during <c>generate</c> operations,
+    /// preventing target path generation. This is useful when the user inspects collected files
+    /// and decides that certain files should not be reorganized or processed further.
+    /// </para>
+    /// <para>
+    /// Defaults to <c>false</c> (file will be processed normally).
+    /// </para>
+    /// <para>
+    /// This flag is independent of <see cref="ProcessingStatus"/>, allowing users to
+    /// exclude files at any point in the workflow, including files that have already been processed.
+    /// </para>
+    /// </remarks>
+    public bool ExcludedFromGenerate { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets whether this file should be excluded from the Execute phase.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// When set to <c>true</c>, this file will be skipped during <c>execute</c> operations,
+    /// preventing the file operation (copy/move/link) from being performed. This is useful
+    /// when the user reviews generated paths and decides to exclude specific files from
+    /// being physically moved or copied.
+    /// </para>
+    /// <para>
+    /// Defaults to <c>false</c> (file will be processed normally).
+    /// </para>
+    /// <para>
+    /// Note: If <see cref="ExcludedFromGenerate"/> is <c>true</c> and no target path has been
+    /// generated, this file will also be implicitly excluded from Execute regardless of this flag's value.
+    /// </para>
+    /// </remarks>
+    public bool ExcludedFromExecute { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets the file metadata entries associated with this record.
     /// </summary>
     /// <remarks>
@@ -1164,6 +1203,8 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             Classification = entity.Classification,
             Status = entity.Status,
             SourceFileExists = entity.SourceFileExists,
+            ExcludedFromGenerate = entity.ExcludedFromGenerate,
+            ExcludedFromExecute = entity.ExcludedFromExecute,
             FileMetaDatas = entity.FileMetaDatas
                 .OrderBy(meta => meta.Id)
                 .Select(meta => new FIREFileMetaData
@@ -1208,7 +1249,9 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             TargetFilePath = model.TargetFilePath,
             Classification = model.Classification,
             Status = model.Status,
-            SourceFileExists = model.SourceFileExists
+            SourceFileExists = model.SourceFileExists,
+            ExcludedFromGenerate = model.ExcludedFromGenerate,
+            ExcludedFromExecute = model.ExcludedFromExecute
         };
 
         foreach (var meta in model.FileMetaDatas)
@@ -1702,6 +1745,22 @@ internal sealed class FIREDbRecordEntity
     /// Defaults to <c>true</c> when the record is created.
     /// </remarks>
     public bool SourceFileExists { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets whether this file should be excluded from the Generate phase.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to <c>false</c> (file will be processed normally).
+    /// </remarks>
+    public bool ExcludedFromGenerate { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets whether this file should be excluded from the Execute phase.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to <c>false</c> (file will be processed normally).
+    /// </remarks>
+    public bool ExcludedFromExecute { get; set; } = false;
 
     /// <summary>
     /// Gets or sets the collection of file metadata entries associated with this record.

@@ -786,7 +786,8 @@ public sealed class FIRECatalog : IDisposable
 
         var pendingCount = _database.Count(record =>
             !string.IsNullOrWhiteSpace(record.SourceFilePath) &&
-            record.Status is not (ProcessingStatus.PathGenerated or ProcessingStatus.Executed));
+            record.Status is not (ProcessingStatus.PathGenerated or ProcessingStatus.Executed) &&
+            !record.ExcludedFromGenerate);
 
         BeginStage(FIRECatalogStage.Generate, pendingCount);
 
@@ -796,6 +797,13 @@ public sealed class FIRECatalog : IDisposable
 
             // Skip files that already have a generated path or have been executed.
             if (record.Status is ProcessingStatus.PathGenerated or ProcessingStatus.Executed) continue;
+
+            // Skip files explicitly excluded from Generate phase
+            if (record.ExcludedFromGenerate)
+            {
+                _logger?.Log(FIRELogLevel.Info, "Generate", $"Skipped (excluded by user): {record.SourceFilePath}");
+                continue;
+            }
 
             progressCallback?.Invoke(record.SourceFilePath);
             ReportFileProgress(record.SourceFilePath);
@@ -930,6 +938,7 @@ public sealed class FIRECatalog : IDisposable
             !string.IsNullOrWhiteSpace(record.SourceFilePath) &&
             !string.IsNullOrWhiteSpace(record.TargetFilePath) &&
             record.Status != ProcessingStatus.Executed &&
+            !record.ExcludedFromExecute &&
             File.Exists(record.SourceFilePath));
 
         BeginStage(FIRECatalogStage.Execute, pendingCount);
@@ -941,6 +950,20 @@ public sealed class FIRECatalog : IDisposable
 
             // Skip files that have already been executed (incremental workflow)
             if (record.Status == ProcessingStatus.Executed) continue;
+
+            // Skip files explicitly excluded from Execute phase
+            if (record.ExcludedFromExecute)
+            {
+                _logger?.Log(FIRELogLevel.Info, "Execute", $"Skipped (excluded by user): {record.SourceFilePath}");
+                continue;
+            }
+
+            // Skip files that don't have a generated target path (e.g., excluded from Generate)
+            if (record.Status == ProcessingStatus.NotProcessed)
+            {
+                _logger?.Log(FIRELogLevel.Info, "Execute", $"Skipped (not generated): {record.SourceFilePath}");
+                continue;
+            }
 
             progressCallback?.Invoke(record.SourceFilePath);
             ReportFileProgress(record.SourceFilePath);
