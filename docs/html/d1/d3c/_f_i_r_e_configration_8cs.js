@@ -21,7 +21,6 @@ var _f_i_r_e_configration_8cs =
     [ "FileSorting", "d1/d3c/_f_i_r_e_configration_8cs.html#ac1a440ebd9b6b228eb302c563d496d86", null ],
     [ "FileSortingOrder", "d1/d3c/_f_i_r_e_configration_8cs.html#ac60df9be0840e23a27e41eaca9f08a37", null ],
     [ "FilesRootPath", "d1/d3c/_f_i_r_e_configration_8cs.html#ae5a75378c68884efcb0e1c484ae21c23", null ],
-    [ "KeyWords", "d1/d3c/_f_i_r_e_configration_8cs.html#ad4fff62c68af6218dfbbad696eb5cea2", null ],
     [ "LogFileName", "d1/d3c/_f_i_r_e_configration_8cs.html#a65d8359dcb16e8d807b59a51d9bffce6", null ],
     [ "Logging", "d1/d3c/_f_i_r_e_configration_8cs.html#aa3a64aa45e67c53f8f3af3c5653cd729", null ],
     [ "LogLevel", "d1/d3c/_f_i_r_e_configration_8cs.html#a9647e3ff64f75fba67077f0021234871", null ],
@@ -33,6 +32,7 @@ var _f_i_r_e_configration_8cs =
     [ "SidecarFileExtensions", "d1/d3c/_f_i_r_e_configration_8cs.html#a17fb8db34a5e91f9f3c5726747f32226", null ],
     [ "SortingPatern", "d1/d3c/_f_i_r_e_configration_8cs.html#a3cbabcf9e16d587d8c46845ae16fbadb", null ],
     [ "Source", "d1/d3c/_f_i_r_e_configration_8cs.html#ac34de2a54dcaa5e190990544213c2a65", null ],
+    [ "SourceFields", "d1/d3c/_f_i_r_e_configration_8cs.html#a37a875d99b6438db746b8d3696a10dc3", null ],
     [ "StringReplacements", "d1/d3c/_f_i_r_e_configration_8cs.html#afdba3e756dc6f3cbf4d4d8303cdfb4ff", null ],
     [ "SupportedConfigurationVersion", "d1/d3c/_f_i_r_e_configration_8cs.html#aa5389a725ea3efe7c6a97c603bbabb12", null ],
     [ "ValAttribute", "d1/d3c/_f_i_r_e_configration_8cs.html#a386f09885d44e5915217eb752f47e561", null ]

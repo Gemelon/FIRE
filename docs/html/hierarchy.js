@@ -8,8 +8,10 @@ var hierarchy =
       [ "InspectCommand", "d1/d1a/class_inspect_command.html", null ]
     ] ],
     [ "CommandExecutor", "d7/d0d/class_command_executor.html", null ],
-    [ "CommonCommandSettings", null, [
-      [ "CollectSettings", "d9/d06/class_collect_settings.html", null ]
+    [ "CommandSettings", null, [
+      [ "CommonCommandSettings", "d0/d9e/class_common_command_settings.html", [
+        [ "InspectSettings", "dc/d79/class_inspect_settings.html", null ]
+      ] ]
     ] ],
     [ "ConsoleUi", "d2/d24/class_console_ui.html", null ],
     [ "FILE_ID_INFO", "db/d24/_f_i_r_e_catalog_8cs.html#d0/d27/struct_f_i_l_e___i_d___i_n_f_o", null ],

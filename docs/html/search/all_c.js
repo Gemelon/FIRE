@@ -12,8 +12,9 @@ var searchData=
   ['inspection_20api_9',['Metadata Inspection API',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md43',1,'']]],
   ['inspection_20helpers_10',['Metadata Inspection Helpers',['../index.html#metadata_inspection_sec',1,'']]],
   ['inspection_20inspect_11',['Optional metadata inspection (&lt;span class=&quot;tt&quot;&gt;inspect&lt;/span&gt;)',['../index.html#inspect_step',1,'']]],
-  ['installation_12',['Installation',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md11',1,'']]],
-  ['iscancellationrequested_13',['IsCancellationRequested',['../d5/d39/class_app_lifetime.html#a4150c509f15565982db5d75b89d30c75',1,'AppLifetime']]],
-  ['isconfigurationversionsupported_14',['IsConfigurationVersionSupported',['../df/dbb/class_f_i_r_e_configration.html#a7a2fd301bd6cd3e6702d0d38d283c164',1,'FIREConfigration::IsConfigurationVersionSupported()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a2127e8e5c4beba369943506c78f33a56',1,'IsConfigurationVersionSupported():&#160;FIREConfigration.cs']]],
-  ['it_20works_15',['How It Works',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md31',1,'']]]
+  ['inspectsettings_12',['InspectSettings',['../dc/d79/class_inspect_settings.html',1,'']]],
+  ['installation_13',['Installation',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md11',1,'']]],
+  ['iscancellationrequested_14',['IsCancellationRequested',['../d5/d39/class_app_lifetime.html#a4150c509f15565982db5d75b89d30c75',1,'AppLifetime']]],
+  ['isconfigurationversionsupported_15',['IsConfigurationVersionSupported',['../df/dbb/class_f_i_r_e_configration.html#a7a2fd301bd6cd3e6702d0d38d283c164',1,'FIREConfigration::IsConfigurationVersionSupported()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a2127e8e5c4beba369943506c78f33a56',1,'IsConfigurationVersionSupported():&#160;FIREConfigration.cs']]],
+  ['it_20works_16',['How It Works',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md31',1,'']]]
 ];

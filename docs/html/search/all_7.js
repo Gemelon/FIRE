@@ -7,9 +7,10 @@ var searchData=
   ['date_20and_20camera_20model_4',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md35',1,'']]],
   ['debug_5',['Debug',['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763dac909e86054cb6ad83c22bfc2b3e6e5b8',1,'FIRELogger.cs']]],
   ['default_6',['Default',['../d3/daf/class_available_keyword_configuration.html#af691edf1cbae194bc942a15bef257b25',1,'AvailableKeywordConfiguration::Default'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a57818ca0924f9791fd2e538c3e12ccd7',1,'Default:&#160;FIREConfigration.cs']]],
-  ['description_7',['Description',['../dd/d5c/_program_8cs.html#ae54a6807acd9a8a22001f22652a3c9d6',1,'Description(&quot;Path to the configuration YAML file.&quot;)][CommandOption(&quot;--config|-c &lt;CONFIG_PATH&gt;&quot;)] public string? ConfigPath:&#160;Program.cs'],['../dd/d5c/_program_8cs.html#a623d0ff713bd14fbbf7635f1bccf0db1',1,'Description(&quot;Path to the file to inspect.&quot;)][CommandOption(&quot;--file|-f &lt;FILE_PATH&gt;&quot;)] public string? FilePath:&#160;Program.cs']]],
-  ['dispose_8',['Dispose',['../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7',1,'Dispose():&#160;FIRECatalog.cs'],['../d1/dcc/_f_i_r_e_logger_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7',1,'Dispose():&#160;FIRELogger.cs']]],
-  ['dllimport_9',['DllImport',['../db/d24/_f_i_r_e_catalog_8cs.html#a2a7ad26a66f0fc022a8788adfb0c262e',1,'FIRECatalog.cs']]],
-  ['dng_20raw_20files_20alongside_20their_20jpeg_20keep_20xmp_20sidecars_10',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md36',1,'']]],
-  ['documentation_11',['Documentation',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md42',1,'']]]
+  ['description_7',['Description',['../dd/d5c/_program_8cs.html#a4bcbd2f2d86ecbe814caecc9d758e6bb',1,'Description(&quot;Clear the database before collecting files.&quot;)][CommandOption(&quot;--clear-database|--clear&quot;)][DefaultValue(false)] public bool ClearDatabase:&#160;Program.cs'],['../dd/d5c/_program_8cs.html#a6266d0ce0b1719c3afb0c0f0e64979a0',1,'Description(&quot;Path to the source file to diagnose.&quot;)][CommandOption(&quot;--source-path|-s &lt;SOURCE_PATH&gt;&quot;)] public string? SourcePath:&#160;Program.cs']]],
+  ['diagnosegeneration_8',['DiagnoseGeneration',['../db/d24/_f_i_r_e_catalog_8cs.html#ac332f38150ec11ba50b9c3f637a3a346',1,'FIRECatalog.cs']]],
+  ['dispose_9',['Dispose',['../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7',1,'Dispose():&#160;FIRECatalog.cs'],['../d1/dcc/_f_i_r_e_logger_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7',1,'Dispose():&#160;FIRELogger.cs']]],
+  ['dllimport_10',['DllImport',['../db/d24/_f_i_r_e_catalog_8cs.html#a2a7ad26a66f0fc022a8788adfb0c262e',1,'FIRECatalog.cs']]],
+  ['dng_20raw_20files_20alongside_20their_20jpeg_20keep_20xmp_20sidecars_11',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md36',1,'']]],
+  ['documentation_12',['Documentation',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md42',1,'']]]
 ];

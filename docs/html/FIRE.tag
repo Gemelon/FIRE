@@ -12,7 +12,8 @@
     <class kind="class">ProgramHost</class>
     <class kind="class">GenerateCommand</class>
     <class kind="class">InspectCommand</class>
-    <class kind="class">CollectSettings</class>
+    <class kind="class">CommonCommandSettings</class>
+    <class kind="class">InspectSettings</class>
     <class kind="class">CommandExecutor</class>
     <class kind="class">ConsoleUi</class>
     <class kind="class">AppLifetime</class>
@@ -77,24 +78,31 @@
     </member>
     <member kind="function">
       <type>InspectCommand Command</type>
-      <name>Description</name>
+      <name>Execute</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>ae54a6807acd9a8a22001f22652a3c9d6</anchor>
-      <arglist>(&quot;Path to the configuration YAML file.&quot;)][CommandOption(&quot;--config|-c &lt;CONFIG_PATH&gt;&quot;)] public string? ConfigPath</arglist>
+      <anchor>a05a6ef50979ce9024bf564fbcfe81e97</anchor>
+      <arglist>(CommandContext context, DiagnoseSettings settings)</arglist>
     </member>
     <member kind="function">
       <type>override int</type>
       <name>Execute</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a6dd68bfe98ea322d83c9b1cf6bfe266d</anchor>
+      <anchor>adbf420779ad6d41f0b167fa8f6d5b3d3</anchor>
       <arglist>(CommandContext context, InspectSettings settings)</arglist>
     </member>
     <member kind="function">
-      <type>CollectSettings CommonCommandSettings</type>
+      <type>CommonCommandSettings CommandSettings</type>
       <name>Description</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a623d0ff713bd14fbbf7635f1bccf0db1</anchor>
-      <arglist>(&quot;Path to the file to inspect.&quot;)][CommandOption(&quot;--file|-f &lt;FILE_PATH&gt;&quot;)] public string? FilePath</arglist>
+      <anchor>a4bcbd2f2d86ecbe814caecc9d758e6bb</anchor>
+      <arglist>(&quot;Clear the database before collecting files.&quot;)][CommandOption(&quot;--clear-database|--clear&quot;)][DefaultValue(false)] public bool ClearDatabase</arglist>
+    </member>
+    <member kind="function">
+      <type>InspectSettings CommonCommandSettings</type>
+      <name>Description</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a6266d0ce0b1719c3afb0c0f0e64979a0</anchor>
+      <arglist>(&quot;Path to the source file to diagnose.&quot;)][CommandOption(&quot;--source-path|-s &lt;SOURCE_PATH&gt;&quot;)] public string? SourcePath</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static internal class CommandExecutor</type>
@@ -130,6 +138,13 @@
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
       <anchor>a7904950bbffd99fc2a1c3af59708a28f</anchor>
       <arglist>(InspectSettings settings, RuntimeContext runtime)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteDiagnose</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a088240f79721370912dd25fb7bf8501d</anchor>
+      <arglist>(DiagnoseSettings settings, RuntimeContext runtime)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>static string</type>
@@ -168,9 +183,9 @@
     </member>
     <member kind="variable">
       <type>string</type>
-      <name>Culture</name>
+      <name>ConfigPath</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a0391b18642c9e16b7c2a285fc7db3786</anchor>
+      <anchor>a9decc718c0558cf9af1c9698998c812d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -181,6 +196,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>string</type>
+      <name>Culture</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a0391b18642c9e16b7c2a285fc7db3786</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>bool</type>
       <name>NoWrap</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
@@ -188,10 +210,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>bool</type>
-      <name>ClearDatabase</name>
+      <type>string</type>
+      <name>FilePath</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>ae5b62c8d00b10d87c47673fbd5653288</anchor>
+      <anchor>a65969f9f39cf0e1af9cea3b84b374c3c</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -340,6 +362,13 @@
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
       <anchor>a0e8ccea48e013f783535370544c3cfea</anchor>
       <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>string</type>
+      <name>DiagnoseGeneration</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>ac332f38150ec11ba50b9c3f637a3a346</anchor>
+      <arglist>(string sourceFilePath)</arglist>
     </member>
     <member kind="function">
       <type>List&lt;(string Source, string Key, string Value)&gt;</type>
@@ -563,6 +592,13 @@
       <name>set</name>
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
       <anchor>a112a711f766db446c2f517b794a1c04a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>DateTime</type>
+      <name>FallbackDateTime</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>a18f9c0bac49bd7a5956079568a0ad53d</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -1002,9 +1038,9 @@
     </member>
     <member kind="variable">
       <type>List&lt; string &gt;</type>
-      <name>KeyWords</name>
+      <name>SourceFields</name>
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>ad4fff62c68af6218dfbbad696eb5cea2</anchor>
+      <anchor>a37a875d99b6438db746b8d3696a10dc3</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -1244,27 +1280,9 @@
     </member>
     <member kind="variable">
       <type>List&lt; string &gt;</type>
-      <name>KeyWords</name>
+      <name>SourceFields</name>
       <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
-      <anchor>a1d31bfc22c535d0312b909e22cc0b1fa</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>CollectSettings</name>
-    <filename>d9/d06/class_collect_settings.html</filename>
-    <member kind="variable">
-      <type>bool</type>
-      <name>ClearDatabase</name>
-      <anchorfile>d9/d06/class_collect_settings.html</anchorfile>
-      <anchor>a9e307bd2a867e3fdf5e784cc99c6aa60</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>set</name>
-      <anchorfile>d9/d06/class_collect_settings.html</anchorfile>
-      <anchor>a21b3c8efd3b76317d1e141fde2b45e9c</anchor>
+      <anchor>a3347583a2ee7a223d0da4f56c71d65cb</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1298,6 +1316,45 @@
       <anchorfile>d7/d0d/class_command_executor.html</anchorfile>
       <anchor>a757146be08c3b7cd35e0efd9365c7115</anchor>
       <arglist>(InspectSettings settings, RuntimeContext runtime)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static int</type>
+      <name>ExecuteDiagnose</name>
+      <anchorfile>d7/d0d/class_command_executor.html</anchorfile>
+      <anchor>abc8cb3b374f80ad8f8b7a33c3419b15c</anchor>
+      <arglist>(DiagnoseSettings settings, RuntimeContext runtime)</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>CommonCommandSettings</name>
+    <filename>d0/d9e/class_common_command_settings.html</filename>
+    <member kind="variable">
+      <type>string</type>
+      <name>ConfigPath</name>
+      <anchorfile>d0/d9e/class_common_command_settings.html</anchorfile>
+      <anchor>aaa15837d79523f89c9d99c7a44f4f259</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>set</name>
+      <anchorfile>d0/d9e/class_common_command_settings.html</anchorfile>
+      <anchor>aa0bffefed288afb85538d0be682c1bb8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>Culture</name>
+      <anchorfile>d0/d9e/class_common_command_settings.html</anchorfile>
+      <anchor>a12d17daa3c10244483a02d32e37ec909</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>bool</type>
+      <name>NoWrap</name>
+      <anchorfile>d0/d9e/class_common_command_settings.html</anchorfile>
+      <anchor>aa4cb9afc1b59297b0d422e85b22ac564</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -1632,6 +1689,39 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>InspectSettings</name>
+    <filename>dc/d79/class_inspect_settings.html</filename>
+    <base protection="private">CommonCommandSettings</base>
+    <member kind="variable">
+      <type>string</type>
+      <name>FilePath</name>
+      <anchorfile>dc/d79/class_inspect_settings.html</anchorfile>
+      <anchor>a6209ffeb1ccef782524b5d9833c86afc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>set</name>
+      <anchorfile>dc/d79/class_inspect_settings.html</anchorfile>
+      <anchor>a1a11c20acc1fad915c310f07cd740702</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>OutputPath</name>
+      <anchorfile>dc/d79/class_inspect_settings.html</anchorfile>
+      <anchor>a13c9849cb24e7c2afab9353a61a08b5a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>bool</type>
+      <name>CopyPath</name>
+      <anchorfile>dc/d79/class_inspect_settings.html</anchorfile>
+      <anchor>aa934d169afcc140c2ab4ef13263542e4</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>MetadataSourceRegistry</name>
     <filename>de/df7/class_metadata_source_registry.html</filename>
     <member kind="function">
@@ -1717,6 +1807,20 @@
       <name>ResolveKeywordDefaultValue_StringDefault_ReturnsDefaultUnchanged</name>
       <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
       <anchor>a6c0ac62dfd6510e50f40cb54d35a8022</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ParseTemplate_DatetimeKeywordSupport_ResolvesNamedAndFormatSuffixes</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>a7e7977fedc94e152c72bd08af46b6e59</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>ParseTemplate_NonDatetimeKeywordWithSuffix_DoesNotApplyDateFallback</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>a6d97b664e77b0b21fc6481dc99783fdd</anchor>
       <arglist>()</arglist>
     </member>
   </compound>
