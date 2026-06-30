@@ -573,6 +573,9 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     private readonly FIREStatusRecord _statusRecord = new();
     private readonly Dictionary<string, FIRECounterStateEntity> _counterStates = new(StringComparer.OrdinalIgnoreCase);
 
+    private int _pendingChangesCount = 0;
+    private readonly HashSet<string> _fileIdIndex = new();
+
     /// <summary>
     /// Creates a new instance of <c>FIREDatabase</c> backed by the specified SQLite file.
     /// </summary>
@@ -655,6 +658,16 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             .OrderBy(record => record.Id)
             .Select(MapToModel));
 
+        _fileIdIndex.Clear();
+        foreach (var record in _records)
+        {
+            if (record.FileId != null)
+            {
+                var key = CreateFileIdKey(record.VolumeSerialNumber, record.FileId);
+                _fileIdIndex.Add(key);
+            }
+        }
+
         var statusEntity = _context.StatusRecords.AsNoTracking().SingleOrDefault(x => x.Id == FIREDatabaseStatusEntity.SingletonId);
         if (statusEntity is not null)
         {
@@ -720,17 +733,18 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     }
 
     /// <summary>
-    /// Adds a new record to the in-memory collection and persists only this record to SQLite.
+    /// Adds a new record to the in-memory collection without persisting immediately.
     /// </summary>
-    /// <param name="item">The <see cref="FIREDbRecord"/> to add and persist.</param>
+    /// <param name="item">The <see cref="FIREDbRecord"/> to add.</param>
     /// <remarks>
     /// <para>
-    /// Unlike <see cref="Save"/>, this method performs an incremental single-record insert and
-    /// does not trigger a full-replacement persistence of the entire collection.
+    /// This method adds the record to the in-memory collection and marks it as pending for the database.
+    /// The change is NOT immediately persisted. Call <see cref="FlushPendingChanges"/> to save pending records
+    /// to disk in a single batch transaction.
     /// </para>
     /// <para>
-    /// The operation is wrapped in a transaction. On failure, the in-memory insertion is reverted
-    /// and the status row is updated to <c>Failed</c> (best effort) before rethrowing.
+    /// This batching strategy significantly improves performance during bulk collection operations,
+    /// reducing database transaction overhead from O(n) to O(1) per flush.
     /// </para>
     /// </remarks>
     /// <exception cref="ArgumentNullException">
@@ -745,43 +759,13 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         ThrowIfDisposed();
 
         _records.Add(item);
+        _context.FileRecords.Add(MapToEntity(item));
+        _pendingChangesCount++;
 
-        using var transaction = _context.Database.BeginTransaction();
-        try
+        if (item.FileId != null)
         {
-            _context.FileRecords.Add(MapToEntity(item));
-
-            var statusEntity = _context.StatusRecords.Single(x => x.Id == FIREDatabaseStatusEntity.SingletonId);
-            statusEntity.Status = "Added";
-            statusEntity.Valid = true;
-            statusEntity.ErrorMessage = null;
-            statusEntity.TimeStamp = DateTime.UtcNow;
-
-            _context.SaveChanges();
-            transaction.Commit();
-            CopyToModel(statusEntity, _statusRecord);
-        }
-        catch (Exception ex)
-        {
-            transaction.Rollback();
-            _records.Remove(item);
-
-            try
-            {
-                var statusEntity = _context.StatusRecords.Single(x => x.Id == FIREDatabaseStatusEntity.SingletonId);
-                statusEntity.Status = "Failed";
-                statusEntity.Valid = false;
-                statusEntity.ErrorMessage = ex.Message;
-                statusEntity.TimeStamp = DateTime.UtcNow;
-                _context.SaveChanges();
-                CopyToModel(statusEntity, _statusRecord);
-            }
-            catch
-            {
-                // Preserve original exception.
-            }
-
-            throw;
+            var key = CreateFileIdKey(item.VolumeSerialNumber, item.FileId);
+            _fileIdIndex.Add(key);
         }
     }
 
@@ -801,8 +785,74 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
 
         _records.Clear();
         _counterStates.Clear();
+        _pendingChangesCount = 0;
+        _fileIdIndex.Clear();
         PersistCurrentState("Cleared", true, null);
         Reload();
+    }
+
+    /// <summary>
+    /// Flushes all pending changes to the database in a single batch transaction.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method saves all records added since the last flush (or since object creation) 
+    /// to the SQLite database in a single transaction. This significantly reduces I/O overhead
+    /// compared to per-record saves.
+    /// </para>
+    /// <para>
+    /// If no pending changes exist, this method returns immediately without database interaction.
+    /// </para>
+    /// <para>
+    /// On failure, the transaction is rolled back, the status is updated to "Failed", 
+    /// and the exception is rethrown.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if this instance has been disposed.
+    /// </exception>
+    public void FlushPendingChanges()
+    {
+        ThrowIfDisposed();
+
+        if (_pendingChangesCount == 0)
+            return;
+
+        using var transaction = _context.Database.BeginTransaction();
+        try
+        {
+            var statusEntity = _context.StatusRecords.Single(x => x.Id == FIREDatabaseStatusEntity.SingletonId);
+            statusEntity.Status = "Flushed";
+            statusEntity.Valid = true;
+            statusEntity.ErrorMessage = null;
+            statusEntity.TimeStamp = DateTime.UtcNow;
+
+            _context.SaveChanges();
+            transaction.Commit();
+            CopyToModel(statusEntity, _statusRecord);
+            _pendingChangesCount = 0;
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+
+            try
+            {
+                var statusEntity = _context.StatusRecords.Single(x => x.Id == FIREDatabaseStatusEntity.SingletonId);
+                statusEntity.Status = "Failed";
+                statusEntity.Valid = false;
+                statusEntity.ErrorMessage = ex.Message;
+                statusEntity.TimeStamp = DateTime.UtcNow;
+                _context.SaveChanges();
+                CopyToModel(statusEntity, _statusRecord);
+            }
+            catch
+            {
+                // Preserve original exception.
+            }
+
+            throw;
+        }
     }
 
     /// <summary>
@@ -839,19 +889,8 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
 
         ThrowIfDisposed();
 
-        using var transaction = _context.Database.BeginTransaction();
-        try
-        {
-            var exists = _context.Set<FIREDbRecordEntity>()
-                .Any(r => r.VolumeSerialNumber == volumeSerialNumber && r.FileId == fileId);
-            transaction.Commit();
-            return exists;
-        }
-        catch
-        {
-            transaction.Rollback();
-            throw;
-        }
+        var key = CreateFileIdKey(volumeSerialNumber, fileId);
+        return _fileIdIndex.Contains(key);
     }
 
 
@@ -988,12 +1027,22 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     /// <remarks>
     /// After calling this method, all operations on this instance will throw
     /// <see cref="ObjectDisposedException"/>. This method is safe to call multiple times.
+    /// Any pending changes are automatically flushed before disposing.
     /// </remarks>
     public void Dispose()
     {
         if (_disposed)
         {
             return;
+        }
+
+        try
+        {
+            FlushPendingChanges();
+        }
+        catch
+        {
+            // Best-effort flush on dispose; suppress exceptions to allow cleanup to proceed
         }
 
         _context.Dispose();
@@ -1016,6 +1065,17 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     public IEnumerator<FIREDbRecord> GetEnumerator() => _records.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    /// <summary>
+    /// Creates a unique string key for a file identifier combination.
+    /// </summary>
+    /// <param name="volumeSerialNumber">Volume serial number of the file.</param>
+    /// <param name="fileId">File identifier (file ID) byte array.</param>
+    /// <returns>A unique string representation for HashSet lookup.</returns>
+    private static string CreateFileIdKey(ulong volumeSerialNumber, byte[] fileId)
+    {
+        return $"{volumeSerialNumber}:{Convert.ToHexString(fileId)}";
+    }
 
     private void EnsureStatusRowExists()
     {

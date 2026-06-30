@@ -723,10 +723,18 @@ public sealed class FIRECatalog : IDisposable
 
         BeginStage(FIRECatalogStage.Collect, totalFiles);
 
-        foreach (var rootPath in _configuration.FilesRootPath)
+        try
         {
-            if (!Directory.Exists(rootPath)) continue;
-            CollectFromDirectory(rootPath, progressCallback);
+            foreach (var rootPath in _configuration.FilesRootPath)
+            {
+                if (!Directory.Exists(rootPath)) continue;
+                CollectFromDirectory(rootPath, progressCallback);
+            }
+        }
+        finally
+        {
+            // Ensure all pending changes are saved, even if an error occurred
+            _database.FlushPendingChanges();
         }
 
         CompleteCurrentStage();
@@ -1337,16 +1345,25 @@ public sealed class FIRECatalog : IDisposable
     /// </summary>
     /// <param name="directoryPath">Root directory to scan recursively.</param>
     /// <param name="progressCallback">Optional callback receiving each discovered file path.</param>
-    private void CollectFromDirectory(string directoryPath, Action<string>? progressCallback = null)
+    /// <param name="batchSize">Number of files to process before flushing to database (default: 50).</param>
+    private void CollectFromDirectory(string directoryPath, Action<string>? progressCallback = null, int batchSize = 50)
     {
         try
         {
+            int filesSinceLastFlush = 0;
             foreach (var filePath in Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories))
             {
                 _collectTotalFiles++;
                 progressCallback?.Invoke(filePath);
                 ReportFileProgress(filePath);
                 ProcessFile(filePath);
+
+                filesSinceLastFlush++;
+                if (filesSinceLastFlush >= batchSize)
+                {
+                    _database.FlushPendingChanges();
+                    filesSinceLastFlush = 0;
+                }
             }
         }
         catch { }
