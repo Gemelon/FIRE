@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Local wiki drafts (manual copy target for GitHub Wiki, never auto-synced)
+docs/wiki-local/

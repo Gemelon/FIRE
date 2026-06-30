@@ -8,17 +8,23 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/10.0)
 [![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](https://www.microsoft.com/windows)
 
-FIRE is a .NET 10 library and command-line application that automatically
-reorganizes files based on their embedded metadata (EXIF, XMP, file system
-timestamps, and more). It reads metadata via **ExifTool**, stores results in
-a local **SQLite** database, evaluates configurable path templates, and
-finally copies, moves, or hard-links each file to its computed target location.
+FIRE is an API-first .NET 10 library for metadata-driven file reorganization.
+The `FIRE` project is the core of this repository and provides the full
+catalog pipeline (collect → generate → execute), metadata extraction,
+localization, and progress/state events for direct integration into UI or
+automation applications.
+
+`FIRE.Console` is intentionally a lightweight adapter for API testing and
+quick onboarding only. It exists to validate and demonstrate the API surface,
+while product UI work is expected to be implemented later as a separate layer
+that consumes the `FIRE` API directly.
 
 ---
 
 ## Table of Contents
 
 - [Features](#features)
+- [API-First Focus](#api-first-focus)
 - [Project Structure](#project-structure)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -40,7 +46,7 @@ finally copies, moves, or hard-links each file to its computed target location.
 
 - **Metadata-driven file sorting** — JPEG, RAW, video, and any other
   file type supported by ExifTool
-- **Three-step pipeline** — `collect` → `generate` → `execute`
+- **Three-step API pipeline** — `collect` → `generate` → `execute`
 - **SQLite persistence** — inspect and audit every decision before committing
 - **Flexible templates** — arbitrary directory hierarchy and filename patterns
   using `{Keyword}` placeholders
@@ -53,6 +59,23 @@ finally copies, moves, or hard-links each file to its computed target location.
 - **Culture-aware** — date formatting respects the `--culture` flag
 - **Localized API messages** — resource-based API messages with English fallback (`en-US`) and translations for `de-DE`, `fr-FR`, and `fil-PH`
 - **UI-ready API progress model** — `FIRECatalog` exposes progress/state events and properties for direct UI integration (WPF/WinUI/etc.)
+
+---
+
+## API-First Focus
+
+`FIRE` (class library) is the product core and receives priority for
+implementation and completion.
+
+`FIRE.Console` is intentionally limited to these goals:
+
+- API test runner for development workflows
+- quick start for first-time users
+- reproducible command examples for documentation
+
+A future UI application should be implemented as a dedicated consumer of the
+`FIRE` API. It should not depend on the console process as an intermediate
+runtime layer.
 
 ---
 
@@ -416,6 +439,8 @@ dotnet run --project FIRE.Console -- collect --config ConfigurationFiles\Configu
 ## Documentation
 
 API documentation is generated with **Doxygen 1.17.0**.
+The API is the canonical integration surface; the console documentation is
+provided as an auxiliary test/onboarding reference.
 
 ```powershell
 # Run from the repository root
@@ -423,6 +448,10 @@ doxygen docs/Doxyfile
 ```
 
 The HTML output is written to `docs/html/index.html`.
+
+For a local, non-synchronized GitHub Wiki draft, see `docs/wiki-local/`.
+This folder is intentionally ignored by Git so you can copy pages 1:1 into the
+GitHub Wiki later.
 
 > **Tip:** Install [Graphviz](https://graphviz.org/) and set `HAVE_DOT = YES`
 > in `docs/Doxyfile` to generate class and call graphs.

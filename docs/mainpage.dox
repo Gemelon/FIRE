@@ -5,11 +5,14 @@
  *
  * @section intro_sec Overview
  *
- * **FIRE** is a .NET 10 library and command-line application for automated
- * file reorganization based on embedded metadata. It reads file system
- * information and rich EXIF/XMP metadata (via ExifTool), stores the results
- * in a local SQLite database, computes template-driven target paths, and
- * finally copies, moves, or hard-links the files to their new location.
+ * **FIRE** is an API-first .NET 10 library for automated file reorganization
+ * based on embedded metadata. It reads file system information and rich
+ * EXIF/XMP metadata (via ExifTool), stores the results in a local SQLite
+ * database, computes template-driven target paths, and finally copies, moves,
+ * or hard-links the files to their new location.
+ *
+ * The class library is the primary product surface. The console application is
+ * intentionally a lightweight adapter for API testing and quick onboarding.
  *
  * @section arch_sec Architecture
  *
@@ -21,7 +24,11 @@
  * | `FIRE.Console` | Console application (.NET 10) | CLI adapter for API testing and quick start (`collect`, `generate`, `execute`, `inspect`) |
  * | `FIRE.Tests` | Test project (.NET 10) | Unit tests for core library behavior |
  *
- * UI apps should consume the `FIRE` library directly (not the console process) and subscribe to catalog progress/state events.
+ * UI apps should consume the `FIRE` library directly (not the console process)
+ * and subscribe to catalog progress/state events.
+ *
+ * Deliberately postponing a dedicated UI implementation helps keep engineering
+ * focus on API completeness and stability.
  *
  * ### Core Classes
  *
