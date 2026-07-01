@@ -30,6 +30,7 @@ that consumes the `FIRE` API directly.
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Usage](#usage)
+- [API Integration for UI/Host Apps](#api-integration-for-uihost-apps)
 - [Configuration Reference](#configuration-reference)
 - [Template Placeholders](#template-placeholders)
 - [Keyword Selection](#keyword-selection)
@@ -196,6 +197,80 @@ FIRE.Console <command> --config <path> --culture <culture> [options]
 | `--file` | `-f` | Source file to inspect (**required** for `inspect`) |
 | `--output` | `-o` | Optional path for the generated Markdown report |
 | `--copy-path` | - | Copy the generated report path to the clipboard |
+
+---
+
+## API Integration for UI/Host Apps
+
+### 1) Library reference
+
+Reference only the `FIRE` class library in your host project (WPF/WinUI/MAUI/service):
+
+- **Project reference (same solution):** `FIRE/FIRE.csproj`
+- **Binary reference (separate solution):** `FIRE.dll` built from the `FIRE` project
+
+Do **not** use `FIRE.Console` as integration layer. It is only a CLI adapter over the same API.
+
+### 2) Central API types
+
+| Type | Purpose | Central members |
+|------|---------|-----------------|
+| `FIREConfigration` | Load and validate YAML configuration | `Load(...)`, `Parse(...)`, `EnsureSupportedConfigurationVersion()` |
+| `FIREDatabase` | SQLite-backed pipeline state and records | constructor `FIREDatabase(dbPath)`, `Count`, `AsReadOnlyList()` |
+| `FIRECatalog` | Main orchestration engine | `CollectFiles(...)`, `GenerateTargetPaths(...)`, `ExecuteFileOperations(...)`, `ProgressChanged` |
+| `FIRECatalogProgressEventArgs` | Progress payload for UI binding | `Stage`, `Level`, `Message`, `CurrentFilePath`, `ProcessedCount`, `TotalCount` |
+
+### 3) Minimal integration flow (UI-safe pattern)
+
+```csharp
+using System.Globalization;
+using FIRE;
+
+var config = FIREConfigration.Load(configPath);
+config.EnsureSupportedConfigurationVersion();
+
+var dbPath = Path.Combine(config.DataBasePath, config.DataBaseFileName);
+using var database = new FIREDatabase(dbPath);
+using var catalog = new FIRECatalog(config, database)
+{
+    Culture = CultureInfo.GetCultureInfo("de-DE")
+};
+
+catalog.ProgressChanged += (_, e) =>
+{
+    // UI: progress bar, current file text, warnings/errors
+    // e.Stage, e.Level, e.Message, e.ProcessedCount, e.TotalCount
+};
+
+catalog.CollectFiles();
+catalog.GenerateTargetPaths();
+catalog.ExecuteFileOperations();
+```
+
+### 4) Important `FIRECatalog` properties for UI binding
+
+| Property | Meaning |
+|----------|---------|
+| `Culture` | Controls localized API messages and date formatting behavior |
+| `FallbackDateTime` | Replacement value for implausible/unparseable date metadata |
+| `CurrentStage` | Active stage (`Collect`, `Generate`, `Execute`, `Inspect`) |
+| `CurrentFilePath` | File currently processed |
+| `ProcessedFileCount` / `TotalFileCount` | Current progress counters |
+| `LastCollectedSourcePaths` | Snapshot of files touched in last collect stage |
+
+### 5) Optional API methods often used by UI tools
+
+| Method | Use case |
+|--------|----------|
+| `ClearDatabase()` | Reset state before a clean collect run |
+| `DiagnoseGeneration(sourcePath)` | Create detailed generation diagnosis report |
+| `GetAllAvailableMetadata(filePath)` | Display metadata explorer in UI |
+| `WriteMetadataToMarkdown(filePath, outputPath?)` | Export metadata report for users/support |
+| `LogCancelled()` | Log user cancellation in long-running operations |
+
+### 6) Threading recommendation for desktop UI
+
+Run pipeline methods (`CollectFiles`, `GenerateTargetPaths`, `ExecuteFileOperations`) on a background task and marshal `ProgressChanged` updates to the UI thread.
 
 ---
 
