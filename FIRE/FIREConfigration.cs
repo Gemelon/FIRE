@@ -350,6 +350,13 @@ public sealed class FIREConfigration
         }
     }
 
+    /// <summary>
+    /// Normalizes the root configuration by filling defaults and normalizing child sections.
+    /// </summary>
+    /// <remarks>
+    /// This method is called after deserialization to ensure all collections and option values
+    /// are initialized to safe defaults before the configuration is consumed by the pipeline.
+    /// </remarks>
     private void Normalize()
     {
         DataBasePath ??= string.Empty;

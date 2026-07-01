@@ -161,7 +161,11 @@ internal sealed class FIRELogger : IDisposable
         }
     }
 
-    // Opens a writer for the correct file, switching when the stage or date changes.
+    /// <summary>
+    /// Ensures that a writer is open for the active stage and date.
+    /// </summary>
+    /// <param name="stageTag">Short stage tag used in the log file name.</param>
+    /// <param name="today">Current local date used for daily log partitioning.</param>
     private void EnsureWriter(string stageTag, DateOnly today)
     {
         if (_writer != null && stageTag == _currentStageTag && today == _currentDate)
@@ -174,7 +178,9 @@ internal sealed class FIRELogger : IDisposable
         OpenSegment();
     }
 
-    // Creates/appends the current segment file and writes the header if the file is new.
+    /// <summary>
+    /// Opens the current log segment and writes the table header for new files.
+    /// </summary>
     private void OpenSegment()
     {
         _currentFilePath = BuildPath(_currentStageTag, _currentDate, _segmentIndex);
@@ -191,7 +197,11 @@ internal sealed class FIRELogger : IDisposable
         }
     }
 
-    // Rotates to the next segment when the current file exceeds the size limit.
+    /// <summary>
+    /// Rotates to the next segment file when the current file exceeds the configured size.
+    /// </summary>
+    /// <param name="stageTag">Short stage tag used in the log file name.</param>
+    /// <param name="today">Current local date used for daily log partitioning.</param>
     private void RotateIfNeeded(string stageTag, DateOnly today)
     {
         if (!File.Exists(_currentFilePath)) return;
@@ -204,7 +214,13 @@ internal sealed class FIRELogger : IDisposable
         OpenSegment();
     }
 
-    // Builds the file path for the given stage, date, and segment index.
+    /// <summary>
+    /// Builds the file path for a log segment.
+    /// </summary>
+    /// <param name="stageTag">Short stage tag used in the log file name.</param>
+    /// <param name="date">Date part of the log partition.</param>
+    /// <param name="segment">Segment index within the same date and stage.</param>
+    /// <returns>Absolute log file path for the specified segment.</returns>
     private string BuildPath(string stageTag, DateOnly date, int segment)
     {
         var datePart = date.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
@@ -213,7 +229,9 @@ internal sealed class FIRELogger : IDisposable
         return Path.Combine(_config.LogFilePath, name);
     }
 
-    // Deletes files in the log directory whose write time is older than MaxAgeDays.
+    /// <summary>
+    /// Deletes old log files based on the configured retention window.
+    /// </summary>
     private void PurgeOldFiles()
     {
         if (_config.MaxAgeDays <= 0) return;
@@ -230,6 +248,9 @@ internal sealed class FIRELogger : IDisposable
         catch { /* Best-effort purge; do not disrupt the run. */ }
     }
 
+    /// <summary>
+    /// Flushes and closes the current writer instance.
+    /// </summary>
     private void CloseWriter()
     {
         _writer?.Flush();
@@ -250,7 +271,11 @@ internal sealed class FIRELogger : IDisposable
         _disposed = true;
     }
 
-    // Parses a log-level string to the corresponding enum value, defaulting to Error.
+    /// <summary>
+    /// Parses a textual log level into a <see cref="FIRELogLevel"/> value.
+    /// </summary>
+    /// <param name="levelName">Configured level token.</param>
+    /// <returns>The parsed log level. Defaults to <see cref="FIRELogLevel.Error"/> when unknown.</returns>
     internal static FIRELogLevel ParseLevel(string levelName) => levelName.Trim().ToUpperInvariant() switch
     {
         "DEBUG"    => FIRELogLevel.Debug,
@@ -261,7 +286,11 @@ internal sealed class FIRELogger : IDisposable
         _          => FIRELogLevel.Error,
     };
 
-    // Maps FIRECatalogMessageLevel to FIRELogLevel for the catalog integration.
+    /// <summary>
+    /// Maps catalog progress severity to logger severity.
+    /// </summary>
+    /// <param name="level">Catalog message level.</param>
+    /// <returns>Equivalent logger level.</returns>
     internal static FIRELogLevel FromMessageLevel(FIRECatalogMessageLevel level) => level switch
     {
         FIRECatalogMessageLevel.Trace   => FIRELogLevel.Debug,
@@ -271,7 +300,11 @@ internal sealed class FIRELogger : IDisposable
         _                               => FIRELogLevel.Info,
     };
 
-    // Maps FIRECatalogStage to the stage tag used in file names.
+    /// <summary>
+    /// Resolves the short stage tag used in log file names.
+    /// </summary>
+    /// <param name="stage">Catalog stage.</param>
+    /// <returns>Stage tag token used in log file naming.</returns>
     internal static string StageTag(FIRECatalogStage? stage) => stage switch
     {
         FIRECatalogStage.Collect  => "col",

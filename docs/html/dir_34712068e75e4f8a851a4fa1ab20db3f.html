@@ -125,7 +125,41 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('dir_34712068e7
 Files</h2></td></tr>
 <tr class="memitem:Program_2Ecs" id="r_Program_2Ecs"><td class="memItemLeft"><a href="dd/d5c/_program_8cs_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><a class="el" href="dd/d5c/_program_8cs.html">Program.cs</a></td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><h1 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
+FIRE.Console</h1>
+<p>(C) 2026 by Thomas Stoll</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
+Purpose</h1>
+<p><span class="tt">FIRE.Console</span> is a command-line adapter around the <span class="tt">FIRE</span> API. It is intended for:</p>
+<ul>
+<li>API testing</li>
+<li>quick start usage</li>
+<li>reproducible command execution for documentation and troubleshooting</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
+Non-Goals</h1>
+<p><span class="tt">FIRE.Console</span> is <b>not</b> the main product layer and should not be used as an architectural dependency for future UI applications. A future UI should consume the <span class="tt">FIRE</span> library directly.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md46"></a>
+Commands</h1>
+<ul>
+<li><span class="tt">collect</span></li>
+<li><span class="tt">generate</span></li>
+<li><span class="tt">execute</span></li>
+<li><span class="tt">inspect</span></li>
+<li><span class="tt">diagnose</span></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
+Typical Run</h1>
+<div class="fragment"><div class="line">dotnet run --project FIRE.Console -- collect --config ConfigurationFiles\Configuration.yaml --culture de-DE</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
+Related Documentation</h1>
+<ul>
+<li>API-first project overview: <span class="tt">../README.md</span></li>
+<li>Core library details: <span class="tt">../FIRE/README.md</span></li>
+<li>Local wiki draft pages: <span class="tt">../docs/wiki-local/</span> (git-ignored) </li>
+</ul>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

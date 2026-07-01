@@ -475,9 +475,23 @@ public sealed class MetadataSourceRegistry
 /// </example>
 public sealed class FIRECatalog : IDisposable
 {
+    /// <summary>
+    /// Retrieves basic file information for an open file handle.
+    /// </summary>
+    /// <param name="hFile">Native file handle.</param>
+    /// <param name="lpFileInformation">Receives file information.</param>
+    /// <returns><see langword="true"/> on success; otherwise <see langword="false"/>.</returns>
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool GetFileInformationByHandle(SafeFileHandle hFile, out BY_HANDLE_FILE_INFORMATION lpFileInformation);
 
+    /// <summary>
+    /// Retrieves extended file information for an open file handle.
+    /// </summary>
+    /// <param name="hFile">Native file handle.</param>
+    /// <param name="fileInfoClass">Requested information class.</param>
+    /// <param name="fileIdInfo">Receives extended file identifier data.</param>
+    /// <param name="dwBufferSize">Size of <paramref name="fileIdInfo"/> in bytes.</param>
+    /// <returns><see langword="true"/> on success; otherwise <see langword="false"/>.</returns>
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool GetFileInformationByHandleEx(SafeFileHandle hFile, FileInfoByHandleClass fileInfoClass, out FILE_ID_INFO fileIdInfo, uint dwBufferSize);
 
@@ -581,6 +595,11 @@ public sealed class FIRECatalog : IDisposable
         }
     }
 
+    /// <summary>
+    /// Initializes progress tracking state for a new pipeline stage.
+    /// </summary>
+    /// <param name="stage">Stage to activate.</param>
+    /// <param name="totalCount">Expected number of files to process.</param>
     private void BeginStage(FIRECatalogStage stage, int totalCount)
     {
         CurrentStage = stage;
@@ -599,12 +618,19 @@ public sealed class FIRECatalog : IDisposable
         EmitProgress(FIRECatalogMessageLevel.Info, "status.started");
     }
 
+    /// <summary>
+    /// Finalizes the current stage and emits a completion event.
+    /// </summary>
     private void CompleteCurrentStage()
     {
         LogCollectStatistics();
         EmitProgress(FIRECatalogMessageLevel.Info, "status.completed");
     }
 
+    /// <summary>
+    /// Updates stage progress for a single file and emits a trace event.
+    /// </summary>
+    /// <param name="filePath">File currently being processed.</param>
     private void ReportFileProgress(string filePath)
     {
         CurrentFilePath = filePath;
@@ -618,6 +644,12 @@ public sealed class FIRECatalog : IDisposable
         EmitProgress(FIRECatalogMessageLevel.Trace, "status.file_processing", filePath);
     }
 
+    /// <summary>
+    /// Emits a localized progress message to event subscribers and the logger.
+    /// </summary>
+    /// <param name="level">Message severity.</param>
+    /// <param name="messageKey">Localization resource key.</param>
+    /// <param name="messageArgs">Optional message format arguments.</param>
     private void EmitProgress(FIRECatalogMessageLevel level, string messageKey, params object[] messageArgs)
     {
         var stage = CurrentStage ?? FIRECatalogStage.Collect;
@@ -1935,6 +1967,11 @@ public sealed class FIRECatalog : IDisposable
         return result;
     }
 
+    /// <summary>
+    /// Applies all configured string replacement rules to a value.
+    /// </summary>
+    /// <param name="value">Input value to transform.</param>
+    /// <returns>Transformed value after all configured replacements were applied.</returns>
     private string ApplyConfiguredStringReplacements(string value)
     {
         if (string.IsNullOrEmpty(value) || _configuration.StringReplacements.Count == 0)
@@ -1951,6 +1988,13 @@ public sealed class FIRECatalog : IDisposable
         return result;
     }
 
+    /// <summary>
+    /// Applies a single configured replacement rule to an input string.
+    /// </summary>
+    /// <param name="input">Input text to transform.</param>
+    /// <param name="pattern">Replacement pattern (literal, wildcard, or <c>regex:</c> prefixed).</param>
+    /// <param name="replacement">Replacement text.</param>
+    /// <returns>Transformed input string.</returns>
     internal static string ApplyStringReplacement(string input, string pattern, string replacement)
     {
         if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(pattern))
@@ -2047,6 +2091,11 @@ public sealed class FIRECatalog : IDisposable
         return ApplyConfiguredStringReplacements(resolvedDateTimeValue);
     }
 
+    /// <summary>
+    /// Splits a placeholder expression into base name and optional suffix.
+    /// </summary>
+    /// <param name="key">Placeholder expression without braces.</param>
+    /// <returns>Tuple containing base name and optional suffix.</returns>
     private static (string BaseName, string? Suffix) ParsePlaceholderExpression(string key)
     {
         if (string.IsNullOrWhiteSpace(key))
@@ -2070,6 +2119,11 @@ public sealed class FIRECatalog : IDisposable
         return (key, null);
     }
 
+    /// <summary>
+    /// Determines whether a metadata type token represents a date/time value.
+    /// </summary>
+    /// <param name="dataType">Metadata type token from keyword configuration.</param>
+    /// <returns><see langword="true"/> for date/time-compatible types; otherwise <see langword="false"/>.</returns>
     private static bool IsDateTimeDataType(string? dataType)
     {
         if (string.IsNullOrWhiteSpace(dataType))
@@ -2078,6 +2132,15 @@ public sealed class FIRECatalog : IDisposable
         return dataType.Trim().ToUpperInvariant() is "DATETIME" or "DATE" or "TIME";
     }
 
+    /// <summary>
+    /// Resolves a date/time placeholder value including fallback behavior.
+    /// </summary>
+    /// <param name="rawValue">Raw metadata value.</param>
+    /// <param name="suffix">Date/time suffix expression.</param>
+    /// <param name="sourceFilePath">Source file path for diagnostics.</param>
+    /// <param name="keywordName">Keyword being resolved.</param>
+    /// <param name="logFallback">Whether fallback usage should be logged.</param>
+    /// <returns>Resolved date/time placeholder result.</returns>
     private string ResolveDateTimePlaceholderValue(string rawValue, string suffix, string sourceFilePath, string keywordName, bool logFallback)
     {
         if (TryNormalizeDateTime(rawValue, out var normalizedValue, sourceFilePath, keywordName) &&
@@ -2098,6 +2161,13 @@ public sealed class FIRECatalog : IDisposable
         return fallbackNormalized;
     }
 
+    /// <summary>
+    /// Resolves common date/time suffix aliases or delegates to generic resolution.
+    /// </summary>
+    /// <param name="dateTime">Parsed date/time value.</param>
+    /// <param name="suffix">Suffix expression to resolve.</param>
+    /// <param name="normalizedValue">Normalized full date/time fallback value.</param>
+    /// <returns>Resolved suffix value.</returns>
     private static string ResolveDateTimeSuffixValue(DateTime dateTime, string suffix, string normalizedValue)
     {
         if (string.IsNullOrWhiteSpace(suffix))
@@ -2118,6 +2188,13 @@ public sealed class FIRECatalog : IDisposable
         };
     }
 
+    /// <summary>
+    /// Resolves a date/time suffix using reflection or .NET format strings.
+    /// </summary>
+    /// <param name="dateTime">Parsed date/time value.</param>
+    /// <param name="suffix">Suffix expression to resolve.</param>
+    /// <param name="normalizedValue">Normalized full date/time fallback value.</param>
+    /// <returns>Resolved suffix value, or <paramref name="normalizedValue"/> when resolution fails.</returns>
     private static string ResolveGenericDateTimeSuffixValue(DateTime dateTime, string suffix, string normalizedValue)
     {
         var property = typeof(DateTime).GetProperty(suffix, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase);

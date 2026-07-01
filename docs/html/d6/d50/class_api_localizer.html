@@ -124,7 +124,9 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('d6/d50/class_a
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae20112b68f53db89f0334a53bbe80e3c" id="r_ae20112b68f53db89f0334a53bbe80e3c"><td class="memItemLeft">static <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#ae20112b68f53db89f0334a53bbe80e3c">Get</a> (<a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> key, CultureInfo? culture=null)</td></tr>
+<tr class="memdesc:ae20112b68f53db89f0334a53bbe80e3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolves a localized resource string by key.  <br /></td></tr>
 <tr class="memitem:ac202062c7eea1de336ba7e23144ddf5a" id="r_ac202062c7eea1de336ba7e23144ddf5a"><td class="memItemLeft">static <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac202062c7eea1de336ba7e23144ddf5a">Format</a> (<a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> key, CultureInfo? culture=null, params object[] args)</td></tr>
+<tr class="memdesc:ac202062c7eea1de336ba7e23144ddf5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolves and formats a localized resource string.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -162,9 +164,20 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00024">24</a> of file <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html">ApiLocalizer.cs</a>.</p>
+<p>Resolves and formats a localized resource string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>Resource key to look up.</td></tr>
+    <tr><td class="paramname">culture</td><td>Optional target culture. Uses CultureInfo.CurrentUICulture when omitted.</td></tr>
+    <tr><td class="paramname">args</td><td>Format arguments applied to the localized format string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The formatted localized string.</dd></dl>
 
-<p class="reference">References <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00010">Get()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00039">39</a> of file <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html">ApiLocalizer.cs</a>.</p>
+
+<p class="reference">References <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00018">Get()</a>.</p>
 
 </div>
 </div>
@@ -195,9 +208,19 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00010">10</a> of file <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html">ApiLocalizer.cs</a>.</p>
+<p>Resolves a localized resource string by key. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>Resource key to look up.</td></tr>
+    <tr><td class="paramname">culture</td><td>Optional target culture. Uses CultureInfo.CurrentUICulture when omitted.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The localized value for the requested key. Falls back to <code>en-US</code> and finally to the key itself. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00024">Format()</a>, and <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01047">LogCancelled()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00018">18</a> of file <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html">ApiLocalizer.cs</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00039">Format()</a>, and <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01079">LogCancelled()</a>.</p>
 
 </div>
 </div>
