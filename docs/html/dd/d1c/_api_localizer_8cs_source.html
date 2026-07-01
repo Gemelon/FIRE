@@ -129,34 +129,34 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('dd/d1c/_api_lo
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="../../d6/d50/class_api_localizer.html">    6</a></span>internal <span class="keyword">static</span> <span class="keyword">class </span><a class="code hl_class" href="../../d6/d50/class_api_localizer.html">ApiLocalizer</a></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>{</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">private</span> <span class="keyword">static</span> readonly ResourceManager ResourceManager = <span class="keyword">new</span>(<span class="stringliteral">&quot;FIRE.Resources.ApiStrings&quot;</span>, typeof(<a class="code hl_class" href="../../d6/d50/class_api_localizer.html">ApiLocalizer</a>).Assembly);</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="../../d6/d50/class_api_localizer.html#ae20112b68f53db89f0334a53bbe80e3c">   10</a></span>    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code hl_function" href="../../d6/d50/class_api_localizer.html#ae20112b68f53db89f0334a53bbe80e3c">Get</a>(<span class="keywordtype">string</span> key, CultureInfo? culture = null)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        var effectiveCulture = culture ?? CultureInfo.CurrentUICulture;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        var value = ResourceManager.GetString(key, effectiveCulture);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrWhiteSpace(value))</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keywordflow">return</span> value;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        }</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        value = ResourceManager.GetString(key, CultureInfo.GetCultureInfo(<span class="stringliteral">&quot;en-US&quot;</span>));</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keywordflow">return</span> <span class="keywordtype">string</span>.IsNullOrWhiteSpace(value) ? key : value;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    }</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span></div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../d6/d50/class_api_localizer.html#ae20112b68f53db89f0334a53bbe80e3c">   18</a></span>    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code hl_function" href="../../d6/d50/class_api_localizer.html#ae20112b68f53db89f0334a53bbe80e3c">Get</a>(<span class="keywordtype">string</span> key, CultureInfo? culture = null)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        var effectiveCulture = culture ?? CultureInfo.CurrentUICulture;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        var value = ResourceManager.GetString(key, effectiveCulture);</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <span class="keywordflow">if</span> (!<span class="keywordtype">string</span>.IsNullOrWhiteSpace(value))</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            <span class="keywordflow">return</span> value;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        }</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        value = ResourceManager.GetString(key, CultureInfo.GetCultureInfo(<span class="stringliteral">&quot;en-US&quot;</span>));</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="keywordflow">return</span> <span class="keywordtype">string</span>.IsNullOrWhiteSpace(value) ? key : value;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    }</div>
 </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="../../d6/d50/class_api_localizer.html#ac202062c7eea1de336ba7e23144ddf5a">   24</a></span>    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code hl_function" href="../../d6/d50/class_api_localizer.html#ac202062c7eea1de336ba7e23144ddf5a">Format</a>(<span class="keywordtype">string</span> key, CultureInfo? culture = null, params <span class="keywordtype">object</span>[] args)</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Format(culture ?? CultureInfo.CurrentUICulture, <a class="code hl_function" href="../../d6/d50/class_api_localizer.html#ae20112b68f53db89f0334a53bbe80e3c">Get</a>(key, culture), args);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d6/d50/class_api_localizer.html#ac202062c7eea1de336ba7e23144ddf5a">   39</a></span>    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code hl_function" href="../../d6/d50/class_api_localizer.html#ac202062c7eea1de336ba7e23144ddf5a">Format</a>(<span class="keywordtype">string</span> key, CultureInfo? culture = null, params <span class="keywordtype">object</span>[] args)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordflow">return</span> <span class="keywordtype">string</span>.Format(culture ?? CultureInfo.CurrentUICulture, <a class="code hl_function" href="../../d6/d50/class_api_localizer.html#ae20112b68f53db89f0334a53bbe80e3c">Get</a>(key, culture), args);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    }</div>
 </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
 </div>
 <div class="ttc" id="aclass_api_localizer_html"><div class="ttname"><a href="../../d6/d50/class_api_localizer.html">ApiLocalizer</a></div><div class="ttdef"><b>Definition</b> <a href="#l00006">ApiLocalizer.cs:7</a></div></div>
-<div class="ttc" id="aclass_api_localizer_html_ac202062c7eea1de336ba7e23144ddf5a"><div class="ttname"><a href="../../d6/d50/class_api_localizer.html#ac202062c7eea1de336ba7e23144ddf5a">ApiLocalizer::Format</a></div><div class="ttdeci">static string Format(string key, CultureInfo? culture=null, params object[] args)</div><div class="ttdef"><b>Definition</b> <a href="#l00024">ApiLocalizer.cs:24</a></div></div>
-<div class="ttc" id="aclass_api_localizer_html_ae20112b68f53db89f0334a53bbe80e3c"><div class="ttname"><a href="../../d6/d50/class_api_localizer.html#ae20112b68f53db89f0334a53bbe80e3c">ApiLocalizer::Get</a></div><div class="ttdeci">static string Get(string key, CultureInfo? culture=null)</div><div class="ttdef"><b>Definition</b> <a href="#l00010">ApiLocalizer.cs:10</a></div></div>
+<div class="ttc" id="aclass_api_localizer_html_ac202062c7eea1de336ba7e23144ddf5a"><div class="ttname"><a href="../../d6/d50/class_api_localizer.html#ac202062c7eea1de336ba7e23144ddf5a">ApiLocalizer::Format</a></div><div class="ttdeci">static string Format(string key, CultureInfo? culture=null, params object[] args)</div><div class="ttdoc">Resolves and formats a localized resource string.</div><div class="ttdef"><b>Definition</b> <a href="#l00039">ApiLocalizer.cs:39</a></div></div>
+<div class="ttc" id="aclass_api_localizer_html_ae20112b68f53db89f0334a53bbe80e3c"><div class="ttname"><a href="../../d6/d50/class_api_localizer.html#ae20112b68f53db89f0334a53bbe80e3c">ApiLocalizer::Get</a></div><div class="ttdeci">static string Get(string key, CultureInfo? culture=null)</div><div class="ttdoc">Resolves a localized resource string by key.</div><div class="ttdef"><b>Definition</b> <a href="#l00018">ApiLocalizer.cs:18</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

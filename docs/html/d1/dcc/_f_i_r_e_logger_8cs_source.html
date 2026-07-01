@@ -219,139 +219,131 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('d1/dcc/_f_i_r_
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>            _writer.Flush();</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        }</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    }</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    <span class="comment">// Opens a writer for the correct file, switching when the stage or date changes.</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> EnsureWriter(<span class="keywordtype">string</span> stageTag, DateOnly today)</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    {</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        <span class="keywordflow">if</span> (_writer != null &amp;&amp; stageTag == _currentStageTag &amp;&amp; today == _currentDate)</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        CloseWriter();</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        _currentStageTag = stageTag;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        _currentDate = today;</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        _segmentIndex = 0;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        OpenSegment();</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    }</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="comment">// Creates/appends the current segment file and writes the header if the file is new.</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> OpenSegment()</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    {</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        _currentFilePath = BuildPath(_currentStageTag, _currentDate, _segmentIndex);</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        var isNew = !File.Exists(_currentFilePath);</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        var stream = <span class="keyword">new</span> FileStream(_currentFilePath, FileMode.Append, FileAccess.Write, FileShare.Read);</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        _writer = <span class="keyword">new</span> StreamWriter(stream, System.Text.Encoding.UTF8, bufferSize: 4096, leaveOpen: <span class="keyword">false</span>);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordflow">if</span> (isNew)</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        {</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            _writer.WriteLine($<span class="stringliteral">&quot;# FIRE Log — {_currentStageTag.ToUpperInvariant()} — {_currentDate:yyyy-MM-dd}&quot;</span>);</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            _writer.WriteLine();</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            _writer.WriteLine(<a class="code hl_variable" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#aa9eb0bb9975ab9d382645b69280f89dd">TableHeader</a>);</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        }</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    }</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="comment">// Rotates to the next segment when the current file exceeds the size limit.</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> RotateIfNeeded(<span class="keywordtype">string</span> stageTag, DateOnly today)</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    {</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="keywordflow">if</span> (!File.Exists(_currentFilePath)) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <span class="keywordflow">if</span> (<span class="keyword">new</span> FileInfo(_currentFilePath).Length &lt; _config.MaxFileSizeBytes) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        CloseWriter();</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        _segmentIndex++;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        _currentStageTag = stageTag;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        _currentDate = today;</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        OpenSegment();</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    }</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="comment">// Builds the file path for the given stage, date, and segment index.</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keyword">private</span> <span class="keywordtype">string</span> BuildPath(<span class="keywordtype">string</span> stageTag, DateOnly date, <span class="keywordtype">int</span> segment)</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    {</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        var datePart = date.ToString(<span class="stringliteral">&quot;yyyyMMdd&quot;</span>, CultureInfo.InvariantCulture);</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        var segmentPart = segment == 0 ? <span class="keywordtype">string</span>.Empty : $<span class="stringliteral">&quot;.{segment}&quot;</span>;</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        var name = $<span class="stringliteral">&quot;{_config.LogFileName}.{stageTag}.{datePart}{segmentPart}.md&quot;</span>;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">return</span> Path.Combine(_config.LogFilePath, name);</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    }</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="comment">// Deletes files in the log directory whose write time is older than MaxAgeDays.</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> PurgeOldFiles()</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    {</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        <span class="keywordflow">if</span> (_config.MaxAgeDays &lt;= 0) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        var cutoff = DateTime.Now.AddDays(-_config.MaxAgeDays);</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        {</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            <span class="keywordflow">foreach</span> (var file <span class="keywordflow">in</span> Directory.EnumerateFiles(_config.LogFilePath, <span class="stringliteral">&quot;*.md&quot;</span>))</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            {</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                <span class="keywordflow">if</span> (File.GetLastWriteTime(file) &lt; cutoff)</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                    File.Delete(file);</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>            }</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        }</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        <span class="keywordflow">catch</span> { <span class="comment">/* Best-effort purge; do not disrupt the run. */</span> }</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    }</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> CloseWriter()</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    {</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        _writer?.Flush();</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        _writer?.Dispose();</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        _writer = null;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    }</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span></div>
-<div class="foldopen" id="foldopen00243" data-start="{" data-end="}">
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno"><a class="line" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7">  243</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7">Dispose</a>()</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    {</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keywordflow">if</span> (_disposed) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        lock (_lock)</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        {</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            CloseWriter();</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        }</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        _disposed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    }</div>
-</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="comment">// Parses a log-level string to the corresponding enum value, defaulting to Error.</span></div>
-<div class="foldopen" id="foldopen00254" data-start="{" data-end="}">
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno"><a class="line" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a2b034749dc19768fcbb2f94957c4da2c">  254</a></span>    internal <span class="keyword">static</span> <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a> <a class="code hl_function" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a2b034749dc19768fcbb2f94957c4da2c">ParseLevel</a>(<span class="keywordtype">string</span> levelName) =&gt; levelName.Trim().ToUpperInvariant() <span class="keywordflow">switch</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> EnsureWriter(<span class="keywordtype">string</span> stageTag, DateOnly today)</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    {</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        <span class="keywordflow">if</span> (_writer != null &amp;&amp; stageTag == _currentStageTag &amp;&amp; today == _currentDate)</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>            <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        CloseWriter();</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        _currentStageTag = stageTag;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        _currentDate = today;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        _segmentIndex = 0;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        OpenSegment();</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span></div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> OpenSegment()</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    {</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        _currentFilePath = BuildPath(_currentStageTag, _currentDate, _segmentIndex);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        var isNew = !File.Exists(_currentFilePath);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        var stream = <span class="keyword">new</span> FileStream(_currentFilePath, FileMode.Append, FileAccess.Write, FileShare.Read);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        _writer = <span class="keyword">new</span> StreamWriter(stream, System.Text.Encoding.UTF8, bufferSize: 4096, leaveOpen: <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">if</span> (isNew)</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            _writer.WriteLine($<span class="stringliteral">&quot;# FIRE Log — {_currentStageTag.ToUpperInvariant()} — {_currentDate:yyyy-MM-dd}&quot;</span>);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            _writer.WriteLine();</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            _writer.WriteLine(<a class="code hl_variable" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#aa9eb0bb9975ab9d382645b69280f89dd">TableHeader</a>);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        }</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    }</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> RotateIfNeeded(<span class="keywordtype">string</span> stageTag, DateOnly today)</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    {</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keywordflow">if</span> (!File.Exists(_currentFilePath)) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <span class="keywordflow">if</span> (<span class="keyword">new</span> FileInfo(_currentFilePath).Length &lt; _config.MaxFileSizeBytes) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        CloseWriter();</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        _segmentIndex++;</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        _currentStageTag = stageTag;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        _currentDate = today;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        OpenSegment();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keyword">private</span> <span class="keywordtype">string</span> BuildPath(<span class="keywordtype">string</span> stageTag, DateOnly date, <span class="keywordtype">int</span> segment)</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    {</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>        var datePart = date.ToString(<span class="stringliteral">&quot;yyyyMMdd&quot;</span>, CultureInfo.InvariantCulture);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        var segmentPart = segment == 0 ? <span class="keywordtype">string</span>.Empty : $<span class="stringliteral">&quot;.{segment}&quot;</span>;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        var name = $<span class="stringliteral">&quot;{_config.LogFileName}.{stageTag}.{datePart}{segmentPart}.md&quot;</span>;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keywordflow">return</span> Path.Combine(_config.LogFilePath, name);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    }</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> PurgeOldFiles()</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    {</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="keywordflow">if</span> (_config.MaxAgeDays &lt;= 0) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        var cutoff = DateTime.Now.AddDays(-_config.MaxAgeDays);</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        {</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            <span class="keywordflow">foreach</span> (var file <span class="keywordflow">in</span> Directory.EnumerateFiles(_config.LogFilePath, <span class="stringliteral">&quot;*.md&quot;</span>))</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            {</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                <span class="keywordflow">if</span> (File.GetLastWriteTime(file) &lt; cutoff)</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>                    File.Delete(file);</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        }</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <span class="keywordflow">catch</span> { <span class="comment">/* Best-effort purge; do not disrupt the run. */</span> }</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    }</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keyword">private</span> <span class="keywordtype">void</span> CloseWriter()</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    {</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        <span class="stringliteral">&quot;DEBUG&quot;</span>    =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Debug,</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        <span class="stringliteral">&quot;INFO&quot;</span>     =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Info,</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <span class="stringliteral">&quot;WARNING&quot;</span>  =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Warning,</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="stringliteral">&quot;ERROR&quot;</span>    =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Error,</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        <span class="stringliteral">&quot;CRITICAL&quot;</span> =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Critical,</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        _          =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Error,</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    };</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        _writer?.Flush();</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        _writer?.Dispose();</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        _writer = null;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    }</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span></div>
+<div class="foldopen" id="foldopen00264" data-start="{" data-end="}">
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7">  264</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="../../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7">Dispose</a>()</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    {</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="keywordflow">if</span> (_disposed) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        lock (_lock)</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        {</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>            CloseWriter();</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        }</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        _disposed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    }</div>
 </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="comment">// Maps FIRECatalogMessageLevel to FIRELogLevel for the catalog integration.</span></div>
-<div class="foldopen" id="foldopen00265" data-start="{" data-end="}">
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a97a9719365174ef86f9d5e1a7f79c9f1">  265</a></span>    internal <span class="keyword">static</span> <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a> <a class="code hl_function" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a97a9719365174ef86f9d5e1a7f79c9f1">FromMessageLevel</a>(FIRECatalogMessageLevel level) =&gt; level <span class="keywordflow">switch</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    {</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        FIRECatalogMessageLevel.Trace   =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Debug,</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        FIRECatalogMessageLevel.Info    =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Info,</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        FIRECatalogMessageLevel.Warning =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Warning,</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        FIRECatalogMessageLevel.Error   =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Error,</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        _                               =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Info,</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    };</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span></div>
+<div class="foldopen" id="foldopen00279" data-start="{" data-end="}">
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno"><a class="line" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a2b034749dc19768fcbb2f94957c4da2c">  279</a></span>    internal <span class="keyword">static</span> <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a> <a class="code hl_function" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a2b034749dc19768fcbb2f94957c4da2c">ParseLevel</a>(<span class="keywordtype">string</span> levelName) =&gt; levelName.Trim().ToUpperInvariant() <span class="keywordflow">switch</span></div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    {</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        <span class="stringliteral">&quot;DEBUG&quot;</span>    =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Debug,</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        <span class="stringliteral">&quot;INFO&quot;</span>     =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Info,</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        <span class="stringliteral">&quot;WARNING&quot;</span>  =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Warning,</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="stringliteral">&quot;ERROR&quot;</span>    =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Error,</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        <span class="stringliteral">&quot;CRITICAL&quot;</span> =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Critical,</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        _          =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Error,</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    };</div>
 </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="comment">// Maps FIRECatalogStage to the stage tag used in file names.</span></div>
-<div class="foldopen" id="foldopen00275" data-start="{" data-end="}">
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a7120565336b5ef0a841b6dac0d08b6b7">  275</a></span>    internal <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code hl_function" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a7120565336b5ef0a841b6dac0d08b6b7">StageTag</a>(<a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>? stage) =&gt; stage <span class="keywordflow">switch</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    {</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        <a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>.Collect  =&gt; <span class="stringliteral">&quot;col&quot;</span>,</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>.Generate =&gt; <span class="stringliteral">&quot;gen&quot;</span>,</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>.Execute  =&gt; <span class="stringliteral">&quot;exe&quot;</span>,</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        <a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>.Inspect  =&gt; <span class="stringliteral">&quot;ins&quot;</span>,</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        _                         =&gt; <span class="stringliteral">&quot;misc&quot;</span>,</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    };</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span></div>
+<div class="foldopen" id="foldopen00294" data-start="{" data-end="}">
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno"><a class="line" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a97a9719365174ef86f9d5e1a7f79c9f1">  294</a></span>    internal <span class="keyword">static</span> <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a> <a class="code hl_function" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a97a9719365174ef86f9d5e1a7f79c9f1">FromMessageLevel</a>(FIRECatalogMessageLevel level) =&gt; level <span class="keywordflow">switch</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    {</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        FIRECatalogMessageLevel.Trace   =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Debug,</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        FIRECatalogMessageLevel.Info    =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Info,</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        FIRECatalogMessageLevel.Warning =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Warning,</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        FIRECatalogMessageLevel.Error   =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Error,</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        _                               =&gt; <a class="code hl_enumeration" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>.Info,</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    };</div>
 </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>}</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span></div>
+<div class="foldopen" id="foldopen00308" data-start="{" data-end="}">
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno"><a class="line" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a7120565336b5ef0a841b6dac0d08b6b7">  308</a></span>    internal <span class="keyword">static</span> <span class="keywordtype">string</span> <a class="code hl_function" href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a7120565336b5ef0a841b6dac0d08b6b7">StageTag</a>(<a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>? stage) =&gt; stage <span class="keywordflow">switch</span></div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    {</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        <a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>.Collect  =&gt; <span class="stringliteral">&quot;col&quot;</span>,</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        <a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>.Generate =&gt; <span class="stringliteral">&quot;gen&quot;</span>,</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        <a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>.Execute  =&gt; <span class="stringliteral">&quot;exe&quot;</span>,</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>        <a class="code hl_enumeration" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>.Inspect  =&gt; <span class="stringliteral">&quot;ins&quot;</span>,</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        _                         =&gt; <span class="stringliteral">&quot;misc&quot;</span>,</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    };</div>
+</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>}</div>
 <div class="ttc" id="a_f_i_r_e_catalog_8cs_html_a6e2d745cdb7a7b983f861ed6a9a541a7"><div class="ttname"><a href="../../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7">Dispose</a></div><div class="ttdeci">void Dispose()</div><div class="ttdoc">Disposes the underlying ExifTool instance.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00311">FIRECatalog.cs:311</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_progress_8cs_html_a47c4de6beb40683c67f85cbdebf55b59"><div class="ttname"><a href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a></div><div class="ttdeci">FIRECatalogStage</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d87/_f_i_r_e_catalog_progress_8cs_source.html#l00005">FIRECatalogProgress.cs:6</a></div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_progress_8cs_html_a95b85e952064b6939b16e62cb9590e91"><div class="ttname"><a href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95b85e952064b6939b16e62cb9590e91">Info</a></div><div class="ttdeci">enum FIRECatalogStage Info</div></div>
 <div class="ttc" id="a_f_i_r_e_catalog_progress_8cs_html_a95e3544a64bdc9ce3c1a03c4ea6cc208"><div class="ttname"><a href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95e3544a64bdc9ce3c1a03c4ea6cc208">Warning</a></div><div class="ttdeci">enum FIRECatalogStage Warning</div></div>
-<div class="ttc" id="a_f_i_r_e_logger_8cs_html_a2b034749dc19768fcbb2f94957c4da2c"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a2b034749dc19768fcbb2f94957c4da2c">ParseLevel</a></div><div class="ttdeci">static internal FIRELogLevel ParseLevel(string levelName)</div></div>
-<div class="ttc" id="a_f_i_r_e_logger_8cs_html_a7120565336b5ef0a841b6dac0d08b6b7"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a7120565336b5ef0a841b6dac0d08b6b7">StageTag</a></div><div class="ttdeci">static internal string StageTag(FIRECatalogStage? stage)</div></div>
-<div class="ttc" id="a_f_i_r_e_logger_8cs_html_a97a9719365174ef86f9d5e1a7f79c9f1"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a97a9719365174ef86f9d5e1a7f79c9f1">FromMessageLevel</a></div><div class="ttdeci">static internal FIRELogLevel FromMessageLevel(FIRECatalogMessageLevel level)</div></div>
+<div class="ttc" id="a_f_i_r_e_logger_8cs_html_a2b034749dc19768fcbb2f94957c4da2c"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a2b034749dc19768fcbb2f94957c4da2c">ParseLevel</a></div><div class="ttdeci">static internal FIRELogLevel ParseLevel(string levelName)</div><div class="ttdoc">Parses a textual log level into a FIRELogLevel value.</div></div>
+<div class="ttc" id="a_f_i_r_e_logger_8cs_html_a7120565336b5ef0a841b6dac0d08b6b7"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a7120565336b5ef0a841b6dac0d08b6b7">StageTag</a></div><div class="ttdeci">static internal string StageTag(FIRECatalogStage? stage)</div><div class="ttdoc">Resolves the short stage tag used in log file names.</div></div>
+<div class="ttc" id="a_f_i_r_e_logger_8cs_html_a97a9719365174ef86f9d5e1a7f79c9f1"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a97a9719365174ef86f9d5e1a7f79c9f1">FromMessageLevel</a></div><div class="ttdeci">static internal FIRELogLevel FromMessageLevel(FIRECatalogMessageLevel level)</div><div class="ttdoc">Maps catalog progress severity to logger severity.</div></div>
 <div class="ttc" id="a_f_i_r_e_logger_8cs_html_a98b250e2290324629b7467b158d9763d"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a></div><div class="ttdeci">FIRELogLevel</div><div class="ttdoc">Numeric severity levels for FIRE log entries.</div><div class="ttdef"><b>Definition</b> <a href="#l00042">FIRELogger.cs:43</a></div></div>
 <div class="ttc" id="a_f_i_r_e_logger_8cs_html_a98b250e2290324629b7467b158d9763da4dfd42ec49d09d8c6555c218301cc30f"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763da4dfd42ec49d09d8c6555c218301cc30f">Error</a></div><div class="ttdeci">@ Error</div><div class="ttdef"><b>Definition</b> <a href="#l00047">FIRELogger.cs:47</a></div></div>
 <div class="ttc" id="a_f_i_r_e_logger_8cs_html_a98b250e2290324629b7467b158d9763da6779101cd5bbfab8a7da94cccf1947e2"><div class="ttname"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763da6779101cd5bbfab8a7da94cccf1947e2">Critical</a></div><div class="ttdeci">@ Critical</div><div class="ttdef"><b>Definition</b> <a href="#l00048">FIRELogger.cs:48</a></div></div>

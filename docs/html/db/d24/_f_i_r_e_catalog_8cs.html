@@ -239,7 +239,7 @@ Variables</h2></td></tr>
 <div class="textblock"><p>Marshalled structure for retrieving file ID information from Windows NTFS. </p>
 <p>This structure receives output from the Windows API call GetFileInformationByHandleEx with FileInfoByHandleClass.FileIdInfo, and contains the volume serial number and file ID. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00534">534</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00548">548</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -300,7 +300,7 @@ The volume serial number where the file resides. </td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00756">756</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00788">788</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -352,9 +352,9 @@ Saves all records to the database when complete. </li>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00716">716</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00748">748</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00512">Action</a>.</p>
+<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00519">Action</a>.</p>
 
 </div>
 </div>
@@ -408,7 +408,7 @@ Warnings for missing metadata, failed datetime parsing, or "Unknown" fallbacks <
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01084">1084</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01116">1116</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -486,11 +486,20 @@ Warnings for missing metadata, failed datetime parsing, or "Unknown" fallbacks <
 <div class="line">    <span class="comment">// Step 3: Execute file operations</span></div>
 <div class="line">    catalog.ExecuteFileOperations(path =&gt; Console.WriteLine($<span class="stringliteral">&quot;Processing: {path}&quot;</span>));</div>
 <div class="line">}</div>
-<div class="ttc" id="a_f_i_r_e_catalog_8cs_html_aa1e8255547d501a2b9ed5236b92b1ff2"><div class="ttname"><a href="#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a></div><div class="ttdeci">FIRECatalog(FIREConfigration configuration, FIREDatabase database)</div><div class="ttdoc">Initializes a new instance of FIRECatalog.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00570">FIRECatalog.cs:570</a></div></div>
+<div class="ttc" id="a_f_i_r_e_catalog_8cs_html_aa1e8255547d501a2b9ed5236b92b1ff2"><div class="ttname"><a href="#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a></div><div class="ttdeci">FIRECatalog(FIREConfigration configuration, FIREDatabase database)</div><div class="ttdoc">Initializes a new instance of FIRECatalog.</div><div class="ttdef"><b>Definition</b> <a href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00584">FIRECatalog.cs:584</a></div></div>
 <div class="ttc" id="aclass_f_i_r_e_configration_html"><div class="ttname"><a href="../../df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a></div><div class="ttdoc">Represents the root configuration document loaded from the FIRE configuration YAML file.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00086">FIREConfigration.cs:87</a></div></div>
 <div class="ttc" id="aclass_f_i_r_e_configration_html_a89e6c0a8550de0522eda231500c9aa75"><div class="ttname"><a href="../../df/dbb/class_f_i_r_e_configration.html#a89e6c0a8550de0522eda231500c9aa75">FIREConfigration::Load</a></div><div class="ttdeci">static FIREConfigration Load(string filePath)</div><div class="ttdoc">Loads a FIRE configuration from a YAML file on disk.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00288">FIREConfigration.cs:288</a></div></div>
 <div class="ttc" id="aclass_f_i_r_e_configration_html_a8c74ce8d2e821802ad7a0c5957826737"><div class="ttname"><a href="../../df/dbb/class_f_i_r_e_configration.html#a8c74ce8d2e821802ad7a0c5957826737">FIREConfigration::EnsureSupportedConfigurationVersion</a></div><div class="ttdeci">void EnsureSupportedConfigurationVersion()</div><div class="ttdoc">Throws an exception if the configuration version is not supported.</div><div class="ttdef"><b>Definition</b> <a href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00344">FIREConfigration.cs:344</a></div></div>
-</div><!-- fragment --> 
+</div><!-- fragment --> <p>Retrieves basic file information for an open file handle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hFile</td><td>Native file handle.</td></tr>
+    <tr><td class="paramname">lpFileInformation</td><td>Receives file information.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> on success; otherwise <code>false</code>.</dd></dl>
+
 <p class="reference">References <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00375">MetadataSourceRegistry::MetadataSourceRegistry()</a>.</p>
 
 </div>
@@ -535,9 +544,9 @@ Calls ExecuteAction to perform the operation. </li>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00945">945</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00977">977</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00512">Action</a>.</p>
+<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00519">Action</a>.</p>
 
 </div>
 </div>
@@ -632,7 +641,7 @@ Calls ExecuteAction to perform the operation. </li>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00570">570</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00584">584</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 <p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00234">FIREConfigration::Logging</a>, and <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00010">MetadataSourceRegistry()</a>.</p>
 
@@ -682,9 +691,9 @@ Constructing the final target path. </li>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00789">789</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00821">821</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00512">Action</a>.</p>
+<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00519">Action</a>.</p>
 
 </div>
 </div>
@@ -739,11 +748,11 @@ Constructing the final target path. </li>
 <div class="line">    Console.WriteLine($<span class="stringliteral">&quot;[{source}] {key}: {value}&quot;</span>);</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l02354">2354</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l02431">2431</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00764">Source</a>.</p>
+<p class="reference">References <a class="el" href="../../d1/d3c/_f_i_r_e_configration_8cs_source.html#l00771">Source</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l02454">WriteMetadataToMarkdown()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l02531">WriteMetadataToMarkdown()</a>.</p>
 
 </div>
 </div>
@@ -793,9 +802,9 @@ Constructing the final target path. </li>
 <p>Writes a cancellation notice to the log at level Info. </p>
 <p>Call this method before disposing the catalog when the operation was cancelled by the user (e.g. via Ctrl+C). The entry is written directly to the logger without raising ProgressChanged; if logging is disabled the call is a no-op. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01047">1047</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01079">1079</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="../../dd/d5c/_program_8cs_source.html#l00147">Culture</a>, <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00517">CurrentStage</a>, and <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00010">ApiLocalizer::Get()</a>.</p>
+<p class="reference">References <a class="el" href="../../dd/d5c/_program_8cs_source.html#l00147">Culture</a>, <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00531">CurrentStage</a>, and <a class="el" href="../../dd/d1c/_api_localizer_8cs_source.html#l00018">ApiLocalizer::Get()</a>.</p>
 
 </div>
 </div>
@@ -819,7 +828,7 @@ Constructing the final target path. </li>
 
 <p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00010">10</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00570">FIRECatalog()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00584">FIRECatalog()</a>.</p>
 
 </div>
 </div>
@@ -906,9 +915,9 @@ Summary statistics </li>
 <div class="line"><span class="comment">// Or specify a custom output path</span></div>
 <div class="line">catalog.WriteMetadataToMarkdown(<span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>, <span class="stringliteral">@&quot;D:\Reports\metadata.md&quot;</span>);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l02454">2454</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l02531">2531</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
-<p class="reference">References <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l02354">GetAllAvailableMetadata()</a>.</p>
+<p class="reference">References <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l02431">GetAllAvailableMetadata()</a>.</p>
 
 </div>
 </div>
@@ -941,7 +950,7 @@ Summary statistics </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00551">551</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00565">565</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -957,7 +966,7 @@ Summary statistics </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00498">498</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00512">512</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -973,7 +982,7 @@ Summary statistics </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00519">519</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00533">533</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -989,9 +998,9 @@ Summary statistics </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00517">517</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00531">531</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01047">LogCancelled()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l01079">LogCancelled()</a>.</p>
 
 </div>
 </div>
@@ -1011,7 +1020,7 @@ Summary statistics </li>
 <p>A date is considered implausible if its year is less than 1900 or more than 10 years in the future. When an implausible date is detected during metadata processing or path generation, this fallback value will be used instead and a warning will be logged. </p>
 <p>Applications can override this property to use a specific date for reproducible results, for example during testing or when processing archived collections with known date ranges. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00515">515</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00529">529</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1265,7 +1274,7 @@ Summary statistics </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00558">558</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00572">572</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1281,7 +1290,7 @@ Summary statistics </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00559">559</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00573">573</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1361,7 +1370,7 @@ Summary statistics </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00555">555</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00569">569</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1377,7 +1386,7 @@ Summary statistics </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00556">556</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00570">570</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1485,7 +1494,7 @@ XMP comments, keywords, ratings </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00552">552</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00566">566</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1501,7 +1510,7 @@ XMP comments, keywords, ratings </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00525">525</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00539">539</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1517,7 +1526,7 @@ XMP comments, keywords, ratings </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00553">553</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00567">567</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1533,7 +1542,7 @@ XMP comments, keywords, ratings </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00479">479</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00485">485</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1565,7 +1574,7 @@ XMP comments, keywords, ratings </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00557">557</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00571">571</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1581,7 +1590,7 @@ XMP comments, keywords, ratings </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00521">521</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00535">535</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1597,7 +1606,7 @@ XMP comments, keywords, ratings </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00496">496</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00510">510</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1613,7 +1622,7 @@ XMP comments, keywords, ratings </li>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00498">498</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00512">512</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1683,7 +1692,7 @@ ExifToolMetadataSource: Embedded file metadata via ExifTool (EXIF, IPTC, XMP) </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00523">523</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00537">537</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>
@@ -1699,7 +1708,7 @@ ExifToolMetadataSource: Embedded file metadata via ExifTool (EXIF, IPTC, XMP) </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00554">554</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html#l00568">568</a> of file <a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs_source.html">FIRECatalog.cs</a>.</p>
 
 </div>
 </div>

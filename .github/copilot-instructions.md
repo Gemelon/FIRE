@@ -5,6 +5,7 @@
 
 ## Code Documentation
 - All documentation and code comments must be written in English.
+- All methods in all libraries must be fully documented, including non-public methods.
 
 ## Path Generation
 - The user should decide whether a counter is used; a counter is only activated when the template contains placeholders such as `{Counter:D3}`.

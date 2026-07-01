@@ -141,8 +141,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a6e2d745cdb7a7b983f861ed6a9a541a7" id="r_a6e2d745cdb7a7b983f861ed6a9a541a7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6e2d745cdb7a7b983f861ed6a9a541a7">Dispose</a> ()</td></tr>
 <tr class="memdesc:a6e2d745cdb7a7b983f861ed6a9a541a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flushes and closes the underlying log file.  <br /></td></tr>
 <tr class="memitem:a2b034749dc19768fcbb2f94957c4da2c" id="r_a2b034749dc19768fcbb2f94957c4da2c"><td class="memItemLeft">static internal <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>&#160;</td><td class="memItemRight"><a class="el" href="#a2b034749dc19768fcbb2f94957c4da2c">ParseLevel</a> (<a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> levelName)</td></tr>
+<tr class="memdesc:a2b034749dc19768fcbb2f94957c4da2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a textual log level into a FIRELogLevel value.  <br /></td></tr>
 <tr class="memitem:a97a9719365174ef86f9d5e1a7f79c9f1" id="r_a97a9719365174ef86f9d5e1a7f79c9f1"><td class="memItemLeft">static internal <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>&#160;</td><td class="memItemRight"><a class="el" href="#a97a9719365174ef86f9d5e1a7f79c9f1">FromMessageLevel</a> (FIRECatalogMessageLevel level)</td></tr>
+<tr class="memdesc:a97a9719365174ef86f9d5e1a7f79c9f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps catalog progress severity to logger severity.  <br /></td></tr>
 <tr class="memitem:a7120565336b5ef0a841b6dac0d08b6b7" id="r_a7120565336b5ef0a841b6dac0d08b6b7"><td class="memItemLeft">static internal <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#a7120565336b5ef0a841b6dac0d08b6b7">StageTag</a> (<a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>? stage)</td></tr>
+<tr class="memdesc:a7120565336b5ef0a841b6dac0d08b6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolves the short stage tag used in log file names.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -205,7 +208,7 @@ Critical(4) – Unrecoverable failures that aborted a stage. </li>
 
 <p>Flushes and closes the underlying log file. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html#l00243">243</a> of file <a class="el" href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html">FIRELogger.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html#l00264">264</a> of file <a class="el" href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html">FIRELogger.cs</a>.</p>
 
 </div>
 </div>
@@ -232,6 +235,15 @@ Critical(4) – Unrecoverable failures that aborted a stage. </li>
 </table>
 </div><div class="memdoc">
 
+<p>Maps catalog progress severity to logger severity. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">level</td><td>Catalog message level.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Equivalent logger level.</dd></dl>
+
 </div>
 </div>
 <a id="a2b034749dc19768fcbb2f94957c4da2c" name="a2b034749dc19768fcbb2f94957c4da2c"></a>
@@ -257,6 +269,15 @@ Critical(4) – Unrecoverable failures that aborted a stage. </li>
 </table>
 </div><div class="memdoc">
 
+<p>Parses a textual log level into a FIRELogLevel value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">levelName</td><td>Configured level token.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The parsed log level. Defaults to FIRELogLevel.Error when unknown.</dd></dl>
+
 </div>
 </div>
 <a id="a7120565336b5ef0a841b6dac0d08b6b7" name="a7120565336b5ef0a841b6dac0d08b6b7"></a>
@@ -281,6 +302,15 @@ Critical(4) – Unrecoverable failures that aborted a stage. </li>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Resolves the short stage tag used in log file names. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stage</td><td>Catalog stage.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Stage tag token used in log file naming.</dd></dl>
 
 </div>
 </div>

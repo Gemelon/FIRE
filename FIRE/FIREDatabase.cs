@@ -1077,6 +1077,13 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         return $"{volumeSerialNumber}:{Convert.ToHexString(fileId)}";
     }
 
+    /// <summary>
+    /// Ensures that the singleton status row exists in the status table.
+    /// </summary>
+    /// <remarks>
+    /// When no status row is present, a default initialized row is created and mirrored
+    /// into the in-memory status model.
+    /// </remarks>
     private void EnsureStatusRowExists()
     {
         if (_context.StatusRecords.Any(x => x.Id == FIREDatabaseStatusEntity.SingletonId))
@@ -1553,6 +1560,15 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     {
         public static readonly SortValueComparer Instance = new();
 
+        /// <summary>
+        /// Compares two heterogeneous sort values with deterministic null and type handling.
+        /// </summary>
+        /// <param name="x">Left value to compare.</param>
+        /// <param name="y">Right value to compare.</param>
+        /// <returns>
+        /// A signed comparison result compatible with <see cref="IComparer{T}"/> semantics.
+        /// Null values are ordered after non-null values.
+        /// </returns>
         public int Compare(IComparable? x, IComparable? y)
         {
             if (ReferenceEquals(x, y))
