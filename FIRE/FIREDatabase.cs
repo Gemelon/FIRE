@@ -659,6 +659,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         _context.Database.EnsureCreated();
         EnsureCounterStateTableExists();
         EnsureAssignedCounterValueColumnExists();
+        EnsureFileIdHashColumnExists();
         EnsureStatusRowExists();
         Reload();
     }
@@ -1261,6 +1262,51 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     }
 
     /// <summary>
+    /// Ensures that the <c>FileIdHash</c> column exists in the
+    /// <c>FIREDbRecords</c> table even for databases created before this field
+    /// was introduced.
+    /// </summary>
+    private void EnsureFileIdHashColumnExists()
+    {
+        // Check if column already exists using PRAGMA table_info
+        var connection = _context.Database.GetDbConnection();
+        connection.Open();
+
+        using var command = connection.CreateCommand();
+        command.CommandText = "PRAGMA table_info(FIREDbRecords);";
+
+        using var reader = command.ExecuteReader();
+        bool columnExists = false;
+
+        while (reader.Read())
+        {
+            var columnName = reader.GetString(1); // Column name is at index 1
+            if (columnName == "FileIdHash")
+            {
+                columnExists = true;
+                break;
+            }
+        }
+
+        reader.Close();
+
+        // Only add column if it doesn't exist
+        if (!columnExists)
+        {
+            _context.Database.ExecuteSqlRaw("""
+                ALTER TABLE "FIREDbRecords" ADD COLUMN "FileIdHash" TEXT NULL;
+                """);
+
+            // Create index on FileIdHash after adding the column
+            _context.Database.ExecuteSqlRaw("""
+                CREATE INDEX "IX_FileIdHash" ON "FIREDbRecords" ("FileIdHash");
+                """);
+        }
+
+        connection.Close();
+    }
+
+    /// <summary>
     /// Returns the next counter value for the specified scope and keeps it in memory until
     /// the surrounding database save operation persists it.
     /// </summary>
@@ -1479,6 +1525,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         {
             VolumeSerialNumber = entity.VolumeSerialNumber,
             FileId = entity.FileId,
+            FileIdHash = entity.FileIdHash,
             SourceFilePath = entity.SourceFilePath,
             TargetFilePath = entity.TargetFilePath,
             Classification = entity.Classification,
@@ -1527,6 +1574,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         {
             VolumeSerialNumber = model.VolumeSerialNumber,
             FileId = model.FileId,
+            FileIdHash = model.FileIdHash,
             SourceFilePath = model.SourceFilePath,
             TargetFilePath = model.TargetFilePath,
             Classification = model.Classification,
