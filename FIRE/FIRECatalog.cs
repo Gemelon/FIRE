@@ -1441,7 +1441,8 @@ public sealed class FIRECatalog : IDisposable
         {
             SourceFilePath = filePath,
             VolumeSerialNumber = fileIdInfo.VolumeSerialNumber,
-            FileId = fileIdInfo.FileId
+            FileId = fileIdInfo.FileId,
+            FileIdHash = FIREDatabase.ComputeFileIdHash(fileIdInfo.VolumeSerialNumber, fileIdInfo.FileId)
         };
 
         foreach (var keywordEntry in extConfig.AvailableKeyWords)

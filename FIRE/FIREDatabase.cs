@@ -25,6 +25,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Globalization;
+using System.Security.Cryptography;
 
 namespace FIRE;
 
@@ -294,6 +295,25 @@ public class FIREDbRecord
     /// which is important for avoiding duplicate processing.
     /// </remarks>
     public byte[]? FileId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the cryptographic hash of the VolumeSerialNumber and FileId combination.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This field stores a SHA256 hash computed from the <see cref="VolumeSerialNumber"/>
+    /// and <see cref="FileId"/> to provide a fast, non-reversible unique identifier for duplicate detection.
+    /// </para>
+    /// <para>
+    /// The hash is computed once during file collection and stored persistently in the database.
+    /// This allows efficient duplicate detection without comparing binary FileId arrays or relying
+    /// on the in-memory index.
+    /// </para>
+    /// <para>
+    /// This field is null if the file lacks a valid FileId (e.g., on non-NTFS systems or if the API call failed).
+    /// </para>
+    /// </remarks>
+    public string? FileIdHash { get; set; }
 
     /// <summary>
     /// Gets or sets the original source file path as discovered during the <c>collect</c> phase.
@@ -680,6 +700,23 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             .OrderBy(record => record.Id)
             .Select(MapToModel));
 
+        // Migration: Compute FileIdHash for records that don't have it yet
+        var needsUpdate = false;
+        foreach (var record in _records)
+        {
+            if (record.FileId != null && string.IsNullOrEmpty(record.FileIdHash))
+            {
+                record.FileIdHash = ComputeFileIdHash(record.VolumeSerialNumber, record.FileId);
+                needsUpdate = true;
+            }
+        }
+
+        // If we computed any hashes, persist them back to the database
+        if (needsUpdate)
+        {
+            Save();
+        }
+
         _fileIdIndex.Clear();
         foreach (var record in _records)
         {
@@ -895,9 +932,13 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     /// </returns>
     /// <remarks>
     /// <para>
-    /// This method uses the composite index on VolumeSerialNumber and FileId for efficient
-    /// duplicate detection. It is intended to be called during the collect phase to avoid
-    /// re-adding files that are already catalogued.
+    /// This method uses the FileIdHash field for fast duplicate detection. If a record with
+    /// matching hash is found, it returns true immediately.
+    /// </para>
+    /// <para>
+    /// For backward compatibility with existing records that may not have a FileIdHash,
+    /// this method falls back to searching by composite VolumeSerialNumber + FileId if
+    /// the hash lookup is exhausted.
     /// </para>
     /// <para>
     /// If <paramref name="fileId"/> is <c>null</c>, this method returns <c>false</c> to allow
@@ -911,6 +952,12 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
 
         ThrowIfDisposed();
 
+        // First, try to find by hash (primary lookup)
+        var hash = ComputeFileIdHash(volumeSerialNumber, fileId);
+        if (hash != null && _records.Any(r => r.FileIdHash == hash))
+            return true;
+
+        // Fallback: search by composite VolumeSerialNumber + FileId (for backward compatibility with old records)
         var key = CreateFileIdKey(volumeSerialNumber, fileId);
         return _fileIdIndex.Contains(key);
     }
@@ -1097,6 +1144,37 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     private static string CreateFileIdKey(ulong volumeSerialNumber, byte[] fileId)
     {
         return $"{volumeSerialNumber}:{Convert.ToHexString(fileId)}";
+    }
+
+    /// <summary>
+    /// Computes a SHA256 hash from the volume serial number and file identifier.
+    /// </summary>
+    /// <param name="volumeSerialNumber">The volume serial number.</param>
+    /// <param name="fileId">The binary file identifier. If null, this method returns null.</param>
+    /// <returns>
+    /// A hexadecimal SHA256 hash string if <paramref name="fileId"/> is not null;
+    /// otherwise, <c>null</c>.
+    /// </returns>
+    /// <remarks>
+    /// This method creates a fast, non-reversible unique identifier for duplicate detection.
+    /// The hash is computed once during file collection and stored persistently.
+    /// </remarks>
+    public static string? ComputeFileIdHash(ulong volumeSerialNumber, byte[]? fileId)
+    {
+        if (fileId == null)
+            return null;
+
+        // Concatenate volume serial number (8 bytes) + fileId (16 bytes) = 24 bytes total
+        byte[] combined = new byte[sizeof(ulong) + fileId.Length];
+        BitConverter.GetBytes(volumeSerialNumber).CopyTo(combined, 0);
+        fileId.CopyTo(combined, sizeof(ulong));
+
+        // Compute SHA256 hash
+        using (var sha256 = SHA256.Create())
+        {
+            byte[] hashBytes = sha256.ComputeHash(combined);
+            return Convert.ToHexString(hashBytes);
+        }
     }
 
     /// <summary>
@@ -1870,6 +1948,11 @@ internal sealed class FIREDatabaseContext : DbContext
             entity.HasIndex(x => new { x.VolumeSerialNumber, x.FileId })
                 .HasDatabaseName("IX_VolumeSerialNumber_FileId");
 
+            // Index on FileIdHash for accelerated hash-based duplicate detection
+            entity.HasIndex(x => x.FileIdHash)
+                .HasDatabaseName("IX_FileIdHash")
+                .IsUnique(false);
+
             entity.HasMany(x => x.FileMetaDatas)
                 .WithOne(x => x.Record)
                 .HasForeignKey(x => x.RecordId)
@@ -1925,6 +2008,15 @@ internal sealed class FIREDbRecordEntity
     /// Gets or sets the binary file identifier from the NTFS file system.
     /// </summary>
     public byte[]? FileId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the cryptographic hash of the VolumeSerialNumber and FileId combination.
+    /// </summary>
+    /// <remarks>
+    /// This field stores a SHA256 hash computed from the VolumeSerialNumber and FileId
+    /// to provide efficient duplicate detection without comparing binary arrays.
+    /// </remarks>
+    public string? FileIdHash { get; set; }
 
     /// <summary>
     /// Gets or sets the original source file path.
