@@ -211,6 +211,16 @@ public sealed class FIREConfigration
     public Dictionary<string, string> StringReplacements { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
+    /// Gets or sets global metadata rewrite rules.
+    /// </summary>
+    /// <remarks>
+    /// These rules are evaluated during metadata collection after keyword extraction.
+    /// If a rule's <c>When</c> conditions match, all values in <c>Set</c> are applied.
+    /// </remarks>
+    [YamlMember(Alias = "MetadataRules")]
+    public List<MetadataRuleConfiguration> MetadataRules { get; set; } = [];
+
+    /// <summary>
     /// Gets or sets a dictionary of file extension-specific configurations.
     /// </summary>
     /// <remarks>
@@ -369,7 +379,13 @@ public sealed class FIREConfigration
         FileSorting ??= [];
         FileSortingOrder = string.IsNullOrWhiteSpace(FileSortingOrder) ? "Ascending" : FileSortingOrder;
         StringReplacements ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        MetadataRules ??= [];
         FileExtensions ??= new Dictionary<string, FileExtensionConfiguration>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var rule in MetadataRules)
+        {
+            rule.Normalize();
+        }
 
         foreach (var item in FileExtensions.Values)
         {
@@ -534,6 +550,15 @@ public sealed class FileExtensionConfiguration
     public Dictionary<string, AvailableKeywordConfiguration> AvailableKeyWords { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
+    /// Gets or sets extension-specific metadata rewrite rules.
+    /// </summary>
+    /// <remarks>
+    /// Extension-specific rules are evaluated after global rules and can override their results.
+    /// </remarks>
+    [YamlMember(Alias = "MetadataRules")]
+    public List<MetadataRuleConfiguration> MetadataRules { get; set; } = [];
+
+    /// <summary>
     /// Normalizes all properties to their defaults if not specified.
     /// </summary>
     /// <remarks>
@@ -551,11 +576,49 @@ public sealed class FileExtensionConfiguration
         FileNamePatern ??= string.Empty;
         SidecarFileExtensions ??= [];
         AvailableKeyWords ??= new Dictionary<string, AvailableKeywordConfiguration>(StringComparer.OrdinalIgnoreCase);
+        MetadataRules ??= [];
 
         foreach (var item in AvailableKeyWords.Values)
         {
             item.Normalize();
         }
+
+        foreach (var rule in MetadataRules)
+        {
+            rule.Normalize();
+        }
+    }
+}
+
+/// <summary>
+/// Represents a conditional metadata rewrite rule.
+/// </summary>
+/// <remarks>
+/// A rule matches when all entries in <see cref="When"/> match current metadata values.
+/// Supported patterns: literal, wildcard (<c>*</c>) and <c>regex:</c> prefixed expressions.
+/// When matched, all assignments in <see cref="Set"/> are applied.
+/// </remarks>
+public sealed class MetadataRuleConfiguration
+{
+    /// <summary>
+    /// Gets or sets metadata key/value conditions that must all match.
+    /// </summary>
+    [YamlMember(Alias = "When")]
+    public Dictionary<string, string> When { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Gets or sets metadata key/value assignments applied when the rule matches.
+    /// </summary>
+    [YamlMember(Alias = "Set")]
+    public Dictionary<string, string> Set { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Normalizes all properties to their defaults if not specified.
+    /// </summary>
+    internal void Normalize()
+    {
+        When ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        Set ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     }
 }
 

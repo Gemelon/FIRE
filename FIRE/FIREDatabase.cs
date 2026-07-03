@@ -402,6 +402,27 @@ public class FIREDbRecord
     public bool ExcludedFromExecute { get; set; } = false;
 
     /// <summary>
+    /// Gets or sets the counter value that was assigned to this record during the last
+    /// <c>generate</c> phase, or <see langword="null"/> if no counter placeholder is used
+    /// in the file-name template.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// When a file-name template contains a <c>{Counter:Dx}</c> placeholder, the numeric
+    /// counter value allocated by <see cref="FIREDatabase.GetNextCounterValue"/> is stored
+    /// here. Before each <c>generate</c> run the per-scope counter states are reset to the
+    /// maximum <c>AssignedCounterValue</c> found among <see cref="ProcessingStatus.Executed"/>
+    /// records for the same scope, so that repeated Generate runs do not keep incrementing
+    /// the global counter beyond what has been committed to the file system.
+    /// </para>
+    /// <para>
+    /// Defaults to <see langword="null"/> for records that were collected before this field
+    /// was introduced and for records whose template contains no counter placeholder.
+    /// </para>
+    /// </remarks>
+    public long? AssignedCounterValue { get; set; }
+
+    /// <summary>
     /// Gets or sets the file metadata entries associated with this record.
     /// </summary>
     /// <remarks>
@@ -617,6 +638,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
 
         _context.Database.EnsureCreated();
         EnsureCounterStateTableExists();
+        EnsureAssignedCounterValueColumnExists();
         EnsureStatusRowExists();
         Reload();
     }
@@ -1120,6 +1142,47 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     }
 
     /// <summary>
+    /// Ensures that the <c>AssignedCounterValue</c> column exists in the
+    /// <c>FIREDbRecords</c> table even for databases created before this field
+    /// was introduced.
+    /// </summary>
+    private void EnsureAssignedCounterValueColumnExists()
+    {
+        // Check if column already exists using PRAGMA table_info
+        var connection = _context.Database.GetDbConnection();
+        connection.Open();
+
+        using var command = connection.CreateCommand();
+        command.CommandText = "PRAGMA table_info(FIREDbRecords);";
+
+        using var reader = command.ExecuteReader();
+        bool columnExists = false;
+
+        while (reader.Read())
+        {
+            var columnName = reader.GetString(1); // Column name is at index 1
+            if (columnName == "AssignedCounterValue")
+            {
+                columnExists = true;
+                break;
+            }
+        }
+
+        reader.Close();
+
+        // Only add column if it doesn't exist
+        // SQLite doesn't support IF NOT EXISTS for ALTER TABLE ADD COLUMN
+        if (!columnExists)
+        {
+            _context.Database.ExecuteSqlRaw("""
+                ALTER TABLE "FIREDbRecords" ADD COLUMN "AssignedCounterValue" INTEGER NULL;
+                """);
+        }
+
+        connection.Close();
+    }
+
+    /// <summary>
     /// Returns the next counter value for the specified scope and keeps it in memory until
     /// the surrounding database save operation persists it.
     /// </summary>
@@ -1149,8 +1212,81 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     }
 
     /// <summary>
-    /// Persists the complete in-memory record snapshot and updates the singleton status row.
+    /// Resets the in-memory counter states so that the next <c>generate</c> run starts
+    /// each scope counter directly after the highest value already committed to the file system.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is called at the beginning of every <c>generate</c> run. It prevents the
+    /// global counter from drifting upward on repeated Generate invocations before Execute:
+    /// without this reset every re-generate would allocate new, ever-increasing counter values
+    /// while the previously assigned (but not yet executed) values would be silently wasted.
+    /// </para>
+    /// <para>
+    /// The algorithm:
+    /// <list type="number">
+    /// <item>
+    ///   <description>
+    ///     Scan all in-memory records with <see cref="ProcessingStatus.Executed"/> status.
+    ///     Group them by their target directory (= counter scope) and determine the maximum
+    ///     <see cref="FIREDbRecord.AssignedCounterValue"/> per scope.
+    ///   </description>
+    /// </item>
+    /// <item>
+    ///   <description>
+    ///     Rebuild <c>_counterStates</c> to contain exactly those maxima.
+    ///     Scopes that have no executed records are removed so they restart from 1.
+    ///   </description>
+    /// </item>
+    /// <item>
+    ///   <description>
+    ///     Clear <see cref="FIREDbRecord.AssignedCounterValue"/> for every non-executed record
+    ///     so stale counter references do not interfere with the new assignment round.
+    ///   </description>
+    /// </item>
+    /// </list>
+    /// </para>
+    /// </remarks>
+    internal void ResetCounterStatesToExecuted()
+    {
+        ThrowIfDisposed();
+
+        // Build new counter states from executed records only.
+        var executedMaxCounters = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var record in _records)
+        {
+            if (record.Status != ProcessingStatus.Executed) continue;
+            if (record.AssignedCounterValue is not { } counterValue) continue;
+
+            var scope = Path.GetDirectoryName(record.TargetFilePath ?? string.Empty) ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(scope)) continue;
+
+            if (!executedMaxCounters.TryGetValue(scope, out var current) || counterValue > current)
+                executedMaxCounters[scope] = counterValue;
+        }
+
+        // Replace in-memory counter states with the computed maxima.
+        _counterStates.Clear();
+        foreach (var (scope, maxValue) in executedMaxCounters)
+        {
+            _counterStates[scope] = new FIRECounterStateEntity
+            {
+                ScopeKey = scope,
+                LastValue = maxValue,
+                UpdatedAt = DateTime.UtcNow
+            };
+        }
+
+        // Clear the pending counter assignments so they will be re-assigned cleanly.
+        foreach (var record in _records)
+        {
+            if (record.Status != ProcessingStatus.Executed)
+                record.AssignedCounterValue = null;
+        }
+    }
+
+
     /// <param name="status">Status label written to <see cref="FIREStatusRecord.Status"/> (e.g., "Saved", "Cleared").</param>
     /// <param name="valid">Validity flag written to <see cref="FIREStatusRecord.Valid"/>.</param>
     /// <param name="errorMessage">Optional error detail written to <see cref="FIREStatusRecord.ErrorMessage"/>.</param>
@@ -1272,6 +1408,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             SourceFileExists = entity.SourceFileExists,
             ExcludedFromGenerate = entity.ExcludedFromGenerate,
             ExcludedFromExecute = entity.ExcludedFromExecute,
+            AssignedCounterValue = entity.AssignedCounterValue,
             FileMetaDatas = entity.FileMetaDatas
                 .OrderBy(meta => meta.Id)
                 .Select(meta => new FIREFileMetaData
@@ -1318,7 +1455,8 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             Status = model.Status,
             SourceFileExists = model.SourceFileExists,
             ExcludedFromGenerate = model.ExcludedFromGenerate,
-            ExcludedFromExecute = model.ExcludedFromExecute
+            ExcludedFromExecute = model.ExcludedFromExecute,
+            AssignedCounterValue = model.AssignedCounterValue
         };
 
         foreach (var meta in model.FileMetaDatas)
@@ -1837,6 +1975,16 @@ internal sealed class FIREDbRecordEntity
     /// Defaults to <c>false</c> (file will be processed normally).
     /// </remarks>
     public bool ExcludedFromExecute { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets the counter value assigned during the last <c>generate</c> phase,
+    /// or <see langword="null"/> when no counter placeholder is used.
+    /// </summary>
+    /// <remarks>
+    /// Persisted as a nullable INTEGER column. Allows the Generate phase to reset
+    /// per-scope counter states to the maximum executed counter value before each run.
+    /// </remarks>
+    public long? AssignedCounterValue { get; set; }
 
     /// <summary>
     /// Gets or sets the collection of file metadata entries associated with this record.

@@ -1,43 +1,31 @@
-﻿---
-ConfigurationVersion: 1.21
-
-# ---------------------------------------------------------------------------
-# Logging (optional section)
-#
-# Remove or comment out the entire Logging block to disable logging.
-#
-# LogFilePath   – Directory where log files are written.
-#                 Default: <DataBasePath>/Logs when omitted.
-# LogFileName   – Base name without extension.
-#                 Default: FireLog when omitted.
-# LogLevel      – Minimum severity to record.
-#                 Values: Debug | Info | Warning | Error | Critical
-#                 Default: Error when omitted.
-# MaxFileSizeBytes – Rotate to a new segment file when this size is reached.
-#                 Recommended range: 1 MB–50 MB.  Default: 10485760 (10 MB).
-# MaxAgeDays    – Log files older than this many days are deleted on each run.
-#                 Set to 0 to keep all files.  Default: 30.
-# ---------------------------------------------------------------------------
-Logging:
-  LogFilePath: D:\Projekte\Projekte_2026\TestDataTarget\Logs
-  LogFileName: FireLog
-  LogLevel: Info
-  MaxFileSizeBytes: 10485760   # 10 MB
-  MaxAgeDays: 30
+﻿# Erstellt von Thomas Stoll am 2024-06-17
+---
+ConfigurationVersion: 1.30
 
 FilesRootPath: 
-  - D:\Projekte\Projekte_2026\TestData\Neuer Ordner (3)
-  - D:\Projekte\Projekte_2026\TestData\Samsung SM-F766B
-  - D:\Projekte\Projekte_2026\TestData\Samsung SM-S938B
-  - D:\Projekte\Projekte_2026\TestData\Samsung SM-X520
-DataBasePath: D:\Projekte\Projekte_2026\TestDataTarget
-DataBaseFileName: FiReDatabase.db
+  - D:\Media Originale\Automatic Upload
+  # - S:\Mediengesamtsicherungen\Media\01 Mauritius Files 2024
+  # - S:\Mediengesamtsicherungen\Media\0002
+  # - S:\Mediengesamtsicherungen\Media\19.10.2017
+  # - S:\Mediengesamtsicherungen\Media\28.09.2017
+  # - S:\Mediengesamtsicherungen\Media\29.09.2017
+  # - S:\Mediengesamtsicherungen\Media\30.09.2017
+  # - S:\Mediengesamtsicherungen\Media\1904
+DataBasePath: D:\Media\FIRE\FiReDatabase
+DataBaseFileName: MediaDatabase.db
 
 Action: Copy
-MediaRootPath: D:\Projekte\Projekte_2026\TestDataTarget\Media Test
+MediaRootPath: S:\Media FIRE\Media
 RootPath: "{MediaRootPath}"
 SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
 FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}"
+
+Logging:
+  LogFilePath: S:\Media FIRE\Logs
+  LogFileName: MediaFireLog.md
+  LogLevel: Debug # Debug, Info, Warning, Error, Critical
+  MaxFileSizeBytes: 10485760   # 10 MB
+  MaxAgeDays: 30
 
 StringReplacements:
   SM-G985F: SM-G985F Galaxy S20
@@ -46,15 +34,14 @@ StringReplacements:
   SM-A528B: SM-A528B Galaxy A52s
   Galaxy Z Flip7: SM-F766B Galaxy Z Flip7
   Galaxy S25 Ultra: SM-S938B Galaxy S25 Ultra
+  Sony XAVC: Sony
+  "*IS0 14496*": DJI
 
-Sorting: 
-- MetaCreationTime.Year
-- MetaCreationTime.Month
-- MetaCreationTime.Day
-- MetaCreationTime.Hour
-- MetaCreationTime.Minute
-- MetaCreationTime.Second
-SortingOrder: Ascending
+FileSorting: 
+- Model
+- Make
+- MetaCreationTime
+FileSortingOrder: Ascending
 
 FileExtensions:
   .jpg:
@@ -68,21 +55,22 @@ FileExtensions:
       Make:
         DataType: STRING
         Source: EXIFTOOL
-        KeyWords:
+        SourceFields:
         - exififd:make
         - "DJI:Make"
         - "IFD0:Make"
       Model:
         DataType: STRING
         Source: EXIFTOOL
-        KeyWords:
+        SourceFields:
         - IFD0:Model
         - IFD0:UniqueCameraModel
       MetaCreationTime:
         DataType: DATETIME
         Source: EXIFTOOL
+        Default: NOW
         ValAttribute: LOWEST
-        KeyWords:
+        SourceFields:
         - Composite:DateTimeCreated
         - Composite:SubSecCreateDate
         - ExifIFD:CreateDate
@@ -90,6 +78,8 @@ FileExtensions:
         - IPTC:TimeCreated
         - XMP-photoshop:DateCreated
         - XMP-xmp:CreateDate
+        - ExifIFD:DateTimeOriginal
+
   .png:
     FileType: Image
     FileClass: RegularFile
@@ -103,21 +93,22 @@ FileExtensions:
       Make:
         DataType: STRING
         Source: EXIFTOOL
-        KeyWords:
+        SourceFields:
         - exififd:make
         - "DJI:Make"
         - "IFD0:Make"
       Model:
         DataType: STRING
         Source: EXIFTOOL
-        KeyWords:
+        SourceFields:
         - IFD0:Model
         - IFD0:UniqueCameraModel
       MetaCreationTime:
         DataType: DATETIME
         Source: EXIFTOOL
         ValAttribute: LOWEST
-        KeyWords:
+        Default: NOW
+        SourceFields:
         - Composite:DateTimeCreated
         - Composite:SubSecCreateDate
         - ExifIFD:CreateDate
@@ -125,6 +116,7 @@ FileExtensions:
         - IPTC:TimeCreated
         - XMP-photoshop:DateCreated
         - XMP-xmp:CreateDate
+
   .dng:
     FileType: Image # TODO: Enum for FileType and FileClass
     FileClass: RegularFile
@@ -138,21 +130,22 @@ FileExtensions:
       Make:
         DataType: STRING
         Source: EXIFTOOL
-        KeyWords:
+        SourceFields:
         - exififd:make
         - "DJI:Make"
         - "IFD0:Make"
       Model:
         DataType: STRING
         Source: EXIFTOOL
-        KeyWords:
+        SourceFields:
         - IFD0:Model
         - IFD0:UniqueCameraModel
       MetaCreationTime:
         DataType: DATETIME
         Source: EXIFTOOL
         ValAttribute: LOWEST
-        KeyWords:
+        Default: NOW
+        SourceFields:
         - Composite:DateTimeCreated
         - Composite:SubSecCreateDate
         - ExifIFD:CreateDate
@@ -160,6 +153,7 @@ FileExtensions:
         - IPTC:TimeCreated
         - XMP-photoshop:DateCreated
         - XMP-xmp:CreateDate
+
   .arw:
     FileType: Image # TODO: Enum for FileType and FileClass
     FileClass: RegularFile
@@ -173,21 +167,22 @@ FileExtensions:
       Make:
         DataType: STRING
         Source: EXIFTOOL
-        KeyWords:
+        SourceFields:
         - exififd:make
         - "DJI:Make"
         - "IFD0:Make"
       Model:
         DataType: STRING
         Source: EXIFTOOL
-        KeyWords:
+        SourceFields:
         - IFD0:Model
         - IFD0:UniqueCameraModel
       MetaCreationTime:
         DataType: DATETIME
         Source: EXIFTOOL
         ValAttribute: LOWEST
-        KeyWords:
+        Default: NOW
+        SourceFields:
         - Composite:DateTimeCreated
         - Composite:SubSecCreateDate
         - ExifIFD:CreateDate
@@ -196,3 +191,36 @@ FileExtensions:
         - IPTC:TimeCreated
         - XMP-photoshop:DateCreated
         - XMP-xmp:CreateDate
+
+  .mp4:
+    FileType: Video
+    FileClass: RegularFile
+    Action: Copy
+    RootPath: "{MediaRootPath}"
+    SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{MetaCreationTime.Day}\\{Make}\\{Model}"
+    FileNamePatern: "{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.ARW"
+    AvailableKeyWords:
+      Make:
+        DataType: STRING
+        Source: EXIFTOOL
+        Default: Samsung
+        SourceFields:
+        - QuickTime:MajorBrand
+        - XML:DeviceManufacturer
+      Model:
+        DataType: STRING
+        Source: EXIFTOOL
+        Default: AnotherSamsungModel
+        SourceFields:
+        - Samsung:SamsungModel
+        - XML:DeviceModelName
+        - ItemList:Encoder
+      MetaCreationTime:
+        DataType: DATETIME
+        Source: EXIFTOOL
+        Default: NOW
+        ValAttribute: LOWEST
+        SourceFields:
+        - QuickTime:CreateDate
+        - Track1:TrackCreateDate
+        - Track2:MediaCreateDate

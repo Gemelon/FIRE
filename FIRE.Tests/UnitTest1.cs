@@ -131,6 +131,86 @@ public class UnitTest1
         Assert.Equal("Canon", result);
     }
 
+    [Fact]
+    public void Parse_MetadataRules_GlobalAndExtension_AreDeserialized()
+    {
+        const string yaml = """
+ConfigurationVersion: 1.30
+MetadataRules:
+  - When:
+      Model: "Lavf60*"
+    Set:
+      Make: "Samsung"
+      Model: "App"
+FileExtensions:
+  .mp4:
+    AvailableKeyWords: {}
+    MetadataRules:
+      - When:
+          Model: "Lavf61*"
+        Set:
+          Make: "Insta360"
+          Model: "App"
+""";
+
+        var config = FIREConfigration.Parse(yaml);
+
+        Assert.Single(config.MetadataRules);
+        Assert.Single(config.FileExtensions[".mp4"].MetadataRules);
+        Assert.Equal("Samsung", config.MetadataRules[0].Set["Make"]);
+        Assert.Equal("Insta360", config.FileExtensions[".mp4"].MetadataRules[0].Set["Make"]);
+    }
+
+    [Theory]
+    [InlineData("Lavf60.3", "Lavf60*", true)]
+    [InlineData("LAVF61.1", "lavf61*", true)]
+    [InlineData("Insta360", "regex:Insta[0-9]+", true)]
+    [InlineData("Insta360", "regex:[", false)]
+    [InlineData("DJI", "Lavf60*", false)]
+    public void MetadataRulePatternMatches_SupportsLiteralWildcardAndRegex(string value, string pattern, bool expected)
+    {
+        var actual = FIRECatalog.MetadataRulePatternMatches(value, pattern);
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void ApplyMetadataRuleSet_WhenMatches_OverridesAndCreatesMetadata()
+    {
+        var record = new FIREDbRecord
+        {
+            FileMetaDatas =
+            [
+                new FIREFileMetaData { Key = "Model", Value = "Lavf60.2", DataSource = "EXIFTOOL", TypeName = "STRING" }
+            ]
+        };
+
+        var rules = new List<MetadataRuleConfiguration>
+        {
+            new()
+            {
+                When = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["Model"] = "Lavf60*"
+                },
+                Set = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["Make"] = "Samsung",
+                    ["Model"] = "App"
+                }
+            }
+        };
+
+        FIRECatalog.ApplyMetadataRuleSet(record, rules);
+
+        var make = record.FileMetaDatas.Single(m => string.Equals(m.Key, "Make", StringComparison.OrdinalIgnoreCase));
+        var model = record.FileMetaDatas.Single(m => string.Equals(m.Key, "Model", StringComparison.OrdinalIgnoreCase));
+
+        Assert.Equal("Samsung", make.Value);
+        Assert.Equal("RULE", make.DataSource);
+        Assert.Equal("App", model.Value);
+        Assert.Equal("RULE", model.DataSource);
+    }
+
     private static string InvokeParseTemplate(FIRECatalog catalog, string template, Dictionary<string, string> metadata, Dictionary<string, string> metadataTypes)
     {
         var parseTemplate = typeof(FIRECatalog).GetMethod("ParseTemplate", BindingFlags.Instance | BindingFlags.NonPublic);

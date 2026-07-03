@@ -824,9 +824,14 @@ public sealed class FIRECatalog : IDisposable
 
         _database.SortRecords(_configuration.FileSorting, _configuration.FileSortingOrder);
 
+        // Reset per-scope counter states to the maximum value already committed by Executed
+        // records. This ensures that repeated Generate invocations before Execute do not
+        // keep incrementing the counter beyond what was last assigned.
+        _database.ResetCounterStatesToExecuted();
+
         var pendingCount = _database.Count(record =>
             !string.IsNullOrWhiteSpace(record.SourceFilePath) &&
-            record.Status is not (ProcessingStatus.PathGenerated or ProcessingStatus.Executed) &&
+            record.Status is not ProcessingStatus.Executed &&
             !record.ExcludedFromGenerate);
 
         BeginStage(FIRECatalogStage.Generate, pendingCount);
@@ -835,8 +840,8 @@ public sealed class FIRECatalog : IDisposable
         {
             if (string.IsNullOrWhiteSpace(record.SourceFilePath)) continue;
 
-            // Skip files that already have a generated path or have been executed.
-            if (record.Status is ProcessingStatus.PathGenerated or ProcessingStatus.Executed) continue;
+            // Skip files that have already been executed – their paths are immutable.
+            if (record.Status is ProcessingStatus.Executed) continue;
 
             // Skip files explicitly excluded from Generate phase
             if (record.ExcludedFromGenerate)
@@ -878,7 +883,14 @@ public sealed class FIRECatalog : IDisposable
 
             long? counter = null;
             if (ContainsCounterPlaceholder(fileNamePattern))
+            {
                 counter = _database.GetNextCounterValue(targetDirectory);
+                record.AssignedCounterValue = counter;
+            }
+            else
+            {
+                record.AssignedCounterValue = null;
+            }
 
             var targetFileName = ParseTemplate(fileNamePattern, metadataLookup, record.SourceFilePath, counter, metadataTypeLookup);
 
@@ -1477,6 +1489,8 @@ public sealed class FIRECatalog : IDisposable
             record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, selectedValue, keywordConfig, sourceName));
         }
 
+        ApplyMetadataRules(record, extConfig);
+
         _database.Add(record);
         if (CurrentStage == FIRECatalogStage.Collect)
             _collectAddedFiles++;
@@ -1681,12 +1695,12 @@ public sealed class FIRECatalog : IDisposable
                     DateTime.TryParseExact(normalizedDate, "yyyy:MM:dd HH:mm:ss",
                         CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTimeValue))
                 {
-                    return dateTimeValue.ToString();
+                    return dateTimeValue.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
                 }
 
                 // If normalization failed, use FallbackDateTime
                 LogDateTimeFallback(filePath, keywordName, values[0], "unparseable");
-                return FallbackDateTime.ToString();
+                return FallbackDateTime.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
             }
             return values[0];
         }
@@ -1738,7 +1752,12 @@ public sealed class FIRECatalog : IDisposable
             ? candidates.MaxBy(x => x.ComparableValue)
             : candidates.MinBy(x => x.ComparableValue);
 
-        return selected.ComparableValue.ToString();
+        return selected.ComparableValue switch
+        {
+            DateTime dt => dt.ToString("yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture),
+            IFormattable f => f.ToString(null, CultureInfo.InvariantCulture),
+            _ => selected.ComparableValue.ToString() ?? string.Empty
+        };
     }
     /// <summary>
     /// Tries to parse a date/time string from various known input formats and
@@ -2028,6 +2047,149 @@ public sealed class FIRECatalog : IDisposable
         }
 
         return input.Replace(pattern, replacement, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Applies configured metadata rewrite rules to a collected record.
+    /// </summary>
+    /// <param name="record">Collected record whose metadata may be rewritten.</param>
+    /// <param name="extensionConfiguration">File extension configuration used for the record.</param>
+    private void ApplyMetadataRules(FIREDbRecord record, FileExtensionConfiguration extensionConfiguration)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+        ArgumentNullException.ThrowIfNull(extensionConfiguration);
+
+        if ((_configuration.MetadataRules.Count == 0) && (extensionConfiguration.MetadataRules.Count == 0))
+            return;
+
+        ApplyMetadataRuleSet(record, _configuration.MetadataRules);
+        ApplyMetadataRuleSet(record, extensionConfiguration.MetadataRules);
+    }
+
+    /// <summary>
+    /// Applies a set of metadata rules to a collected record.
+    /// </summary>
+    /// <param name="record">Collected record whose metadata may be rewritten.</param>
+    /// <param name="rules">Rule set to evaluate in configured order.</param>
+    internal static void ApplyMetadataRuleSet(FIREDbRecord record, List<MetadataRuleConfiguration> rules)
+    {
+        if (rules.Count == 0)
+            return;
+
+        foreach (var rule in rules)
+        {
+            if (rule.When.Count == 0 || rule.Set.Count == 0)
+                continue;
+
+            if (!RuleMatches(record, rule.When))
+                continue;
+
+            foreach (var assignment in rule.Set)
+            {
+                SetMetadataValue(record, assignment.Key, assignment.Value);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Determines whether all configured rule conditions match a record.
+    /// </summary>
+    /// <param name="record">Collected record to inspect.</param>
+    /// <param name="conditions">Condition key/value pairs that must all match.</param>
+    /// <returns><see langword="true"/> when all conditions match; otherwise <see langword="false"/>.</returns>
+    private static bool RuleMatches(FIREDbRecord record, Dictionary<string, string> conditions)
+    {
+        foreach (var condition in conditions)
+        {
+            var currentValue = GetMetadataValue(record, condition.Key);
+            if (!MetadataRulePatternMatches(currentValue, condition.Value))
+                return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Gets the current value of a metadata key from a record.
+    /// </summary>
+    /// <param name="record">Collected record containing metadata values.</param>
+    /// <param name="key">Metadata key to read.</param>
+    /// <returns>Current metadata value or an empty string when no value exists.</returns>
+    private static string GetMetadataValue(FIREDbRecord record, string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            return string.Empty;
+
+        var entry = record.FileMetaDatas.FirstOrDefault(m =>
+            string.Equals(m.Key, key, StringComparison.OrdinalIgnoreCase));
+
+        return entry?.Value ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Sets or creates a metadata value on a collected record.
+    /// </summary>
+    /// <param name="record">Collected record to update.</param>
+    /// <param name="key">Metadata key to assign.</param>
+    /// <param name="value">Assigned metadata value.</param>
+    private static void SetMetadataValue(FIREDbRecord record, string key, string? value)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            return;
+
+        var existing = record.FileMetaDatas.FirstOrDefault(m =>
+            string.Equals(m.Key, key, StringComparison.OrdinalIgnoreCase));
+
+        if (existing != null)
+        {
+            existing.Value = value ?? string.Empty;
+            existing.DataSource = "RULE";
+            return;
+        }
+
+        record.FileMetaDatas.Add(new FIREFileMetaData
+        {
+            Key = key,
+            Value = value ?? string.Empty,
+            TypeName = "STRING",
+            DataSource = "RULE"
+        });
+    }
+
+    /// <summary>
+    /// Evaluates whether a metadata value matches a configured rule pattern.
+    /// </summary>
+    /// <param name="value">Current metadata value.</param>
+    /// <param name="pattern">Configured pattern (literal, wildcard, or <c>regex:</c>).</param>
+    /// <returns><see langword="true"/> when the value matches; otherwise <see langword="false"/>.</returns>
+    internal static bool MetadataRulePatternMatches(string? value, string? pattern)
+    {
+        value ??= string.Empty;
+        pattern ??= string.Empty;
+
+        if (pattern.StartsWith("regex:", StringComparison.OrdinalIgnoreCase))
+        {
+            var regexPattern = pattern["regex:".Length..];
+            if (string.IsNullOrWhiteSpace(regexPattern))
+                return false;
+
+            try
+            {
+                return Regex.IsMatch(value, regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+        }
+
+        if (pattern.Contains('*'))
+        {
+            var wildcardPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*") + "$";
+            return Regex.IsMatch(value, wildcardPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        }
+
+        return string.Equals(value, pattern, StringComparison.OrdinalIgnoreCase);
     }
 
     /// <summary>
