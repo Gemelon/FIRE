@@ -38,6 +38,8 @@ var _program_8cs =
     [ "Culture", "dd/d5c/_program_8cs.html#a0391b18642c9e16b7c2a285fc7db3786", null ],
     [ "CultureAliases", "dd/d5c/_program_8cs.html#af7c6e3ac502073155117e020ca5046f1", null ],
     [ "FilePath", "dd/d5c/_program_8cs.html#a65969f9f39cf0e1af9cea3b84b374c3c", null ],
+    [ "MarkAllForRecollect", "dd/d5c/_program_8cs.html#a9f3a623b3196bf069c4b1d2616adbcb5", null ],
+    [ "MarkForRecollectPaths", "dd/d5c/_program_8cs.html#a86292149cfec47068548a44d2b967a68", null ],
     [ "NoWrap", "dd/d5c/_program_8cs.html#a5e22b3e09c3d1b18cc2a0dc70f3effe0", null ],
     [ "OutputPath", "dd/d5c/_program_8cs.html#a6d029ed84fe1d5ba24ad30f0d5cb86c5", null ],
     [ "set", "dd/d5c/_program_8cs.html#a112a711f766db446c2f517b794a1c04a", null ],

@@ -1,6 +1,29 @@
 var searchData=
 [
-  ['validation_20layer_20fire_20tests_0',['Validation Layer FIRE Tests',['../dc/d53/md__f_i_r_e_2docs_2wiki-local_2_architecture.html#autotoc_md13',1,'Validation Layer (&lt;span class=&quot;tt&quot;&gt;FIRE.Tests&lt;/span&gt;)'],['../d4/d24/md__f_i_r_e_2_f_i_r_e_8wiki_2_architecture.html#autotoc_md66',1,'Validation Layer (&lt;span class=&quot;tt&quot;&gt;FIRE.Tests&lt;/span&gt;)']]],
-  ['values_20with_20exact_20wildcard_20or_20regex_20replacements_1',['Normalize values with exact, wildcard, or regex replacements',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md140',1,'']]],
-  ['video_20archives_20use_20counter_20when_20a_20stable_20sequence_20must_20be_20preserved_2',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md142',1,'']]]
+  ['safe_20pattern_0',['3) Minimal integration flow (UI-safe pattern)',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md126',1,'']]],
+  ['scope_1',['Scope',['../db/d91/md__f_i_r_e_2_f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y.html#autotoc_md98',1,'']]],
+  ['selection_2',['Selection',['../index.html#keywords_sec',1,'Keyword Selection'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md137',1,'Keyword Selection']]],
+  ['sequence_3',['Sequence',['../da/da3/md__f_i_r_e_2docs_2wiki-local_2_console-_quickstart.html#autotoc_md25',1,'Typical Sequence'],['../dd/d0f/md__f_i_r_e_2_f_i_r_e_8wiki_2_console-_quickstart.html#autotoc_md78',1,'Typical Sequence']]],
+  ['sequence_20must_20be_20preserved_4',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md150',1,'']]],
+  ['sharpexiftool_5',['SharpExifTool',['../d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md163',1,'']]],
+  ['sidecar_20file_20handling_6',['Sidecar File Handling',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md141',1,'']]],
+  ['sidecar_20files_7',['Sidecar Files',['../index.html#sidecar_sec',1,'Sidecar Files'],['../dd/d50/md__f_i_r_e_2docs_2wiki-local_2_configuration-_reference.html#autotoc_md20',1,'Sidecar Files'],['../d2/d02/md__f_i_r_e_2_f_i_r_e_8wiki_2_configuration-_reference.html#autotoc_md73',1,'Sidecar Files']]],
+  ['sidecars_8',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md147',1,'']]],
+  ['sort_20holiday_20photos_20by_20date_20and_20camera_20model_9',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md146',1,'']]],
+  ['source_10',['Building from Source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md151',1,'']]],
+  ['source_11',['From source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md115',1,'']]],
+  ['sources_12',['Sources',['../index.html#meta_sources_sec',1,'Metadata Sources'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md139',1,'Metadata Sources']]],
+  ['stable_20sequence_20must_20be_20preserved_13',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md150',1,'']]],
+  ['start_14',['Quick Start',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md117',1,'']]],
+  ['step_201_20—_20collect_15',['Step 1 — collect',['../index.html#step1',1,'']]],
+  ['step_202_20—_20generate_16',['Step 2 — generate',['../index.html#step2',1,'']]],
+  ['step_203_20—_20execute_17',['Step 3 — execute',['../index.html#step3',1,'']]],
+  ['step_20workflow_18',['Three-Step Workflow',['../index.html#workflow_sec',1,'']]],
+  ['strategic_20direction_19',['Strategic Direction',['../d1/d5f/md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy.html#autotoc_md39',1,'Strategic Direction'],['../db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html#autotoc_md92',1,'Strategic Direction']]],
+  ['strategy_20',['Strategy',['../d1/d5f/md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy.html',1,'UI Integration Strategy'],['../db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html',1,'UI Integration Strategy']]],
+  ['string_20filepath_21',['&lt;span class=&quot;tt&quot;&gt;GetAllAvailableMetadata(string filePath)&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md155',1,'']]],
+  ['string_20filepath_20string_20outputpath_20null_22',['&lt;span class=&quot;tt&quot;&gt;WriteMetadataToMarkdown(string filePath, string? outputPath = null)&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md156',1,'']]],
+  ['string_20outputpath_20null_23',['&lt;span class=&quot;tt&quot;&gt;WriteMetadataToMarkdown(string filePath, string? outputPath = null)&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md156',1,'']]],
+  ['structure_24',['Project Structure',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md110',1,'']]],
+  ['suggested_20milestones_25',['Suggested Milestones',['../d1/d5f/md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy.html#autotoc_md42',1,'Suggested Milestones'],['../db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html#autotoc_md95',1,'Suggested Milestones']]]
 ];

@@ -134,8 +134,8 @@ var NAVTREE =
       [ "Related Documentation", "db/d91/md__f_i_r_e_2_f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y.html#autotoc_md101", null ]
     ] ],
     [ "Third-Party Notices", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html", [
-      [ "ExifTool", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md154", null ],
-      [ "SharpExifTool", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md155", null ]
+      [ "ExifTool", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md162", null ],
+      [ "SharpExifTool", "d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md163", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
@@ -163,7 +163,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html"
+"db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html#autotoc_md94"
 ];
 
 const SYNCONMSG = 'click to disable panel synchronization';

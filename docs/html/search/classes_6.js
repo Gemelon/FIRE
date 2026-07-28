@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['programhost_0',['ProgramHost',['../d6/d5e/class_program_host.html',1,'']]]
+  ['metadataruleconfiguration_0',['MetadataRuleConfiguration',['../d1/d80/class_metadata_rule_configuration.html',1,'']]],
+  ['metadatasourceregistry_1',['MetadataSourceRegistry',['../de/df7/class_metadata_source_registry.html',1,'']]]
 ];

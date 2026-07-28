@@ -20,6 +20,8 @@ var _f_i_r_e_catalog_8cs =
     [ "GetAllAvailableMetadata", "db/d24/_f_i_r_e_catalog_8cs.html#aef7ba4394188e308379ddd8a487ac5f1", null ],
     [ "GetSource", "db/d24/_f_i_r_e_catalog_8cs.html#a24a60380fdba4ea641815f0200a92004", null ],
     [ "LogCancelled", "db/d24/_f_i_r_e_catalog_8cs.html#a0e8ccea48e013f783535370544c3cfea", null ],
+    [ "MarkAllFilesForRecollect", "db/d24/_f_i_r_e_catalog_8cs.html#a2bdbcec38812e6aa30ab90de9808d846", null ],
+    [ "MarkFileForRecollect", "db/d24/_f_i_r_e_catalog_8cs.html#aea3e652bf8f8855e7db6c60c561000e9", null ],
     [ "MetadataSourceRegistry", "db/d24/_f_i_r_e_catalog_8cs.html#ade8ca80f0c3053af5a3c46260b5b8a66", null ],
     [ "Register", "db/d24/_f_i_r_e_catalog_8cs.html#acabce2d08bc33eaeab6b941c1222b074", null ],
     [ "WriteMetadataToMarkdown", "db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2", null ],

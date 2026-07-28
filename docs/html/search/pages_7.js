@@ -1,12 +1,10 @@
 var searchData=
 [
-  ['essential_20keys_0',['Essential Keys',['../dd/d50/md__f_i_r_e_2docs_2wiki-local_2_configuration-_reference.html#autotoc_md17',1,'Essential Keys'],['../d2/d02/md__f_i_r_e_2_f_i_r_e_8wiki_2_configuration-_reference.html#autotoc_md70',1,'Essential Keys']]],
-  ['exact_20wildcard_20or_20regex_20replacements_1',['Normalize values with exact, wildcard, or regex replacements',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md140',1,'']]],
-  ['example_2',['Example',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md135',1,'']]],
-  ['examples_3',['Examples',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md137',1,'']]],
-  ['execute_4',['Execute',['../dd/d5e/md__f_i_r_e_2docs_2wiki-local_2_a_p_i-_workflow.html#autotoc_md5',1,'3) Execute'],['../db/dab/md__f_i_r_e_2_f_i_r_e_8wiki_2_a_p_i-_workflow.html#autotoc_md58',1,'3) Execute']]],
-  ['execute_5',['Step 3 — execute',['../index.html#step3',1,'']]],
-  ['execution_20phase_6',['Execution Phase',['../index.html#sidecar_execution',1,'']]],
-  ['exiftool_7',['ExifTool',['../d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html#autotoc_md154',1,'']]],
-  ['extractor_8',['FIRE — File Information Reorganizer and Extractor',['../index.html',1,'']]]
+  ['be_20preserved_0',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md150',1,'']]],
+  ['benefits_1',['Benefits',['../d1/d5f/md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy.html#autotoc_md41',1,'Benefits'],['../db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html#autotoc_md94',1,'Benefits']]],
+  ['best_20practices_2',['Best Practices',['../dd/d50/md__f_i_r_e_2docs_2wiki-local_2_configuration-_reference.html#autotoc_md22',1,'Best Practices'],['../d2/d02/md__f_i_r_e_2_f_i_r_e_8wiki_2_configuration-_reference.html#autotoc_md75',1,'Best Practices']]],
+  ['binding_3',['4) Important &lt;span class=&quot;tt&quot;&gt;FIRECatalog&lt;/span&gt; properties for UI binding',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md127',1,'']]],
+  ['building_20from_20source_4',['Building from Source',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md151',1,'']]],
+  ['by_20date_20and_20camera_20model_5',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md146',1,'']]],
+  ['by_20ui_20tools_6',['5) Optional API methods often used by UI tools',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md128',1,'']]]
 ];

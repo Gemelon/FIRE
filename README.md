@@ -476,6 +476,8 @@ StringReplacements:
 
 Rules:
 - Replacements are applied to each resolved placeholder value (e.g. `{Make}`, `{Model}`) before it is inserted into the final pattern string.
+- Only the first matching replacement rule is applied; processing stops after the first match.
+- Rule order in `StringReplacements` is therefore significant.
 - Without wildcard and without `regex:` prefix, an exact substring replacement is applied.
 - Wildcard mode is active when `*` is present in the key (`*` = any character sequence).
 - Regex mode is active when the key starts with `regex:`.

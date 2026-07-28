@@ -15,6 +15,7 @@ var class_f_i_r_e_configration =
     [ "FilesRootPath", "df/dbb/class_f_i_r_e_configration.html#a7330a44bb06214211b69095e34b9df80", null ],
     [ "Logging", "df/dbb/class_f_i_r_e_configration.html#a30ea6ef4d4731fb420cfe95dc06d4b5b", null ],
     [ "MediaRootPath", "df/dbb/class_f_i_r_e_configration.html#aa773e66f6dd7f501b1d4c5017ef23a2b", null ],
+    [ "MetadataRules", "df/dbb/class_f_i_r_e_configration.html#a075d5e9c266dde7bd372b3dce1798f99", null ],
     [ "RootPath", "df/dbb/class_f_i_r_e_configration.html#ae8b786d3e935425d04a7c35f24b2aa32", null ],
     [ "set", "df/dbb/class_f_i_r_e_configration.html#a2611d5688d84cdfd922318ad9f3fa451", null ],
     [ "SortingPatern", "df/dbb/class_f_i_r_e_configration.html#af2ad6573c54a4d718873d92d181a1553", null ],

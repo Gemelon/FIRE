@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['metadatasourceregistry_0',['MetadataSourceRegistry',['../de/df7/class_metadata_source_registry.html',1,'']]]
+  ['loggingconfiguration_0',['LoggingConfiguration',['../db/dee/class_logging_configuration.html',1,'']]]
 ];

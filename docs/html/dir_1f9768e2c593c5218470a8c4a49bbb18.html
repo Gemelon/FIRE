@@ -161,6 +161,9 @@ Table of Contents</h1>
 <li>UsageUsage</li>
 </ul>
 <ul>
+<li>API Integration for UI/Host AppsAPI Integration for UI/Host Apps</li>
+</ul>
+<ul>
 <li>Configuration ReferenceConfiguration Reference</li>
 </ul>
 <ul>
@@ -328,6 +331,97 @@ Inspect command options</h2>
 </table>
 <hr  />
 <h1 class="doxsection"><a class="anchor" id="autotoc_md123"></a>
+API Integration for UI/Host Apps</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md124"></a>
+1) Library reference</h2>
+<p>Reference only the <span class="tt">FIRE</span> class library in your host project (WPF/WinUI/MAUI/service):</p>
+<ul>
+<li><b>Project reference (same solution):</b> <span class="tt">FIRE/FIRE.csproj</span></li>
+<li><b>Binary reference (separate solution):</b> <span class="tt">FIRE.dll</span> built from the <span class="tt">FIRE</span> project</li>
+</ul>
+<p>Do <b>not</b> use <span class="tt">FIRE.Console</span> as integration layer. It is only a CLI adapter over the same API.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md125"></a>
+2) Central API types</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Purpose  </th><th class="markdownTableHeadNone">Central members  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="df/dbb/class_f_i_r_e_configration.html" title="Represents the root configuration document loaded from the FIRE configuration YAML file.">FIREConfigration</a></span>  </td><td class="markdownTableBodyNone">Load and validate YAML configuration  </td><td class="markdownTableBodyNone"><span class="tt">Load(...)</span>, <span class="tt">Parse(...)</span>, <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a2909ce7c3cae497a7297eeef183e00d6" title="Throws an exception if the configuration version is not supported.">EnsureSupportedConfigurationVersion()</a></span>  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">FIREDatabase</span>  </td><td class="markdownTableBodyNone">SQLite-backed pipeline state and records  </td><td class="markdownTableBodyNone">constructor <span class="tt">FIREDatabase(dbPath)</span>, <span class="tt">Count</span>, <span class="tt">AsReadOnlyList()</span>  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2" title="Initializes a new instance of FIRECatalog.">FIRECatalog</a></span>  </td><td class="markdownTableBodyNone">Main orchestration engine  </td><td class="markdownTableBodyNone"><span class="tt">CollectFiles(...)</span>, <span class="tt">GenerateTargetPaths(...)</span>, <span class="tt">ExecuteFileOperations(...)</span>, <span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aead28fb01c01b00a7bbbd1557ed455d7">ProgressChanged</a></span>  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">FIRECatalogProgressEventArgs</span>  </td><td class="markdownTableBodyNone">Progress payload for UI binding  </td><td class="markdownTableBodyNone"><span class="tt">Stage</span>, <span class="tt"><a class="el" href="dc/d87/_f_i_r_e_catalog_progress_8cs.html#a705b4dedbaecef5be6dfc859c77c44b6">Level</a></span>, <span class="tt"><a class="el" href="dc/d87/_f_i_r_e_catalog_progress_8cs.html#afb283ab001bbf2518427dae6320efcfa">Message</a></span>, <span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a4a6c1207ff87a242380f60f9491e640e">CurrentFilePath</a></span>, <span class="tt"><a class="el" href="dc/d87/_f_i_r_e_catalog_progress_8cs.html#a944c06e999e15c1b345fcc6b7720e747">ProcessedCount</a></span>, <span class="tt"><a class="el" href="dc/d87/_f_i_r_e_catalog_progress_8cs.html#a9dd7dc8c4fec548749f9e6619d237885">TotalCount</a></span>  </td></tr>
+</table>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md126"></a>
+3) Minimal integration flow (UI-safe pattern)</h2>
+<div class="fragment"><div class="line"><span class="keyword">using </span>System.Globalization;</div>
+<div class="line"><span class="keyword">using </span>FIRE;</div>
+<div class="line"> </div>
+<div class="line">var config = <a class="code hl_class" href="df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a>.<a class="code hl_function" href="df/dbb/class_f_i_r_e_configration.html#a89e6c0a8550de0522eda231500c9aa75">Load</a>(configPath);</div>
+<div class="line">config.<a class="code hl_function" href="df/dbb/class_f_i_r_e_configration.html#a8c74ce8d2e821802ad7a0c5957826737">EnsureSupportedConfigurationVersion</a>();</div>
+<div class="line"> </div>
+<div class="line">var dbPath = Path.Combine(config.DataBasePath, config.DataBaseFileName);</div>
+<div class="line"><span class="keyword">using </span>var database = <span class="keyword">new</span> FIREDatabase(dbPath);</div>
+<div class="line"><span class="keyword">using </span>var catalog = <span class="keyword">new</span> <a class="code hl_function" href="db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a>(config, database)</div>
+<div class="line">{</div>
+<div class="line">    <a class="code hl_variable" href="dd/d5c/_program_8cs.html#a0391b18642c9e16b7c2a285fc7db3786">Culture</a> = CultureInfo.GetCultureInfo(<span class="stringliteral">&quot;de-DE&quot;</span>)</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">catalog.ProgressChanged += (_, e) =&gt;</div>
+<div class="line">{</div>
+<div class="line">    <span class="comment">// UI: progress bar, current file text, warnings/errors</span></div>
+<div class="line">    <span class="comment">// e.Stage, e.Level, e.Message, e.ProcessedCount, e.TotalCount</span></div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">catalog.CollectFiles();</div>
+<div class="line">catalog.GenerateTargetPaths();</div>
+<div class="line">catalog.ExecuteFileOperations();</div>
+<div class="ttc" id="a_f_i_r_e_catalog_8cs_html_aa1e8255547d501a2b9ed5236b92b1ff2"><div class="ttname"><a href="db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2">FIRECatalog</a></div><div class="ttdeci">FIRECatalog(FIREConfigration configuration, FIREDatabase database)</div><div class="ttdoc">Initializes a new instance of FIRECatalog.</div><div class="ttdef"><b>Definition</b> <a href="db/d24/_f_i_r_e_catalog_8cs_source.html#l00585">FIRECatalog.cs:585</a></div></div>
+<div class="ttc" id="a_program_8cs_html_a0391b18642c9e16b7c2a285fc7db3786"><div class="ttname"><a href="dd/d5c/_program_8cs.html#a0391b18642c9e16b7c2a285fc7db3786">Culture</a></div><div class="ttdeci">string Culture</div><div class="ttdef"><b>Definition</b> <a href="dd/d5c/_program_8cs_source.html#l00168">Program.cs:168</a></div></div>
+<div class="ttc" id="aclass_f_i_r_e_configration_html"><div class="ttname"><a href="df/dbb/class_f_i_r_e_configration.html">FIREConfigration</a></div><div class="ttdoc">Represents the root configuration document loaded from the FIRE configuration YAML file.</div><div class="ttdef"><b>Definition</b> <a href="d1/d3c/_f_i_r_e_configration_8cs_source.html#l00086">FIREConfigration.cs:87</a></div></div>
+<div class="ttc" id="aclass_f_i_r_e_configration_html_a89e6c0a8550de0522eda231500c9aa75"><div class="ttname"><a href="df/dbb/class_f_i_r_e_configration.html#a89e6c0a8550de0522eda231500c9aa75">FIREConfigration::Load</a></div><div class="ttdeci">static FIREConfigration Load(string filePath)</div><div class="ttdoc">Loads a FIRE configuration from a YAML file on disk.</div><div class="ttdef"><b>Definition</b> <a href="d1/d3c/_f_i_r_e_configration_8cs_source.html#l00298">FIREConfigration.cs:298</a></div></div>
+<div class="ttc" id="aclass_f_i_r_e_configration_html_a8c74ce8d2e821802ad7a0c5957826737"><div class="ttname"><a href="df/dbb/class_f_i_r_e_configration.html#a8c74ce8d2e821802ad7a0c5957826737">FIREConfigration::EnsureSupportedConfigurationVersion</a></div><div class="ttdeci">void EnsureSupportedConfigurationVersion()</div><div class="ttdoc">Throws an exception if the configuration version is not supported.</div><div class="ttdef"><b>Definition</b> <a href="d1/d3c/_f_i_r_e_configration_8cs_source.html#l00354">FIREConfigration.cs:354</a></div></div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md127"></a>
+4) Important <span class="tt">FIRECatalog</span> properties for UI binding</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Property  </th><th class="markdownTableHeadNone">Meaning  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a0391b18642c9e16b7c2a285fc7db3786">Culture</a></span>  </td><td class="markdownTableBodyNone">Controls localized API messages and date formatting behavior  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a18f9c0bac49bd7a5956079568a0ad53d" title="Gets or sets the fallback DateTime to use when parsed date values are implausible....">FallbackDateTime</a></span>  </td><td class="markdownTableBodyNone">Replacement value for implausible/unparseable date metadata  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#ad6e3ce861d4a5f5772ce00c59c91789a">CurrentStage</a></span>  </td><td class="markdownTableBodyNone">Active stage (<span class="tt"><a class="el" href="dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59a65dddcfa19b099a3493bd593dbfd2b92">Collect</a></span>, <span class="tt"><a class="el" href="dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59a13f619682461c16618971bf40437b4ef">Generate</a></span>, <span class="tt"><a class="el" href="dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59a31b7313c05d32519f3869a3de8be95e6">Execute</a></span>, <span class="tt"><a class="el" href="dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59adcf3bba8dca8116c2b3a5c37c2ca1d16">Inspect</a></span>)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a4a6c1207ff87a242380f60f9491e640e">CurrentFilePath</a></span>  </td><td class="markdownTableBodyNone">File currently processed  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a0c7afb1a46673160b6732204f4f48c93">ProcessedFileCount</a></span> / <span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#ab7bc51d4a61158d80661ad7805b8210b">TotalFileCount</a></span>  </td><td class="markdownTableBodyNone">Current progress counters  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a7e4b773b2216d56b9b9d2fb9fae30d4f">LastCollectedSourcePaths</a></span>  </td><td class="markdownTableBodyNone">Snapshot of files touched in last collect stage  </td></tr>
+</table>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md128"></a>
+5) Optional API methods often used by UI tools</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Method  </th><th class="markdownTableHeadNone">Use case  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a08c18d301e13f48def803bd50019d276" title="Clears all records from the database.">ClearDatabase()</a></span>  </td><td class="markdownTableBodyNone">Reset state before a clean collect run  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">DiagnoseGeneration(sourcePath)</span>  </td><td class="markdownTableBodyNone">Create detailed generation diagnosis report  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">GetAllAvailableMetadata(filePath)</span>  </td><td class="markdownTableBodyNone">Display metadata explorer in UI  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2" title="Retrieves all available metadata for a single file and writes it to a Markdown file.">WriteMetadataToMarkdown</a>(filePath, outputPath?)</span>  </td><td class="markdownTableBodyNone">Export metadata report for users/support  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a0e8ccea48e013f783535370544c3cfea" title="Writes a cancellation notice to the log at level Info.">LogCancelled()</a></span>  </td><td class="markdownTableBodyNone">Log user cancellation in long-running operations  </td></tr>
+</table>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md129"></a>
+6) Threading recommendation for desktop UI</h2>
+<p>Run pipeline methods (<span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#a7699db9161ac26db6231f6b201d3b94b" title="Step 1: Collects all files and their metadata from configured root directories.">CollectFiles</a></span>, <span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#ade7e2647d98d1b16c3ab66b2f3beff0b" title="Step 2: Generates target file paths for all collected file records.">GenerateTargetPaths</a></span>, <span class="tt"><a class="el" href="dd/d5c/_program_8cs.html#a759d8d651d077248931371415a6e37c8">ExecuteFileOperations</a></span>) on a background task and marshal <span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aead28fb01c01b00a7bbbd1557ed455d7">ProgressChanged</a></span> updates to the UI thread.</p>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md131"></a>
 Configuration Reference</h1>
 <p>The configuration is a single YAML file. Every key is case-sensitive.</p>
 <div class="fragment"><div class="line">ConfigurationVersion: 1.20       # Must be 1.20</div>
@@ -373,7 +467,7 @@ Configuration Reference</h1>
 <div class="line">        KeyWords:</div>
 <div class="line">          - ExifIFD:DateTimeOriginal</div>
 <div class="line">          - IFD0:DateTime</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md124"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md132"></a>
 <span class="tt">FileExtensions</span> properties</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -395,13 +489,13 @@ Configuration Reference</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a63323b332ded7ed3a4edc12fc1754d16" title="Gets or sets a dictionary of available metadata keywords for this extension.">AvailableKeyWords</a></span>  </td><td class="markdownTableBodyNone">map  </td><td class="markdownTableBodyNone">Keyword definitions (see below)  </td></tr>
 </table>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md125"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md133"></a>
 <span class="tt">AvailableKeyWords</span> properties</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Property  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Default  </th><th class="markdownTableHeadNone">Description  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ae0846a526671ac8ea5c31fb1ed328a9d" title="Gets or sets the data type of the metadata value.">DataType</a></span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">STRING</span>  </td><td class="markdownTableBodyNone"><span class="tt">STRING</span>, <span class="tt">INT</span>, <span class="tt">INTEGER</span>, <span class="tt">DATETIME</span>, <span class="tt">DATE</span>, <span class="tt">TIME</span>  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">DataType</span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">STRING</span>  </td><td class="markdownTableBodyNone"><span class="tt">STRING</span>, <span class="tt">INT</span>, <span class="tt">INTEGER</span>, <span class="tt">DATETIME</span>, <span class="tt">DATE</span>, <span class="tt">TIME</span>  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ac34de2a54dcaa5e190990544213c2a65" title="Gets or sets the metadata source for this keyword.">Source</a></span>  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"><span class="tt">FILEINFO</span>  </td><td class="markdownTableBodyNone"><span class="tt">FILEINFO</span> or <span class="tt">EXIFTOOL</span>  </td></tr>
 <tr class="markdownTableRowOdd">
@@ -412,7 +506,7 @@ Configuration Reference</h1>
 <td class="markdownTableBodyNone"><span class="tt">KeyWords</span>  </td><td class="markdownTableBodyNone">list  </td><td class="markdownTableBodyNone">—  </td><td class="markdownTableBodyNone">Ordered list of metadata tag names to try  </td></tr>
 </table>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md127"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md135"></a>
 Template Placeholders</h1>
 <p>Use <span class="tt">{KeywordName}</span> in <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a3cbabcf9e16d587d8c46845ae16fbadb" title="Gets or sets the directory sorting path pattern (may contain metadata placeholders).">SortingPatern</a></span> and <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a7b7e81bdf960f55fe8288e5549d94c38" title="Gets or sets the file name pattern (may contain metadata placeholders).">FileNamePatern</a></span>. Sub-properties are accessed with a dot.</p>
 <table class="markdownTable">
@@ -438,7 +532,7 @@ Template Placeholders</h1>
 <td class="markdownTableBodyNone"><span class="tt">{Counter:D3}</span>  </td><td class="markdownTableBodyNone"><span class="tt">001</span>, <span class="tt">002</span>, <span class="tt">003</span>  </td><td class="markdownTableBodyNone">Persistent running number per target path with <span class="tt">Dx</span> formatting; only active when the placeholder is used in the template  </td></tr>
 </table>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md129"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md137"></a>
 Keyword Selection</h1>
 <p>When a keyword lists multiple EXIF tags, FIRE queries each tag and picks one value based on <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a386f09885d44e5915217eb752f47e561" title="Gets or sets the value selection attribute that determines which value to use when multiple are found...">ValAttribute</a></span>:</p>
 <table class="markdownTable">
@@ -451,7 +545,7 @@ Keyword Selection</h1>
 </table>
 <p>If none of the listed tags yields a value, <span class="tt">NA</span> is written and a <span class="tt">[WARN]</span> message is printed to the console.</p>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md131"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md139"></a>
 Metadata Sources</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -462,10 +556,10 @@ Metadata Sources</h1>
 <td class="markdownTableBodyNone"><span class="tt">EXIFTOOL</span>  </td><td class="markdownTableBodyNone">Any tag readable by ExifTool (EXIF, XMP, IPTC, QuickTime, ID3, …)  </td></tr>
 </table>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md133"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md141"></a>
 Sidecar File Handling</h1>
 <p>FIRE automatically detects and processes sidecar files (e.g., <span class="tt">.xmp</span>, <span class="tt">.pp3</span>) alongside their primary files.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md134"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md142"></a>
 How It Works</h2>
 <ol type="1">
 <li><b>Configuration</b>: Define sidecar extensions in your primary file's configuration: <div class="fragment"><div class="line">FileExtensions:</div>
@@ -483,7 +577,7 @@ How It Works</h2>
 <li><b>Path Generation</b>: Sidecar files automatically inherit the target directory and base filename from their primary file, preserving only their own extension. If the primary template uses <span class="tt">{Counter...}</span>, the same persistent sequence is retained for the generated target path.</li>
 <li><b>Execution</b>: Sidecar files are copied/moved alongside their primary files using the global action setting.</li>
 </ol>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md135"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md143"></a>
 Example</h2>
 <p><b>Source structure:</b> </p><div class="fragment"><div class="line">D:\Import\</div>
 <div class="line">  IMG_1234.jpg</div>
@@ -492,9 +586,9 @@ Example</h2>
 <div class="line">  2026-07-04_001.jpg</div>
 <div class="line">  2026-07-04_001.xmp</div>
 </div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md137"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md145"></a>
 Examples</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md138"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md146"></a>
 Sort holiday photos by date and camera model</h2>
 <div class="fragment"><div class="line">SortingPatern: &quot;{MediaRootPath}\\{MetaCreationTime.Year}\\{MetaCreationTime.Month}\\{Make} {Model}&quot;</div>
 <div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}{MetaCreationTime.Month}{MetaCreationTime.Day}_{FileName}&quot;</div>
@@ -503,7 +597,7 @@ Sort holiday photos by date and camera model</h2>
 <div class="line">    07\</div>
 <div class="line">      Apple iPhone 15 Pro\</div>
 <div class="line">        20260704_IMG_1234.jpg</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md139"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md147"></a>
 Move DNG raw files alongside their JPEG, keep XMP sidecars</h2>
 <div class="fragment"><div class="line">FileExtensions:</div>
 <div class="line">  .jpg:</div>
@@ -511,7 +605,7 @@ Move DNG raw files alongside their JPEG, keep XMP sidecars</h2>
 <div class="line">    SidecarFileExtensions:</div>
 <div class="line">      - .xmp</div>
 <div class="line">      - .dng</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md140"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md148"></a>
 Normalize values with exact, wildcard, or regex replacements</h2>
 <div class="fragment"><div class="line">StringReplacements:</div>
 <div class="line">  SM-S938B: Galaxy S25 Ultra      # exact string replacement</div>
@@ -520,11 +614,13 @@ Normalize values with exact, wildcard, or regex replacements</h2>
 <div class="line">  &quot;regex:\\bSM-(S938B|F766B)\\b&quot;: Samsung Device</div>
 </div><!-- fragment --><p>Rules:</p><ul>
 <li>Replacements are applied to each resolved placeholder value (e.g. <span class="tt">{Make}</span>, <span class="tt">{Model}</span>) before it is inserted into the final pattern string.</li>
+<li>Only the first matching replacement rule is applied; processing stops after the first match.</li>
+<li>Rule order in <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#afdba3e756dc6f3cbf4d4d8303cdfb4ff" title="Gets or sets a dictionary of global string replacements applied to all resolved paths.">StringReplacements</a></span> is therefore significant.</li>
 <li>Without wildcard and without <span class="tt">regex:</span> prefix, an exact substring replacement is applied.</li>
 <li>Wildcard mode is active when <span class="tt">*</span> is present in the key (<span class="tt">*</span> = any character sequence).</li>
 <li>Regex mode is active when the key starts with <span class="tt">regex:</span>.</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md141"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md149"></a>
 Running number per target path with <span class="tt">{Counter:D3}</span></h2>
 <p><span class="tt">{Counter...}</span> enables numbering only when the placeholder is present in the template. The last used values are stored in the database so numbers are not reused after an application restart.</p>
 <div class="fragment"><div class="line">FileNamePatern: &quot;{MetaCreationTime.Year}-{MetaCreationTime.Month}-{MetaCreationTime.Day}_{Counter:D3}.JPG&quot;</div>
@@ -533,9 +629,9 @@ Running number per target path with <span class="tt">{Counter:D3}</span></h2>
 <li><span class="tt">2026-07-04_002.JPG</span></li>
 <li><span class="tt">2026-07-04_003.JPG</span></li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md142"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md150"></a>
 Note: For photo and video archives, use <span class="tt">{Counter...}</span> when a stable sequence must be preserved.</h1>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md143"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md151"></a>
 Building from Source</h1>
 <div class="fragment"><div class="line"># Restore dependencies</div>
 <div class="line">dotnet restore FIRE.slnx</div>
@@ -546,7 +642,7 @@ Building from Source</h1>
 <div class="line"># Run the console</div>
 <div class="line">dotnet run --project FIRE.Console -- collect --config ConfigurationFiles\Configuration.yaml --culture de-DE</div>
 </div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md145"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md153"></a>
 Documentation</h1>
 <p>API documentation is generated with <b>Doxygen 1.17.0</b>. The API is the canonical integration surface; the console documentation is provided as an auxiliary test/onboarding reference.</p>
 <div class="fragment"><div class="line"># Run from the repository root</div>
@@ -556,10 +652,10 @@ Documentation</h1>
 <blockquote class="doxtable">
 <p><b>Tip:</b> Install <a href="https://graphviz.org/">Graphviz</a> and set <span class="tt">HAVE_DOT = YES</span> in <span class="tt">docs/Doxyfile</span> to generate class and call graphs. </p>
 </blockquote>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md146"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md154"></a>
 Metadata Inspection API</h2>
 <p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2" title="Initializes a new instance of FIRECatalog.">FIRECatalog</a></span> provides two helper methods for metadata discovery and documentation.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md147"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md155"></a>
 <span class="tt">GetAllAvailableMetadata(string filePath)</span></h3>
 <p>Returns all metadata entries for one file as tuples:</p>
 <ul>
@@ -579,7 +675,7 @@ Metadata Inspection API</h2>
 <div class="line">{</div>
 <div class="line">    Console.WriteLine($<span class="stringliteral">&quot;[{source}] {key}: {value}&quot;</span>);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md148"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md156"></a>
 <span class="tt">WriteMetadataToMarkdown(string filePath, string? outputPath = null)</span></h3>
 <p>Creates a Markdown report for one file.</p>
 <p>Report contains:</p>
@@ -603,7 +699,7 @@ Metadata Inspection API</h2>
 <div class="line">    <span class="stringliteral">@&quot;D:\Photos\IMG_1234.jpg&quot;</span>,</div>
 <div class="line">    <span class="stringliteral">@&quot;D:\Reports\IMG_1234-metadata.md&quot;</span>);</div>
 </div><!-- fragment --><hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md150"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md158"></a>
 Third-Party Credits</h1>
 <p>This project uses third-party components:</p>
 <ul>
@@ -614,7 +710,7 @@ Third-Party Credits</h1>
 </ul>
 <p>For details, see <a class="el" href="d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html" title="Third-Party Notices">THIRD-PARTY-NOTICES.md</a>.</p>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="autotoc_md152"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md160"></a>
 License</h1>
 <p>Copyright © 2026 by Thomas Stoll. <br  />
  Released under the [MIT License](LICENSE). </p>

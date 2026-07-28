@@ -280,6 +280,20 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>bool</type>
+      <name>MarkAllForRecollect</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a9f3a623b3196bf069c4b1d2616adbcb5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string[]</type>
+      <name>MarkForRecollectPaths</name>
+      <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
+      <anchor>a86292149cfec47068548a44d2b967a68</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>string</type>
       <name>FilePath</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
@@ -425,6 +439,20 @@
       <name>ClearDatabase</name>
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
       <anchor>a08c18d301e13f48def803bd50019d276</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>MarkFileForRecollect</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>aea3e652bf8f8855e7db6c60c561000e9</anchor>
+      <arglist>(string sourceFilePath)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>MarkAllFilesForRecollect</name>
+      <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
+      <anchor>a2bdbcec38812e6aa30ab90de9808d846</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -917,12 +945,13 @@
     <path>FIRE/FIRE/</path>
     <filename>d1/d3c/_f_i_r_e_configration_8cs.html</filename>
     <class kind="class">FIREConfigration</class>
-    <class kind="class">AvailableKeywordConfiguration</class>
+    <class kind="class">MetadataRuleConfiguration</class>
+    <class kind="class">LoggingConfiguration</class>
     <member kind="function">
       <type>sealed class FIREConfigration</type>
       <name>YamlMember</name>
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>a3612a17b60733dfb291baab823502312</anchor>
+      <anchor>a754a19861376197b795e522d3e1c46f5</anchor>
       <arglist>(Alias=&quot;FileType&quot;)] public string FileType</arglist>
     </member>
     <member kind="function" static="yes">
@@ -952,13 +981,6 @@
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
       <anchor>a2909ce7c3cae497a7297eeef183e00d6</anchor>
       <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>internal void</type>
-      <name>Normalize</name>
-      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>a1c35f2ed6f60246e742841a824a7cb75</anchor>
-      <arglist>(string databasePath)</arglist>
     </member>
     <member kind="variable">
       <type>const decimal</type>
@@ -1045,6 +1067,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>List&lt; MetadataRuleConfiguration &gt;</type>
+      <name>MetadataRules</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a91bfb54919127ab371b9cf0d5260bf67</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>Dictionary&lt; string, FileExtensionConfiguration &gt;</type>
       <name>FileExtensions</name>
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
@@ -1094,10 +1123,17 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>string</type>
-      <name>DataType</name>
+      <type>Dictionary&lt; string, string &gt;</type>
+      <name>When</name>
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>ae0846a526671ac8ea5c31fb1ed328a9d</anchor>
+      <anchor>a0b68dce391b8e663d1e4f5e00132b054</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>Dictionary&lt; string, string &gt;</type>
+      <name>Set</name>
+      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
+      <anchor>a2abd7e1e27e807862503b2616ea505f9</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -1126,34 +1162,6 @@
       <name>SourceFields</name>
       <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
       <anchor>a37a875d99b6438db746b8d3696a10dc3</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>LogFileName</name>
-      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>a65d8359dcb16e8d807b59a51d9bffce6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>LogLevel</name>
-      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>a9647e3ff64f75fba67077f0021234871</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>long</type>
-      <name>MaxFileSizeBytes</name>
-      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>a5a7cd280c18f28e71c9851170346ba89</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>int</type>
-      <name>MaxAgeDays</name>
-      <anchorfile>d1/d3c/_f_i_r_e_configration_8cs.html</anchorfile>
-      <anchor>a356140f47d350238184f6084793a0513</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1315,59 +1323,6 @@
       <name>NoWrap</name>
       <anchorfile>d5/d39/class_app_lifetime.html</anchorfile>
       <anchor>aa4954b22aaffe20d10b1ec69791992bd</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>AvailableKeywordConfiguration</name>
-    <filename>d3/daf/class_available_keyword_configuration.html</filename>
-    <member kind="function">
-      <type>internal void</type>
-      <name>Normalize</name>
-      <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
-      <anchor>aaaf826e5080a9390662f87633d38aac7</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>DataType</name>
-      <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
-      <anchor>a644c6e36c655560123458574410f7bc2</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>set</name>
-      <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
-      <anchor>a0498422cf2d9f165fc718b6ed09a3196</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>Source</name>
-      <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
-      <anchor>a36bf41d9f6134301933ea084b1dd4b25</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>ValAttribute</name>
-      <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
-      <anchor>ad6370667010a92c28493fcc16aef5936</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>string</type>
-      <name>Default</name>
-      <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
-      <anchor>af691edf1cbae194bc942a15bef257b25</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>List&lt; string &gt;</type>
-      <name>SourceFields</name>
-      <anchorfile>d3/daf/class_available_keyword_configuration.html</anchorfile>
-      <anchor>a3347583a2ee7a223d0da4f56c71d65cb</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1676,6 +1631,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>List&lt; MetadataRuleConfiguration &gt;</type>
+      <name>MetadataRules</name>
+      <anchorfile>df/dbb/class_f_i_r_e_configration.html</anchorfile>
+      <anchor>a075d5e9c266dde7bd372b3dce1798f99</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>Dictionary&lt; string, FileExtensionConfiguration &gt;</type>
       <name>FileExtensions</name>
       <anchorfile>df/dbb/class_f_i_r_e_configration.html</anchorfile>
@@ -1807,6 +1769,91 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>LoggingConfiguration</name>
+    <filename>db/dee/class_logging_configuration.html</filename>
+    <member kind="function">
+      <type>internal void</type>
+      <name>Normalize</name>
+      <anchorfile>db/dee/class_logging_configuration.html</anchorfile>
+      <anchor>a7fb35ecbc352aa23c139594db996b018</anchor>
+      <arglist>(string databasePath)</arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>LogFilePath</name>
+      <anchorfile>db/dee/class_logging_configuration.html</anchorfile>
+      <anchor>aaea25bfa7622d9d317e0cca7d116d24d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>set</name>
+      <anchorfile>db/dee/class_logging_configuration.html</anchorfile>
+      <anchor>a46eb2f9c3a23af016d41b3b3491090ba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>LogFileName</name>
+      <anchorfile>db/dee/class_logging_configuration.html</anchorfile>
+      <anchor>a6a23cb3bc5d4a16286e633cb415af46f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>string</type>
+      <name>LogLevel</name>
+      <anchorfile>db/dee/class_logging_configuration.html</anchorfile>
+      <anchor>ab069fa903d3d8d499ef4314b95d4b683</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>long</type>
+      <name>MaxFileSizeBytes</name>
+      <anchorfile>db/dee/class_logging_configuration.html</anchorfile>
+      <anchor>a115612db9d4e6f19e128d89ad9fbb28d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>int</type>
+      <name>MaxAgeDays</name>
+      <anchorfile>db/dee/class_logging_configuration.html</anchorfile>
+      <anchor>a266099e9bb35da859b201bee9f511ba9</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>MetadataRuleConfiguration</name>
+    <filename>d1/d80/class_metadata_rule_configuration.html</filename>
+    <member kind="function">
+      <type>internal void</type>
+      <name>Normalize</name>
+      <anchorfile>d1/d80/class_metadata_rule_configuration.html</anchorfile>
+      <anchor>a0024dd90b4f18c18a7c729f3d7de2f43</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="variable">
+      <type>Dictionary&lt; string, string &gt;</type>
+      <name>When</name>
+      <anchorfile>d1/d80/class_metadata_rule_configuration.html</anchorfile>
+      <anchor>a1a5f30b271e99b22db7af2c9e3ddc97f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>set</name>
+      <anchorfile>d1/d80/class_metadata_rule_configuration.html</anchorfile>
+      <anchor>ab15ce499164a04a888a2f1e552b5661f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>Dictionary&lt; string, string &gt;</type>
+      <name>Set</name>
+      <anchorfile>d1/d80/class_metadata_rule_configuration.html</anchorfile>
+      <anchor>a30625c57c94400e72b11b25611e8a600</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>MetadataSourceRegistry</name>
     <filename>de/df7/class_metadata_source_registry.html</filename>
     <member kind="function">
@@ -1906,6 +1953,13 @@
       <name>ParseTemplate_NonDatetimeKeywordWithSuffix_DoesNotApplyDateFallback</name>
       <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
       <anchor>a6d97b664e77b0b21fc6481dc99783fdd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>Parse_MetadataRules_GlobalAndExtension_AreDeserialized</name>
+      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
+      <anchor>ab6926c897227fc7400ac5c7c8b244f39</anchor>
       <arglist>()</arglist>
     </member>
   </compound>

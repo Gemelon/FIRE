@@ -2079,10 +2079,10 @@ public sealed class FIRECatalog : IDisposable
     }
 
     /// <summary>
-    /// Applies all configured string replacement rules to a value.
+    /// Applies the first matching configured string replacement rule to a value.
     /// </summary>
     /// <param name="value">Input value to transform.</param>
-    /// <returns>Transformed value after all configured replacements were applied.</returns>
+    /// <returns>Transformed value after the first matching replacement was applied; otherwise the original value.</returns>
     private string ApplyConfiguredStringReplacements(string value)
     {
         if (string.IsNullOrEmpty(value) || _configuration.StringReplacements.Count == 0)

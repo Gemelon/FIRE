@@ -2,7 +2,6 @@ var annotated_dup =
 [
     [ "ApiLocalizer", "d6/d50/class_api_localizer.html", "d6/d50/class_api_localizer" ],
     [ "AppLifetime", "d5/d39/class_app_lifetime.html", "d5/d39/class_app_lifetime" ],
-    [ "AvailableKeywordConfiguration", "d3/daf/class_available_keyword_configuration.html", "d3/daf/class_available_keyword_configuration" ],
     [ "CommandExecutor", "d7/d0d/class_command_executor.html", "d7/d0d/class_command_executor" ],
     [ "CommonCommandSettings", "d0/d9e/class_common_command_settings.html", "d0/d9e/class_common_command_settings" ],
     [ "ConsoleUi", "d2/d24/class_console_ui.html", "d2/d24/class_console_ui" ],
@@ -13,6 +12,8 @@ var annotated_dup =
     [ "GenerateCommand", "d1/ddd/class_generate_command.html", "d1/ddd/class_generate_command" ],
     [ "InspectCommand", "d1/d1a/class_inspect_command.html", "d1/d1a/class_inspect_command" ],
     [ "InspectSettings", "dc/d79/class_inspect_settings.html", "dc/d79/class_inspect_settings" ],
+    [ "LoggingConfiguration", "db/dee/class_logging_configuration.html", "db/dee/class_logging_configuration" ],
+    [ "MetadataRuleConfiguration", "d1/d80/class_metadata_rule_configuration.html", "d1/d80/class_metadata_rule_configuration" ],
     [ "MetadataSourceRegistry", "de/df7/class_metadata_source_registry.html", "de/df7/class_metadata_source_registry" ],
     [ "ProgramHost", "d6/d5e/class_program_host.html", "d6/d5e/class_program_host" ],
     [ "UnitTest1", "d7/d81/class_unit_test1.html", "d7/d81/class_unit_test1" ]
