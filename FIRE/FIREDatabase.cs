@@ -422,6 +422,20 @@ public class FIREDbRecord
     public bool ExcludedFromExecute { get; set; } = false;
 
     /// <summary>
+    /// Gets or sets whether this record is marked for metadata re-collection.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// When set to <c>true</c>, the next <c>collect</c> pass updates this existing record by
+    /// reading metadata from the current source file again instead of skipping it as a duplicate.
+    /// </para>
+    /// <para>
+    /// After a successful re-collection, this flag is reset to <c>false</c>.
+    /// </para>
+    /// </remarks>
+    public bool MarkedForRecollect { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets the counter value that was assigned to this record during the last
     /// <c>generate</c> phase, or <see langword="null"/> if no counter placeholder is used
     /// in the file-name template.
@@ -660,6 +674,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         EnsureCounterStateTableExists();
         EnsureAssignedCounterValueColumnExists();
         EnsureFileIdHashColumnExists();
+        EnsureMarkedForRecollectColumnExists();
         EnsureStatusRowExists();
         Reload();
     }
@@ -963,6 +978,79 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
         return _fileIdIndex.Contains(key);
     }
 
+    /// <summary>
+    /// Finds an existing record by NTFS file identity.
+    /// </summary>
+    /// <param name="volumeSerialNumber">Volume serial number of the source file.</param>
+    /// <param name="fileId">Binary file identifier of the source file.</param>
+    /// <returns>The matching record, or <see langword="null"/> when no record exists.</returns>
+    internal FIREDbRecord? FindByFileIdentity(ulong volumeSerialNumber, byte[]? fileId)
+    {
+        if (fileId == null)
+            return null;
+
+        ThrowIfDisposed();
+
+        var hash = ComputeFileIdHash(volumeSerialNumber, fileId);
+        if (!string.IsNullOrWhiteSpace(hash))
+        {
+            var byHash = _records.FirstOrDefault(r => string.Equals(r.FileIdHash, hash, StringComparison.OrdinalIgnoreCase));
+            if (byHash is not null)
+                return byHash;
+        }
+
+        return _records.FirstOrDefault(r =>
+            r.VolumeSerialNumber == volumeSerialNumber &&
+            r.FileId is not null &&
+            r.FileId.SequenceEqual(fileId));
+    }
+
+    /// <summary>
+    /// Marks one record, identified by source path, for metadata re-collection.
+    /// </summary>
+    /// <param name="sourceFilePath">Absolute source path of the file to mark.</param>
+    /// <returns><see langword="true"/> when a record was found and marked; otherwise <see langword="false"/>.</returns>
+    public bool MarkFileForRecollect(string sourceFilePath)
+    {
+        ThrowIfDisposed();
+        ArgumentException.ThrowIfNullOrWhiteSpace(sourceFilePath);
+
+        var normalizedPath = Path.GetFullPath(sourceFilePath).Trim();
+        var record = _records.FirstOrDefault(r =>
+            !string.IsNullOrWhiteSpace(r.SourceFilePath) &&
+            string.Equals(Path.GetFullPath(r.SourceFilePath), normalizedPath, StringComparison.OrdinalIgnoreCase));
+
+        if (record is null)
+            return false;
+
+        record.MarkedForRecollect = true;
+        Save();
+        return true;
+    }
+
+    /// <summary>
+    /// Marks all records currently stored in the database for metadata re-collection.
+    /// </summary>
+    /// <returns>The number of records that were newly marked.</returns>
+    public int MarkAllFilesForRecollect()
+    {
+        ThrowIfDisposed();
+
+        var markedCount = 0;
+        foreach (var record in _records)
+        {
+            if (record.MarkedForRecollect)
+                continue;
+
+            record.MarkedForRecollect = true;
+            markedCount++;
+        }
+
+        if (markedCount > 0)
+            Save();
+
+        return markedCount;
+    }
 
     /// <summary>
     /// Copies the in-memory collection to the specified array, starting at the specified index.
@@ -1307,6 +1395,44 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
     }
 
     /// <summary>
+    /// Ensures that the <c>MarkedForRecollect</c> column exists in the
+    /// <c>FIREDbRecords</c> table even for databases created before this field
+    /// was introduced.
+    /// </summary>
+    private void EnsureMarkedForRecollectColumnExists()
+    {
+        var connection = _context.Database.GetDbConnection();
+        connection.Open();
+
+        using var command = connection.CreateCommand();
+        command.CommandText = "PRAGMA table_info(FIREDbRecords);";
+
+        using var reader = command.ExecuteReader();
+        bool columnExists = false;
+
+        while (reader.Read())
+        {
+            var columnName = reader.GetString(1);
+            if (columnName == "MarkedForRecollect")
+            {
+                columnExists = true;
+                break;
+            }
+        }
+
+        reader.Close();
+
+        if (!columnExists)
+        {
+            _context.Database.ExecuteSqlRaw("""
+                ALTER TABLE "FIREDbRecords" ADD COLUMN "MarkedForRecollect" INTEGER NOT NULL DEFAULT 0;
+                """);
+        }
+
+        connection.Close();
+    }
+
+    /// <summary>
     /// Returns the next counter value for the specified scope and keeps it in memory until
     /// the surrounding database save operation persists it.
     /// </summary>
@@ -1533,6 +1659,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             SourceFileExists = entity.SourceFileExists,
             ExcludedFromGenerate = entity.ExcludedFromGenerate,
             ExcludedFromExecute = entity.ExcludedFromExecute,
+            MarkedForRecollect = entity.MarkedForRecollect,
             AssignedCounterValue = entity.AssignedCounterValue,
             FileMetaDatas = entity.FileMetaDatas
                 .OrderBy(meta => meta.Id)
@@ -1582,6 +1709,7 @@ public sealed class FIREDatabase : IList<FIREDbRecord>, IDisposable
             SourceFileExists = model.SourceFileExists,
             ExcludedFromGenerate = model.ExcludedFromGenerate,
             ExcludedFromExecute = model.ExcludedFromExecute,
+            MarkedForRecollect = model.MarkedForRecollect,
             AssignedCounterValue = model.AssignedCounterValue
         };
 
@@ -1992,6 +2120,9 @@ internal sealed class FIREDatabaseContext : DbContext
             entity.Property(x => x.SourceFileExists)
                 .HasDefaultValue(true);
 
+            entity.Property(x => x.MarkedForRecollect)
+                .HasDefaultValue(false);
+
             // Composite index on VolumeSerialNumber and FileId for efficient duplicate detection
             entity.HasIndex(x => new { x.VolumeSerialNumber, x.FileId })
                 .HasDatabaseName("IX_VolumeSerialNumber_FileId");
@@ -2115,6 +2246,14 @@ internal sealed class FIREDbRecordEntity
     /// Defaults to <c>false</c> (file will be processed normally).
     /// </remarks>
     public bool ExcludedFromExecute { get; set; } = false;
+
+    /// <summary>
+    /// Gets or sets whether this record is marked for metadata re-collection.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to <c>false</c> and is reset to <c>false</c> after successful re-collection.
+    /// </remarks>
+    public bool MarkedForRecollect { get; set; } = false;
 
     /// <summary>
     /// Gets or sets the counter value assigned during the last <c>generate</c> phase,

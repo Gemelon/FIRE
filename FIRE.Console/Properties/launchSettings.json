@@ -22,7 +22,7 @@
     },
     "FIRE.Console Diagnose": {
       "commandName": "Project",
-      "commandLineArgs": "diagnose --config \"D:\\Media\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --source-path \"D:\\Media Originale\\Automatic Upload\\Samsung SM-S938B\\DJI Album\\dji_fly_20260224_195548_0001_1771962080740_video.mp4\" --culture de-DE"
+      "commandLineArgs": "diagnose --config \"D:\\Media\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --source-path \"D:\\Media Originale\\Automatic Upload\\Samsung SM-S938B\\DCIM\\Camera\\20260726_100612.mp4\" --culture de-DE"
     }
   }
 }

@@ -141,6 +141,15 @@ internal sealed class CollectSettings : CommonCommandSettings
     [CommandOption("--clear-database|--clear")]
     [DefaultValue(false)]
     public bool ClearDatabase { get; set; }
+
+    [Description("Mark all existing records for metadata re-collection before scanning files.")]
+    [CommandOption("--mark-all-recollect")]
+    [DefaultValue(false)]
+    public bool MarkAllForRecollect { get; set; }
+
+    [Description("Mark a specific source file path for metadata re-collection. Option can be repeated.")]
+    [CommandOption("--mark-recollect <SOURCE_PATH>")]
+    public string[] MarkForRecollectPaths { get; set; } = [];
 }
 
 internal sealed class InspectSettings : CommonCommandSettings
@@ -186,6 +195,29 @@ internal static class CommandExecutor
                     catalog.ClearDatabase();
                     ConsoleUi.WriteLine(runtime, TextCatalog.Get(runtime.Language, "database_cleared"));
                     ConsoleUi.WriteEmptyLine();
+                }
+
+                if (settings.MarkAllForRecollect)
+                {
+                    var markedCount = catalog.MarkAllFilesForRecollect();
+                    ConsoleUi.WriteLine(runtime, $"Marked {markedCount} records for metadata re-collection.");
+                }
+
+                if (settings.MarkForRecollectPaths.Length > 0)
+                {
+                    var marked = 0;
+                    var missing = 0;
+                    foreach (var sourcePath in settings.MarkForRecollectPaths)
+                    {
+                        if (catalog.MarkFileForRecollect(sourcePath))
+                            marked++;
+                        else
+                            missing++;
+                    }
+
+                    ConsoleUi.WriteLine(runtime, $"Marked {marked} selected records for metadata re-collection.");
+                    if (missing > 0)
+                        ConsoleUi.WriteWarning(runtime, $"{missing} selected source path(s) were not found in the database.");
                 }
             },
             (catalog, onFile) => catalog.CollectFiles(onFile));

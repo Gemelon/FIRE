@@ -505,6 +505,7 @@ public sealed class FIRECatalog : IDisposable
     // Collect-session statistics (reset at BeginStage for Collect)
     private int _collectTotalFiles;
     private int _collectAddedFiles;
+    private int _collectUpdatedFiles;
     private readonly Dictionary<string, int> _collectSkippedExtensions = new(StringComparer.OrdinalIgnoreCase);
 
     public event EventHandler<FIRECatalogProgressEventArgs>? ProgressChanged;
@@ -612,6 +613,7 @@ public sealed class FIRECatalog : IDisposable
             _lastCollectedSourcePaths.Clear();
             _collectTotalFiles = 0;
             _collectAddedFiles = 0;
+            _collectUpdatedFiles = 0;
             _collectSkippedExtensions.Clear();
         }
 
@@ -765,8 +767,12 @@ public sealed class FIRECatalog : IDisposable
         }
         finally
         {
-            // Ensure all pending changes are saved, even if an error occurred
-            _database.FlushPendingChanges();
+            // Persist either pending inserts only or the complete current state when existing
+            // records were updated during re-collection.
+            if (_collectUpdatedFiles > 0)
+                _database.Save();
+            else
+                _database.FlushPendingChanges();
         }
 
         CompleteCurrentStage();
@@ -792,10 +798,37 @@ public sealed class FIRECatalog : IDisposable
     }
 
     /// <summary>
+    /// Marks a single existing record so its metadata will be re-collected on the next collect run.
+    /// </summary>
+    /// <param name="sourceFilePath">Absolute source path of the record to mark.</param>
+    /// <returns><see langword="true"/> when a record was found and marked; otherwise <see langword="false"/>.</returns>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if this instance has been disposed.
+    /// </exception>
+    public bool MarkFileForRecollect(string sourceFilePath)
+    {
+        ThrowIfDisposed();
+        return _database.MarkFileForRecollect(sourceFilePath);
+    }
+
+    /// <summary>
+    /// Marks all existing records so their metadata will be re-collected on the next collect run.
+    /// </summary>
+    /// <returns>The number of records that were newly marked.</returns>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if this instance has been disposed.
+    /// </exception>
+    public int MarkAllFilesForRecollect()
+    {
+        ThrowIfDisposed();
+        return _database.MarkAllFilesForRecollect();
+    }
+
+    /// <summary>
     /// Step 2: Generates target file paths for all collected file records.
     /// </summary>
     /// <param name="progressCallback">
-    /// Optional callback invoked for each file being processed. The callback receives the file path.
+    /// Optional callback invoked for each file being processed. The callback receives the generated target path when available.
     /// </param>
     /// <remarks>
     /// <para>
@@ -850,8 +883,7 @@ public sealed class FIRECatalog : IDisposable
                 continue;
             }
 
-            progressCallback?.Invoke(record.SourceFilePath);
-            ReportFileProgress(record.SourceFilePath);
+            var progressPath = record.SourceFilePath;
 
             // Handle sidecar files separately
             if (record.Classification == FileClassification.SidecarFile)
@@ -860,11 +892,22 @@ public sealed class FIRECatalog : IDisposable
                 // Update status for sidecars
                 if (!string.IsNullOrWhiteSpace(record.TargetFilePath))
                     record.Status = ProcessingStatus.PathGenerated;
+
+                progressPath = record.TargetFilePath ?? progressPath;
+                progressCallback?.Invoke(progressPath);
+                ReportFileProgress(progressPath);
                 continue;
             }
 
             var extension = Path.GetExtension(record.SourceFilePath).ToLowerInvariant();
-            if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig)) continue;
+            if (!_configuration.FileExtensions.TryGetValue(extension, out var extConfig))
+            {
+                progressCallback?.Invoke(progressPath);
+                ReportFileProgress(progressPath);
+                continue;
+            }
+
+            ApplyMetadataRules(record, extConfig);
 
             var metadataLookup = record.FileMetaDatas.ToDictionary(
                 m => m.Key ?? string.Empty,
@@ -879,7 +922,12 @@ public sealed class FIRECatalog : IDisposable
             var fileNamePattern = extConfig.FileNamePatern ?? _configuration.FileNamePatern ?? string.Empty;
 
             var targetDirectory = ParseTemplate(sortingPattern, metadataLookup, record.SourceFilePath, null, metadataTypeLookup);
-            if (string.IsNullOrWhiteSpace(targetDirectory)) continue;
+            if (string.IsNullOrWhiteSpace(targetDirectory))
+            {
+                progressCallback?.Invoke(progressPath);
+                ReportFileProgress(progressPath);
+                continue;
+            }
 
             long? counter = null;
             if (ContainsCounterPlaceholder(fileNamePattern))
@@ -901,6 +949,10 @@ public sealed class FIRECatalog : IDisposable
                 record.Status = ProcessingStatus.PathGenerated;
                 _logger?.LogContinuation(FIRELogLevel.Debug, record.TargetFilePath);
             }
+
+            progressPath = record.TargetFilePath ?? progressPath;
+            progressCallback?.Invoke(progressPath);
+            ReportFileProgress(progressPath);
         }
 
         _database.Save();
@@ -965,7 +1017,7 @@ public sealed class FIRECatalog : IDisposable
     /// Step 3: Executes the configured file operation (Copy, Move, or Link) for all records.
     /// </summary>
     /// <param name="progressCallback">
-    /// Optional callback invoked for each file being processed. The callback receives the file path.
+    /// Optional callback invoked for each file being processed. The callback receives the target path.
     /// </param>
     /// <remarks>
     /// <para>
@@ -1021,8 +1073,8 @@ public sealed class FIRECatalog : IDisposable
                 continue;
             }
 
-            progressCallback?.Invoke(record.SourceFilePath);
-            ReportFileProgress(record.SourceFilePath);
+            progressCallback?.Invoke(record.TargetFilePath);
+            ReportFileProgress(record.TargetFilePath);
 
             string action;
 
@@ -1432,10 +1484,19 @@ public sealed class FIRECatalog : IDisposable
         }
 
         var fileIdInfo = GetFileIdInfo(filePath);
+        var existingRecord = _database.FindByFileIdentity(fileIdInfo.VolumeSerialNumber, fileIdInfo.FileId);
 
-        // Skip files that are already in the database (incremental workflow)
-        if (_database.FileExists(fileIdInfo.VolumeSerialNumber, fileIdInfo.FileId))
+        if (existingRecord is not null)
+        {
+            if (!existingRecord.MarkedForRecollect)
+                return;
+
+            RefreshExistingRecordForRecollect(existingRecord, filePath, extConfig);
+            ProcessSidecarFiles(filePath, extConfig, existingRecord);
+            if (CurrentStage == FIRECatalogStage.Collect)
+                _collectUpdatedFiles++;
             return;
+        }
 
         var record = new FIREDbRecord
         {
@@ -1445,7 +1506,42 @@ public sealed class FIRECatalog : IDisposable
             FileIdHash = FIREDatabase.ComputeFileIdHash(fileIdInfo.VolumeSerialNumber, fileIdInfo.FileId)
         };
 
-        foreach (var keywordEntry in extConfig.AvailableKeyWords)
+        PopulateRecordMetadata(record, filePath, extConfig);
+
+        _database.Add(record);
+        if (CurrentStage == FIRECatalogStage.Collect)
+            _collectAddedFiles++;
+        ProcessSidecarFiles(filePath, extConfig, record);
+    }
+
+    /// <summary>
+    /// Refreshes an existing record that was explicitly marked for metadata re-collection.
+    /// </summary>
+    /// <param name="record">Existing database record to refresh.</param>
+    /// <param name="filePath">Current source file path.</param>
+    /// <param name="extensionConfiguration">Resolved extension configuration for the file.</param>
+    private void RefreshExistingRecordForRecollect(FIREDbRecord record, string filePath, FileExtensionConfiguration extensionConfiguration)
+    {
+        record.SourceFilePath = filePath;
+        record.TargetFilePath = null;
+        record.Status = ProcessingStatus.NotProcessed;
+        record.AssignedCounterValue = null;
+        record.SourceFileExists = true;
+        record.MarkedForRecollect = false;
+        record.FileMetaDatas.Clear();
+
+        PopulateRecordMetadata(record, filePath, extensionConfiguration);
+    }
+
+    /// <summary>
+    /// Populates metadata entries for a record and applies configured metadata rules.
+    /// </summary>
+    /// <param name="record">Record to populate.</param>
+    /// <param name="filePath">Current source file path.</param>
+    /// <param name="extensionConfiguration">Resolved extension configuration for the file.</param>
+    private void PopulateRecordMetadata(FIREDbRecord record, string filePath, FileExtensionConfiguration extensionConfiguration)
+    {
+        foreach (var keywordEntry in extensionConfiguration.AvailableKeyWords)
         {
             var keywordName = keywordEntry.Key;
             var keywordConfig = keywordEntry.Value;
@@ -1490,12 +1586,7 @@ public sealed class FIRECatalog : IDisposable
             record.FileMetaDatas.Add(CreateMetadataEntry(keywordName, selectedValue, keywordConfig, sourceName));
         }
 
-        ApplyMetadataRules(record, extConfig);
-
-        _database.Add(record);
-        if (CurrentStage == FIRECatalogStage.Collect)
-            _collectAddedFiles++;
-        ProcessSidecarFiles(filePath, extConfig, record);
+        ApplyMetadataRules(record, extensionConfiguration);
     }
 
     /// <summary>
@@ -1999,13 +2090,18 @@ public sealed class FIRECatalog : IDisposable
             return value;
         }
 
-        var result = value;
+        // Apply only the first matching replacement rule to the original value.
+        // This prevents chain reactions where a replacement result triggers another rule.
         foreach (var replacement in _configuration.StringReplacements)
         {
-            result = ApplyStringReplacement(result, replacement.Key, replacement.Value);
+            var result = ApplyStringReplacement(value, replacement.Key, replacement.Value);
+            if (result != value)
+            {
+                return result;
+            }
         }
 
-        return result;
+        return value;
     }
 
     /// <summary>
