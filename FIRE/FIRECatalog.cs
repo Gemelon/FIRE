@@ -33,7 +33,13 @@ using YamlDotNet.Core.Tokens;
 
 namespace FIRE;
 
-enum FileInfoByHandleClass
+/// <summary>
+/// Specifies the information class for file handle queries (Win32 API).
+/// </summary>
+/// <remarks>
+/// Used internally with GetFileInformationByHandleEx to retrieve extended file information.
+/// </remarks>
+internal enum FileInfoByHandleClass
 {
     FileBasicInfo = 0,
     FileStandardInfo = 1,
@@ -475,23 +481,10 @@ public sealed class MetadataSourceRegistry
 /// </example>
 public sealed class FIRECatalog : IDisposable
 {
-    /// <summary>
-    /// Retrieves basic file information for an open file handle.
-    /// </summary>
-    /// <param name="hFile">Native file handle.</param>
-    /// <param name="lpFileInformation">Receives file information.</param>
-    /// <returns><see langword="true"/> on success; otherwise <see langword="false"/>.</returns>
+    // Win32 API declarations for file identification
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool GetFileInformationByHandle(SafeFileHandle hFile, out BY_HANDLE_FILE_INFORMATION lpFileInformation);
 
-    /// <summary>
-    /// Retrieves extended file information for an open file handle.
-    /// </summary>
-    /// <param name="hFile">Native file handle.</param>
-    /// <param name="fileInfoClass">Requested information class.</param>
-    /// <param name="fileIdInfo">Receives extended file identifier data.</param>
-    /// <param name="dwBufferSize">Size of <paramref name="fileIdInfo"/> in bytes.</param>
-    /// <returns><see langword="true"/> on success; otherwise <see langword="false"/>.</returns>
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool GetFileInformationByHandleEx(SafeFileHandle hFile, FileInfoByHandleClass fileInfoClass, out FILE_ID_INFO fileIdInfo, uint dwBufferSize);
 
@@ -560,7 +553,13 @@ public sealed class FIRECatalog : IDisposable
         public byte[] FileId;
     }
 
-    struct BY_HANDLE_FILE_INFORMATION
+    /// <summary>
+    /// Native Windows structure for file information (Win32 API).
+    /// </summary>
+    /// <remarks>
+    /// Used internally with GetFileInformationByHandle to retrieve file attributes and identifiers.
+    /// </remarks>
+    private struct BY_HANDLE_FILE_INFORMATION
     {
         public uint FileAttributes;
         public System.Runtime.InteropServices.ComTypes.FILETIME CreationTime;

@@ -1,4 +1,27 @@
 var searchData=
 [
-  ['5_20optional_20api_20methods_20often_20used_20by_20ui_20tools_0',['5) Optional API methods often used by UI tools',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md128',1,'']]]
+  ['classes_0',['Core Classes',['../index.html#autotoc_md12',1,'']]],
+  ['classification_1',['Classification',['../d7/ddf/class_f_i_r_e_1_1_f_i_r_e_db_record.html#a836644d603d91ebb670ce5ef6a9507cb',1,'FIRE::FIREDbRecord']]],
+  ['clear_2',['Clear',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a90a9e0804f5150a11930d7ff759ef7ca',1,'FIRE::FIREDatabase']]],
+  ['cleardatabase_3',['ClearDatabase',['../d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html#a4de713e855a52e89c1b10d79ad1fa73e',1,'FIRE::FIRECatalog']]],
+  ['cli_20culture_20and_20output_20options_4',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
+  ['collect_5',['Collect',['../db/de5/namespace_f_i_r_e.html#acf4e7afa69d5b80ecaa94477f6c873c0ae7ca851922b13f555127b04b70435ca9',1,'FIRE']]],
+  ['collect_6',['Step 1 — collect',['../index.html#step1',1,'']]],
+  ['collectfiles_7',['CollectFiles',['../d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html#a0943f8f5a8e9c2d0b9d795e256ad18db',1,'FIRE::FIRECatalog']]],
+  ['collection_20phase_8',['Collection Phase',['../index.html#sidecar_collection',1,'']]],
+  ['commands_9',['Commands',['../dir_865d401768b10580b0b717f084e9432e.html#autotoc_md9',1,'']]],
+  ['computefileidhash_10',['ComputeFileIdHash',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a44c1efbc08d5fdc2d800d1a8f2e78f7a',1,'FIRE::FIREDatabase']]],
+  ['configuration_11',['Configuration',['../index.html#config_sec',1,'Configuration'],['../index.html#sidecar_config',1,'Configuration']]],
+  ['configurationversion_12',['ConfigurationVersion',['../d4/d3b/class_f_i_r_e_1_1_f_i_r_e_configration.html#a244be8c39350803d9a03fd3253e90b58',1,'FIRE::FIREConfigration']]],
+  ['console_13',['FIRE.Console',['../dir_865d401768b10580b0b717f084e9432e.html#autotoc_md6',1,'']]],
+  ['contains_14',['Contains',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a41d913b9476957138cedf4ccfd7d6eaa',1,'FIRE::FIREDatabase']]],
+  ['copyto_15',['CopyTo',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a1a4bceaa64f969bcf857bb4c133fcb14',1,'FIRE::FIREDatabase']]],
+  ['core_20classes_16',['Core Classes',['../index.html#autotoc_md12',1,'']]],
+  ['count_17',['Count',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a21cd7d969af159c74a95114b4d8c1163',1,'FIRE::FIREDatabase']]],
+  ['credits_18',['Third-Party Credits',['../index.html#credits_sec',1,'']]],
+  ['critical_19',['Critical',['../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909a278d01e5af56273bae1bb99a98b370cd',1,'FIRE::Logging']]],
+  ['culture_20',['Culture',['../d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html#a498b48eea980d1bd7c10d387bbeef10b',1,'FIRE.FIRECatalog.Culture'],['../d8/d41/class_f_i_r_e_1_1_f_i_r_e_catalog_progress_event_args.html#ae878b83bbac0ce793ea0b3e9a3ecd8d7',1,'FIRE.FIRECatalogProgressEventArgs.Culture']]],
+  ['culture_20and_20output_20options_21',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
+  ['currentfilepath_22',['CurrentFilePath',['../d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html#ac3eac415b55e5551dc944f6f1907a172',1,'FIRE.FIRECatalog.CurrentFilePath'],['../d8/d41/class_f_i_r_e_1_1_f_i_r_e_catalog_progress_event_args.html#ae224fc6d095298e4d1881d359f4ce445',1,'FIRE.FIRECatalogProgressEventArgs.CurrentFilePath']]],
+  ['currentstage_23',['CurrentStage',['../d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html#a90b310f927f57a019c93d292b4727736',1,'FIRE::FIRECatalog']]]
 ];

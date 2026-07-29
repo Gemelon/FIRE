@@ -1,29 +1,7 @@
 var searchData=
 [
-  ['id_0',['Id',['../d7/d1a/_f_i_r_e_database_8cs.html#a22e6dd2966b87b8a4092886882b23cb6',1,'FIREFileMetaData']]],
-  ['imetadatasource_1',['IMetadataSource',['../db/d24/_f_i_r_e_catalog_8cs.html#a1f15bce6bdcbc5520b861dd7ca51d6c7',1,'FIRECatalog.cs']]],
-  ['important_2',['Important',['../da/da3/md__f_i_r_e_2docs_2wiki-local_2_console-_quickstart.html#autotoc_md27',1,'Important'],['../dd/d0f/md__f_i_r_e_2_f_i_r_e_8wiki_2_console-_quickstart.html#autotoc_md80',1,'Important']]],
-  ['important_20firecatalog_20properties_20for_20ui_20binding_3',['4) Important &lt;span class=&quot;tt&quot;&gt;FIRECatalog&lt;/span&gt; properties for UI binding',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md127',1,'']]],
-  ['index_4',['Index',['../d8/daf/md__f_i_r_e_2docs_2wiki-local_2_home.html#autotoc_md30',1,'Wiki Index'],['../d9/da0/md__f_i_r_e_2_f_i_r_e_8wiki_2_home.html#autotoc_md83',1,'Wiki Index']]],
-  ['info_5',['Info',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95b85e952064b6939b16e62cb9590e91',1,'Info:&#160;FIRECatalogProgress.cs'],['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763da1cd805eaf0bb58a90fe7e7e4cf6a3cdc',1,'Info:&#160;FIRELogger.cs']]],
-  ['information_20reorganizer_20and_20extractor_6',['FIRE — File Information Reorganizer and Extractor',['../index.html',1,'']]],
-  ['init_7',['init',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a978c1602c1c480e86c09f3c3a1b8cc98',1,'FIRECatalogProgress.cs']]],
-  ['inspect_8',['Inspect',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59adcf3bba8dca8116c2b3a5c37c2ca1d16',1,'FIRECatalogProgress.cs']]],
-  ['inspect_9',['Optional metadata inspection (&lt;span class=&quot;tt&quot;&gt;inspect&lt;/span&gt;)',['../index.html#inspect_step',1,'']]],
-  ['inspect_20command_20options_10',['Inspect command options',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md121',1,'']]],
-  ['inspectcommand_11',['InspectCommand',['../d1/d1a/class_inspect_command.html',1,'']]],
-  ['inspection_20and_20diagnostics_12',['Inspection and Diagnostics',['../dd/d5e/md__f_i_r_e_2docs_2wiki-local_2_a_p_i-_workflow.html#autotoc_md6',1,'Inspection and Diagnostics'],['../db/dab/md__f_i_r_e_2_f_i_r_e_8wiki_2_a_p_i-_workflow.html#autotoc_md59',1,'Inspection and Diagnostics']]],
-  ['inspection_20api_13',['Metadata Inspection API',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md154',1,'']]],
-  ['inspection_20helpers_14',['Metadata Inspection Helpers',['../index.html#metadata_inspection_sec',1,'']]],
-  ['inspection_20inspect_15',['Optional metadata inspection (&lt;span class=&quot;tt&quot;&gt;inspect&lt;/span&gt;)',['../index.html#inspect_step',1,'']]],
-  ['inspectsettings_16',['InspectSettings',['../dc/d79/class_inspect_settings.html',1,'']]],
-  ['installation_17',['Installation',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md114',1,'']]],
-  ['integration_20flow_20ui_20safe_20pattern_18',['3) Minimal integration flow (UI-safe pattern)',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md126',1,'']]],
-  ['integration_20for_20ui_20host_20apps_19',['API Integration for UI/Host Apps',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md123',1,'']]],
-  ['integration_20guidance_20',['Integration Guidance',['../db/d91/md__f_i_r_e_2_f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y.html#autotoc_md99',1,'']]],
-  ['integration_20pattern_21',['Integration Pattern',['../d1/d5f/md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy.html#autotoc_md40',1,'Integration Pattern'],['../db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html#autotoc_md93',1,'Integration Pattern']]],
-  ['integration_20strategy_22',['Integration Strategy',['../d1/d5f/md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy.html',1,'UI Integration Strategy'],['../db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html',1,'UI Integration Strategy']]],
-  ['iscancellationrequested_23',['IsCancellationRequested',['../d5/d39/class_app_lifetime.html#a4150c509f15565982db5d75b89d30c75',1,'AppLifetime']]],
-  ['isconfigurationversionsupported_24',['IsConfigurationVersionSupported',['../df/dbb/class_f_i_r_e_configration.html#a7a2fd301bd6cd3e6702d0d38d283c164',1,'FIREConfigration::IsConfigurationVersionSupported()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a2127e8e5c4beba369943506c78f33a56',1,'IsConfigurationVersionSupported():&#160;FIREConfigration.cs']]],
-  ['it_20works_25',['How It Works',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md142',1,'']]]
+  ['optional_20metadata_20inspection_20inspect_0',['Optional metadata inspection (&lt;span class=&quot;tt&quot;&gt;inspect&lt;/span&gt;)',['../index.html#inspect_step',1,'']]],
+  ['options_1',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
+  ['output_20options_2',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
+  ['overview_3',['Overview',['../index.html#intro_sec',1,'Overview'],['../de/ded/md__f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y.html#autotoc_md4',1,'Pipeline Overview']]]
 ];

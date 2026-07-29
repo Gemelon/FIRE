@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yamlmember_0',['YamlMember',['../d1/d3c/_f_i_r_e_configration_8cs.html#a754a19861376197b795e522d3e1c46f5',1,'FIREConfigration.cs']]]
+  ['xmp_20sidecars_0',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md147',1,'']]]
 ];

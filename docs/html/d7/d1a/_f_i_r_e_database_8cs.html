@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.17.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>FIRE: FIRE/FIRE/FIREDatabase.cs File Reference</title>
+<title>FIRE: FIRE/FIREDatabase.cs File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../dynsections.js"></script>
 <script type="text/javascript" src="../../codefolding.js"></script>
@@ -125,123 +125,43 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('d7/d1a/_f_i_r_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:FIREFileMetaData_5Fd5_2Fd85_2Fclass_5Ff_5Fi_5Fr_5Fe_5Ffile_5Fmeta_5Fdata" id="r_FIREFileMetaData_5Fd5_2Fd85_2Fclass_5Ff_5Fi_5Fr_5Fe_5Ffile_5Fmeta_5Fdata"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="#d5/d85/class_f_i_r_e_file_meta_data">FIREFileMetaData</a></td></tr>
-<tr class="memdesc:d5/d85/class_f_i_r_e_file_meta_data"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a single metadata entry stored together with a database record.  <a href="#d5/d85/class_f_i_r_e_file_meta_data">More...</a><br /></td></tr>
+<tr class="memitem:FIRE_2EFIREFileMetaData" id="r_FIRE_2EFIREFileMetaData"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="../../df/dce/class_f_i_r_e_1_1_f_i_r_e_file_meta_data.html">FIRE.FIREFileMetaData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a single metadata entry stored together with a database record.  <a href="../../df/dce/class_f_i_r_e_1_1_f_i_r_e_file_meta_data.html#details">More...</a><br /></td></tr>
+<tr class="memitem:FIRE_2EFIREDbRecord" id="r_FIRE_2EFIREDbRecord"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="../../d7/ddf/class_f_i_r_e_1_1_f_i_r_e_db_record.html">FIRE.FIREDbRecord</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents one complete file record persisted in the <a class="el" href="../../db/de5/namespace_f_i_r_e.html">FIRE</a> database.  <a href="../../d7/ddf/class_f_i_r_e_1_1_f_i_r_e_db_record.html#details">More...</a><br /></td></tr>
+<tr class="memitem:FIRE_2EFIREStatusRecord" id="r_FIRE_2EFIREStatusRecord"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="../../dc/d87/class_f_i_r_e_1_1_f_i_r_e_status_record.html">FIRE.FIREStatusRecord</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the current status and state of the database content and recent persistence operations.  <a href="../../dc/d87/class_f_i_r_e_1_1_f_i_r_e_status_record.html#details">More...</a><br /></td></tr>
+<tr class="memitem:FIRE_2EFIREDatabase" id="r_FIRE_2EFIREDatabase"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="../../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html">FIRE.FIREDatabase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a list-like interface to FIREDbRecord file entries backed by a SQLite database.  <a href="../../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#details">More...</a><br /></td></tr>
+<tr class="memitem:FIRE_2EFIREDatabaseContext" id="r_FIRE_2EFIREDatabaseContext"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><b>FIRE.FIREDatabaseContext</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entity Framework Core context for the <a class="el" href="../../db/de5/namespace_f_i_r_e.html">FIRE</a> SQLite database. <br /></td></tr>
+<tr class="memitem:FIRE_2EFIREDbRecordEntity" id="r_FIRE_2EFIREDbRecordEntity"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><b>FIRE.FIREDbRecordEntity</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entity Framework Core entity class mapping to the FIREDbRecords table. <br /></td></tr>
+<tr class="memitem:FIRE_2EFIREFileMetaDataEntity" id="r_FIRE_2EFIREFileMetaDataEntity"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><b>FIRE.FIREFileMetaDataEntity</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entity Framework Core entity class mapping to the FIREFileMetaDatas table. <br /></td></tr>
+<tr class="memitem:FIRE_2EFIRECounterStateEntity" id="r_FIRE_2EFIRECounterStateEntity"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><b>FIRE.FIRECounterStateEntity</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entity Framework Core entity class mapping to the FIRECounterStates table. <br /></td></tr>
+<tr class="memitem:FIRE_2EFIREStatusEntity" id="r_FIRE_2EFIREStatusEntity"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><b>FIRE.FIREStatusEntity</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entity Framework Core entity class mapping to the <a class="el" href="../../dc/d87/class_f_i_r_e_1_1_f_i_r_e_status_record.html" title="Represents the current status and state of the database content and recent persistence operations.">FIREStatusRecord</a> table. <br /></td></tr>
+<tr class="memitem:FIRE_2EFIREDatabaseStatusEntity" id="r_FIRE_2EFIREDatabaseStatusEntity"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><b>FIRE.FIREDatabaseStatusEntity</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides constant values and utility constants for the <a class="el" href="../../db/de5/namespace_f_i_r_e.html">FIRE</a> database status infrastructure. <br /></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a686291d47e5e4f2cb120f8c76f559a03" id="r_a686291d47e5e4f2cb120f8c76f559a03"><td class="memItemLeft">class <a class="el" href="#d5/d85/class_f_i_r_e_file_meta_data">FIREFileMetaData</a>&#160;</td><td class="memItemRight"><a class="el" href="#a686291d47e5e4f2cb120f8c76f559a03">RegularFile</a> = 0</td></tr>
-<tr class="memdesc:a686291d47e5e4f2cb120f8c76f559a03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes files by their role in the collection.  <br /></td></tr>
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:FIRE" id="r_FIRE"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="../../db/de5/namespace_f_i_r_e.html">FIRE</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a91215cf4596335211a626ef0e093609a" id="r_a91215cf4596335211a626ef0e093609a"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="../../db/de5/namespace_f_i_r_e.html#a91215cf4596335211a626ef0e093609a">FIRE.FileClassification</a> { <a class="el" href="../../db/de5/namespace_f_i_r_e.html#a91215cf4596335211a626ef0e093609aa81c4fe0f81a2ac8c3a1a10d9740f46c9">FIRE.RegularFile</a> = 0
+, <a class="el" href="../../db/de5/namespace_f_i_r_e.html#a91215cf4596335211a626ef0e093609aae5fa74a5089bfd0b0901af1ce4cb2cfc">FIRE.SidecarFile</a> = 1
+ }</td></tr>
+<tr class="memdesc:a91215cf4596335211a626ef0e093609a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes files by their role in the collection.  <a href="../../db/de5/namespace_f_i_r_e.html#a91215cf4596335211a626ef0e093609a">More...</a><br /></td></tr>
+<tr class="memitem:a73a165d56f379baf5db06e9a0bac7634" id="r_a73a165d56f379baf5db06e9a0bac7634"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="../../db/de5/namespace_f_i_r_e.html#a73a165d56f379baf5db06e9a0bac7634">FIRE.ProcessingStatus</a> { <a class="el" href="../../db/de5/namespace_f_i_r_e.html#a73a165d56f379baf5db06e9a0bac7634a1e6978383f55b7c1922abe5245e000e9">FIRE.NotProcessed</a> = 0
+, <a class="el" href="../../db/de5/namespace_f_i_r_e.html#a73a165d56f379baf5db06e9a0bac7634a8a760144e016f17a355f7793b98d80df">FIRE.PathGenerated</a> = 1
+, <a class="el" href="../../db/de5/namespace_f_i_r_e.html#a73a165d56f379baf5db06e9a0bac7634a37ae3959ff931a36a5157d1d971d964c">FIRE.Executed</a> = 2
+ }</td></tr>
+<tr class="memdesc:a73a165d56f379baf5db06e9a0bac7634"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the processing status of a file record in the <a class="el" href="../../db/de5/namespace_f_i_r_e.html">FIRE</a> pipeline.  <a href="../../db/de5/namespace_f_i_r_e.html#a73a165d56f379baf5db06e9a0bac7634">More...</a><br /></td></tr>
 </table>
-<hr/><h2 id="header-inline_5Fclasses" class="groupheader">Class Documentation</h2>
-<a name="d5/d85/class_f_i_r_e_file_meta_data" id="d5/d85/class_f_i_r_e_file_meta_data"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#d5/d85/class_f_i_r_e_file_meta_data">&#9670;&#160;</a></span>FIREFileMetaData</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">class FIREFileMetaData</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="textblock"><p>Represents a single metadata entry stored together with a database record. </p>
-<p>Each <code><a class="el" href="#d5/d85/class_f_i_r_e_file_meta_data" title="Represents a single metadata entry stored together with a database record.">FIREFileMetaData</a></code> instance encapsulates a key-value pair extracted from a file, along with metadata about the value's type and source origin. Multiple metadata entries are grouped into a single FIREDbRecord.</p>
-<p>This class is used as a domain model in the FIRE library. It is persisted to the SQLite database via Entity Framework Core and mapped to/from the internal <code>FIREFileMetaDataEntity</code> class.</p>
-<p>Typical metadata keys include: </p><ul>
-<li>
-Make, Model (camera information from EXIF) </li>
-<li>
-DateTimeOriginal, DateTimeDigitized (from EXIF) </li>
-<li>
-CreationTime, ModificationTime (from file system) </li>
-<li>
-Custom keyword names resolved from configuration </li>
-</ul>
-<p>The DataSource value typically indicates which IMetadataSource provided the entry (e.g., "EXIFTOOL", "FILEINFO"). </p>
-<p>Creating and populating metadata entries: </p><div class="fragment"><div class="line">var metadata = <span class="keyword">new</span> <a class="code hl_class" href="#d5/d85/class_f_i_r_e_file_meta_data">FIREFileMetaData</a></div>
-<div class="line">{</div>
-<div class="line">    <a class="code hl_variable" href="#ae1619607ec188c07a67e190cccadd33a">Key</a> = <span class="stringliteral">&quot;Make&quot;</span>,</div>
-<div class="line">    <a class="code hl_variable" href="#a3015cff76ecc7428ca605b9d2908601b">Value</a> = <span class="stringliteral">&quot;Apple&quot;</span>,</div>
-<div class="line">    <a class="code hl_variable" href="#a2f7c9c3aa885d033c6523e6715dba680">TypeName</a> = typeof(<span class="keywordtype">string</span>).FullName,</div>
-<div class="line">    <a class="code hl_variable" href="#a5e8dbe87fbcfd5a8ec27a753ea1e2c83">DataSource</a> = <span class="stringliteral">&quot;EXIFTOOL&quot;</span></div>
-<div class="line">};</div>
-<div class="ttc" id="a_f_i_r_e_database_8cs_html_a2f7c9c3aa885d033c6523e6715dba680"><div class="ttname"><a href="#a2f7c9c3aa885d033c6523e6715dba680">FIREFileMetaData::TypeName</a></div><div class="ttdeci">string TypeName</div><div class="ttdoc">Gets or sets the CLR type name of the logical value.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00107">FIREDatabase.cs:107</a></div></div>
-<div class="ttc" id="a_f_i_r_e_database_8cs_html_a3015cff76ecc7428ca605b9d2908601b"><div class="ttname"><a href="#a3015cff76ecc7428ca605b9d2908601b">FIREFileMetaData::Value</a></div><div class="ttdeci">string Value</div><div class="ttdoc">Gets or sets the metadata value as a string.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00096">FIREDatabase.cs:96</a></div></div>
-<div class="ttc" id="a_f_i_r_e_database_8cs_html_a5e8dbe87fbcfd5a8ec27a753ea1e2c83"><div class="ttname"><a href="#a5e8dbe87fbcfd5a8ec27a753ea1e2c83">FIREFileMetaData::DataSource</a></div><div class="ttdeci">string DataSource</div><div class="ttdoc">Gets or sets the source of the metadata value.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00117">FIREDatabase.cs:117</a></div></div>
-<div class="ttc" id="a_f_i_r_e_database_8cs_html_ae1619607ec188c07a67e190cccadd33a"><div class="ttname"><a href="#ae1619607ec188c07a67e190cccadd33a">FIREFileMetaData::Key</a></div><div class="ttdeci">string Key</div><div class="ttdoc">Gets or sets the metadata key name.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00085">FIREDatabase.cs:85</a></div></div>
-<div class="ttc" id="a_f_i_r_e_database_8cs_html_d5/d85/class_f_i_r_e_file_meta_data"><div class="ttname"><a href="#d5/d85/class_f_i_r_e_file_meta_data">FIREFileMetaData</a></div><div class="ttdoc">Represents a single metadata entry stored together with a database record.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00067">FIREDatabase.cs:68</a></div></div>
-</div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="../../d7/d1a/_f_i_r_e_database_8cs_source.html#l00067">67</a> of file <a class="el" href="../../d7/d1a/_f_i_r_e_database_8cs_source.html">FIREDatabase.cs</a>.</p>
-</div><table class="fieldtable">
-<tr><th colspan="3">Class Members</th></tr>
-<tr><td class="fieldtype">
-<a id="a5e8dbe87fbcfd5a8ec27a753ea1e2c83" name="a5e8dbe87fbcfd5a8ec27a753ea1e2c83"></a><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a></td>
-<td class="fieldname">
-DataSource { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
-<td class="fielddoc">
-Gets or sets the source of the metadata value. <p>Valid values include "EXIFTOOL" (extracted via ExifTool) and "FILEINFO" (extracted from the file system). This field is useful for auditing and debugging the metadata collection process. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a22e6dd2966b87b8a4092886882b23cb6" name="a22e6dd2966b87b8a4092886882b23cb6"></a>long</td>
-<td class="fieldname">
-Id { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
-<td class="fielddoc">
-Gets or sets the database identifier (primary key) of the metadata row. <p>This is auto-generated by the SQLite database when the row is inserted. Typically, you do not set this value manually; it is managed by Entity Framework Core. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="ae1619607ec188c07a67e190cccadd33a" name="ae1619607ec188c07a67e190cccadd33a"></a><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a></td>
-<td class="fieldname">
-Key { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
-<td class="fielddoc">
-Gets or sets the metadata key name. <p>Examples: "Make", "Model", "DateTimeOriginal", "CreationTime". This key corresponds to the keyword name defined in the FIRE configuration. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a2b4f3c6856d4b3b8393f5afc352854d7" name="a2b4f3c6856d4b3b8393f5afc352854d7"></a></td>
-<td class="fieldname">
-set</td>
-<td class="fielddoc">
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a2f7c9c3aa885d033c6523e6715dba680" name="a2f7c9c3aa885d033c6523e6715dba680"></a><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a></td>
-<td class="fieldname">
-TypeName { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
-<td class="fielddoc">
-Gets or sets the CLR type name of the logical value. <p>This is the fully qualified name of the original .NET type, such as "System.String", "System.Int32", "System.DateTime". It is recorded to support type-aware parsing and formatting when the value is used in template placeholders. </p>
-</td></tr>
-<tr><td class="fieldtype">
-<a id="a3015cff76ecc7428ca605b9d2908601b" name="a3015cff76ecc7428ca605b9d2908601b"></a><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a></td>
-<td class="fieldname">
-Value { <a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616">get</a></td>
-<td class="fielddoc">
-Gets or sets the metadata value as a string. <p>All metadata values are stored as strings, regardless of their logical type. The logical type is recorded separately in the TypeName property. For example, an integer resolution value might be stored as "300" with TypeName set to "System.Int32". </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
-<a id="a686291d47e5e4f2cb120f8c76f559a03" name="a686291d47e5e4f2cb120f8c76f559a03"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a686291d47e5e4f2cb120f8c76f559a03">&#9670;&#160;</a></span>RegularFile</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">class <a class="el" href="#d5/d85/class_f_i_r_e_file_meta_data">FIREFileMetaData</a> RegularFile = 0</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Categorizes files by their role in the collection. </p>
-<p>This enum allows FIRE to distinguish between different file types during processing. Regular files are processed normally through the metadata extraction and path generation pipeline. Sidecar files inherit the target path from their associated primary file (only the extension differs). </p>
-<p>This enumeration distinguishes between primary files that are processed through the normal metadata extraction pipeline and auxiliary sidecar files that inherit path generation from their associated primary file. </p>
-<p>During the collection phase, sidecar files are automatically detected based on the <code>SidecarFileExtensions</code> configuration and added to the database with SidecarFile classification. In the generate phase, they inherit the target directory and base filename from their primary file. In the execute phase, they use the global action setting. </p>
-<p>A regular primary file processed through the full FIRE pipeline. This is the default classification for all collected files.</p>
-<p>Regular files (e.g., .jpg, .mp4, .dng) undergo metadata extraction, template-based path generation, and file operations according to their extension-specific configuration. </p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
@@ -255,7 +175,7 @@ Gets or sets the metadata value as a string. <p>All metadata values are stored a
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="../../dir_1f9768e2c593c5218470a8c4a49bbb18.html">FIRE</a></li><li class="navelem"><a href="../../dir_027ae1c642818204f1d2b0e289285598.html">FIRE</a></li><li class="navelem"><a href="../../d7/d1a/_f_i_r_e_database_8cs.html">FIREDatabase.cs</a></li>
+    <li class="navelem"><a href="../../dir_1f9768e2c593c5218470a8c4a49bbb18.html">FIRE</a></li><li class="navelem"><a href="../../d7/d1a/_f_i_r_e_database_8cs.html">FIREDatabase.cs</a></li>
     <li class="footer">Generated on <span class="timestamp"></span> for FIRE by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
   </ul>
 </div>

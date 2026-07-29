@@ -74,7 +74,7 @@ PROJECT_ICON           =
 # entered, it will be relative to the location where Doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = docs/html
+OUTPUT_DIRECTORY       = html
 
 # If the CREATE_SUBDIRS tag is set to YES then Doxygen will create up to 4096
 # sub-directories (in 2 levels) under the output directory of each output format
@@ -349,7 +349,7 @@ OPTIMIZE_OUTPUT_SLICE  = NO
 #
 # Note see also the list of default file extension mappings.
 
-EXTENSION_MAPPING      = cs=C
+EXTENSION_MAPPING      = cs=csharp
 
 # If the MARKDOWN_SUPPORT tag is enabled then Doxygen pre-processes all comments
 # according to the Markdown format, which allows for more readable
@@ -1014,7 +1014,7 @@ WARN_LINE_FORMAT       = "at line $line of file $file"
 # specified the warning and error messages are written to standard output
 # (stdout).
 
-WARN_LOGFILE           =
+WARN_LOGFILE           = warnings.log
 
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
@@ -1028,7 +1028,7 @@ WARN_LOGFILE           =
 
 INPUT                  = ../FIRE \
                          ../FIRE.Console \
-                         ../docs/mainpage.dox
+                         mainpage.dox
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1088,7 +1088,9 @@ RECURSIVE              = YES
 EXCLUDE                = ../FIRE/obj \
                          ../FIRE/bin \
                          ../FIRE.Console/obj \
-                         ../FIRE.Console/bin
+                         ../FIRE.Console/bin \
+                         ../FIRE.wiki \
+                         wiki-local
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded

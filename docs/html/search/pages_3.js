@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['4_20important_20firecatalog_20properties_20for_20ui_20binding_0',['4) Important &lt;span class=&quot;tt&quot;&gt;FIRECatalog&lt;/span&gt; properties for UI binding',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md127',1,'']]]
+  ['and_20extractor_0',['FIRE — File Information Reorganizer and Extractor',['../index.html',1,'']]],
+  ['and_20output_20options_1',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
+  ['api_20localization_2',['API Localization',['../index.html#localization_sec',1,'']]],
+  ['architecture_3',['Architecture',['../index.html#arch_sec',1,'']]]
 ];

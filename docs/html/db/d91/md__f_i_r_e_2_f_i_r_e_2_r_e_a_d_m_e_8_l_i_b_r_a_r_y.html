@@ -120,12 +120,12 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('db/d91/md__f_i
   <div class="headertitle"><div class="title">FIRE Library </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md96"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a></p>
 <p>(C) 2026 by Thomas Stoll</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md97"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
 Purpose</h1>
 <p><span class="tt">FIRE</span> is the core API library of this repository. It provides the metadata-driven catalog pipeline and is the primary integration target for other applications.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md98"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
 Scope</h1>
 <ul>
 <li>Configuration loading and validation (<span class="tt"><a class="el" href="../../df/dbb/class_f_i_r_e_configration.html" title="Represents the root configuration document loaded from the FIRE configuration YAML file.">FIREConfigration</a></span>)</li>
@@ -135,17 +135,17 @@ Scope</h1>
 <li>Progress/state notifications for host applications (<span class="tt">FIRECatalogProgress</span>)</li>
 <li>Localized API messages (<span class="tt">Localization/ApiLocalizer</span> + resource files)</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md99"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 Integration Guidance</h1>
 <p>UI applications should reference this library directly and subscribe to <span class="tt"><a class="el" href="../../db/d24/_f_i_r_e_catalog_8cs.html#aa1e8255547d501a2b9ed5236b92b1ff2" title="Initializes a new instance of FIRECatalog.">FIRECatalog</a></span> progress/state updates. Do not use <span class="tt">FIRE.Console</span> as a runtime dependency for UI integration.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md100"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
 Pipeline Overview</h1>
 <ol type="1">
 <li><b>Collect</b>: scan files and persist metadata.</li>
 <li><b>Generate</b>: resolve templates and compute target paths.</li>
 <li><b>Execute</b>: perform configured file operations (Copy/Move/Link).</li>
 </ol>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md101"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
 Related Documentation</h1>
 <ul>
 <li>Root project documentation: <span class="tt">../README.md</span></li>

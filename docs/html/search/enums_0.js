@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['fileinfobyhandleclass_0',['FileInfoByHandleClass',['../db/d24/_f_i_r_e_catalog_8cs.html#ae03b337fb935f5276a534f5220615928',1,'FIRECatalog.cs']]],
-  ['firecatalogstage_1',['FIRECatalogStage',['../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59',1,'FIRECatalogProgress.cs']]],
-  ['fireloglevel_2',['FIRELogLevel',['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763d',1,'FIRELogger.cs']]]
+  ['fileclassification_0',['FileClassification',['../db/de5/namespace_f_i_r_e.html#a91215cf4596335211a626ef0e093609a',1,'FIRE']]],
+  ['firecatalogmessagelevel_1',['FIRECatalogMessageLevel',['../db/de5/namespace_f_i_r_e.html#a22c7dcacc7810952309298a852513516',1,'FIRE']]],
+  ['firecatalogstage_2',['FIRECatalogStage',['../db/de5/namespace_f_i_r_e.html#acf4e7afa69d5b80ecaa94477f6c873c0',1,'FIRE']]],
+  ['fireloglevel_3',['FIRELogLevel',['../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909',1,'FIRE::Logging']]]
 ];

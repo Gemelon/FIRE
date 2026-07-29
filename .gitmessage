@@ -1,0 +1,9 @@
+# <type>: <short imperative summary in English>
+#
+# Types: feat, fix, docs, refactor, test, chore, build, ci
+# Example: fix: prevent string replacement chain reaction
+#
+# Optional body (English):
+# - Why was this change needed?
+# - What changed?
+# - Any side effects/migration notes?

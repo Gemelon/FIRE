@@ -1,10 +1,5 @@
 var searchData=
 [
-  ['handling_0',['Sidecar File Handling',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md141',1,'']]],
-  ['helpers_1',['Metadata Inspection Helpers',['../index.html#metadata_inspection_sec',1,'']]],
-  ['holiday_20photos_20by_20date_20and_20camera_20model_2',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md146',1,'']]],
-  ['home_2emd_3',['Home.md',['../de/def/docs_2wiki-local_2_home_8md.html',1,'(Global Namespace)'],['../df/d8a/_f_i_r_e_8wiki_2_home_8md.html',1,'(Global Namespace)']]],
-  ['host_20application_20guidance_4',['Host Application Guidance',['../dd/d5e/md__f_i_r_e_2docs_2wiki-local_2_a_p_i-_workflow.html#autotoc_md7',1,'Host Application Guidance'],['../db/dab/md__f_i_r_e_2_f_i_r_e_8wiki_2_a_p_i-_workflow.html#autotoc_md60',1,'Host Application Guidance']]],
-  ['host_20apps_5',['API Integration for UI/Host Apps',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md123',1,'']]],
-  ['how_20it_20works_6',['How It Works',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md142',1,'']]]
+  ['non_20goals_0',['Non-Goals',['../dir_865d401768b10580b0b717f084e9432e.html#autotoc_md8',1,'']]],
+  ['notprocessed_1',['NotProcessed',['../db/de5/namespace_f_i_r_e.html#a73a165d56f379baf5db06e9a0bac7634a1e6978383f55b7c1922abe5245e000e9',1,'FIRE']]]
 ];

@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['parse_0',['Parse',['../df/dbb/class_f_i_r_e_configration.html#ae50d1eadb52fb969c82846934f1d05f0',1,'FIREConfigration::Parse()'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a1f4427fec476e7a156258bbcd80116b0',1,'Parse():&#160;FIREConfigration.cs']]],
-  ['parse_5fmetadatarules_5fglobalandextension_5faredeserialized_1',['Parse_MetadataRules_GlobalAndExtension_AreDeserialized',['../d7/d81/class_unit_test1.html#ab6926c897227fc7400ac5c7c8b244f39',1,'UnitTest1']]],
-  ['parselevel_2',['ParseLevel',['../d1/dcc/_f_i_r_e_logger_8cs.html#a2b034749dc19768fcbb2f94957c4da2c',1,'FIRELogger.cs']]],
-  ['parsetemplate_5fdatetimekeywordsupport_5fresolvesnamedandformatsuffixes_3',['ParseTemplate_DatetimeKeywordSupport_ResolvesNamedAndFormatSuffixes',['../d7/d81/class_unit_test1.html#a7e7977fedc94e152c72bd08af46b6e59',1,'UnitTest1']]],
-  ['parsetemplate_5fnondatetimekeywordwithsuffix_5fdoesnotapplydatefallback_4',['ParseTemplate_NonDatetimeKeywordWithSuffix_DoesNotApplyDateFallback',['../d7/d81/class_unit_test1.html#a6d97b664e77b0b21fc6481dc99783fdd',1,'UnitTest1']]]
+  ['recreatedatabase_0',['RecreateDatabase',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#af20fac079bee1121f741f805b7bbc819',1,'FIRE::FIREDatabase']]],
+  ['register_1',['Register',['../df/d2f/class_f_i_r_e_1_1_metadata_source_registry.html#a8572ec4168eab0b6acc47f13fd02b6b6',1,'FIRE::MetadataSourceRegistry']]],
+  ['reload_2',['Reload',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a2263e689ac28ee5b5ada37680e037ad4',1,'FIRE::FIREDatabase']]],
+  ['remove_3',['Remove',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a8ad959954a810ae6499de1a1b6112e3f',1,'FIRE::FIREDatabase']]],
+  ['removeat_4',['RemoveAt',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a75c6c8aeb44dbea79a15e95562e80d33',1,'FIRE::FIREDatabase']]],
+  ['run_5',['Run',['../dd/d5c/_program_8cs.html#a5097038b4e8d29a2f770a35cb5682340',1,'Program.cs']]]
 ];

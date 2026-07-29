@@ -6,76 +6,6 @@
     <filename>d5/d4d/mainpage_8dox.html</filename>
   </compound>
   <compound kind="file">
-    <name>API-Workflow.md</name>
-    <path>FIRE/docs/wiki-local/</path>
-    <filename>d2/d5f/docs_2wiki-local_2_a_p_i-_workflow_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>API-Workflow.md</name>
-    <path>FIRE/FIRE.wiki/</path>
-    <filename>d2/ddd/_f_i_r_e_8wiki_2_a_p_i-_workflow_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Architecture.md</name>
-    <path>FIRE/docs/wiki-local/</path>
-    <filename>d7/d66/docs_2wiki-local_2_architecture_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Architecture.md</name>
-    <path>FIRE/FIRE.wiki/</path>
-    <filename>d7/d4a/_f_i_r_e_8wiki_2_architecture_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Configuration-Reference.md</name>
-    <path>FIRE/docs/wiki-local/</path>
-    <filename>d8/d2f/docs_2wiki-local_2_configuration-_reference_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Configuration-Reference.md</name>
-    <path>FIRE/FIRE.wiki/</path>
-    <filename>d7/de6/_f_i_r_e_8wiki_2_configuration-_reference_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Console-Quickstart.md</name>
-    <path>FIRE/docs/wiki-local/</path>
-    <filename>dc/d8d/docs_2wiki-local_2_console-_quickstart_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Console-Quickstart.md</name>
-    <path>FIRE/FIRE.wiki/</path>
-    <filename>d3/d8f/_f_i_r_e_8wiki_2_console-_quickstart_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Home.md</name>
-    <path>FIRE/docs/wiki-local/</path>
-    <filename>de/def/docs_2wiki-local_2_home_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Home.md</name>
-    <path>FIRE/FIRE.wiki/</path>
-    <filename>df/d8a/_f_i_r_e_8wiki_2_home_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Roadmap.md</name>
-    <path>FIRE/docs/wiki-local/</path>
-    <filename>da/d82/docs_2wiki-local_2_roadmap_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>Roadmap.md</name>
-    <path>FIRE/FIRE.wiki/</path>
-    <filename>d2/de7/_f_i_r_e_8wiki_2_roadmap_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>UI-Integration-Strategy.md</name>
-    <path>FIRE/docs/wiki-local/</path>
-    <filename>df/d22/docs_2wiki-local_2_u_i-_integration-_strategy_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>UI-Integration-Strategy.md</name>
-    <path>FIRE/FIRE.wiki/</path>
-    <filename>df/d78/_f_i_r_e_8wiki_2_u_i-_integration-_strategy_8md.html</filename>
-  </compound>
-  <compound kind="file">
     <name>Program.cs</name>
     <path>FIRE/FIRE.Console/</path>
     <filename>dd/d5c/_program_8cs.html</filename>
@@ -318,7 +248,7 @@
       <type>internal enum UiLanguage</type>
       <name>string</name>
       <anchorfile>dd/d5c/_program_8cs.html</anchorfile>
-      <anchor>a4cb475094dc9de3af5eddaa1a7e87703</anchor>
+      <anchor>a4b113856d06cec48191ea702f7f3a4d9</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -339,23 +269,7 @@
   <compound kind="file">
     <name>README.md</name>
     <path>FIRE/FIRE.Console/</path>
-    <filename>df/db5/_f_i_r_e_8_console_2_r_e_a_d_m_e_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>README.md</name>
-    <path>FIRE/FIRE.Tests/</path>
-    <filename>dd/d4b/_f_i_r_e_8_tests_2_r_e_a_d_m_e_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>README.md</name>
-    <path>FIRE/</path>
     <filename>d9/dd6/_r_e_a_d_m_e_8md.html</filename>
-  </compound>
-  <compound kind="file">
-    <name>UnitTest1.cs</name>
-    <path>FIRE/FIRE.Tests/</path>
-    <filename>de/d6a/_unit_test1_8cs.html</filename>
-    <class kind="class">UnitTest1</class>
   </compound>
   <compound kind="file">
     <name>FIRECatalog.cs</name>
@@ -501,7 +415,7 @@
       <type>enum FileInfoByHandleClass</type>
       <name>string</name>
       <anchorfile>db/d24/_f_i_r_e_catalog_8cs.html</anchorfile>
-      <anchor>a5d8d7c996845adbb001c9fe685ba97ca</anchor>
+      <anchor>a4cb475094dc9de3af5eddaa1a7e87703</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -1271,11 +1185,6 @@
     <path>FIRE/FIRE/</path>
     <filename>de/d5b/_r_e_a_d_m_e_8_l_i_b_r_a_r_y_8md.html</filename>
   </compound>
-  <compound kind="file">
-    <name>THIRD-PARTY-NOTICES.md</name>
-    <path>FIRE/</path>
-    <filename>da/dc3/_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s_8md.html</filename>
-  </compound>
   <compound kind="class">
     <name>ApiLocalizer</name>
     <filename>d6/d50/class_api_localizer.html</filename>
@@ -1889,165 +1798,15 @@
       <arglist>(string[] args)</arglist>
     </member>
   </compound>
-  <compound kind="class">
-    <name>UnitTest1</name>
-    <filename>d7/d81/class_unit_test1.html</filename>
-    <member kind="function">
-      <type>void</type>
-      <name>ApplyStringReplacement_ExactPattern_ReplacesOnlyMatchingSubstring</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>a8c0a139372d19c57119440ae0c99ac6e</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ApplyStringReplacement_WildcardPattern_ReplacesMatchedSegment</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>a74b6b968b781d953e5f42f8c9bc67f48</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ApplyStringReplacement_RegexPrefix_UsesRegexReplacement</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>a18d7f604f48ef17c445760f13583eb90</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ResolveKeywordDefaultValue_DatetimeNow_UsesProvidedNowValueAndNormalizes</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>acbdf3495a3632ab888240892a7bf8e20</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ResolveKeywordDefaultValue_DatetimeString_NormalizesToDatabaseFormat</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>a440b4f806bae4271886f382d37f03bf6</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ResolveKeywordDefaultValue_InvalidDatetimeDefault_ReturnsNA</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>a65e3fed4c292dd081267784aaa6e5003</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ResolveKeywordDefaultValue_StringDefault_ReturnsDefaultUnchanged</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>a6c0ac62dfd6510e50f40cb54d35a8022</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ParseTemplate_DatetimeKeywordSupport_ResolvesNamedAndFormatSuffixes</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>a7e7977fedc94e152c72bd08af46b6e59</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>ParseTemplate_NonDatetimeKeywordWithSuffix_DoesNotApplyDateFallback</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>a6d97b664e77b0b21fc6481dc99783fdd</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>Parse_MetadataRules_GlobalAndExtension_AreDeserialized</name>
-      <anchorfile>d7/d81/class_unit_test1.html</anchorfile>
-      <anchor>ab6926c897227fc7400ac5c7c8b244f39</anchor>
-      <arglist>()</arglist>
-    </member>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2docs_2wiki-local_2_a_p_i-_workflow</name>
-    <title>API Workflow</title>
-    <filename>dd/d5e/md__f_i_r_e_2docs_2wiki-local_2_a_p_i-_workflow.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2docs_2wiki-local_2_architecture</name>
-    <title>Architecture</title>
-    <filename>dc/d53/md__f_i_r_e_2docs_2wiki-local_2_architecture.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2docs_2wiki-local_2_configuration-_reference</name>
-    <title>Configuration Reference</title>
-    <filename>dd/d50/md__f_i_r_e_2docs_2wiki-local_2_configuration-_reference.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2docs_2wiki-local_2_console-_quickstart</name>
-    <title>Console Quickstart</title>
-    <filename>da/da3/md__f_i_r_e_2docs_2wiki-local_2_console-_quickstart.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2docs_2wiki-local_2_home</name>
-    <title>FIRE Wiki (Local Draft)</title>
-    <filename>d8/daf/md__f_i_r_e_2docs_2wiki-local_2_home.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2docs_2wiki-local_2_roadmap</name>
-    <title>Roadmap</title>
-    <filename>d9/d02/md__f_i_r_e_2docs_2wiki-local_2_roadmap.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy</name>
-    <title>UI Integration Strategy</title>
-    <filename>d1/d5f/md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2_f_i_r_e_8wiki_2_a_p_i-_workflow</name>
-    <title>API Workflow</title>
-    <filename>db/dab/md__f_i_r_e_2_f_i_r_e_8wiki_2_a_p_i-_workflow.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2_f_i_r_e_8wiki_2_architecture</name>
-    <title>Architecture</title>
-    <filename>d4/d24/md__f_i_r_e_2_f_i_r_e_8wiki_2_architecture.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2_f_i_r_e_8wiki_2_configuration-_reference</name>
-    <title>Configuration Reference</title>
-    <filename>d2/d02/md__f_i_r_e_2_f_i_r_e_8wiki_2_configuration-_reference.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2_f_i_r_e_8wiki_2_console-_quickstart</name>
-    <title>Console Quickstart</title>
-    <filename>dd/d0f/md__f_i_r_e_2_f_i_r_e_8wiki_2_console-_quickstart.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2_f_i_r_e_8wiki_2_home</name>
-    <title>FIRE Wiki (Local Draft)</title>
-    <filename>d9/da0/md__f_i_r_e_2_f_i_r_e_8wiki_2_home.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2_f_i_r_e_8wiki_2_roadmap</name>
-    <title>Roadmap</title>
-    <filename>d7/d18/md__f_i_r_e_2_f_i_r_e_8wiki_2_roadmap.html</filename>
-  </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy</name>
-    <title>UI Integration Strategy</title>
-    <filename>db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html</filename>
-  </compound>
   <compound kind="page">
     <name>md__f_i_r_e_2_f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y</name>
     <title>FIRE Library</title>
     <filename>db/d91/md__f_i_r_e_2_f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y.html</filename>
   </compound>
-  <compound kind="page">
-    <name>md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s</name>
-    <title>Third-Party Notices</title>
-    <filename>d3/d87/md__f_i_r_e_2_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s.html</filename>
-  </compound>
   <compound kind="dir">
     <name>FIRE/docs</name>
     <path>FIRE/docs/</path>
     <filename>dir_580823591837e4cab4ee5a22f2fff719.html</filename>
-    <dir>FIRE/docs/wiki-local</dir>
   </compound>
   <compound kind="dir">
     <name>FIRE</name>
@@ -2056,8 +1815,6 @@
     <dir>FIRE/docs</dir>
     <dir>FIRE/FIRE</dir>
     <dir>FIRE/FIRE.Console</dir>
-    <dir>FIRE/FIRE.Tests</dir>
-    <dir>FIRE/FIRE.wiki</dir>
   </compound>
   <compound kind="dir">
     <name>FIRE/FIRE</name>
@@ -2078,17 +1835,6 @@
     <file>Program.cs</file>
   </compound>
   <compound kind="dir">
-    <name>FIRE/FIRE.Tests</name>
-    <path>FIRE/FIRE.Tests/</path>
-    <filename>dir_168a0deea1a80b54accc11d218723f4f.html</filename>
-    <file>UnitTest1.cs</file>
-  </compound>
-  <compound kind="dir">
-    <name>FIRE/FIRE.wiki</name>
-    <path>FIRE/FIRE.wiki/</path>
-    <filename>dir_1ce9f2d6897c4c5933f1be4373f0b064.html</filename>
-  </compound>
-  <compound kind="dir">
     <name>FIRE/FIRE/Localization</name>
     <path>FIRE/FIRE/Localization/</path>
     <filename>dir_d924e2942acae4adf859cdb0d3f51e3c.html</filename>
@@ -2105,11 +1851,6 @@
     <path>FIRE/FIRE/Properties/</path>
     <filename>dir_25b85a9469b7ff762775243dc31c6afb.html</filename>
     <file>AssemblyInfo.cs</file>
-  </compound>
-  <compound kind="dir">
-    <name>FIRE/docs/wiki-local</name>
-    <path>FIRE/docs/wiki-local/</path>
-    <filename>dir_826564cb5a3effd4bff655dbeedc870c.html</filename>
   </compound>
   <compound kind="page">
     <name>index</name>

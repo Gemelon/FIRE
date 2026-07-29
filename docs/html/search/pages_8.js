@@ -1,27 +1,8 @@
 var searchData=
 [
-  ['camera_20model_0',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md146',1,'']]],
-  ['central_20api_20types_1',['2) Central API types',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md125',1,'']]],
-  ['centric_20layering_2',['Centric Layering',['../dc/d53/md__f_i_r_e_2docs_2wiki-local_2_architecture.html#autotoc_md10',1,'API-Centric Layering'],['../d4/d24/md__f_i_r_e_2_f_i_r_e_8wiki_2_architecture.html#autotoc_md63',1,'API-Centric Layering']]],
-  ['classes_3',['Core Classes',['../index.html#autotoc_md0',1,'']]],
-  ['cli_20culture_20and_20output_20options_4',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
-  ['collect_5',['Collect',['../dd/d5e/md__f_i_r_e_2docs_2wiki-local_2_a_p_i-_workflow.html#autotoc_md3',1,'1) Collect'],['../db/dab/md__f_i_r_e_2_f_i_r_e_8wiki_2_a_p_i-_workflow.html#autotoc_md56',1,'1) Collect']]],
-  ['collect_6',['Step 1 — collect',['../index.html#step1',1,'']]],
-  ['collection_20phase_7',['Collection Phase',['../index.html#sidecar_collection',1,'']]],
-  ['command_20options_8',['Inspect command options',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md121',1,'']]],
-  ['commands_9',['Commands',['../dir_34712068e75e4f8a851a4fa1ab20db3f.html#autotoc_md46',1,'Commands'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md120',1,'Commands'],['../da/da3/md__f_i_r_e_2docs_2wiki-local_2_console-_quickstart.html#autotoc_md26',1,'Useful Optional Commands'],['../dd/d0f/md__f_i_r_e_2_f_i_r_e_8wiki_2_console-_quickstart.html#autotoc_md79',1,'Useful Optional Commands']]],
-  ['configuration_10',['Configuration',['../index.html#config_sec',1,'Configuration'],['../index.html#sidecar_config',1,'Configuration']]],
-  ['configuration_20reference_11',['Configuration Reference',['../dd/d50/md__f_i_r_e_2docs_2wiki-local_2_configuration-_reference.html',1,'Configuration Reference'],['../d2/d02/md__f_i_r_e_2_f_i_r_e_8wiki_2_configuration-_reference.html',1,'Configuration Reference'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md131',1,'Configuration Reference']]],
-  ['console_12',['Console',['../dc/d53/md__f_i_r_e_2docs_2wiki-local_2_architecture.html#autotoc_md12',1,'Adapter Layer (&lt;span class=&quot;tt&quot;&gt;FIRE.Console&lt;/span&gt;)'],['../d4/d24/md__f_i_r_e_2_f_i_r_e_8wiki_2_architecture.html#autotoc_md65',1,'Adapter Layer (&lt;span class=&quot;tt&quot;&gt;FIRE.Console&lt;/span&gt;)'],['../dir_34712068e75e4f8a851a4fa1ab20db3f.html#autotoc_md43',1,'FIRE.Console'],['../da/da3/md__f_i_r_e_2docs_2wiki-local_2_console-_quickstart.html#autotoc_md24',1,'Role of the Console'],['../dd/d0f/md__f_i_r_e_2_f_i_r_e_8wiki_2_console-_quickstart.html#autotoc_md77',1,'Role of the Console']]],
-  ['console_20quickstart_13',['Console Quickstart',['../da/da3/md__f_i_r_e_2docs_2wiki-local_2_console-_quickstart.html',1,'Console Quickstart'],['../dd/d0f/md__f_i_r_e_2_f_i_r_e_8wiki_2_console-_quickstart.html',1,'Console Quickstart']]],
-  ['contents_14',['Table of Contents',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md104',1,'']]],
-  ['core_20classes_15',['Core Classes',['../index.html#autotoc_md0',1,'']]],
-  ['core_20layer_20fire_16',['Core Layer FIRE',['../dc/d53/md__f_i_r_e_2docs_2wiki-local_2_architecture.html#autotoc_md11',1,'Core Layer (&lt;span class=&quot;tt&quot;&gt;FIRE&lt;/span&gt;)'],['../d4/d24/md__f_i_r_e_2_f_i_r_e_8wiki_2_architecture.html#autotoc_md64',1,'Core Layer (&lt;span class=&quot;tt&quot;&gt;FIRE&lt;/span&gt;)']]],
-  ['core_20principles_17',['Core Principles',['../dd/d50/md__f_i_r_e_2docs_2wiki-local_2_configuration-_reference.html#autotoc_md16',1,'Core Principles'],['../d2/d02/md__f_i_r_e_2_f_i_r_e_8wiki_2_configuration-_reference.html#autotoc_md69',1,'Core Principles']]],
-  ['counter_20persistence_18',['Counter Persistence',['../dd/d50/md__f_i_r_e_2docs_2wiki-local_2_configuration-_reference.html#autotoc_md19',1,'Counter Persistence'],['../d2/d02/md__f_i_r_e_2_f_i_r_e_8wiki_2_configuration-_reference.html#autotoc_md72',1,'Counter Persistence']]],
-  ['counter_20when_20a_20stable_20sequence_20must_20be_20preserved_19',['Note: For photo and video archives, use &lt;span class=&quot;tt&quot;&gt;{Counter...}&lt;/span&gt; when a stable sequence must be preserved.',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md150',1,'']]],
-  ['counter_3ad3_20',['Running number per target path with &lt;span class=&quot;tt&quot;&gt;{Counter:D3}&lt;/span&gt;',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md149',1,'']]],
-  ['credits_21',['Credits',['../index.html#credits_sec',1,'Third-Party Credits'],['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md158',1,'Third-Party Credits']]],
-  ['culture_20and_20output_20options_22',['CLI Culture and Output Options',['../index.html#cli_options_sec',1,'']]],
-  ['current_20priority_23',['Current Priority',['../d9/d02/md__f_i_r_e_2docs_2wiki-local_2_roadmap.html#autotoc_md33',1,'Current Priority'],['../d7/d18/md__f_i_r_e_2_f_i_r_e_8wiki_2_roadmap.html#autotoc_md86',1,'Current Priority']]]
+  ['generate_0',['Step 2 — generate',['../index.html#step2',1,'']]],
+  ['generation_20phase_1',['Path Generation Phase',['../index.html#sidecar_generation',1,'']]],
+  ['getallavailablemetadata_2',['GetAllAvailableMetadata',['../index.html#get_all_metadata_subsec',1,'']]],
+  ['goals_3',['Non-Goals',['../dir_865d401768b10580b0b717f084e9432e.html#autotoc_md8',1,'']]],
+  ['guidance_4',['Integration Guidance',['../de/ded/md__f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y.html#autotoc_md3',1,'']]]
 ];

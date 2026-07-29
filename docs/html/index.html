@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('index.html',''
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">FIRE — File Information Reorganizer and Extractor </div></div>
+  <div class="headertitle"><div class="title"><a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a> — File Information Reorganizer and Extractor </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><div class="image">
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('index.html',''
 </div>
 <h1 class="doxsection"><a class="anchor" id="intro_sec"></a>
 Overview</h1>
-<p><b>FIRE</b> is an API-first .NET 10 library for automated file reorganization based on embedded metadata. It reads file system information and rich EXIF/XMP metadata (via ExifTool), stores the results in a local SQLite database, computes template-driven target paths, and finally copies, moves, or hard-links the files to their new location.</p>
+<p><b><a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a></b> is an API-first .NET 10 library for automated file reorganization based on embedded metadata. It reads file system information and rich EXIF/XMP metadata (via ExifTool), stores the results in a local SQLite database, computes template-driven target paths, and finally copies, moves, or hard-links the files to their new location.</p>
 <p>The class library is the primary product surface. The console application is intentionally a lightweight adapter for API testing and quick onboarding.</p>
 <h1 class="doxsection"><a class="anchor" id="arch_sec"></a>
 Architecture</h1>
@@ -134,35 +134,35 @@ Architecture</h1>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Project  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Responsibility  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">FIRE</span>  </td><td class="markdownTableBodyNone">Class library (.NET 10)  </td><td class="markdownTableBodyNone">Core engine: configuration, catalog, database, localization, progress/state events  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a></span>  </td><td class="markdownTableBodyNone">Class library (.NET 10)  </td><td class="markdownTableBodyNone">Core engine: configuration, catalog, database, localization, progress/state events  </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt">FIRE.Console</span>  </td><td class="markdownTableBodyNone">Console application (.NET 10)  </td><td class="markdownTableBodyNone">CLI adapter for API testing and quick start (<span class="tt">collect</span>, <span class="tt">generate</span>, <span class="tt">execute</span>, <span class="tt">inspect</span>)  </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">FIRE.Tests</span>  </td><td class="markdownTableBodyNone">Test project (.NET 10)  </td><td class="markdownTableBodyNone">Unit tests for core library behavior  </td></tr>
 </table>
-<p>UI apps should consume the <span class="tt">FIRE</span> library directly (not the console process) and subscribe to catalog progress/state events.</p>
+<p>UI apps should consume the <span class="tt"><a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a></span> library directly (not the console process) and subscribe to catalog progress/state events.</p>
 <p>Deliberately postponing a dedicated UI implementation helps keep engineering focus on API completeness and stability.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
 Core Classes</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Class  </th><th class="markdownTableHeadNone">Description  </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">FIRE::FIRECatalog  </td><td class="markdownTableBodyNone">Orchestrates collection, path generation, and file operations  </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html" title="Orchestrates the three-step FIRE processing pipeline: collect, generate, and execute.">FIRE::FIRECatalog</a>  </td><td class="markdownTableBodyNone">Orchestrates collection, path generation, and file operations  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">FIRE::FIREDatabase  </td><td class="markdownTableBodyNone">SQLite-backed list of FIRE::FIREDbRecord entries  </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html" title="Provides a list-like interface to FIREDbRecord file entries backed by a SQLite database.">FIRE::FIREDatabase</a>  </td><td class="markdownTableBodyNone">SQLite-backed list of <a class="el" href="d7/ddf/class_f_i_r_e_1_1_f_i_r_e_db_record.html" title="Represents one complete file record persisted in the FIRE database.">FIRE::FIREDbRecord</a> entries  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">FIRE::FIREConfigration  </td><td class="markdownTableBodyNone">Deserialized YAML configuration root  </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="d4/d3b/class_f_i_r_e_1_1_f_i_r_e_configration.html" title="Represents the root configuration document loaded from the FIRE configuration YAML file.">FIRE::FIREConfigration</a>  </td><td class="markdownTableBodyNone">Deserialized YAML configuration root  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">FIRE::IMetadataSource  </td><td class="markdownTableBodyNone">Abstraction for metadata providers  </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="dd/d6c/interface_f_i_r_e_1_1_i_metadata_source.html" title="Defines an abstraction for metadata extraction from files.">FIRE::IMetadataSource</a>  </td><td class="markdownTableBodyNone">Abstraction for metadata providers  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">FIRE::FileInfoMetadataSource  </td><td class="markdownTableBodyNone">File-system metadata provider (creation/modification/access time)  </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="d9/d5c/class_f_i_r_e_1_1_file_info_metadata_source.html" title="Metadata source that extracts file system properties (timestamps).">FIRE::FileInfoMetadataSource</a>  </td><td class="markdownTableBodyNone">File-system metadata provider (creation/modification/access time)  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">FIRE::ExifToolMetadataSource  </td><td class="markdownTableBodyNone">ExifTool-based metadata provider (EXIF, XMP, IPTC, …)  </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="d0/d78/class_f_i_r_e_1_1_exif_tool_metadata_source.html" title="Metadata source for extracting embedded file metadata using ExifTool.">FIRE::ExifToolMetadataSource</a>  </td><td class="markdownTableBodyNone">ExifTool-based metadata provider (EXIF, XMP, IPTC, …)  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">FIRE::MetadataSourceRegistry  </td><td class="markdownTableBodyNone">Registry that maps source names to IMetadataSource instances  </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="df/d2f/class_f_i_r_e_1_1_metadata_source_registry.html" title="Registry for registered metadata sources.">FIRE::MetadataSourceRegistry</a>  </td><td class="markdownTableBodyNone">Registry that maps source names to IMetadataSource instances  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">FIRE::FIRECatalogProgressEventArgs  </td><td class="markdownTableBodyNone">Event payload for API progress/status notifications  </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="d8/d41/class_f_i_r_e_1_1_f_i_r_e_catalog_progress_event_args.html">FIRE::FIRECatalogProgressEventArgs</a>  </td><td class="markdownTableBodyNone">Event payload for API progress/status notifications  </td></tr>
 </table>
 <h1 class="doxsection"><a class="anchor" id="localization_sec"></a>
 API Localization</h1>
@@ -173,14 +173,14 @@ API Localization</h1>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="workflow_sec"></a>
 Three-Step Workflow</h1>
-<p>FIRE operates in three distinct, sequential steps:</p>
+<p><a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a> operates in three distinct, sequential steps:</p>
 <h2 class="doxsection"><a class="anchor" id="step1"></a>
 Step 1 — collect</h2>
-<p>Scans all directories listed in <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ae5a75378c68884efcb0e1c484ae21c23" title="Gets or sets the list of root directories to scan for source files during collection.">FilesRootPath</a></span>, extracts metadata for each file through the registered IMetadataSource implementations, and persists the results as FIRE::FIREDbRecord entries in the SQLite database.</p>
+<p>Scans all directories listed in <span class="tt">FilesRootPath</span>, extracts metadata for each file through the registered IMetadataSource implementations, and persists the results as <a class="el" href="d7/ddf/class_f_i_r_e_1_1_f_i_r_e_db_record.html" title="Represents one complete file record persisted in the FIRE database.">FIRE::FIREDbRecord</a> entries in the SQLite database.</p>
 <div class="fragment"><div class="line">FIRE.Console collect --config Configuration.yaml --culture de-DE</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="step2"></a>
 Step 2 — generate</h2>
-<p>Reads the database, evaluates the <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a3cbabcf9e16d587d8c46845ae16fbadb" title="Gets or sets the directory sorting path pattern (may contain metadata placeholders).">SortingPatern</a></span> and <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a7b7e81bdf960f55fe8288e5549d94c38" title="Gets or sets the file name pattern (may contain metadata placeholders).">FileNamePatern</a></span> templates by substituting <span class="tt">{Keyword}</span> placeholders with resolved metadata values, and writes the computed target path back into each record.</p>
+<p>Reads the database, evaluates the <span class="tt">SortingPatern</span> and <span class="tt">FileNamePatern</span> templates by substituting <span class="tt">{Keyword}</span> placeholders with resolved metadata values, and writes the computed target path back into each record.</p>
 <div class="fragment"><div class="line">FIRE.Console generate --config Configuration.yaml --culture de-DE</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="step3"></a>
 Step 3 — execute</h2>
@@ -230,7 +230,7 @@ Configuration</h1>
 <div class="line">          - IFD0:DateTime</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="keywords_sec"></a>
 Keyword Selection</h1>
-<p>When multiple EXIF tags can satisfy the same logical keyword (e.g. <span class="tt">DateTimeOriginal</span> and <span class="tt">DateTime</span>), FIRE picks one value according to <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a386f09885d44e5915217eb752f47e561" title="Gets or sets the value selection attribute that determines which value to use when multiple are found...">ValAttribute</a></span>:</p>
+<p>When multiple EXIF tags can satisfy the same logical keyword (e.g. <span class="tt">DateTimeOriginal</span> and <span class="tt">DateTime</span>), <a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a> picks one value according to <span class="tt">ValAttribute</span>:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">ValAttribute  </th><th class="markdownTableHeadNone">Behaviour  </th></tr>
@@ -252,7 +252,7 @@ Metadata Sources</h1>
 </table>
 <h1 class="doxsection"><a class="anchor" id="placeholders_sec"></a>
 Template Placeholders</h1>
-<p>Placeholders in <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a3cbabcf9e16d587d8c46845ae16fbadb" title="Gets or sets the directory sorting path pattern (may contain metadata placeholders).">SortingPatern</a></span> and <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a7b7e81bdf960f55fe8288e5549d94c38" title="Gets or sets the file name pattern (may contain metadata placeholders).">FileNamePatern</a></span> use <span class="tt">{KeywordName}</span> syntax. Sub-properties are separated by a dot, e.g. <span class="tt">{MetaCreationTime.Year}</span>. <span class="tt">{Counter...}</span> is only used when explicitly present in the template, and the last used values are persisted so numbering continues across restarts.</p>
+<p>Placeholders in <span class="tt">SortingPatern</span> and <span class="tt">FileNamePatern</span> use <span class="tt">{KeywordName}</span> syntax. Sub-properties are separated by a dot, e.g. <span class="tt">{MetaCreationTime.Year}</span>. <span class="tt">{Counter...}</span> is only used when explicitly present in the template, and the last used values are persisted so numbering continues across restarts.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Placeholder  </th><th class="markdownTableHeadNone">Example output  </th></tr>
@@ -271,18 +271,18 @@ Template Placeholders</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">{MetaCreationTime.Day}</span>  </td><td class="markdownTableBodyNone"><span class="tt">04</span>  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">{<a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a181818c385b63ee4fe297f873b3478a1" title="Gets or sets the media root path variable used in path templates.">MediaRootPath</a>}</span>  </td><td class="markdownTableBodyNone">configured root path  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">{MediaRootPath}</span>  </td><td class="markdownTableBodyNone">configured root path  </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><span class="tt">{Counter:D3}</span>  </td><td class="markdownTableBodyNone">sequential number per target path (e.g. 001, 002, 003)  </td></tr>
 </table>
 <h1 class="doxsection"><a class="anchor" id="metadata_inspection_sec"></a>
 Metadata Inspection Helpers</h1>
-<p>FIRE::FIRECatalog exposes helper APIs to inspect metadata before writing <span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#a63323b332ded7ed3a4edc12fc1754d16" title="Gets or sets a dictionary of available metadata keywords for this extension.">AvailableKeyWords</a></span> mappings in YAML configuration.</p>
+<p><a class="el" href="d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html" title="Orchestrates the three-step FIRE processing pipeline: collect, generate, and execute.">FIRE::FIRECatalog</a> exposes helper APIs to inspect metadata before writing <span class="tt">AvailableKeyWords</span> mappings in YAML configuration.</p>
 <h2 class="doxsection"><a class="anchor" id="get_all_metadata_subsec"></a>
 GetAllAvailableMetadata</h2>
-<p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#aef7ba4394188e308379ddd8a487ac5f1" title="Retrieves all available metadata for a single file from all registered metadata sources.">GetAllAvailableMetadata(string filePath)</a></span> returns all discovered metadata entries for one file as tuples:</p>
+<p><span class="tt">GetAllAvailableMetadata(string filePath)</span> returns all discovered metadata entries for one file as tuples:</p>
 <ul>
-<li><span class="tt"><a class="el" href="d1/d3c/_f_i_r_e_configration_8cs.html#ac34de2a54dcaa5e190990544213c2a65" title="Gets or sets the metadata source for this keyword.">Source</a></span> (e.g. <span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
+<li><span class="tt">Source</span> (e.g. <span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
 <li><span class="tt">Key</span> (metadata key/tag name)</li>
 <li><span class="tt">Value</span> (string representation)</li>
 </ul>
@@ -298,7 +298,7 @@ GetAllAvailableMetadata</h2>
 <div class="line">}</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="write_metadata_md_subsec"></a>
 WriteMetadataToMarkdown</h2>
-<p><span class="tt"><a class="el" href="db/d24/_f_i_r_e_catalog_8cs.html#ab585df3741aa7104afc3c6b3d9b8e9e2" title="Retrieves all available metadata for a single file and writes it to a Markdown file.">WriteMetadataToMarkdown</a>(<a class="el" href="dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> filePath, <a class="el" href="dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>? outputPath = null)</span> writes a Markdown report containing:</p>
+<p><span class="tt">WriteMetadataToMarkdown(string filePath, string? outputPath = null)</span> writes a Markdown report containing:</p>
 <ul>
 <li>File information (path, name, size, timestamps)</li>
 <li>Metadata grouped by source (<span class="tt">FILEINFO</span>, <span class="tt">EXIFTOOL</span>)</li>
@@ -318,7 +318,7 @@ WriteMetadataToMarkdown</h2>
 <div class="line">    <span class="stringliteral">@&quot;D:\Reports\IMG_1234-metadata.md&quot;</span>);</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="sidecar_sec"></a>
 Sidecar Files</h1>
-<p>FIRE automatically processes sidecar files (e.g. <span class="tt">.xmp</span>, <span class="tt">.pp3</span>) alongside their primary files through a four-phase workflow:</p>
+<p><a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a> automatically processes sidecar files (e.g. <span class="tt">.xmp</span>, <span class="tt">.pp3</span>) alongside their primary files through a four-phase workflow:</p>
 <h2 class="doxsection"><a class="anchor" id="sidecar_config"></a>
 Configuration</h2>
 <p>Define sidecar extensions in the primary file's configuration:</p>
@@ -329,13 +329,13 @@ Configuration</h2>
 <div class="line">      - .pp3</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="sidecar_collection"></a>
 Collection Phase</h2>
-<p>After adding a primary file record to the database, FIRE::FIRECatalog::ProcessSidecarFiles() searches the same directory for files matching the configured extensions and the same base name. Each found sidecar is added as a separate FIRE::FIREDbRecord with:</p><ul>
-<li>FIRE::FileClassification::SidecarFile classification</li>
+<p>After adding a primary file record to the database, FIRE::FIRECatalog::ProcessSidecarFiles() searches the same directory for files matching the configured extensions and the same base name. Each found sidecar is added as a separate <a class="el" href="d7/ddf/class_f_i_r_e_1_1_f_i_r_e_db_record.html" title="Represents one complete file record persisted in the FIRE database.">FIRE::FIREDbRecord</a> with:</p><ul>
+<li><a class="el" href="db/de5/namespace_f_i_r_e.html#a91215cf4596335211a626ef0e093609aae5fa74a5089bfd0b0901af1ce4cb2cfc" title="A sidecar file (e.g., .xmp, .pp3) that follows its primary file.">FIRE::FileClassification::SidecarFile</a> classification</li>
 <li>Cloned metadata from the primary file</li>
 </ul>
 <h2 class="doxsection"><a class="anchor" id="sidecar_generation"></a>
 Path Generation Phase</h2>
-<p>FIRE::FIRECatalog::GenerateTargetPaths() treats sidecar records specially:</p><ul>
+<p><a class="el" href="d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html#adfdfe10369ae1578c56099a70d9a2400" title="Step 2: Generates target file paths for all collected file records.">FIRE::FIRECatalog::GenerateTargetPaths()</a> treats sidecar records specially:</p><ul>
 <li>Locates the primary file by matching source directory and base name</li>
 <li>Inherits the primary file's target directory and base filename</li>
 <li>Preserves the sidecar's own extension</li>
@@ -346,19 +346,19 @@ Path Generation Phase</h2>
 </ul>
 <h2 class="doxsection"><a class="anchor" id="sidecar_execution"></a>
 Execution Phase</h2>
-<p>FIRE::FIRECatalog::ExecuteFileOperations() processes sidecar files using the global action setting (Copy/Move/Link) from the configuration root, since sidecar extensions typically have no dedicated extension configuration.</p>
+<p><a class="el" href="d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html#ab5e6952f34f5a4376bb134a2bab581b6" title="Step 3: Executes the configured file operation (Copy, Move, or Link) for all records.">FIRE::FIRECatalog::ExecuteFileOperations()</a> processes sidecar files using the global action setting (Copy/Move/Link) from the configuration root, since sidecar extensions typically have no dedicated extension configuration.</p>
 <h1 class="doxsection"><a class="anchor" id="license_sec"></a>
 License</h1>
-<p>FIRE is released under the <b>MIT License</b>. Copyright © 2026 by Thomas Stoll.</p>
+<p><a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a> is released under the <b>MIT License</b>. Copyright © 2026 by Thomas Stoll.</p>
 <p>See the LICENSE file in the repository root for full license text.</p>
 <h1 class="doxsection"><a class="anchor" id="credits_sec"></a>
 Third-Party Credits</h1>
-<p>FIRE uses third-party components:</p>
+<p><a class="el" href="db/de5/namespace_f_i_r_e.html">FIRE</a> uses third-party components:</p>
 <ul>
 <li>ExifTool by Phil Harvey (<a href="https://exiftool.org">https://exiftool.org</a>), licensed under the Artistic License 2.0 (alternatively GNU GPL)</li>
 <li>SharpExifTool by Junian Triajianto (<a href="https://www.nuget.org/packages/SharpExifTool">https://www.nuget.org/packages/SharpExifTool</a>), licensed under the MIT License</li>
 </ul>
-<p>See <a class="el" href="da/dc3/_t_h_i_r_d-_p_a_r_t_y-_n_o_t_i_c_e_s_8md.html">THIRD-PARTY-NOTICES.md</a> in the repository root for details.</p>
+<p>See THIRD-PARTY-NOTICES.md in the repository root for details.</p>
 <h1 class="doxsection"><a class="anchor" id="links_sec"></a>
 Links</h1>
 <ul>

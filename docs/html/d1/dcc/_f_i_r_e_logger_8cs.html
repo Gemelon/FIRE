@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.17.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>FIRE: FIRE/FIRE/Logging/FIRELogger.cs File Reference</title>
+<title>FIRE: FIRE/Logging/FIRELogger.cs File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../dynsections.js"></script>
 <script type="text/javascript" src="../../codefolding.js"></script>
@@ -123,221 +123,29 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('d1/dcc/_f_i_r_
 
 <p><a href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:FIRE_2ELogging_2EFIRELogger" id="r_FIRE_2ELogging_2EFIRELogger"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><b>FIRE.Logging.FIRELogger</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread-safe, per-stage Markdown log writer for the <a class="el" href="../../db/de5/namespace_f_i_r_e.html">FIRE</a> catalog. <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:FIRE" id="r_FIRE"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="../../db/de5/namespace_f_i_r_e.html">FIRE</a></td></tr>
+<tr class="memitem:FIRE_2ELogging" id="r_FIRE_2ELogging"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="../../de/d2c/namespace_f_i_r_e_1_1_logging.html">FIRE.Logging</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a98b250e2290324629b7467b158d9763d" id="r_a98b250e2290324629b7467b158d9763d"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a> { <br />
-&#160;&#160;<a class="el" href="#a98b250e2290324629b7467b158d9763dac909e86054cb6ad83c22bfc2b3e6e5b8">Debug</a> = 0
-, <a class="el" href="#a98b250e2290324629b7467b158d9763da1cd805eaf0bb58a90fe7e7e4cf6a3cdc">Info</a> = 1
-, <a class="el" href="#a98b250e2290324629b7467b158d9763da48f2bb70fceb692a2dedd8cea496c44b">Warning</a> = 2
-, <a class="el" href="#a98b250e2290324629b7467b158d9763da4dfd42ec49d09d8c6555c218301cc30f">Error</a> = 3
+<tr class="memitem:a5b86ef0decc7138984faf4f925554909" id="r_a5b86ef0decc7138984faf4f925554909"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="../../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909">FIRE.Logging.FIRELogLevel</a> { <br />
+&#160;&#160;<a class="el" href="../../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909aa603905470e2a5b8c13e96b579ef0dba">FIRE.Logging.Debug</a> = 0
+, <a class="el" href="../../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909a4059b0251f66a18cb56f544728796875">FIRE.Logging.Info</a> = 1
+, <a class="el" href="../../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909a0eaadb4fcb48a0a0ed7bc9868be9fbaa">FIRE.Logging.Warning</a> = 2
+, <a class="el" href="../../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909a902b0d55fddef6f8d651fe1035b7d4bd">FIRE.Logging.Error</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="#a98b250e2290324629b7467b158d9763da6779101cd5bbfab8a7da94cccf1947e2">Critical</a> = 4
+&#160;&#160;<a class="el" href="../../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909a278d01e5af56273bae1bb99a98b370cd">FIRE.Logging.Critical</a> = 4
 <br />
  }</td></tr>
-<tr class="memdesc:a98b250e2290324629b7467b158d9763d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numeric severity levels for FIRE log entries.  <a href="#a98b250e2290324629b7467b158d9763d">More...</a><br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a6e2d745cdb7a7b983f861ed6a9a541a7" id="r_a6e2d745cdb7a7b983f861ed6a9a541a7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a6e2d745cdb7a7b983f861ed6a9a541a7">Dispose</a> ()</td></tr>
-<tr class="memdesc:a6e2d745cdb7a7b983f861ed6a9a541a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flushes and closes the underlying log file.  <br /></td></tr>
-<tr class="memitem:a2b034749dc19768fcbb2f94957c4da2c" id="r_a2b034749dc19768fcbb2f94957c4da2c"><td class="memItemLeft">static internal <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>&#160;</td><td class="memItemRight"><a class="el" href="#a2b034749dc19768fcbb2f94957c4da2c">ParseLevel</a> (<a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> levelName)</td></tr>
-<tr class="memdesc:a2b034749dc19768fcbb2f94957c4da2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a textual log level into a FIRELogLevel value.  <br /></td></tr>
-<tr class="memitem:a97a9719365174ef86f9d5e1a7f79c9f1" id="r_a97a9719365174ef86f9d5e1a7f79c9f1"><td class="memItemLeft">static internal <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>&#160;</td><td class="memItemRight"><a class="el" href="#a97a9719365174ef86f9d5e1a7f79c9f1">FromMessageLevel</a> (FIRECatalogMessageLevel level)</td></tr>
-<tr class="memdesc:a97a9719365174ef86f9d5e1a7f79c9f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps catalog progress severity to logger severity.  <br /></td></tr>
-<tr class="memitem:a7120565336b5ef0a841b6dac0d08b6b7" id="r_a7120565336b5ef0a841b6dac0d08b6b7"><td class="memItemLeft">static internal <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a>&#160;</td><td class="memItemRight"><a class="el" href="#a7120565336b5ef0a841b6dac0d08b6b7">StageTag</a> (<a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>? stage)</td></tr>
-<tr class="memdesc:a7120565336b5ef0a841b6dac0d08b6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolves the short stage tag used in log file names.  <br /></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:aa9eb0bb9975ab9d382645b69280f89dd" id="r_aa9eb0bb9975ab9d382645b69280f89dd"><td class="memItemLeft">enum <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa9eb0bb9975ab9d382645b69280f89dd">TableHeader</a></td></tr>
-<tr class="memdesc:aa9eb0bb9975ab9d382645b69280f89dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread-safe, per-stage Markdown log writer for the FIRE catalog.  <br /></td></tr>
+<tr class="memdesc:a5b86ef0decc7138984faf4f925554909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numeric severity levels for <a class="el" href="../../db/de5/namespace_f_i_r_e.html">FIRE</a> log entries.  <a href="../../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909">More...</a><br /></td></tr>
 </table>
-<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
-<a id="a98b250e2290324629b7467b158d9763d" name="a98b250e2290324629b7467b158d9763d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98b250e2290324629b7467b158d9763d">&#9670;&#160;</a></span>FIRELogLevel</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Numeric severity levels for FIRE log entries. </p>
-<p>The numeric values allow simple greater-than comparison for level filtering. </p><ul>
-<li>
-Debug (0) – Fine-grained diagnostic information. </li>
-<li>
-Info (1) – Normal stage-start/complete messages. </li>
-<li>
-Warning (2) – Non-fatal anomalies (e.g. missing metadata). </li>
-<li>
-Error (3) – Recoverable errors that affected a single file. </li>
-<li>
-Critical(4) – Unrecoverable failures that aborted a stage. </li>
-</ul>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a98b250e2290324629b7467b158d9763dac909e86054cb6ad83c22bfc2b3e6e5b8" name="a98b250e2290324629b7467b158d9763dac909e86054cb6ad83c22bfc2b3e6e5b8"></a>Debug&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a98b250e2290324629b7467b158d9763da1cd805eaf0bb58a90fe7e7e4cf6a3cdc" name="a98b250e2290324629b7467b158d9763da1cd805eaf0bb58a90fe7e7e4cf6a3cdc"></a>Info&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a98b250e2290324629b7467b158d9763da48f2bb70fceb692a2dedd8cea496c44b" name="a98b250e2290324629b7467b158d9763da48f2bb70fceb692a2dedd8cea496c44b"></a>Warning&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a98b250e2290324629b7467b158d9763da4dfd42ec49d09d8c6555c218301cc30f" name="a98b250e2290324629b7467b158d9763da4dfd42ec49d09d8c6555c218301cc30f"></a>Error&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a98b250e2290324629b7467b158d9763da6779101cd5bbfab8a7da94cccf1947e2" name="a98b250e2290324629b7467b158d9763da6779101cd5bbfab8a7da94cccf1947e2"></a>Critical&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html#l00042">42</a> of file <a class="el" href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html">FIRELogger.cs</a>.</p>
-
-</div>
-</div>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="a6e2d745cdb7a7b983f861ed6a9a541a7" name="a6e2d745cdb7a7b983f861ed6a9a541a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e2d745cdb7a7b983f861ed6a9a541a7">&#9670;&#160;</a></span>Dispose()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Dispose </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Flushes and closes the underlying log file. </p>
-
-<p class="definition">Definition at line <a class="el" href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html#l00264">264</a> of file <a class="el" href="../../d1/dcc/_f_i_r_e_logger_8cs_source.html">FIRELogger.cs</a>.</p>
-
-</div>
-</div>
-<a id="a97a9719365174ef86f9d5e1a7f79c9f1" name="a97a9719365174ef86f9d5e1a7f79c9f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97a9719365174ef86f9d5e1a7f79c9f1">&#9670;&#160;</a></span>FromMessageLevel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">internal <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a> FromMessageLevel </td>
-          <td>(</td>
-          <td class="paramtype">FIRECatalogMessageLevel</td>          <td class="paramname"><span class="paramname"><em>level</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Maps catalog progress severity to logger severity. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">level</td><td>Catalog message level.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Equivalent logger level.</dd></dl>
-
-</div>
-</div>
-<a id="a2b034749dc19768fcbb2f94957c4da2c" name="a2b034749dc19768fcbb2f94957c4da2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b034749dc19768fcbb2f94957c4da2c">&#9670;&#160;</a></span>ParseLevel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">internal <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a> ParseLevel </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a></td>          <td class="paramname"><span class="paramname"><em>levelName</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Parses a textual log level into a FIRELogLevel value. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">levelName</td><td>Configured level token.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The parsed log level. Defaults to FIRELogLevel.Error when unknown.</dd></dl>
-
-</div>
-</div>
-<a id="a7120565336b5ef0a841b6dac0d08b6b7" name="a7120565336b5ef0a841b6dac0d08b6b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7120565336b5ef0a841b6dac0d08b6b7">&#9670;&#160;</a></span>StageTag()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">internal <a class="el" href="../../dd/d5c/_program_8cs.html#a4cb475094dc9de3af5eddaa1a7e87703">string</a> StageTag </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59">FIRECatalogStage</a>?</td>          <td class="paramname"><span class="paramname"><em>stage</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Resolves the short stage tag used in log file names. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">stage</td><td>Catalog stage.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Stage tag token used in log file naming.</dd></dl>
-
-</div>
-</div>
-<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
-<a id="aa9eb0bb9975ab9d382645b69280f89dd" name="aa9eb0bb9975ab9d382645b69280f89dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9eb0bb9975ab9d382645b69280f89dd">&#9670;&#160;</a></span>TableHeader</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="#a98b250e2290324629b7467b158d9763d">FIRELogLevel</a> TableHeader</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">        <span class="stringliteral">&quot;| Timestamp | Level | Stage | Message |\n&quot;</span> +</div>
-<div class="line">        <span class="stringliteral">&quot;|-----------|-------|-------|---------|&quot;</span></div>
-</div><!-- fragment -->
-<p>Thread-safe, per-stage Markdown log writer for the FIRE catalog. </p>
-<p><b>File naming:</b> Each stage gets its own daily file: <code>{LogFileName}.col.{yyyyMMdd}.md</code>, <code>.gen.</code>, <code>.exe.</code>. When no stage is active (e.g. pre-stage warnings), the suffix <code>.misc.</code> is used. </p>
-<p><b>Rotation:</b> When the active file grows beyond LoggingConfiguration.MaxFileSizeBytes, writing continues in a new segment: <code>{name}.col.{date}.1.md</code>, <code>.2.md</code>, … The recommended size limit is 10 MB so any common text editor can open the file. </p>
-<p><b>Retention:</b> At construction time, files older than LoggingConfiguration.MaxAgeDays days are deleted from the log directory. A 30-day window covers a reasonable audit period; reduce it in high-volume environments to limit disk usage. </p>
-<p><b>Format:</b> Every entry is one Markdown table row: <code>| timestamp | LEVEL | stage | message |</code> Each new file starts with a Markdown table header. </p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
@@ -351,7 +159,7 @@ Critical(4) – Unrecoverable failures that aborted a stage. </li>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a href="../../dir_1f9768e2c593c5218470a8c4a49bbb18.html">FIRE</a></li><li class="navelem"><a href="../../dir_027ae1c642818204f1d2b0e289285598.html">FIRE</a></li><li class="navelem"><a href="../../dir_ecd01bc9629781be892d9e6de41ad66e.html">Logging</a></li><li class="navelem"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html">FIRELogger.cs</a></li>
+    <li class="navelem"><a href="../../dir_1f9768e2c593c5218470a8c4a49bbb18.html">FIRE</a></li><li class="navelem"><a href="../../dir_986e92da804b39b58e14e2a1c770e6c8.html">Logging</a></li><li class="navelem"><a href="../../d1/dcc/_f_i_r_e_logger_8cs.html">FIRELogger.cs</a></li>
     <li class="footer">Generated on <span class="timestamp"></span> for FIRE by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
   </ul>
 </div>

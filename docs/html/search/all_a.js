@@ -1,20 +1,16 @@
 var searchData=
 [
-  ['databasefilename_0',['DataBaseFileName',['../df/dbb/class_f_i_r_e_configration.html#a63707090391f44c2652c22d7394ad6e8',1,'FIREConfigration::DataBaseFileName'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a1c9cab30d3476465f61856edfc4e81c8',1,'DataBaseFileName:&#160;FIREConfigration.cs']]],
-  ['databasepath_1',['DataBasePath',['../df/dbb/class_f_i_r_e_configration.html#a9e21d63a7be7eb2fc97ce51348039180',1,'FIREConfigration::DataBasePath'],['../d1/d3c/_f_i_r_e_configration_8cs.html#a4e707e6802e2d6aff362f368045e4cc6',1,'DataBasePath:&#160;FIREConfigration.cs']]],
-  ['datasource_2',['DataSource',['../d7/d1a/_f_i_r_e_database_8cs.html#a5e8dbe87fbcfd5a8ec27a753ea1e2c83',1,'FIREFileMetaData']]],
-  ['date_20and_20camera_20model_3',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md146',1,'']]],
-  ['debug_4',['Debug',['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763dac909e86054cb6ad83c22bfc2b3e6e5b8',1,'FIRELogger.cs']]],
-  ['default_5',['Default',['../d1/d3c/_f_i_r_e_configration_8cs.html#a57818ca0924f9791fd2e538c3e12ccd7',1,'FIREConfigration.cs']]],
-  ['description_6',['Description',['../dd/d5c/_program_8cs.html#a4bcbd2f2d86ecbe814caecc9d758e6bb',1,'Description(&quot;Clear the database before collecting files.&quot;)][CommandOption(&quot;--clear-database|--clear&quot;)][DefaultValue(false)] public bool ClearDatabase:&#160;Program.cs'],['../dd/d5c/_program_8cs.html#a6266d0ce0b1719c3afb0c0f0e64979a0',1,'Description(&quot;Path to the source file to diagnose.&quot;)][CommandOption(&quot;--source-path|-s &lt;SOURCE_PATH&gt;&quot;)] public string? SourcePath:&#160;Program.cs']]],
-  ['desktop_20ui_7',['6) Threading recommendation for desktop UI',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md129',1,'']]],
-  ['diagnosegeneration_8',['DiagnoseGeneration',['../db/d24/_f_i_r_e_catalog_8cs.html#ac332f38150ec11ba50b9c3f637a3a346',1,'FIRECatalog.cs']]],
-  ['diagnostics_9',['Diagnostics',['../dd/d5e/md__f_i_r_e_2docs_2wiki-local_2_a_p_i-_workflow.html#autotoc_md6',1,'Inspection and Diagnostics'],['../db/dab/md__f_i_r_e_2_f_i_r_e_8wiki_2_a_p_i-_workflow.html#autotoc_md59',1,'Inspection and Diagnostics']]],
-  ['direction_10',['Direction',['../d1/d5f/md__f_i_r_e_2docs_2wiki-local_2_u_i-_integration-_strategy.html#autotoc_md39',1,'Strategic Direction'],['../db/dbe/md__f_i_r_e_2_f_i_r_e_8wiki_2_u_i-_integration-_strategy.html#autotoc_md92',1,'Strategic Direction']]],
-  ['dispose_11',['Dispose',['../db/d24/_f_i_r_e_catalog_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7',1,'Dispose():&#160;FIRECatalog.cs'],['../d1/dcc/_f_i_r_e_logger_8cs.html#a6e2d745cdb7a7b983f861ed6a9a541a7',1,'Dispose():&#160;FIRELogger.cs']]],
-  ['dllimport_12',['DllImport',['../db/d24/_f_i_r_e_catalog_8cs.html#a2a7ad26a66f0fc022a8788adfb0c262e',1,'FIRECatalog.cs']]],
-  ['dng_20raw_20files_20alongside_20their_20jpeg_20keep_20xmp_20sidecars_13',['Move DNG raw files alongside their JPEG, keep XMP sidecars',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md147',1,'']]],
-  ['documentation_14',['Documentation',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md153',1,'Documentation'],['../dir_34712068e75e4f8a851a4fa1ab20db3f.html#autotoc_md48',1,'Related Documentation'],['../dir_168a0deea1a80b54accc11d218723f4f.html#autotoc_md53',1,'Related Documentation'],['../db/d91/md__f_i_r_e_2_f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y.html#autotoc_md101',1,'Related Documentation']]],
-  ['documentation_20process_15',['Documentation Process',['../d9/d02/md__f_i_r_e_2docs_2wiki-local_2_roadmap.html#autotoc_md37',1,'Documentation Process'],['../d7/d18/md__f_i_r_e_2_f_i_r_e_8wiki_2_roadmap.html#autotoc_md90',1,'Documentation Process']]],
-  ['draft_16',['Draft',['../d8/daf/md__f_i_r_e_2docs_2wiki-local_2_home.html',1,'FIRE Wiki (Local Draft)'],['../d9/da0/md__f_i_r_e_2_f_i_r_e_8wiki_2_home.html',1,'FIRE Wiki (Local Draft)']]]
+  ['id_0',['Id',['../df/dce/class_f_i_r_e_1_1_f_i_r_e_file_meta_data.html#a8acfc39552b5c3efdf93ee45b5a94d59',1,'FIRE.FIREFileMetaData.Id'],['../dc/d87/class_f_i_r_e_1_1_f_i_r_e_status_record.html#a7c6e2fefa37d4f1fb249b48122e6124b',1,'FIRE.FIREStatusRecord.Id']]],
+  ['imetadatasource_1',['IMetadataSource',['../dd/d6c/interface_f_i_r_e_1_1_i_metadata_source.html',1,'FIRE']]],
+  ['indexof_2',['IndexOf',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#aa489ea4fd180f157872ba0151a91a823',1,'FIRE::FIREDatabase']]],
+  ['info_3',['Info',['../db/de5/namespace_f_i_r_e.html#a22c7dcacc7810952309298a852513516a4059b0251f66a18cb56f544728796875',1,'FIRE.Info'],['../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909a4059b0251f66a18cb56f544728796875',1,'FIRE.Logging.Info']]],
+  ['information_20reorganizer_20and_20extractor_4',['FIRE — File Information Reorganizer and Extractor',['../index.html',1,'']]],
+  ['insert_5',['Insert',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#aeb70a9b28166acc17afe463f205ddd6a',1,'FIRE::FIREDatabase']]],
+  ['inspect_6',['Inspect',['../db/de5/namespace_f_i_r_e.html#acf4e7afa69d5b80ecaa94477f6c873c0a35a9dbe6b748771b9ea4d5962d37ff6f',1,'FIRE']]],
+  ['inspect_7',['Optional metadata inspection (&lt;span class=&quot;tt&quot;&gt;inspect&lt;/span&gt;)',['../index.html#inspect_step',1,'']]],
+  ['inspection_20helpers_8',['Metadata Inspection Helpers',['../index.html#metadata_inspection_sec',1,'']]],
+  ['inspection_20inspect_9',['Optional metadata inspection (&lt;span class=&quot;tt&quot;&gt;inspect&lt;/span&gt;)',['../index.html#inspect_step',1,'']]],
+  ['integration_20guidance_10',['Integration Guidance',['../de/ded/md__f_i_r_e_2_r_e_a_d_m_e_8_l_i_b_r_a_r_y.html#autotoc_md3',1,'']]],
+  ['isconfigurationversionsupported_11',['IsConfigurationVersionSupported',['../d4/d3b/class_f_i_r_e_1_1_f_i_r_e_configration.html#a7f3039c86e2824e126d27d1036da00af',1,'FIRE::FIREConfigration']]],
+  ['isreadonly_12',['IsReadOnly',['../dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#aa6d78db1edb248afae4f73791d72f27e',1,'FIRE::FIREDatabase']]]
 ];

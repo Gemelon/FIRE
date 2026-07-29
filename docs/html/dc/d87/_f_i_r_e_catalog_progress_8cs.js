@@ -1,21 +1,16 @@
 var _f_i_r_e_catalog_progress_8cs =
 [
-    [ "FIRECatalogStage", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59", [
-      [ "Collect", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59a65dddcfa19b099a3493bd593dbfd2b92", null ],
-      [ "Generate", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59a13f619682461c16618971bf40437b4ef", null ],
-      [ "Execute", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59a31b7313c05d32519f3869a3de8be95e6", null ],
-      [ "Inspect", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a47c4de6beb40683c67f85cbdebf55b59adcf3bba8dca8116c2b3a5c37c2ca1d16", null ]
+    [ "FIRE.FIRECatalogProgressEventArgs", "d8/d41/class_f_i_r_e_1_1_f_i_r_e_catalog_progress_event_args.html", "d8/d41/class_f_i_r_e_1_1_f_i_r_e_catalog_progress_event_args" ],
+    [ "FIRE.FIRECatalogMessageLevel", "db/de5/namespace_f_i_r_e.html#a22c7dcacc7810952309298a852513516", [
+      [ "FIRE.FIRECatalogMessageLevel.Trace", "db/de5/namespace_f_i_r_e.html#a22c7dcacc7810952309298a852513516add4ec0ac4e58f7c32a01244ae91150b1", null ],
+      [ "FIRE.FIRECatalogMessageLevel.Info", "db/de5/namespace_f_i_r_e.html#a22c7dcacc7810952309298a852513516a4059b0251f66a18cb56f544728796875", null ],
+      [ "FIRE.FIRECatalogMessageLevel.Warning", "db/de5/namespace_f_i_r_e.html#a22c7dcacc7810952309298a852513516a0eaadb4fcb48a0a0ed7bc9868be9fbaa", null ],
+      [ "FIRE.FIRECatalogMessageLevel.Error", "db/de5/namespace_f_i_r_e.html#a22c7dcacc7810952309298a852513516a902b0d55fddef6f8d651fe1035b7d4bd", null ]
     ] ],
-    [ "Culture", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#ab248cbfbd011375a62bf31c640ea6559", null ],
-    [ "CurrentFilePath", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a4a6c1207ff87a242380f60f9491e640e", null ],
-    [ "get", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#ac79c4ab1dd17857b215662c294e93616", null ],
-    [ "Info", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95b85e952064b6939b16e62cb9590e91", null ],
-    [ "init", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a978c1602c1c480e86c09f3c3a1b8cc98", null ],
-    [ "Level", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a705b4dedbaecef5be6dfc859c77c44b6", null ],
-    [ "Message", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#afb283ab001bbf2518427dae6320efcfa", null ],
-    [ "MessageKey", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#afe0fe171a4ab9aa2291d8919719ab6e9", null ],
-    [ "ProcessedCount", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a944c06e999e15c1b345fcc6b7720e747", null ],
-    [ "TotalCount", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a9dd7dc8c4fec548749f9e6619d237885", null ],
-    [ "Trace", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a6461b873ebed382efa7e574fd3ddbfe2", null ],
-    [ "Warning", "dc/d87/_f_i_r_e_catalog_progress_8cs.html#a95e3544a64bdc9ce3c1a03c4ea6cc208", null ]
+    [ "FIRE.FIRECatalogStage", "db/de5/namespace_f_i_r_e.html#acf4e7afa69d5b80ecaa94477f6c873c0", [
+      [ "FIRE.FIRECatalogStage.Collect", "db/de5/namespace_f_i_r_e.html#acf4e7afa69d5b80ecaa94477f6c873c0ae7ca851922b13f555127b04b70435ca9", null ],
+      [ "FIRE.FIRECatalogStage.Generate", "db/de5/namespace_f_i_r_e.html#acf4e7afa69d5b80ecaa94477f6c873c0a32b919d18cfaca89383f6000dcc9c031", null ],
+      [ "FIRE.FIRECatalogStage.Execute", "db/de5/namespace_f_i_r_e.html#acf4e7afa69d5b80ecaa94477f6c873c0a40cd014b7b6251e3a22e6a45a73a64e1", null ],
+      [ "FIRE.FIRECatalogStage.Inspect", "db/de5/namespace_f_i_r_e.html#acf4e7afa69d5b80ecaa94477f6c873c0a35a9dbe6b748771b9ea4d5962d37ff6f", null ]
+    ] ]
 ];

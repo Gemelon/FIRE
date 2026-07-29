@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['debug_0',['Debug',['../d1/dcc/_f_i_r_e_logger_8cs.html#a98b250e2290324629b7467b158d9763dac909e86054cb6ad83c22bfc2b3e6e5b8',1,'FIRELogger.cs']]]
+  ['debug_0',['Debug',['../de/d2c/namespace_f_i_r_e_1_1_logging.html#a5b86ef0decc7138984faf4f925554909aa603905470e2a5b8c13e96b579ef0dba',1,'FIRE::Logging']]]
 ];

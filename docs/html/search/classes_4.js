@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['inspectcommand_0',['InspectCommand',['../d1/d1a/class_inspect_command.html',1,'']]],
-  ['inspectsettings_1',['InspectSettings',['../dc/d79/class_inspect_settings.html',1,'']]]
+  ['loggingconfiguration_0',['LoggingConfiguration',['../d5/d35/class_f_i_r_e_1_1_logging_configuration.html',1,'FIRE']]]
 ];

@@ -1,20 +1,20 @@
 var annotated_dup =
 [
-    [ "ApiLocalizer", "d6/d50/class_api_localizer.html", "d6/d50/class_api_localizer" ],
-    [ "AppLifetime", "d5/d39/class_app_lifetime.html", "d5/d39/class_app_lifetime" ],
-    [ "CommandExecutor", "d7/d0d/class_command_executor.html", "d7/d0d/class_command_executor" ],
-    [ "CommonCommandSettings", "d0/d9e/class_common_command_settings.html", "d0/d9e/class_common_command_settings" ],
-    [ "ConsoleUi", "d2/d24/class_console_ui.html", "d2/d24/class_console_ui" ],
-    [ "FILE_ID_INFO", "db/d24/_f_i_r_e_catalog_8cs.html#d0/d27/struct_f_i_l_e___i_d___i_n_f_o", "db/d24/_f_i_r_e_catalog_8cs_d0/d27/struct_f_i_l_e___i_d___i_n_f_o" ],
-    [ "FileInfoMetadataSource", "d3/df3/class_file_info_metadata_source.html", "d3/df3/class_file_info_metadata_source" ],
-    [ "FIREConfigration", "df/dbb/class_f_i_r_e_configration.html", "df/dbb/class_f_i_r_e_configration" ],
-    [ "FIREFileMetaData", "d7/d1a/_f_i_r_e_database_8cs.html#d5/d85/class_f_i_r_e_file_meta_data", "d7/d1a/_f_i_r_e_database_8cs_d5/d85/class_f_i_r_e_file_meta_data" ],
-    [ "GenerateCommand", "d1/ddd/class_generate_command.html", "d1/ddd/class_generate_command" ],
-    [ "InspectCommand", "d1/d1a/class_inspect_command.html", "d1/d1a/class_inspect_command" ],
-    [ "InspectSettings", "dc/d79/class_inspect_settings.html", "dc/d79/class_inspect_settings" ],
-    [ "LoggingConfiguration", "db/dee/class_logging_configuration.html", "db/dee/class_logging_configuration" ],
-    [ "MetadataRuleConfiguration", "d1/d80/class_metadata_rule_configuration.html", "d1/d80/class_metadata_rule_configuration" ],
-    [ "MetadataSourceRegistry", "de/df7/class_metadata_source_registry.html", "de/df7/class_metadata_source_registry" ],
-    [ "ProgramHost", "d6/d5e/class_program_host.html", "d6/d5e/class_program_host" ],
-    [ "UnitTest1", "d7/d81/class_unit_test1.html", "d7/d81/class_unit_test1" ]
+    [ "FIRE", "db/de5/namespace_f_i_r_e.html", [
+      [ "AvailableKeywordConfiguration", "dd/d83/class_f_i_r_e_1_1_available_keyword_configuration.html", "dd/d83/class_f_i_r_e_1_1_available_keyword_configuration" ],
+      [ "ExifToolMetadataSource", "d0/d78/class_f_i_r_e_1_1_exif_tool_metadata_source.html", "d0/d78/class_f_i_r_e_1_1_exif_tool_metadata_source" ],
+      [ "FileExtensionConfiguration", "dc/dda/class_f_i_r_e_1_1_file_extension_configuration.html", "dc/dda/class_f_i_r_e_1_1_file_extension_configuration" ],
+      [ "FileInfoMetadataSource", "d9/d5c/class_f_i_r_e_1_1_file_info_metadata_source.html", "d9/d5c/class_f_i_r_e_1_1_file_info_metadata_source" ],
+      [ "FIRECatalog", "d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog.html", "d0/ddd/class_f_i_r_e_1_1_f_i_r_e_catalog" ],
+      [ "FIRECatalogProgressEventArgs", "d8/d41/class_f_i_r_e_1_1_f_i_r_e_catalog_progress_event_args.html", "d8/d41/class_f_i_r_e_1_1_f_i_r_e_catalog_progress_event_args" ],
+      [ "FIREConfigration", "d4/d3b/class_f_i_r_e_1_1_f_i_r_e_configration.html", "d4/d3b/class_f_i_r_e_1_1_f_i_r_e_configration" ],
+      [ "FIREDatabase", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database" ],
+      [ "FIREDbRecord", "d7/ddf/class_f_i_r_e_1_1_f_i_r_e_db_record.html", "d7/ddf/class_f_i_r_e_1_1_f_i_r_e_db_record" ],
+      [ "FIREFileMetaData", "df/dce/class_f_i_r_e_1_1_f_i_r_e_file_meta_data.html", "df/dce/class_f_i_r_e_1_1_f_i_r_e_file_meta_data" ],
+      [ "FIREStatusRecord", "dc/d87/class_f_i_r_e_1_1_f_i_r_e_status_record.html", "dc/d87/class_f_i_r_e_1_1_f_i_r_e_status_record" ],
+      [ "IMetadataSource", "dd/d6c/interface_f_i_r_e_1_1_i_metadata_source.html", "dd/d6c/interface_f_i_r_e_1_1_i_metadata_source" ],
+      [ "LoggingConfiguration", "d5/d35/class_f_i_r_e_1_1_logging_configuration.html", "d5/d35/class_f_i_r_e_1_1_logging_configuration" ],
+      [ "MetadataRuleConfiguration", "dc/dd8/class_f_i_r_e_1_1_metadata_rule_configuration.html", "dc/dd8/class_f_i_r_e_1_1_metadata_rule_configuration" ],
+      [ "MetadataSourceRegistry", "df/d2f/class_f_i_r_e_1_1_metadata_source_registry.html", "df/d2f/class_f_i_r_e_1_1_metadata_source_registry" ]
+    ] ]
 ];

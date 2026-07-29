@@ -1,0 +1,28 @@
+var class_f_i_r_e_1_1_f_i_r_e_database =
+[
+    [ "FIREDatabase", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a0f5e959205a446619cc5c6f103eac9ef", null ],
+    [ "Add", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a89850a1ad5c8e02fe11f4635dd57da82", null ],
+    [ "AsReadOnlyList", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#ada01fb6468eff37509cfa8ee9a642fbb", null ],
+    [ "Clear", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a90a9e0804f5150a11930d7ff759ef7ca", null ],
+    [ "ComputeFileIdHash", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a44c1efbc08d5fdc2d800d1a8f2e78f7a", null ],
+    [ "Contains", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a41d913b9476957138cedf4ccfd7d6eaa", null ],
+    [ "CopyTo", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a1a4bceaa64f969bcf857bb4c133fcb14", null ],
+    [ "Dispose", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a12608a3b7f6b70719e5eecdd75ee0428", null ],
+    [ "FileExists", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a64136478eca5d7738878c9ce0b552267", null ],
+    [ "FlushPendingChanges", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#acaa026a4f528825cb5c9d7be8658f26b", null ],
+    [ "GetEnumerator", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a54e2e086d731db1adb31cf73eb58f457", null ],
+    [ "IndexOf", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#aa489ea4fd180f157872ba0151a91a823", null ],
+    [ "Insert", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#aeb70a9b28166acc17afe463f205ddd6a", null ],
+    [ "MarkAllFilesForRecollect", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#acad2d66d29a45ed5ae7b51387ecd64cd", null ],
+    [ "MarkFileForRecollect", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a4ef55783af9a1f7042440497f9c4401d", null ],
+    [ "RecreateDatabase", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#af20fac079bee1121f741f805b7bbc819", null ],
+    [ "Reload", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a2263e689ac28ee5b5ada37680e037ad4", null ],
+    [ "Remove", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a8ad959954a810ae6499de1a1b6112e3f", null ],
+    [ "RemoveAt", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a75c6c8aeb44dbea79a15e95562e80d33", null ],
+    [ "Save", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a526864d31e19f782aab4eef173bb3138", null ],
+    [ "Count", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a21cd7d969af159c74a95114b4d8c1163", null ],
+    [ "DatabaseFilePath", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a6a53035d5abc78f84470af0a0808a9e5", null ],
+    [ "IsReadOnly", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#aa6d78db1edb248afae4f73791d72f27e", null ],
+    [ "StatusRecord", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a37e3a4f42a05cffcda63db65a9476e0a", null ],
+    [ "this[int index]", "dd/df9/class_f_i_r_e_1_1_f_i_r_e_database.html#a2efab92012656ace03112dea42783ca1", null ]
+];

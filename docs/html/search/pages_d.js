@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['handling_0',['Sidecar File Handling',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md141',1,'']]],
-  ['helpers_1',['Metadata Inspection Helpers',['../index.html#metadata_inspection_sec',1,'']]],
-  ['holiday_20photos_20by_20date_20and_20camera_20model_2',['Sort holiday photos by date and camera model',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md146',1,'']]],
-  ['host_20application_20guidance_3',['Host Application Guidance',['../dd/d5e/md__f_i_r_e_2docs_2wiki-local_2_a_p_i-_workflow.html#autotoc_md7',1,'Host Application Guidance'],['../db/dab/md__f_i_r_e_2_f_i_r_e_8wiki_2_a_p_i-_workflow.html#autotoc_md60',1,'Host Application Guidance']]],
-  ['host_20apps_4',['API Integration for UI/Host Apps',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md123',1,'']]],
-  ['how_20it_20works_5',['How It Works',['../dir_1f9768e2c593c5218470a8c4a49bbb18.html#autotoc_md142',1,'']]]
+  ['metadata_20inspection_20helpers_0',['Metadata Inspection Helpers',['../index.html#metadata_inspection_sec',1,'']]],
+  ['metadata_20inspection_20inspect_1',['Optional metadata inspection (&lt;span class=&quot;tt&quot;&gt;inspect&lt;/span&gt;)',['../index.html#inspect_step',1,'']]],
+  ['metadata_20sources_2',['Metadata Sources',['../index.html#meta_sources_sec',1,'']]]
 ];
