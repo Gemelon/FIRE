@@ -92,7 +92,7 @@ public sealed class FIREConfigration
     /// Configuration files must have <see cref="ConfigurationVersion"/> equal to this value.
     /// If the versions do not match, <see cref="EnsureSupportedConfigurationVersion"/> will throw.
     /// </remarks>
-    public const decimal SupportedConfigurationVersion = 1.30m;
+    public const decimal SupportedConfigurationVersion = 1.40m;
 
     /// <summary>
     /// Gets or sets the configuration format version.
@@ -163,10 +163,32 @@ public sealed class FIREConfigration
     public string MediaRootPath { get; set; } = "CC";
 
     /// <summary>
+    /// Gets or sets the photo root path variable used in path templates.
+    /// </summary>
+    /// <remarks>
+    /// This is an optional convenience placeholder that can be referenced in path templates
+    /// as <c>{PhotoRootPath}</c> to provide a dedicated root directory for photo files.
+    /// If not specified, defaults to empty string; can be overridden per-extension.
+    /// </remarks>
+    [YamlMember(Alias = "PhotoRootPath")]
+    public string PhotoRootPath { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the video root path variable used in path templates.
+    /// </summary>
+    /// <remarks>
+    /// This is an optional convenience placeholder that can be referenced in path templates
+    /// as <c>{VideoRootPath}</c> to provide a dedicated root directory for video files.
+    /// If not specified, defaults to empty string; can be overridden per-extension.
+    /// </remarks>
+    [YamlMember(Alias = "VideoRootPath")]
+    public string VideoRootPath { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the base root path for output directories (may contain placeholders).
     /// </summary>
     /// <remarks>
-    /// This is a template that can reference other configuration placeholders (e.g., <c>{MediaRootPath}</c>).
+    /// This is a template that can reference other configuration placeholders (e.g., <c>{MediaRootPath}</c>, <c>{PhotoRootPath}</c>, <c>{VideoRootPath}</c>).
     /// The template is resolved during the <c>generate</c> phase before being combined with
     /// the sorting and file name patterns.
     /// Defaults to "{MediaRootPath}" if not specified.

@@ -2316,6 +2316,12 @@ public sealed class FIRECatalog : IDisposable
         if (baseName.Equals("MediaRootPath", StringComparison.OrdinalIgnoreCase))
             return ApplyConfiguredStringReplacements(_configuration.MediaRootPath);
 
+        if (baseName.Equals("PhotoRootPath", StringComparison.OrdinalIgnoreCase))
+            return ApplyConfiguredStringReplacements(_configuration.PhotoRootPath);
+
+        if (baseName.Equals("VideoRootPath", StringComparison.OrdinalIgnoreCase))
+            return ApplyConfiguredStringReplacements(_configuration.VideoRootPath);
+
         if (baseName.Equals("RootPath", StringComparison.OrdinalIgnoreCase))
             return ParseTemplate(_configuration.RootPath, metadata, sourceFilePath, counter, metadataTypes);
 

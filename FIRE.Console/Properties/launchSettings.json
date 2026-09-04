@@ -2,15 +2,15 @@
   "profiles": {
     "FIRE.Console Collect": {
       "commandName": "Project",
-      "commandLineArgs": "collect --config \"D:\\Media\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
+      "commandLineArgs": "collect --config \"D:\\Media transfer\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
     },
     "FIRE.Console Generate": {
       "commandName": "Project",
-      "commandLineArgs": "generate --config \"D:\\Media\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
+      "commandLineArgs": "generate --config \"D:\\Media transfer\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
     },
     "FIRE.Console Execute": {
       "commandName": "Project",
-      "commandLineArgs": "execute --config \"D:\\Media\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
+      "commandLineArgs": "execute --config \"D:\\Media transfer\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
     },
     "FIRE.Console Inspect": {
       "commandName": "Project",
@@ -18,11 +18,11 @@
     },
     "FIRE.Console Clear Collect": {
       "commandName": "Project",
-      "commandLineArgs": "collect --clear --config \"D:\\Media\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
+      "commandLineArgs": "collect --clear --config \"D:\\Media transfer\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --culture \"de-DE\""
     },
     "FIRE.Console Diagnose": {
       "commandName": "Project",
-      "commandLineArgs": "diagnose --config \"D:\\Media\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --source-path \"D:\\Media Originale\\Automatic Upload\\Samsung SM-S938B\\DCIM\\Camera\\20260726_100612.mp4\" --culture de-DE"
+      "commandLineArgs": "diagnose --config \"D:\\Media transfer\\FIRE\\FIREConfigurationFiles\\MediaFireConfiguration.yaml\" --source-path \"D:\\Media Originale\\Automatic Upload\\Samsung SM-S938B\\DCIM\\Camera\\20260726_100612.mp4\" --culture de-DE"
     }
   }
 }

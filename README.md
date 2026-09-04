@@ -290,6 +290,8 @@ DataBaseFileName: FIRE.db         # Database filename
 
 Action: Copy                      # Default action: Copy | Move | Link
 MediaRootPath: D:\Photos\Sorted   # Convenience root used in templates
+PhotoRootPath: D:\Photos\Sorted   # Optional: Photo-specific root path
+VideoRootPath: D:\Videos\Sorted   # Optional: Video-specific root path
 
 # Global sorting template (overridden per extension)
 SortingPatern: "{MediaRootPath}\\{MetaCreationTime.Year}\\{Make}\\{Model}"
@@ -364,6 +366,8 @@ Sub-properties are accessed with a dot.
 | `{MetaCreationTime.Month}` | `07` | Zero-padded month |
 | `{MetaCreationTime.Day}` | `04` | Zero-padded day |
 | `{MediaRootPath}` | `D:\Photos\Sorted` | Value of `MediaRootPath` |
+| `{PhotoRootPath}` | `D:\Photos\Sorted` | Value of `PhotoRootPath` (optional) |
+| `{VideoRootPath}` | `D:\Videos\Sorted` | Value of `VideoRootPath` (optional) |
 | `{Counter:D3}` | `001`, `002`, `003` | Persistent running number per target path with `Dx` formatting; only active when the placeholder is used in the template |
 
 ---
